@@ -6,7 +6,7 @@
 #include <thrift/transport/TBufferTransports.h>
 
 #include "../utils.h"
-#include "TextHandler.h"
+#include "MyTextHandler.h"
 
 using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TServerSocket;
@@ -47,8 +47,8 @@ int main(int argc, char *argv[]) {
         user_mention_port, 0, 128, 1000);
 
     TThreadedServer server(
-        std::make_shared<TextServiceProcessor>(
-            std::make_shared<TextHandler>(
+        std::make_shared<MyTextServiceProcessor>(
+            std::make_shared<MyTextHandler>(
                 &compose_client_pool,
                 &url_client_pool,
                 &user_mention_pool)),

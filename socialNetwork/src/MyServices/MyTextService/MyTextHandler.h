@@ -1,5 +1,5 @@
-#ifndef SOCIAL_NETWORK_MICROSERVICES_TEXTHANDLER_H
-#define SOCIAL_NETWORK_MICROSERVICES_TEXTHANDLER_H
+#ifndef SOCIAL_NETWORK_MICROSERVICES_MYTEXTHANDLER_H
+#define SOCIAL_NETWORK_MICROSERVICES_MYTEXTHANDLER_H
 
 #include <iostream>
 #include <string>
@@ -7,7 +7,7 @@
 #include <future>
 
 
-#include "../../gen-cpp/TextService.h"
+#include "../../gen-cpp/MyTextService.h"
 #include "../../gen-cpp/ComposePostService.h"
 #include "../../gen-cpp/UserMentionService.h"
 #include "../../gen-cpp/UrlShortenService.h"
@@ -18,13 +18,13 @@
 
 namespace social_network {
 
-class TextHandler : public TextServiceIf {
+class MyTextHandler : public MyTextServiceIf {
  public:
-  TextHandler(
+  MyTextHandler(
       ClientPool<ThriftClient<ComposePostServiceClient>> *,
       ClientPool<ThriftClient<UrlShortenServiceClient>> *,
       ClientPool<ThriftClient<UserMentionServiceClient>> *);
-  ~TextHandler() override = default;
+  ~MyTextHandler() override = default;
 
   void UploadText(int64_t, const std::string &,
       const std::map<std::string, std::string> &) override;
@@ -34,7 +34,7 @@ class TextHandler : public TextServiceIf {
   ClientPool<ThriftClient<UserMentionServiceClient>> *_user_mention_client_pool;
 };
 
-TextHandler::TextHandler(
+MyTextHandler::MyTextHandler(
     ClientPool<ThriftClient<ComposePostServiceClient>> *compose_client_pool,
     ClientPool<ThriftClient<UrlShortenServiceClient>> *url_client_pool,
     ClientPool<ThriftClient<UserMentionServiceClient>> *user_mention_client_pool) {
@@ -43,7 +43,7 @@ TextHandler::TextHandler(
   _user_mention_client_pool = user_mention_client_pool;
 }
 
-void TextHandler::UploadText(
+void MyTextHandler::UploadText(
     int64_t req_id,
     const std::string &text,
     const std::map<std::string, std::string> & carrier) {
@@ -193,4 +193,4 @@ void TextHandler::UploadText(
 
 
 
-#endif //SOCIAL_NETWORK_MICROSERVICES_TEXTHANDLER_H
+#endif //SOCIAL_NETWORK_MICROSERVICES_MYTEXTHANDLER_H
