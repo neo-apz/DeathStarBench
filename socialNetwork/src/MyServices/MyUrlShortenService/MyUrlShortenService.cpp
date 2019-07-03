@@ -8,7 +8,7 @@
 #include "../utils.h"
 #include "../utils_memcached.h"
 #include "../utils_mongodb.h"
-#include "UrlShortenHandler.h"
+#include "MyUrlShortenHandler.h"
 
 using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TServerSocket;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
 
   TThreadedServer server (
       std::make_shared<UrlShortenServiceProcessor>(
-          std::make_shared<UrlShortenHandler>(
+          std::make_shared<MyUrlShortenHandler>(
               memcached_client_pool, mongodb_client_pool,
               &compose_post_client_pool)),
       std::make_shared<TServerSocket>("0.0.0.0", port),

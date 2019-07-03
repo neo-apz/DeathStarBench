@@ -1,5 +1,5 @@
-#ifndef SOCIAL_NETWORK_MICROSERVICES_SRC_URLSHORTENSERVICE_URLSHORTENHANDLER_H_
-#define SOCIAL_NETWORK_MICROSERVICES_SRC_URLSHORTENSERVICE_URLSHORTENHANDLER_H_
+#ifndef SOCIAL_NETWORK_MICROSERVICES_SRC_URLSHORTENSERVICE_MYURLSHORTENHANDLER_H_
+#define SOCIAL_NETWORK_MICROSERVICES_SRC_URLSHORTENSERVICE_MYURLSHORTENHANDLER_H_
 
 #include <random>
 #include <chrono>
@@ -21,11 +21,11 @@
 
 namespace social_network {
 
-class UrlShortenHandler : public UrlShortenServiceIf {
+class MyUrlShortenHandler : public UrlShortenServiceIf {
  public:
-  UrlShortenHandler(memcached_pool_st *, mongoc_client_pool_t *,
+  MyUrlShortenHandler(memcached_pool_st *, mongoc_client_pool_t *,
       ClientPool<ThriftClient<ComposePostServiceClient>> *);
-  ~UrlShortenHandler() override = default;
+  ~MyUrlShortenHandler() override = default;
 
   void UploadUrls(std::vector<std::string> &, int64_t,
       const std::vector<std::string> &,
@@ -44,12 +44,12 @@ class UrlShortenHandler : public UrlShortenServiceIf {
   static std::string _GenRandomStr(int length);
 };
 
-std::mt19937 UrlShortenHandler::_generator = std::mt19937(
+std::mt19937 MyUrlShortenHandler::_generator = std::mt19937(
     std::chrono::system_clock::now().time_since_epoch().count());
-std::uniform_int_distribution<int> UrlShortenHandler::_distribution =
+std::uniform_int_distribution<int> MyUrlShortenHandler::_distribution =
     std::uniform_int_distribution<int>(0, 61);
 
-UrlShortenHandler::UrlShortenHandler(
+MyUrlShortenHandler::MyUrlShortenHandler(
     memcached_pool_st *memcached_client_pool,
     mongoc_client_pool_t *mongodb_client_pool,
     ClientPool<ThriftClient<ComposePostServiceClient>> *compose_client_pool) {
@@ -58,7 +58,7 @@ UrlShortenHandler::UrlShortenHandler(
   _mongodb_client_pool = mongodb_client_pool;
 }
 
-std::string UrlShortenHandler::_GenRandomStr(int length) {
+std::string MyUrlShortenHandler::_GenRandomStr(int length) {
   const char char_map[] = "abcdefghijklmnopqrstuvwxyzABCDEF"
                     "GHIJKLMNOPQRSTUVWXYZ0123456789";
   std::string return_str;
@@ -67,7 +67,7 @@ std::string UrlShortenHandler::_GenRandomStr(int length) {
   }
   return return_str;
 }
-void UrlShortenHandler::UploadUrls(
+void MyUrlShortenHandler::UploadUrls(
     std::vector<std::string> &_return,
     int64_t req_id,
     const std::vector<std::string> &urls,
@@ -91,7 +91,7 @@ void UrlShortenHandler::UploadUrls(
       Url new_target_url;
       new_target_url.expanded_url = url;
       new_target_url.shortened_url = HOSTNAME +
-          UrlShortenHandler::_GenRandomStr(10);
+          MyUrlShortenHandler::_GenRandomStr(10);
       target_urls.emplace_back(new_target_url);
       _return.emplace_back(new_target_url.shortened_url);
     }
@@ -190,7 +190,7 @@ void UrlShortenHandler::UploadUrls(
   span->Finish();
 
 }
-void UrlShortenHandler::GetExtendedUrls(
+void MyUrlShortenHandler::GetExtendedUrls(
     std::vector<std::string> &_return,
     int64_t req_id,
     const std::vector<std::string> &shortened_id,
@@ -203,4 +203,4 @@ void UrlShortenHandler::GetExtendedUrls(
 
 
 
-#endif //SOCIAL_NETWORK_MICROSERVICES_SRC_URLSHORTENSERVICE_URLSHORTENHANDLER_H_
+#endif //SOCIAL_NETWORK_MICROSERVICES_SRC_URLSHORTENSERVICE_MYURLSHORTENHANDLER_H_
