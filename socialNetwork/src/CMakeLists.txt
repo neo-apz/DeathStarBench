@@ -51,3 +51,7 @@ add_subdirectory(UserMentionService)
 add_subdirectory(UrlShortenService)
 add_subdirectory(MediaService)
 add_subdirectory(HomeTimelineService)
+
+add_subdirectory(MyTextService)
+add_subdirectory(MyUrlShortenService)
+# add_subdirectory(MyServices)
