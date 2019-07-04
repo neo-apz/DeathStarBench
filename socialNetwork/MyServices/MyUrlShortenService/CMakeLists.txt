@@ -3,33 +3,30 @@
 #    COMMAND ${THRIFT_COMPILER}  -o ./ --gen cpp -r social_network.thrift
 # )
 
-
-add_executable(
-    MyUrlShortenServer
-    MyUrlShortenServer.cpp
+set(thriftgencpp_SOURCES
     ${THRIFT_GEN_CPP_DIR}/MyUrlShortenService.cpp
-    # ${THRIFT_GEN_CPP_DIR}/ComposePostService.cpp
+    ${THRIFT_GEN_CPP_DIR}/social_network_constants.cpp
     ${THRIFT_GEN_CPP_DIR}/social_network_types.cpp
 )
 
-target_include_directories(
-    MyUrlShortenServer PRIVATE
-    # ${LIBMEMCACHED_INCLUDE_DIR}
-    # ${MONGOC_INCLUDE_DIRS}
-    # /usr/local/include/jaegertracing
+add_library(thriftgencpp STATIC ${thriftgencpp_SOURCES})
+target_link_libraries(thriftgencpp ${THRIFT_LIB})
+
+add_executable(MyUrlShortenServer MyUrlShortenServer.cpp)
+
+# target_include_directories(
+#     MyUrlShortenServer PRIVATE
+# )
+
+target_link_libraries(MyUrlShortenServer
+    thriftgencpp    
+    # ${THRIFT_LIB}
+    # ${CMAKE_THREAD_LIBS_INIT}
 )
 
-target_link_libraries(
-    MyUrlShortenServer
-    # nlohmann_json::nlohmann_json
-    # ${MONGOC_LIBRARIES}
-    # ${LIBMEMCACHED_LIBRARIES}
-    ${THRIFT_LIB}
-    ${CMAKE_THREAD_LIBS_INIT}
-    # ${Boost_LIBRARIES}
-    # Boost::log
-    # Boost::log_setup
-    # jaegertracing
+add_executable(MyUrlShortenClient MyUrlShortenClient.cpp)
+target_link_libraries(MyUrlShortenClient
+    thriftgencpp
 )
 
 # install(TARGETS MyUrlShortenServer DESTINATION ./)

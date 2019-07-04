@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
   ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenHandler> handler(new MyUrlShortenHandler());
   ::apache::thrift::stdcxx::shared_ptr<TProcessor> processor(new MyUrlShortenServiceProcessor(handler));
-  ::apache::thrift::stdcxx::shared_ptr<TServerTransport> serverTransport(new TServerSocket("0.0.0.0", port));
+  ::apache::thrift::stdcxx::shared_ptr<TServerTransport> serverTransport(new TServerSocket("localhost", port));
   ::apache::thrift::stdcxx::shared_ptr<TTransportFactory> transportFactory(new TFramedTransportFactory());
   ::apache::thrift::stdcxx::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
