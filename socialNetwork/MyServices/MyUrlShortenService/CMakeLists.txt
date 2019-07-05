@@ -11,12 +11,12 @@ set(thriftgencpp_SOURCES
 
 add_library(thriftgencpp STATIC ${thriftgencpp_SOURCES})
 target_link_libraries(thriftgencpp ${THRIFT_LIB})
+target_include_directories(thriftgencpp PUBLIC
+    ${THRIFT_INCLUDE_DIR}
+)
+
 
 add_executable(MyUrlShortenServer MyUrlShortenServer.cpp)
-
-# target_include_directories(
-#     MyUrlShortenServer PRIVATE
-# )
 
 target_link_libraries(MyUrlShortenServer
     thriftgencpp    
