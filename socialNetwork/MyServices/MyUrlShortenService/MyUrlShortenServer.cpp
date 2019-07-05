@@ -3,6 +3,9 @@
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
+#include <thrift/transport/TSocket.h>
+#include <thrift/stdcxx.h>
+
 #include <signal.h>
 
 // #include "../utils.h"
@@ -29,19 +32,41 @@ void sigintHandler(int sig) {
   exit(EXIT_SUCCESS);
 }
 
+class MyUrlShortenServiceCloneFactory : virtual public MyUrlShortenServiceIfFactory {
+ public:
+  virtual ~MyUrlShortenServiceCloneFactory() {}
+  virtual MyUrlShortenServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo)
+  {
+    stdcxx::shared_ptr<TSocket> sock = stdcxx::dynamic_pointer_cast<TSocket>(connInfo.transport);
+    std::cout << "Incoming connection\n";
+    std::cout << "\tSocketInfo: "  << sock->getSocketInfo() << "\n";
+    std::cout << "\tPeerHost: "    << sock->getPeerHost() << "\n";
+    std::cout << "\tPeerAddress: " << sock->getPeerAddress() << "\n";
+    std::cout << "\tPeerPort: "    << sock->getPeerPort() << "\n";
+    return new MyUrlShortenHandler;
+  }
+  virtual void releaseHandler(MyUrlShortenServiceIf* handler) {
+    delete handler;
+  }
+};
+
 
 int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
 
   int port = 9090;
 
-  ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenHandler> handler(new MyUrlShortenHandler());
-  ::apache::thrift::stdcxx::shared_ptr<TProcessor> processor(new MyUrlShortenServiceProcessor(handler));
-  ::apache::thrift::stdcxx::shared_ptr<TServerTransport> serverTransport(new TServerSocket("localhost", port));
-  ::apache::thrift::stdcxx::shared_ptr<TTransportFactory> transportFactory(new TFramedTransportFactory());
-  ::apache::thrift::stdcxx::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
+  // stdcxx::shared_ptr<MyUrlShortenHandler> handler(new MyUrlShortenHandler());
+  // stdcxx::shared_ptr<TProcessor> processor(new MyUrlShortenServiceProcessor(handler));
+  stdcxx::shared_ptr<MyUrlShortenServiceIfFactory> cloneFactory (new MyUrlShortenServiceCloneFactory());
+  stdcxx::shared_ptr<TProcessorFactory> processorFactory (new MyUrlShortenServiceProcessorFactory(cloneFactory));
 
-  TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
+  stdcxx::shared_ptr<TServerTransport> serverTransport(new TServerSocket("localhost", port));
+  stdcxx::shared_ptr<TTransportFactory> transportFactory(new TFramedTransportFactory());
+  stdcxx::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
+
+  // TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
+  TSimpleServer server(processorFactory, serverTransport, transportFactory, protocolFactory);
   // TThreadedServer
 
   std::cout << "Starting the url-shorten-service server..." << std::endl;
