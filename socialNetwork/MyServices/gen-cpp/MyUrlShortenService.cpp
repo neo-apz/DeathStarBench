@@ -5,9 +5,13 @@
  *  @generated
  */
 #include "MyUrlShortenService.h"
+#include "../Helpers/commons.h"
+
+extern stopwatch sw_deser;
+extern stopwatch sw_service;
+extern stopwatch sw_dispatch;
 
 namespace social_network {
-
 
 MyUrlShortenService_UploadUrls_args::~MyUrlShortenService_UploadUrls_args() throw() {
 }
@@ -699,6 +703,7 @@ void MyUrlShortenServiceClient::recv_GetExtendedUrls(std::vector<std::string> & 
 }
 
 bool MyUrlShortenServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
+  sw_start(&sw_dispatch);
   ProcessMap::iterator pfn;
   pfn = processMap_.find(fname);
   if (pfn == processMap_.end()) {
@@ -714,6 +719,7 @@ bool MyUrlShortenServiceProcessor::dispatchCall(::apache::thrift::protocol::TPro
     return true;
   }
   (this->*(pfn->second))(seqid, iprot, oprot, callContext);
+  sw_stop(&sw_dispatch);
   return true;
 }
 
@@ -729,9 +735,14 @@ void MyUrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::t
     this->eventHandler_->preRead(ctx, "MyUrlShortenService.UploadUrls");
   }
 
+  sw_start(&sw_deser);
+
   MyUrlShortenService_UploadUrls_args args;
   args.read(iprot);
   iprot->readMessageEnd();
+
+  sw_stop(&sw_deser);
+
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
@@ -740,7 +751,11 @@ void MyUrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::t
 
   MyUrlShortenService_UploadUrls_result result;
   try {
+
+    sw_start(&sw_service);
     iface_->UploadUrls(result.success, args.req_id, args.urls);
+    sw_stop(&sw_service);
+
     result.__isset.success = true;
   } catch (ServiceException &se) {
     result.se = se;
@@ -763,9 +778,14 @@ void MyUrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::t
     this->eventHandler_->preWrite(ctx, "MyUrlShortenService.UploadUrls");
   }
 
+  sw_start(&sw_deser);
+
   oprot->writeMessageBegin("UploadUrls", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+
+  sw_stop(&sw_deser);
+
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
