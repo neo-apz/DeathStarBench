@@ -16,10 +16,13 @@ void sw_start(stopwatch* sw) {
   sw->start = now();
 }
 
-void sw_stop(stopwatch* sw) {
+void sw_stop(stopwatch* sw, bool clear) {
   sw->stop = now();
-  sw->total += sw->stop - sw->start;
-  sw->count++;
+
+  if (!clear) {
+    sw->total += sw->stop - sw->start;
+    sw->count++;
+  }
 }
 
 double sw_getAVG(stopwatch sw){

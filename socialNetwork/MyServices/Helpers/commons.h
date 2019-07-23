@@ -34,7 +34,7 @@ typedef struct stopwatch {
 
 uint64_t now();
 void sw_start(stopwatch* sw);
-void sw_stop(stopwatch* sw);
+void sw_stop(stopwatch* sw, bool clear=false);
 double sw_getAVG(stopwatch sw);
 
 #endif //SOCCIALNET_MYSERVICES_COMMONS_H

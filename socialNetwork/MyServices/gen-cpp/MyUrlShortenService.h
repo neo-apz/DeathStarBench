@@ -340,6 +340,7 @@ class MyUrlShortenServiceProcessor : public ::apache::thrift::TDispatchProcessor
  protected:
   ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
+  virtual bool process(apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> in, apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> out, void* connectionContext);
  private:
   typedef  void (MyUrlShortenServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;

@@ -63,7 +63,7 @@ class MyUrlShortenServiceCloneFactory : virtual public MyUrlShortenServiceIfFact
     uint64_t elapsed = stop - start;
     total += elapsed;
     count++;
-    std::cout << "\tTime(us): " << elapsed << "\n";
+//    std::cout << "\tTime(us): " << elapsed << "\n";
     delete handler;
   }
 };
@@ -74,8 +74,8 @@ int main(int argc, char *argv[]) {
 
   int port = 9090;
 
-  // stdcxx::shared_ptr<MyUrlShortenHandler> handler(new MyUrlShortenHandler());
-  // stdcxx::shared_ptr<TProcessor> processor(new MyUrlShortenServiceProcessor(handler));
+   stdcxx::shared_ptr<MyUrlShortenHandler> handler(new MyUrlShortenHandler());
+//   stdcxx::shared_ptr<TProcessor> processor(new MyUrlShortenServiceProcessor(handler));
   stdcxx::shared_ptr<MyUrlShortenServiceIfFactory> cloneFactory (new MyUrlShortenServiceCloneFactory());
   stdcxx::shared_ptr<TProcessorFactory> processorFactory (new MyUrlShortenServiceProcessorFactory(cloneFactory));
 
@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
 //  stdcxx::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
   stdcxx::shared_ptr<TProtocolFactory> protocolFactory(new TCompactProtocolFactory());
 
-  // TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
+//   TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
   TSimpleServer server(processorFactory, serverTransport, transportFactory, protocolFactory);
   // TThreadedServer
 
