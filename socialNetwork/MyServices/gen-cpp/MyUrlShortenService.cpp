@@ -725,31 +725,40 @@ bool MyUrlShortenServiceProcessor::dispatchCall(::apache::thrift::protocol::TPro
 
 bool MyUrlShortenServiceProcessor::process(apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> in, apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> out, void* connectionContext){
   bool returnValue;
-  try {
-//    std::cout << "Processing" << std::endl;
 
-    sw_start(&sw_dispatch);
+  sw_start(&sw_dispatch);
 //    std::cout << "start_sw" << std::endl;
-    returnValue = TDispatchProcessor::process(in, out, connectionContext);
-    sw_stop(&sw_dispatch);
-//    std::cout << "stop_sw" << std::endl;
+  returnValue = TDispatchProcessor::process(in, out, connectionContext);
+  sw_stop(&sw_dispatch);
 
-    return returnValue;
-  } catch (const apache::thrift::transport::TTransportException& ttx) {
-    switch (ttx.getType()) {
-      case apache::thrift::transport::TTransportException::END_OF_FILE:
-      case apache::thrift::transport::TTransportException::INTERRUPTED:
-      case apache::thrift::transport::TTransportException::TIMED_OUT:
-        // Client disconnected or was interrupted or did not respond within the receive timeout.
-        // No logging needed.  Done.
-//        std::cout << "Undo Processing" << std::endl;
-        sw_stop(&sw_dispatch, true);
-        break;
+  return returnValue;
 
-      default:
-        throw ttx;
-    }
-  }
+
+//  try {
+////    std::cout << "Processing" << std::endl;
+//
+//    sw_start(&sw_dispatch);
+////    std::cout << "start_sw" << std::endl;
+//    returnValue = TDispatchProcessor::process(in, out, connectionContext);
+//    sw_stop(&sw_dispatch);
+////    std::cout << "stop_sw" << std::endl;
+//
+//    return returnValue;
+//  } catch (const apache::thrift::transport::TTransportException& ttx) {
+//    switch (ttx.getType()) {
+//      case apache::thrift::transport::TTransportException::END_OF_FILE:
+//      case apache::thrift::transport::TTransportException::INTERRUPTED:
+//      case apache::thrift::transport::TTransportException::TIMED_OUT:
+//        // Client disconnected or was interrupted or did not respond within the receive timeout.
+//        // No logging needed.  Done.
+////        std::cout << "Undo Processing" << std::endl;
+//        sw_stop(&sw_dispatch, true);
+//        break;
+//
+//      default:
+//        throw;
+//    }
+//  }
 //  std::cout << "Processing" << std::endl;
 //  return
 }
