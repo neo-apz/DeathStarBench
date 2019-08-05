@@ -12,9 +12,9 @@ using namespace ::apache::thrift::transport;
 
 using namespace social_network;
 
-stopwatch sw_deser;
-stopwatch sw_service;
-stopwatch sw_dispatch;
+// stopwatch sw_deser;
+// stopwatch sw_service;
+// stopwatch sw_dispatch;
 
 int main(int argc, char *argv[]) {
 //  signal(SIGINT, sigintHandler);
@@ -36,20 +36,55 @@ int main(int argc, char *argv[]) {
   std::vector<std::string> returned_urls;
 
   urls.emplace_back("https://url_0.com");
-  urls.emplace_back("https://url_1.com");
-  urls.emplace_back("https://url_2.com");
+  // urls.emplace_back("https://url_1.com");
+  // urls.emplace_back("https://url_2.com");
+  // urls.emplace_back("https://url_0.com");
+  // urls.emplace_back("https://url_1.com");
+  // urls.emplace_back("https://url_2.com");
+  // urls.emplace_back("https://url_0.com");
+  // urls.emplace_back("https://url_1.com");
+  // urls.emplace_back("https://url_2.com");
+  // urls.emplace_back("https://url_0.com");
+  // urls.emplace_back("https://url_1.com");
+  // urls.emplace_back("https://url_2.com");
 
 //  client.UploadUrls(returned_urls, req_id, urls);
-  client.send_UploadUrls(req_id, urls);
 
-  processor->process(protocol, protocol, nullptr);
+  uint64_t count = 0;
+  uint64_t iterations = 10000;
 
-  client.recv_UploadUrls(returned_urls);
+  #if defined(FLEXUS)
+  while (true)
+  #else
+  while (iterations--)
+  #endif
+  {
+    client.send_UploadUrls(req_id, urls);
+    
+    #if defined(FLEXUS)
+    NOTIFY((uint64_t)(0xBAAAAAD1));
+    #endif
+    
+    processor->process(protocol, protocol, nullptr);
+    
+    #if defined(FLEXUS)
+    NOTIFY((uint64_t)(0xBAAAAAD0));
+    #endif
 
-  for (auto &url : returned_urls) {
-    std::cout << url << std::endl;
+    client.recv_UploadUrls(returned_urls);
+
+    count += returned_urls.size();
+    
+    // for (auto &url : returned_urls) {
+    //   std::cout << url << std::endl;
+    // }
   }
 
+  // std::cout << "AVG de/ser Time(us): " << sw_getAVG(sw_deser) << std::endl;
+
+  // std::cout << "AVG service Time(us): " << sw_getAVG(sw_service) << std::endl;
+
+  // std::cout << "AVG process Time(us): " << sw_getAVG(sw_dispatch) << std::endl;
 
 
 //  std::cout << "Starting the url-shorten-service server..." << std::endl;

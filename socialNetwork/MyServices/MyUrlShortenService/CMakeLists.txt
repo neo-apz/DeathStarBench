@@ -39,10 +39,10 @@ target_include_directories(MyUrlShortenServer PUBLIC
         ${THRIFT_INCLUDE_DIR}
 )
 
-add_executable(MyUrlShortenClient MyUrlShortenClient.cpp ../Helpers/commons.h)
-target_link_libraries(MyUrlShortenClient
-    thriftgencpp
-)
+# add_executable(MyUrlShortenClient MyUrlShortenClient.cpp ../Helpers/commons.h)
+# target_link_libraries(MyUrlShortenClient
+#     thriftgencpp
+# )
 
 add_executable(UrlProcessor
          UrlProcessor.cpp ${thriftgencpp_SOURCES}

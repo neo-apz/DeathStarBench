@@ -85,7 +85,8 @@ int main(int argc, char *argv[]) {
   stdcxx::shared_ptr<TProtocolFactory> protocolFactory(new TCompactProtocolFactory());
 
 //   TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
-  TSimpleServer server(processorFactory, serverTransport, transportFactory, protocolFactory);
+  // TSimpleServer server(processorFactory, serverTransport, transportFactory, protocolFactory);
+  TThreadedServer server(processorFactory, serverTransport, transportFactory, protocolFactory);
   // TThreadedServer
 
   std::cout << "Starting the url-shorten-service server..." << std::endl;

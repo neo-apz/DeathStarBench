@@ -7,9 +7,9 @@
 #include "MyUrlShortenService.h"
 #include "../Helpers/commons.h"
 
-extern stopwatch sw_deser;
-extern stopwatch sw_service;
-extern stopwatch sw_dispatch;
+// extern stopwatch sw_deser;
+// extern stopwatch sw_service;
+// extern stopwatch sw_dispatch;
 
 namespace social_network {
 
@@ -726,10 +726,10 @@ bool MyUrlShortenServiceProcessor::dispatchCall(::apache::thrift::protocol::TPro
 bool MyUrlShortenServiceProcessor::process(apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> in, apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> out, void* connectionContext){
   bool returnValue;
 
-  sw_start(&sw_dispatch);
+  // sw_start(&sw_dispatch);
 //    std::cout << "start_sw" << std::endl;
   returnValue = TDispatchProcessor::process(in, out, connectionContext);
-  sw_stop(&sw_dispatch);
+  // sw_stop(&sw_dispatch);
 
   return returnValue;
 
@@ -775,13 +775,19 @@ void MyUrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::t
     this->eventHandler_->preRead(ctx, "MyUrlShortenService.UploadUrls");
   }
 
-  sw_start(&sw_deser);
+  // sw_start(&sw_deser);
+  #if defined(FLEXUS)
+    NOTIFY((uint64_t)(0xBAAAAD1));
+  #endif
 
   MyUrlShortenService_UploadUrls_args args;
   args.read(iprot);
   iprot->readMessageEnd();
 
-  sw_stop(&sw_deser);
+  #if defined(FLEXUS)
+    NOTIFY((uint64_t)(0xBAAAAD0));
+  #endif
+  // sw_stop(&sw_deser);
 
   uint32_t bytes = iprot->getTransport()->readEnd();
 
@@ -792,9 +798,9 @@ void MyUrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::t
   MyUrlShortenService_UploadUrls_result result;
   try {
 
-    sw_start(&sw_service);
+    // sw_start(&sw_service);
     iface_->UploadUrls(result.success, args.req_id, args.urls);
-    sw_stop(&sw_service);
+    // sw_stop(&sw_service);
 
     result.__isset.success = true;
   } catch (ServiceException &se) {
@@ -818,13 +824,19 @@ void MyUrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::t
     this->eventHandler_->preWrite(ctx, "MyUrlShortenService.UploadUrls");
   }
 
-  sw_start(&sw_deser);
+  // sw_start(&sw_deser);
+  #if defined(FLEXUS)
+    NOTIFY((uint64_t)(0xBAAAAD1));
+  #endif
 
   oprot->writeMessageBegin("UploadUrls", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
 
-  sw_stop(&sw_deser);
+  #if defined(FLEXUS)
+    NOTIFY((uint64_t)(0xBAAAAD0));
+  #endif
+  // sw_stop(&sw_deser);
 
   bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();

@@ -8,12 +8,16 @@
 
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/protocol/TCompactProtocol.h>
-// #include <thrift/server/TThreadedServer.h>
+#include <thrift/server/TThreadedServer.h>
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TSocket.h>
 #include <thrift/stdcxx.h>
+
+#if defined(FLEXUS)
+#include "../flexus/flexus.h"
+#endif
 
 
 // #include "../utils.h"
@@ -35,7 +39,7 @@ typedef struct stopwatch {
 uint64_t now();
 void sw_start(stopwatch* sw);
 void sw_stop(stopwatch* sw, bool clear=false);
-double sw_getAVG(stopwatch sw);
+// double sw_getAVG(stopwatch sw);
 
 #endif //SOCCIALNET_MYSERVICES_COMMONS_H
 

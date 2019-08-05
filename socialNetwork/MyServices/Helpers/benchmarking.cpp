@@ -25,8 +25,8 @@ void sw_stop(stopwatch* sw, bool clear) {
   }
 }
 
-double sw_getAVG(stopwatch sw){
-  return (sw.total * 1.0) / sw.count;
-}
+// double sw_getAVG(stopwatch sw){
+//   return (sw.total * 1.0) / sw.count;
+// }
 
 

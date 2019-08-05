@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(soccialnet_myservices)
 
-include("../cmake/Findthrift.cmake")
+include("Findthrift.cmake")
 
 find_package(Threads)
 
@@ -19,5 +19,13 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set(CMAKE_CXX_FLAGS "-O3")
 # set(CMAKE_INSTALL_PREFIX /usr/local/bin)
+
+option(FLEXUS "With Flexus" OFF)
+
+if(FLEXUS)
+  add_definitions(-DFLEXUS)
+  set(CMAKE_CXX_FLAGS "-mcpu=cortex-a57+nosimd")
+  message(STATUS "FLEXUS Enabled!")
+endif()
 
 add_subdirectory(MyUrlShortenService)
