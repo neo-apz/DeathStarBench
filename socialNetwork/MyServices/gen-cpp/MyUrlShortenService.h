@@ -11,18 +11,26 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
+#include "../mythrift/MyThriftMessage.h"
+
+using namespace mythrift;
+
 namespace social_network {
 
 #ifdef _MSC_VER
-  #pragma warning( push )
-  #pragma warning (disable : 4250 ) //inheriting methods via dominance 
+#pragma warning( push )
+#pragma warning (disable : 4250 ) //inheriting methods via dominance
 #endif
 
 class MyUrlShortenServiceIf {
  public:
   virtual ~MyUrlShortenServiceIf() {}
-  virtual void UploadUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & urls) = 0;
-  virtual void GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls) = 0;
+  virtual void UploadUrls(std::vector<std::string> &_return,
+                          const int64_t req_id,
+                          const std::vector<std::string> &urls) = 0;
+  virtual void GetExtendedUrls(std::vector<std::string> &_return,
+                               const int64_t req_id,
+                               const std::vector<std::string> &shortened_urls) = 0;
 };
 
 class MyUrlShortenServiceIfFactory {
@@ -31,19 +39,20 @@ class MyUrlShortenServiceIfFactory {
 
   virtual ~MyUrlShortenServiceIfFactory() {}
 
-  virtual MyUrlShortenServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
-  virtual void releaseHandler(MyUrlShortenServiceIf* /* handler */) = 0;
+  virtual MyUrlShortenServiceIf *getHandler(const ::apache::thrift::TConnectionInfo &connInfo) = 0;
+  virtual void releaseHandler(MyUrlShortenServiceIf * /* handler */) = 0;
 };
 
 class MyUrlShortenServiceIfSingletonFactory : virtual public MyUrlShortenServiceIfFactory {
  public:
-  MyUrlShortenServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIf>& iface) : iface_(iface) {}
+  MyUrlShortenServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIf> &iface)
+      : iface_(iface) {}
   virtual ~MyUrlShortenServiceIfSingletonFactory() {}
 
-  virtual MyUrlShortenServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+  virtual MyUrlShortenServiceIf *getHandler(const ::apache::thrift::TConnectionInfo &) {
     return iface_.get();
   }
-  virtual void releaseHandler(MyUrlShortenServiceIf* /* handler */) {}
+  virtual void releaseHandler(MyUrlShortenServiceIf * /* handler */) {}
 
  protected:
   ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIf> iface_;
@@ -52,10 +61,14 @@ class MyUrlShortenServiceIfSingletonFactory : virtual public MyUrlShortenService
 class MyUrlShortenServiceNull : virtual public MyUrlShortenServiceIf {
  public:
   virtual ~MyUrlShortenServiceNull() {}
-  void UploadUrls(std::vector<std::string> & /* _return */, const int64_t /* req_id */, const std::vector<std::string> & /* urls */) {
+  void UploadUrls(std::vector<std::string> & /* _return */,
+                  const int64_t /* req_id */,
+                  const std::vector<std::string> & /* urls */) {
     return;
   }
-  void GetExtendedUrls(std::vector<std::string> & /* _return */, const int64_t /* req_id */, const std::vector<std::string> & /* shortened_urls */) {
+  void GetExtendedUrls(std::vector<std::string> & /* _return */,
+                       const int64_t /* req_id */,
+                       const std::vector<std::string> & /* shortened_urls */) {
     return;
   }
 };
@@ -69,50 +82,47 @@ typedef struct _MyUrlShortenService_UploadUrls_args__isset {
 class MyUrlShortenService_UploadUrls_args {
  public:
 
-  MyUrlShortenService_UploadUrls_args(const MyUrlShortenService_UploadUrls_args&);
-  MyUrlShortenService_UploadUrls_args& operator=(const MyUrlShortenService_UploadUrls_args&);
+  MyUrlShortenService_UploadUrls_args(const MyUrlShortenService_UploadUrls_args &);
+  MyUrlShortenService_UploadUrls_args &operator=(const MyUrlShortenService_UploadUrls_args &);
   MyUrlShortenService_UploadUrls_args() : req_id(0) {
   }
 
   virtual ~MyUrlShortenService_UploadUrls_args() throw();
   int64_t req_id;
-  std::vector<std::string>  urls;
+  std::vector<std::string> urls;
 
   _MyUrlShortenService_UploadUrls_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
-  void __set_urls(const std::vector<std::string> & val);
+  void __set_urls(const std::vector<std::string> &val);
 
-  bool operator == (const MyUrlShortenService_UploadUrls_args & rhs) const
-  {
+  bool operator==(const MyUrlShortenService_UploadUrls_args &rhs) const {
     if (!(req_id == rhs.req_id))
       return false;
     if (!(urls == rhs.urls))
       return false;
     return true;
   }
-  bool operator != (const MyUrlShortenService_UploadUrls_args &rhs) const {
+  bool operator!=(const MyUrlShortenService_UploadUrls_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUrlShortenService_UploadUrls_args & ) const;
+  bool operator<(const MyUrlShortenService_UploadUrls_args &) const;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 
 };
-
 
 class MyUrlShortenService_UploadUrls_pargs {
  public:
 
-
   virtual ~MyUrlShortenService_UploadUrls_pargs() throw();
-  const int64_t* req_id;
-  const std::vector<std::string> * urls;
+  const int64_t *req_id;
+  const std::vector<std::string> *urls;
 
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 
 };
 
@@ -125,37 +135,41 @@ typedef struct _MyUrlShortenService_UploadUrls_result__isset {
 class MyUrlShortenService_UploadUrls_result {
  public:
 
-  MyUrlShortenService_UploadUrls_result(const MyUrlShortenService_UploadUrls_result&);
-  MyUrlShortenService_UploadUrls_result& operator=(const MyUrlShortenService_UploadUrls_result&);
+  MyUrlShortenService_UploadUrls_result(const MyUrlShortenService_UploadUrls_result &);
+  MyUrlShortenService_UploadUrls_result &operator=(const MyUrlShortenService_UploadUrls_result &);
   MyUrlShortenService_UploadUrls_result() {
+    thriftmsg.numFields = 1;
+    thriftmsg.schema = new SchemaField[thriftmsg.numFields + 1];
+//    thriftmsg.addField(getRepeatedType(TYPE_STRING), (void *) success.data());
   }
 
   virtual ~MyUrlShortenService_UploadUrls_result() throw();
-  std::vector<std::string>  success;
+  std::vector<std::string> success;
   ServiceException se;
+
+  MyThriftMessage thriftmsg;
 
   _MyUrlShortenService_UploadUrls_result__isset __isset;
 
-  void __set_success(const std::vector<std::string> & val);
+  void __set_success(const std::vector<std::string> &val);
 
-  void __set_se(const ServiceException& val);
+  void __set_se(const ServiceException &val);
 
-  bool operator == (const MyUrlShortenService_UploadUrls_result & rhs) const
-  {
+  bool operator==(const MyUrlShortenService_UploadUrls_result &rhs) const {
     if (!(success == rhs.success))
       return false;
     if (!(se == rhs.se))
       return false;
     return true;
   }
-  bool operator != (const MyUrlShortenService_UploadUrls_result &rhs) const {
+  bool operator!=(const MyUrlShortenService_UploadUrls_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUrlShortenService_UploadUrls_result & ) const;
+  bool operator<(const MyUrlShortenService_UploadUrls_result &) const;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 
 };
 
@@ -168,14 +182,13 @@ typedef struct _MyUrlShortenService_UploadUrls_presult__isset {
 class MyUrlShortenService_UploadUrls_presult {
  public:
 
-
   virtual ~MyUrlShortenService_UploadUrls_presult() throw();
-  std::vector<std::string> * success;
+  std::vector<std::string> *success;
   ServiceException se;
 
   _MyUrlShortenService_UploadUrls_presult__isset __isset;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
 
 };
 
@@ -188,50 +201,47 @@ typedef struct _MyUrlShortenService_GetExtendedUrls_args__isset {
 class MyUrlShortenService_GetExtendedUrls_args {
  public:
 
-  MyUrlShortenService_GetExtendedUrls_args(const MyUrlShortenService_GetExtendedUrls_args&);
-  MyUrlShortenService_GetExtendedUrls_args& operator=(const MyUrlShortenService_GetExtendedUrls_args&);
+  MyUrlShortenService_GetExtendedUrls_args(const MyUrlShortenService_GetExtendedUrls_args &);
+  MyUrlShortenService_GetExtendedUrls_args &operator=(const MyUrlShortenService_GetExtendedUrls_args &);
   MyUrlShortenService_GetExtendedUrls_args() : req_id(0) {
   }
 
   virtual ~MyUrlShortenService_GetExtendedUrls_args() throw();
   int64_t req_id;
-  std::vector<std::string>  shortened_urls;
+  std::vector<std::string> shortened_urls;
 
   _MyUrlShortenService_GetExtendedUrls_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
-  void __set_shortened_urls(const std::vector<std::string> & val);
+  void __set_shortened_urls(const std::vector<std::string> &val);
 
-  bool operator == (const MyUrlShortenService_GetExtendedUrls_args & rhs) const
-  {
+  bool operator==(const MyUrlShortenService_GetExtendedUrls_args &rhs) const {
     if (!(req_id == rhs.req_id))
       return false;
     if (!(shortened_urls == rhs.shortened_urls))
       return false;
     return true;
   }
-  bool operator != (const MyUrlShortenService_GetExtendedUrls_args &rhs) const {
+  bool operator!=(const MyUrlShortenService_GetExtendedUrls_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUrlShortenService_GetExtendedUrls_args & ) const;
+  bool operator<(const MyUrlShortenService_GetExtendedUrls_args &) const;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 
 };
-
 
 class MyUrlShortenService_GetExtendedUrls_pargs {
  public:
 
-
   virtual ~MyUrlShortenService_GetExtendedUrls_pargs() throw();
-  const int64_t* req_id;
-  const std::vector<std::string> * shortened_urls;
+  const int64_t *req_id;
+  const std::vector<std::string> *shortened_urls;
 
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 
 };
 
@@ -244,37 +254,36 @@ typedef struct _MyUrlShortenService_GetExtendedUrls_result__isset {
 class MyUrlShortenService_GetExtendedUrls_result {
  public:
 
-  MyUrlShortenService_GetExtendedUrls_result(const MyUrlShortenService_GetExtendedUrls_result&);
-  MyUrlShortenService_GetExtendedUrls_result& operator=(const MyUrlShortenService_GetExtendedUrls_result&);
+  MyUrlShortenService_GetExtendedUrls_result(const MyUrlShortenService_GetExtendedUrls_result &);
+  MyUrlShortenService_GetExtendedUrls_result &operator=(const MyUrlShortenService_GetExtendedUrls_result &);
   MyUrlShortenService_GetExtendedUrls_result() {
   }
 
   virtual ~MyUrlShortenService_GetExtendedUrls_result() throw();
-  std::vector<std::string>  success;
+  std::vector<std::string> success;
   ServiceException se;
 
   _MyUrlShortenService_GetExtendedUrls_result__isset __isset;
 
-  void __set_success(const std::vector<std::string> & val);
+  void __set_success(const std::vector<std::string> &val);
 
-  void __set_se(const ServiceException& val);
+  void __set_se(const ServiceException &val);
 
-  bool operator == (const MyUrlShortenService_GetExtendedUrls_result & rhs) const
-  {
+  bool operator==(const MyUrlShortenService_GetExtendedUrls_result &rhs) const {
     if (!(success == rhs.success))
       return false;
     if (!(se == rhs.se))
       return false;
     return true;
   }
-  bool operator != (const MyUrlShortenService_GetExtendedUrls_result &rhs) const {
+  bool operator!=(const MyUrlShortenService_GetExtendedUrls_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUrlShortenService_GetExtendedUrls_result & ) const;
+  bool operator<(const MyUrlShortenService_GetExtendedUrls_result &) const;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 
 };
 
@@ -287,90 +296,108 @@ typedef struct _MyUrlShortenService_GetExtendedUrls_presult__isset {
 class MyUrlShortenService_GetExtendedUrls_presult {
  public:
 
-
   virtual ~MyUrlShortenService_GetExtendedUrls_presult() throw();
-  std::vector<std::string> * success;
+  std::vector<std::string> *success;
   ServiceException se;
 
   _MyUrlShortenService_GetExtendedUrls_presult__isset __isset;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
 
 };
 
 class MyUrlShortenServiceClient : virtual public MyUrlShortenServiceIf {
  public:
-  MyUrlShortenServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+  MyUrlShortenServiceClient(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
   }
-  MyUrlShortenServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  MyUrlShortenServiceClient(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot,
+                            apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot) {
+    setProtocol(iprot, oprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> prot) {
+    setProtocol(prot, prot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    piprot_=iprot;
-    poprot_=oprot;
+  void setProtocol(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot,
+                   apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot) {
+    piprot_ = iprot;
+    poprot_ = oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
   }
  public:
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> getInputProtocol() {
     return piprot_;
   }
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & urls);
-  void send_UploadUrls(const int64_t req_id, const std::vector<std::string> & urls);
-  void recv_UploadUrls(std::vector<std::string> & _return);
-  void GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls);
-  void send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls);
-  void recv_GetExtendedUrls(std::vector<std::string> & _return);
+  void UploadUrls(std::vector<std::string> &_return, const int64_t req_id, const std::vector<std::string> &urls);
+  void send_UploadUrls(const int64_t req_id, const std::vector<std::string> &urls);
+  void recv_UploadUrls(std::vector<std::string> &_return);
+  void GetExtendedUrls(std::vector<std::string> &_return,
+                       const int64_t req_id,
+                       const std::vector<std::string> &shortened_urls);
+  void send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> &shortened_urls);
+  void recv_GetExtendedUrls(std::vector<std::string> &_return);
  protected:
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
-  ::apache::thrift::protocol::TProtocol* iprot_;
-  ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol *iprot_;
+  ::apache::thrift::protocol::TProtocol *oprot_;
 };
 
 class MyUrlShortenServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  protected:
   ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
+  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol *iprot,
+                            ::apache::thrift::protocol::TProtocol *oprot,
+                            const std::string &fname,
+                            int32_t seqid,
+                            void *callContext);
  private:
-  typedef  void (MyUrlShortenServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  typedef void(MyUrlShortenServiceProcessor::*ProcessFunction)
+      (int32_t, ::apache::thrift::protocol::TProtocol *, ::apache::thrift::protocol::TProtocol *, void *);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
-  void process_UploadUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_GetExtendedUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_UploadUrls(int32_t seqid,
+                          ::apache::thrift::protocol::TProtocol *iprot,
+                          ::apache::thrift::protocol::TProtocol *oprot,
+                          void *callContext);
+  void process_GetExtendedUrls(int32_t seqid,
+                               ::apache::thrift::protocol::TProtocol *iprot,
+                               ::apache::thrift::protocol::TProtocol *oprot,
+                               void *callContext);
  public:
   MyUrlShortenServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIf> iface) :
-    iface_(iface) {
+      iface_(iface) {
     processMap_["UploadUrls"] = &MyUrlShortenServiceProcessor::process_UploadUrls;
     processMap_["GetExtendedUrls"] = &MyUrlShortenServiceProcessor::process_GetExtendedUrls;
   }
 
   virtual ~MyUrlShortenServiceProcessor() {}
-  virtual bool process(apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> in, apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> out, void* connectionContext);
+  virtual bool process(apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> in,
+                       apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TProtocol> out,
+                       void *connectionContext);
 };
 
 class MyUrlShortenServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
-  MyUrlShortenServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< MyUrlShortenServiceIfFactory >& handlerFactory) :
+  MyUrlShortenServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIfFactory> &handlerFactory)
+      :
       handlerFactory_(handlerFactory) {}
 
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::TProcessor> getProcessor(const ::apache::thrift::TConnectionInfo &connInfo);
 
  protected:
-  ::apache::thrift::stdcxx::shared_ptr< MyUrlShortenServiceIfFactory > handlerFactory_;
+  ::apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIfFactory> handlerFactory_;
 };
 
 class MyUrlShortenServiceMultiface : virtual public MyUrlShortenServiceIf {
  public:
-  MyUrlShortenServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIf> >& ifaces) : ifaces_(ifaces) {
+  MyUrlShortenServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<MyUrlShortenServiceIf> > &ifaces)
+      : ifaces_(ifaces) {
   }
   virtual ~MyUrlShortenServiceMultiface() {}
  protected:
@@ -380,7 +407,7 @@ class MyUrlShortenServiceMultiface : virtual public MyUrlShortenServiceIf {
     ifaces_.push_back(iface);
   }
  public:
-  void UploadUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & urls) {
+  void UploadUrls(std::vector<std::string> &_return, const int64_t req_id, const std::vector<std::string> &urls) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
@@ -390,7 +417,9 @@ class MyUrlShortenServiceMultiface : virtual public MyUrlShortenServiceIf {
     return;
   }
 
-  void GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls) {
+  void GetExtendedUrls(std::vector<std::string> &_return,
+                       const int64_t req_id,
+                       const std::vector<std::string> &shortened_urls) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
@@ -407,45 +436,49 @@ class MyUrlShortenServiceMultiface : virtual public MyUrlShortenServiceIf {
 // only be used when you need to share a connection among multiple threads
 class MyUrlShortenServiceConcurrentClient : virtual public MyUrlShortenServiceIf {
  public:
-  MyUrlShortenServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+  MyUrlShortenServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
   }
-  MyUrlShortenServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  MyUrlShortenServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot,
+                                      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot) {
+    setProtocol(iprot, oprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> prot) {
+    setProtocol(prot, prot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    piprot_=iprot;
-    poprot_=oprot;
+  void setProtocol(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot,
+                   apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot) {
+    piprot_ = iprot;
+    poprot_ = oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
   }
  public:
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> getInputProtocol() {
     return piprot_;
   }
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & urls);
-  int32_t send_UploadUrls(const int64_t req_id, const std::vector<std::string> & urls);
-  void recv_UploadUrls(std::vector<std::string> & _return, const int32_t seqid);
-  void GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls);
-  int32_t send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls);
-  void recv_GetExtendedUrls(std::vector<std::string> & _return, const int32_t seqid);
+  void UploadUrls(std::vector<std::string> &_return, const int64_t req_id, const std::vector<std::string> &urls);
+  int32_t send_UploadUrls(const int64_t req_id, const std::vector<std::string> &urls);
+  void recv_UploadUrls(std::vector<std::string> &_return, const int32_t seqid);
+  void GetExtendedUrls(std::vector<std::string> &_return,
+                       const int64_t req_id,
+                       const std::vector<std::string> &shortened_urls);
+  int32_t send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> &shortened_urls);
+  void recv_GetExtendedUrls(std::vector<std::string> &_return, const int32_t seqid);
  protected:
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
-  ::apache::thrift::protocol::TProtocol* iprot_;
-  ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol *iprot_;
+  ::apache::thrift::protocol::TProtocol *oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
 };
 
 #ifdef _MSC_VER
-  #pragma warning( pop )
+#pragma warning( pop )
 #endif
 
 } // namespace

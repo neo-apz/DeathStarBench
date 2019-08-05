@@ -44,14 +44,21 @@ target_include_directories(MyUrlShortenServer PUBLIC
 #     thriftgencpp
 # )
 
+set(mythrift_SOURCES
+        ../mythrift/mythrift.cpp
+        ../mythrift/MyThriftMessage.cpp
+)
+
 add_executable(UrlProcessor
          UrlProcessor.cpp ${thriftgencpp_SOURCES}
-        ../Helpers/benchmarking.cpp ../Helpers/commons.h)
+        ${mythrift_SOURCES}
+        ../Helpers/benchmarking.cpp ../Helpers/commons.h
+)
 
 target_link_libraries(UrlProcessor
         #        thriftgencpp
         ${THRIFT_LIB}
         # ${CMAKE_THREAD_LIBS_INIT}
-        )
+)
 
 # install(TARGETS MyUrlShortenServer DESTINATION ./)

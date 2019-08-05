@@ -776,17 +776,17 @@ void MyUrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::t
   }
 
   // sw_start(&sw_deser);
-  #if defined(FLEXUS)
-    NOTIFY((uint64_t)(0xBAAAAD1));
-  #endif
+#if defined(FLEXUS)
+  NOTIFY((uint64_t)(0xBAAAAD1));
+#endif
 
   MyUrlShortenService_UploadUrls_args args;
   args.read(iprot);
   iprot->readMessageEnd();
 
-  #if defined(FLEXUS)
-    NOTIFY((uint64_t)(0xBAAAAD0));
-  #endif
+#if defined(FLEXUS)
+  NOTIFY((uint64_t)(0xBAAAAD0));
+#endif
   // sw_stop(&sw_deser);
 
   uint32_t bytes = iprot->getTransport()->readEnd();
@@ -824,18 +824,19 @@ void MyUrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::t
     this->eventHandler_->preWrite(ctx, "MyUrlShortenService.UploadUrls");
   }
 
+  result.thriftmsg.addField(getRepeatedType(TYPE_STRING), static_cast<void *>(& result.success));
   // sw_start(&sw_deser);
-  #if defined(FLEXUS)
-    NOTIFY((uint64_t)(0xBAAAAD1));
-  #endif
+#if defined(FLEXUS)
+  NOTIFY((uint64_t)(0xBAAAAD1));
+#endif
 
   oprot->writeMessageBegin("UploadUrls", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
 
-  #if defined(FLEXUS)
-    NOTIFY((uint64_t)(0xBAAAAD0));
-  #endif
+#if defined(FLEXUS)
+  NOTIFY((uint64_t)(0xBAAAAD0));
+#endif
   // sw_stop(&sw_deser);
 
   bytes = oprot->getTransport()->writeEnd();
