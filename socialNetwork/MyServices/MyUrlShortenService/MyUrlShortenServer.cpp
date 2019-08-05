@@ -18,6 +18,8 @@ using namespace ::apache::thrift::server;
 
 using namespace social_network;
 
+//#define NUM_THREADS 2
+
 uint64_t start, stop;
 uint64_t total = 0;
 uint64_t count = 0;

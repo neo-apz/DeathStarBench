@@ -4,14 +4,28 @@ project(soccialnet_myservices)
 
 include("Findthrift.cmake")
 
+set(THRIFT_ROOT /Users/neo/Desktop/thrift/thrift-playground/dl/thrift-0.12.0)
+set(THRIFT_HOME ${THRIFT_ROOT})
+
+#include("../cmake/Findthrift.cmake")
+#include("./ThriftMacros.cmake")
+
+
+set(THRIFT_INCLUDE_DIR "${THRIFT_ROOT}/lib/cpp/src/")
+set(THRIFT_LIB "${THRIFT_ROOT}/cmake_build/lib/libthriftd.dylib")
+
+include_directories("${THRIFT_ROOT}/lib/cpp/src/")
+
+#add_library("/Users/neo/Desktop/thrift/thrift-playground/dl/thrift-0.12.0/cmake_build/lib/libthrift.dylib" STATIC)
+
 find_package(Threads)
 
-# set(Boost_USE_STATIC_LIBS ON)
-# find_package(Boost 1.54.0 REQUIRED COMPONENTS log log_setup)
-# if(Boost_FOUND)
-#   include_directories(${Boost_INCLUDE_DIRS})
-#   link_directories(${Boost_LIBRARY_DIRS})
-# endif()
+ set(Boost_USE_STATIC_LIBS ON)
+ find_package(Boost 1.54.0 REQUIRED COMPONENTS log log_setup)
+ if(Boost_FOUND)
+   include_directories(${Boost_INCLUDE_DIRS})
+   link_directories(${Boost_LIBRARY_DIRS})
+ endif()
 
 set(THRIFT_GEN_CPP_DIR ../gen-cpp)
 
@@ -29,3 +43,7 @@ if(FLEXUS)
 endif()
 
 add_subdirectory(MyUrlShortenService)
+
+
+
+message(${THRIFT_LIB})
