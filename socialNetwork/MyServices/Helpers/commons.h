@@ -17,6 +17,16 @@
 
 #if defined(FLEXUS)
 #include "../flexus/flexus.h"
+
+#define PROCESS_BEGIN ((uint64_t) 0xBAAAAAD1)
+#define PROCESS_END ((uint64_t) 0xBAAAAAD0)
+
+#define SER_BEGIN ((uint64_t) 0xBAAAAD1)
+#define SER_END ((uint64_t) 0xBAAAAD0)
+
+#define DESER_BEGIN ((uint64_t) 0xBAAAD1)
+#define DESER_END ((uint64_t) 0xBAAAD0)
+
 #endif
 
 
@@ -26,19 +36,19 @@
 #include <iostream>
 
 // This is not thread safe!!
-static struct timeval tv;
+//static struct timeval tv;
+//
+//typedef struct stopwatch {
+//  uint64_t start = 0;
+//  uint64_t stop = 0;
+//  uint64_t total = 0;
+//  uint64_t count = 0;
+//} stopwatch;
 
-typedef struct stopwatch {
-  uint64_t start = 0;
-  uint64_t stop = 0;
-  uint64_t total = 0;
-  uint64_t count = 0;
-} stopwatch;
 
-
-uint64_t now();
-void sw_start(stopwatch* sw);
-void sw_stop(stopwatch* sw, bool clear=false);
+//uint64_t now();
+//void sw_start(stopwatch* sw);
+//void sw_stop(stopwatch* sw, bool clear=false);
 // double sw_getAVG(stopwatch sw);
 
 #endif //SOCCIALNET_MYSERVICES_COMMONS_H

@@ -26,18 +26,18 @@ set(thriftgencpp_SOURCES
 #    # ${CMAKE_THREAD_LIBS_INIT}
 #)
 
-add_executable(MyUrlShortenServer
-        MyUrlShortenServer.cpp ${thriftgencpp_SOURCES}
-        ../Helpers/benchmarking.cpp ../Helpers/commons.h)
-
-target_link_libraries(MyUrlShortenServer
-#        thriftgencpp
-         ${THRIFT_LIB}
-        # ${CMAKE_THREAD_LIBS_INIT}
-)
-target_include_directories(MyUrlShortenServer PUBLIC
-        ${THRIFT_INCLUDE_DIR}
-)
+#add_executable(MyUrlShortenServer
+#        MyUrlShortenServer.cpp ${thriftgencpp_SOURCES}
+#        ../Helpers/benchmarking.cpp ../Helpers/commons.h)
+#
+#target_link_libraries(MyUrlShortenServer
+##        thriftgencpp
+#         ${THRIFT_LIB}
+#        # ${CMAKE_THREAD_LIBS_INIT}
+#)
+#target_include_directories(MyUrlShortenServer PUBLIC
+#        ${THRIFT_INCLUDE_DIR}
+#)
 
 # add_executable(MyUrlShortenClient MyUrlShortenClient.cpp ../Helpers/commons.h)
 # target_link_libraries(MyUrlShortenClient
@@ -47,12 +47,13 @@ target_include_directories(MyUrlShortenServer PUBLIC
 set(mythrift_SOURCES
         ../mythrift/mythrift.cpp
         ../mythrift/MyThriftMessage.cpp
-)
+        ../mythrift/MyTMemoryBuffer.h)
 
 add_executable(UrlProcessor
          UrlProcessor.cpp ${thriftgencpp_SOURCES}
         ${mythrift_SOURCES}
-        ../Helpers/benchmarking.cpp ../Helpers/commons.h
+#        ../Helpers/benchmarking.cpp
+        ../Helpers/commons.h
 )
 
 target_link_libraries(UrlProcessor
