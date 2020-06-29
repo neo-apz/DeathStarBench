@@ -28,12 +28,10 @@ class UrlShortenHandler : public UrlShortenServiceIf {
   ~UrlShortenHandler() override = default;
 
   void UploadUrls(std::vector<std::string> &, int64_t,
-      const std::vector<std::string> &,
-      const std::map<std::string, std::string> &) override;
+      const std::vector<std::string> &) override;
 
   void GetExtendedUrls(std::vector<std::string> &, int64_t,
-                       const std::vector<std::string> &,
-                       const std::map<std::string, std::string> &) override ;
+                       const std::vector<std::string> &) override ;
 
  private:
   memcached_pool_st *_memcached_client_pool;
@@ -70,18 +68,17 @@ std::string UrlShortenHandler::_GenRandomStr(int length) {
 void UrlShortenHandler::UploadUrls(
     std::vector<std::string> &_return,
     int64_t req_id,
-    const std::vector<std::string> &urls,
-    const std::map<std::string, std::string> &carrier) {
+    const std::vector<std::string> &urls) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "UploadUrls",
-      { opentracing::ChildOf(parent_span->get()) });
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "UploadUrls",
+  //     { opentracing::ChildOf(parent_span->get()) });
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   std::vector<Url> target_urls;
   std::future<void> mongo_future;
@@ -161,7 +158,7 @@ void UrlShortenHandler::UploadUrls(
         }
         auto compose_post_client = compose_post_client_wrapper->GetClient();
         try {
-          compose_post_client->UploadUrls(req_id, target_urls, writer_text_map);
+          compose_post_client->UploadUrls(req_id, target_urls);
         } catch (...) {
           _compose_client_pool->Push(compose_post_client_wrapper);
           LOG(error) << "Failed to upload urls to compose-post-service";
@@ -187,14 +184,13 @@ void UrlShortenHandler::UploadUrls(
     throw;
   }
 
-  span->Finish();
+  // span->Finish();
 
 }
 void UrlShortenHandler::GetExtendedUrls(
     std::vector<std::string> &_return,
     int64_t req_id,
-    const std::vector<std::string> &shortened_id,
-    const std::map<std::string, std::string> &carrier) {
+    const std::vector<std::string> &shortened_id) {
 
   // TODO: Implement GetExtendedUrls
 }

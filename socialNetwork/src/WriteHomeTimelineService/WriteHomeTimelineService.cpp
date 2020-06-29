@@ -11,7 +11,7 @@
 #include "../RedisClient.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../utils.h"
 #include "../../gen-cpp/social_network_types.h"
 #include "../../gen-cpp/SocialGraphService.h"
@@ -40,14 +40,14 @@ void OnReceivedWorker(const AMQP::Message &msg) {
     }
 
     // Jaeger tracing
-    TextMapReader span_reader(carrier);
-    auto parent_span = opentracing::Tracer::Global()->Extract(span_reader);
-    auto span = opentracing::Tracer::Global()->StartSpan(
-        "FanoutHomeTimelines",
-        {opentracing::ChildOf(parent_span->get())});
-    std::map<std::string, std::string> writer_text_map;
-    TextMapWriter writer(writer_text_map);
-    opentracing::Tracer::Global()->Inject(span->context(), writer);
+    // TextMapReader span_reader(carrier);
+    // auto parent_span = opentracing::Tracer::Global()->Extract(span_reader);
+    // auto span = opentracing::Tracer::Global()->StartSpan(
+    //     "FanoutHomeTimelines",
+    //     {opentracing::ChildOf(parent_span->get())});
+    // std::map<std::string, std::string> writer_text_map;
+    // TextMapWriter writer(writer_text_map);
+    // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
     // Extract information from rabbitmq messages
     int64_t user_id = msg_json["user_id"];
@@ -67,8 +67,7 @@ void OnReceivedWorker(const AMQP::Message &msg) {
     auto social_graph_client = social_graph_client_wrapper->GetClient();
     std::vector<int64_t> followers_id;
     try {
-      social_graph_client->GetFollowers(followers_id, req_id, user_id,
-                                        writer_text_map);
+      social_graph_client->GetFollowers(followers_id, req_id, user_id);
     } catch (...) {
       LOG(error) << "Failed to get followers from social-network-service";
       _social_graph_client_pool->Push(social_graph_client_wrapper);
@@ -81,8 +80,8 @@ void OnReceivedWorker(const AMQP::Message &msg) {
     followers_id_set.insert(user_mentions_id.begin(), user_mentions_id.end());
 
     // Update Redis ZSet
-    auto redis_span = opentracing::Tracer::Global()->StartSpan(
-        "RedisUpdate", {opentracing::ChildOf(&span->context())});
+    // auto redis_span = opentracing::Tracer::Global()->StartSpan(
+    //     "RedisUpdate", {opentracing::ChildOf(&span->context())});
     auto redis_client_wrapper = _redis_client_pool->Pop();
     if (!redis_client_wrapper) {
       ServiceException se;
@@ -102,7 +101,7 @@ void OnReceivedWorker(const AMQP::Message &msg) {
     }
 
     redis_client->sync_commit();
-    redis_span->Finish();
+    // redis_span->Finish();
     _redis_client_pool->Push(redis_client_wrapper);
   } catch (...) {
     LOG(error) << "OnReveived worker error";
@@ -153,7 +152,7 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   init_logger();
 
-  SetUpTracer("config/jaeger-config.yml", "write-home-timeline-service");
+  // SetUpTracer("config/jaeger-config.yml", "write-home-timeline-service");
 
   json config_json;
   if (load_config_file("config/service-config.json", &config_json) != 0) {

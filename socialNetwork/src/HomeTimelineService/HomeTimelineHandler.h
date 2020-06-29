@@ -10,7 +10,7 @@
 #include "../../gen-cpp/HomeTimelineService.h"
 #include "../../gen-cpp/PostStorageService.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../ClientPool.h"
 #include "../RedisClient.h"
 #include "../ThriftClient.h"
@@ -24,8 +24,7 @@ class ReadHomeTimelineHandler : public HomeTimelineServiceIf {
       ClientPool<ThriftClient<PostStorageServiceClient>> *);
   ~ReadHomeTimelineHandler() override = default;
 
-  void ReadHomeTimeline(std::vector<Post> &, int64_t, int64_t, int, int,
-      const std::map<std::string, std::string> &) override ;
+  void ReadHomeTimeline(std::vector<Post> &, int64_t, int64_t, int, int) override ;
 
   ClientPool<RedisClient> *_redis_client_pool;
   ClientPool<ThriftClient<PostStorageServiceClient>> *_post_client_pool;
@@ -43,18 +42,17 @@ void ReadHomeTimelineHandler::ReadHomeTimeline(
     int64_t req_id,
     int64_t user_id,
     int start,
-    int stop,
-    const std::map<std::string, std::string> &carrier) {
+    int stop) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "ReadHomeTimeline",
-      { opentracing::ChildOf(parent_span->get()) });
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "ReadHomeTimeline",
+  //     { opentracing::ChildOf(parent_span->get()) });
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   if (stop <= start || start < 0) {
     return;
@@ -68,13 +66,13 @@ void ReadHomeTimelineHandler::ReadHomeTimeline(
     throw se;
   }
   auto redis_client = redis_client_wrapper->GetClient();
-  auto redis_span = opentracing::Tracer::Global()->StartSpan(
-      "RedisFind", {opentracing::ChildOf(&span->context())});
+  // auto redis_span = opentracing::Tracer::Global()->StartSpan(
+  //     "RedisFind", {opentracing::ChildOf(&span->context())});
   auto post_ids_future = redis_client->zrevrange(
       std::to_string(user_id), start, stop - 1);
   redis_client->sync_commit();
   _redis_client_pool->Push(redis_client_wrapper);
-  redis_span->Finish();
+  // redis_span->Finish();
   cpp_redis::reply post_ids_reply;
   try {
     post_ids_reply = post_ids_future.get();
@@ -98,14 +96,14 @@ void ReadHomeTimelineHandler::ReadHomeTimeline(
   }
   auto post_client = post_client_wrapper->GetClient();
   try {
-    post_client->ReadPosts(_return, req_id, post_ids, writer_text_map);
+    post_client->ReadPosts(_return, req_id, post_ids);
   } catch (...) {
     _post_client_pool->Push(post_client_wrapper);
     LOG(error) << "Failed to read posts from post-storage-service";
     throw;
   }
   _post_client_pool->Push(post_client_wrapper);
-  span->Finish();
+  // span->Finish();
 }
 
 } // namespace social_network

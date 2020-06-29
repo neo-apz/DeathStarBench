@@ -46,41 +46,18 @@ uint32_t UrlShortenService_UploadUrls_args::read(::apache::thrift::protocol::TPr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->urls.clear();
-            uint32_t _size378;
-            ::apache::thrift::protocol::TType _etype381;
-            xfer += iprot->readListBegin(_etype381, _size378);
-            this->urls.resize(_size378);
-            uint32_t _i382;
-            for (_i382 = 0; _i382 < _size378; ++_i382)
+            uint32_t _size126;
+            ::apache::thrift::protocol::TType _etype129;
+            xfer += iprot->readListBegin(_etype129, _size126);
+            this->urls.resize(_size126);
+            uint32_t _i130;
+            for (_i130 = 0; _i130 < _size126; ++_i130)
             {
-              xfer += iprot->readString(this->urls[_i382]);
+              xfer += iprot->readString(this->urls[_i130]);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.urls = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size383;
-            ::apache::thrift::protocol::TType _ktype384;
-            ::apache::thrift::protocol::TType _vtype385;
-            xfer += iprot->readMapBegin(_ktype384, _vtype385, _size383);
-            uint32_t _i387;
-            for (_i387 = 0; _i387 < _size383; ++_i387)
-            {
-              std::string _key388;
-              xfer += iprot->readString(_key388);
-              std::string& _val389 = this->carrier[_key388];
-              xfer += iprot->readString(_val389);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -109,25 +86,12 @@ uint32_t UrlShortenService_UploadUrls_args::write(::apache::thrift::protocol::TP
   xfer += oprot->writeFieldBegin("urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->urls.size()));
-    std::vector<std::string> ::const_iterator _iter390;
-    for (_iter390 = this->urls.begin(); _iter390 != this->urls.end(); ++_iter390)
+    std::vector<std::string> ::const_iterator _iter131;
+    for (_iter131 = this->urls.begin(); _iter131 != this->urls.end(); ++_iter131)
     {
-      xfer += oprot->writeString((*_iter390));
+      xfer += oprot->writeString((*_iter131));
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter391;
-    for (_iter391 = this->carrier.begin(); _iter391 != this->carrier.end(); ++_iter391)
-    {
-      xfer += oprot->writeString(_iter391->first);
-      xfer += oprot->writeString(_iter391->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -153,25 +117,12 @@ uint32_t UrlShortenService_UploadUrls_pargs::write(::apache::thrift::protocol::T
   xfer += oprot->writeFieldBegin("urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->urls)).size()));
-    std::vector<std::string> ::const_iterator _iter392;
-    for (_iter392 = (*(this->urls)).begin(); _iter392 != (*(this->urls)).end(); ++_iter392)
+    std::vector<std::string> ::const_iterator _iter132;
+    for (_iter132 = (*(this->urls)).begin(); _iter132 != (*(this->urls)).end(); ++_iter132)
     {
-      xfer += oprot->writeString((*_iter392));
+      xfer += oprot->writeString((*_iter132));
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter393;
-    for (_iter393 = (*(this->carrier)).begin(); _iter393 != (*(this->carrier)).end(); ++_iter393)
-    {
-      xfer += oprot->writeString(_iter393->first);
-      xfer += oprot->writeString(_iter393->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -210,14 +161,14 @@ uint32_t UrlShortenService_UploadUrls_result::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size394;
-            ::apache::thrift::protocol::TType _etype397;
-            xfer += iprot->readListBegin(_etype397, _size394);
-            this->success.resize(_size394);
-            uint32_t _i398;
-            for (_i398 = 0; _i398 < _size394; ++_i398)
+            uint32_t _size133;
+            ::apache::thrift::protocol::TType _etype136;
+            xfer += iprot->readListBegin(_etype136, _size133);
+            this->success.resize(_size133);
+            uint32_t _i137;
+            for (_i137 = 0; _i137 < _size133; ++_i137)
             {
-              xfer += iprot->readString(this->success[_i398]);
+              xfer += iprot->readString(this->success[_i137]);
             }
             xfer += iprot->readListEnd();
           }
@@ -256,10 +207,10 @@ uint32_t UrlShortenService_UploadUrls_result::write(::apache::thrift::protocol::
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->success.size()));
-      std::vector<std::string> ::const_iterator _iter399;
-      for (_iter399 = this->success.begin(); _iter399 != this->success.end(); ++_iter399)
+      std::vector<std::string> ::const_iterator _iter138;
+      for (_iter138 = this->success.begin(); _iter138 != this->success.end(); ++_iter138)
       {
-        xfer += oprot->writeString((*_iter399));
+        xfer += oprot->writeString((*_iter138));
       }
       xfer += oprot->writeListEnd();
     }
@@ -304,14 +255,14 @@ uint32_t UrlShortenService_UploadUrls_presult::read(::apache::thrift::protocol::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size400;
-            ::apache::thrift::protocol::TType _etype403;
-            xfer += iprot->readListBegin(_etype403, _size400);
-            (*(this->success)).resize(_size400);
-            uint32_t _i404;
-            for (_i404 = 0; _i404 < _size400; ++_i404)
+            uint32_t _size139;
+            ::apache::thrift::protocol::TType _etype142;
+            xfer += iprot->readListBegin(_etype142, _size139);
+            (*(this->success)).resize(_size139);
+            uint32_t _i143;
+            for (_i143 = 0; _i143 < _size139; ++_i143)
             {
-              xfer += iprot->readString((*(this->success))[_i404]);
+              xfer += iprot->readString((*(this->success))[_i143]);
             }
             xfer += iprot->readListEnd();
           }
@@ -378,41 +329,18 @@ uint32_t UrlShortenService_GetExtendedUrls_args::read(::apache::thrift::protocol
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->shortened_urls.clear();
-            uint32_t _size405;
-            ::apache::thrift::protocol::TType _etype408;
-            xfer += iprot->readListBegin(_etype408, _size405);
-            this->shortened_urls.resize(_size405);
-            uint32_t _i409;
-            for (_i409 = 0; _i409 < _size405; ++_i409)
+            uint32_t _size144;
+            ::apache::thrift::protocol::TType _etype147;
+            xfer += iprot->readListBegin(_etype147, _size144);
+            this->shortened_urls.resize(_size144);
+            uint32_t _i148;
+            for (_i148 = 0; _i148 < _size144; ++_i148)
             {
-              xfer += iprot->readString(this->shortened_urls[_i409]);
+              xfer += iprot->readString(this->shortened_urls[_i148]);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.shortened_urls = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size410;
-            ::apache::thrift::protocol::TType _ktype411;
-            ::apache::thrift::protocol::TType _vtype412;
-            xfer += iprot->readMapBegin(_ktype411, _vtype412, _size410);
-            uint32_t _i414;
-            for (_i414 = 0; _i414 < _size410; ++_i414)
-            {
-              std::string _key415;
-              xfer += iprot->readString(_key415);
-              std::string& _val416 = this->carrier[_key415];
-              xfer += iprot->readString(_val416);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -441,25 +369,12 @@ uint32_t UrlShortenService_GetExtendedUrls_args::write(::apache::thrift::protoco
   xfer += oprot->writeFieldBegin("shortened_urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->shortened_urls.size()));
-    std::vector<std::string> ::const_iterator _iter417;
-    for (_iter417 = this->shortened_urls.begin(); _iter417 != this->shortened_urls.end(); ++_iter417)
+    std::vector<std::string> ::const_iterator _iter149;
+    for (_iter149 = this->shortened_urls.begin(); _iter149 != this->shortened_urls.end(); ++_iter149)
     {
-      xfer += oprot->writeString((*_iter417));
+      xfer += oprot->writeString((*_iter149));
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter418;
-    for (_iter418 = this->carrier.begin(); _iter418 != this->carrier.end(); ++_iter418)
-    {
-      xfer += oprot->writeString(_iter418->first);
-      xfer += oprot->writeString(_iter418->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -485,25 +400,12 @@ uint32_t UrlShortenService_GetExtendedUrls_pargs::write(::apache::thrift::protoc
   xfer += oprot->writeFieldBegin("shortened_urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->shortened_urls)).size()));
-    std::vector<std::string> ::const_iterator _iter419;
-    for (_iter419 = (*(this->shortened_urls)).begin(); _iter419 != (*(this->shortened_urls)).end(); ++_iter419)
+    std::vector<std::string> ::const_iterator _iter150;
+    for (_iter150 = (*(this->shortened_urls)).begin(); _iter150 != (*(this->shortened_urls)).end(); ++_iter150)
     {
-      xfer += oprot->writeString((*_iter419));
+      xfer += oprot->writeString((*_iter150));
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter420;
-    for (_iter420 = (*(this->carrier)).begin(); _iter420 != (*(this->carrier)).end(); ++_iter420)
-    {
-      xfer += oprot->writeString(_iter420->first);
-      xfer += oprot->writeString(_iter420->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -542,14 +444,14 @@ uint32_t UrlShortenService_GetExtendedUrls_result::read(::apache::thrift::protoc
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size421;
-            ::apache::thrift::protocol::TType _etype424;
-            xfer += iprot->readListBegin(_etype424, _size421);
-            this->success.resize(_size421);
-            uint32_t _i425;
-            for (_i425 = 0; _i425 < _size421; ++_i425)
+            uint32_t _size151;
+            ::apache::thrift::protocol::TType _etype154;
+            xfer += iprot->readListBegin(_etype154, _size151);
+            this->success.resize(_size151);
+            uint32_t _i155;
+            for (_i155 = 0; _i155 < _size151; ++_i155)
             {
-              xfer += iprot->readString(this->success[_i425]);
+              xfer += iprot->readString(this->success[_i155]);
             }
             xfer += iprot->readListEnd();
           }
@@ -588,10 +490,10 @@ uint32_t UrlShortenService_GetExtendedUrls_result::write(::apache::thrift::proto
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->success.size()));
-      std::vector<std::string> ::const_iterator _iter426;
-      for (_iter426 = this->success.begin(); _iter426 != this->success.end(); ++_iter426)
+      std::vector<std::string> ::const_iterator _iter156;
+      for (_iter156 = this->success.begin(); _iter156 != this->success.end(); ++_iter156)
       {
-        xfer += oprot->writeString((*_iter426));
+        xfer += oprot->writeString((*_iter156));
       }
       xfer += oprot->writeListEnd();
     }
@@ -636,14 +538,14 @@ uint32_t UrlShortenService_GetExtendedUrls_presult::read(::apache::thrift::proto
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size427;
-            ::apache::thrift::protocol::TType _etype430;
-            xfer += iprot->readListBegin(_etype430, _size427);
-            (*(this->success)).resize(_size427);
-            uint32_t _i431;
-            for (_i431 = 0; _i431 < _size427; ++_i431)
+            uint32_t _size157;
+            ::apache::thrift::protocol::TType _etype160;
+            xfer += iprot->readListBegin(_etype160, _size157);
+            (*(this->success)).resize(_size157);
+            uint32_t _i161;
+            for (_i161 = 0; _i161 < _size157; ++_i161)
             {
-              xfer += iprot->readString((*(this->success))[_i431]);
+              xfer += iprot->readString((*(this->success))[_i161]);
             }
             xfer += iprot->readListEnd();
           }
@@ -672,13 +574,13 @@ uint32_t UrlShortenService_GetExtendedUrls_presult::read(::apache::thrift::proto
   return xfer;
 }
 
-void UrlShortenServiceClient::UploadUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier)
+void UrlShortenServiceClient::UploadUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & urls)
 {
-  send_UploadUrls(req_id, urls, carrier);
+  send_UploadUrls(req_id, urls);
   recv_UploadUrls(_return);
 }
 
-void UrlShortenServiceClient::send_UploadUrls(const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier)
+void UrlShortenServiceClient::send_UploadUrls(const int64_t req_id, const std::vector<std::string> & urls)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUrls", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -686,7 +588,6 @@ void UrlShortenServiceClient::send_UploadUrls(const int64_t req_id, const std::v
   UrlShortenService_UploadUrls_pargs args;
   args.req_id = &req_id;
   args.urls = &urls;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -735,13 +636,13 @@ void UrlShortenServiceClient::recv_UploadUrls(std::vector<std::string> & _return
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadUrls failed: unknown result");
 }
 
-void UrlShortenServiceClient::GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier)
+void UrlShortenServiceClient::GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls)
 {
-  send_GetExtendedUrls(req_id, shortened_urls, carrier);
+  send_GetExtendedUrls(req_id, shortened_urls);
   recv_GetExtendedUrls(_return);
 }
 
-void UrlShortenServiceClient::send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier)
+void UrlShortenServiceClient::send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -749,7 +650,6 @@ void UrlShortenServiceClient::send_GetExtendedUrls(const int64_t req_id, const s
   UrlShortenService_GetExtendedUrls_pargs args;
   args.req_id = &req_id;
   args.shortened_urls = &shortened_urls;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -840,7 +740,7 @@ void UrlShortenServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::thr
 
   UrlShortenService_UploadUrls_result result;
   try {
-    iface_->UploadUrls(result.success, args.req_id, args.urls, args.carrier);
+    iface_->UploadUrls(result.success, args.req_id, args.urls);
     result.__isset.success = true;
   } catch (ServiceException &se) {
     result.se = se;
@@ -897,7 +797,7 @@ void UrlShortenServiceProcessor::process_GetExtendedUrls(int32_t seqid, ::apache
 
   UrlShortenService_GetExtendedUrls_result result;
   try {
-    iface_->GetExtendedUrls(result.success, args.req_id, args.shortened_urls, args.carrier);
+    iface_->GetExtendedUrls(result.success, args.req_id, args.shortened_urls);
     result.__isset.success = true;
   } catch (ServiceException &se) {
     result.se = se;
@@ -938,13 +838,13 @@ void UrlShortenServiceProcessor::process_GetExtendedUrls(int32_t seqid, ::apache
   return processor;
 }
 
-void UrlShortenServiceConcurrentClient::UploadUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier)
+void UrlShortenServiceConcurrentClient::UploadUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & urls)
 {
-  int32_t seqid = send_UploadUrls(req_id, urls, carrier);
+  int32_t seqid = send_UploadUrls(req_id, urls);
   recv_UploadUrls(_return, seqid);
 }
 
-int32_t UrlShortenServiceConcurrentClient::send_UploadUrls(const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier)
+int32_t UrlShortenServiceConcurrentClient::send_UploadUrls(const int64_t req_id, const std::vector<std::string> & urls)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -953,7 +853,6 @@ int32_t UrlShortenServiceConcurrentClient::send_UploadUrls(const int64_t req_id,
   UrlShortenService_UploadUrls_pargs args;
   args.req_id = &req_id;
   args.urls = &urls;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1028,13 +927,13 @@ void UrlShortenServiceConcurrentClient::recv_UploadUrls(std::vector<std::string>
   } // end while(true)
 }
 
-void UrlShortenServiceConcurrentClient::GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier)
+void UrlShortenServiceConcurrentClient::GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls)
 {
-  int32_t seqid = send_GetExtendedUrls(req_id, shortened_urls, carrier);
+  int32_t seqid = send_GetExtendedUrls(req_id, shortened_urls);
   recv_GetExtendedUrls(_return, seqid);
 }
 
-int32_t UrlShortenServiceConcurrentClient::send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier)
+int32_t UrlShortenServiceConcurrentClient::send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -1043,7 +942,6 @@ int32_t UrlShortenServiceConcurrentClient::send_GetExtendedUrls(const int64_t re
   UrlShortenService_GetExtendedUrls_pargs args;
   args.req_id = &req_id;
   args.shortened_urls = &shortened_urls;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

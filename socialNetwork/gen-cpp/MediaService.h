@@ -21,7 +21,7 @@ namespace social_network {
 class MediaServiceIf {
  public:
   virtual ~MediaServiceIf() {}
-  virtual void UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids) = 0;
 };
 
 class MediaServiceIfFactory {
@@ -51,17 +51,16 @@ class MediaServiceIfSingletonFactory : virtual public MediaServiceIfFactory {
 class MediaServiceNull : virtual public MediaServiceIf {
  public:
   virtual ~MediaServiceNull() {}
-  void UploadMedia(const int64_t /* req_id */, const std::vector<std::string> & /* media_types */, const std::vector<int64_t> & /* media_ids */, const std::map<std::string, std::string> & /* carrier */) {
+  void UploadMedia(const int64_t /* req_id */, const std::vector<std::string> & /* media_types */, const std::vector<int64_t> & /* media_ids */) {
     return;
   }
 };
 
 typedef struct _MediaService_UploadMedia_args__isset {
-  _MediaService_UploadMedia_args__isset() : req_id(false), media_types(false), media_ids(false), carrier(false) {}
+  _MediaService_UploadMedia_args__isset() : req_id(false), media_types(false), media_ids(false) {}
   bool req_id :1;
   bool media_types :1;
   bool media_ids :1;
-  bool carrier :1;
 } _MediaService_UploadMedia_args__isset;
 
 class MediaService_UploadMedia_args {
@@ -76,7 +75,6 @@ class MediaService_UploadMedia_args {
   int64_t req_id;
   std::vector<std::string>  media_types;
   std::vector<int64_t>  media_ids;
-  std::map<std::string, std::string>  carrier;
 
   _MediaService_UploadMedia_args__isset __isset;
 
@@ -86,8 +84,6 @@ class MediaService_UploadMedia_args {
 
   void __set_media_ids(const std::vector<int64_t> & val);
 
-  void __set_carrier(const std::map<std::string, std::string> & val);
-
   bool operator == (const MediaService_UploadMedia_args & rhs) const
   {
     if (!(req_id == rhs.req_id))
@@ -95,8 +91,6 @@ class MediaService_UploadMedia_args {
     if (!(media_types == rhs.media_types))
       return false;
     if (!(media_ids == rhs.media_ids))
-      return false;
-    if (!(carrier == rhs.carrier))
       return false;
     return true;
   }
@@ -120,7 +114,6 @@ class MediaService_UploadMedia_pargs {
   const int64_t* req_id;
   const std::vector<std::string> * media_types;
   const std::vector<int64_t> * media_ids;
-  const std::map<std::string, std::string> * carrier;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -206,8 +199,8 @@ class MediaServiceClient : virtual public MediaServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier);
-  void send_UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier);
+  void UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids);
+  void send_UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids);
   void recv_UploadMedia();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
@@ -257,13 +250,13 @@ class MediaServiceMultiface : virtual public MediaServiceIf {
     ifaces_.push_back(iface);
   }
  public:
-  void UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier) {
+  void UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->UploadMedia(req_id, media_types, media_ids, carrier);
+      ifaces_[i]->UploadMedia(req_id, media_types, media_ids);
     }
-    ifaces_[i]->UploadMedia(req_id, media_types, media_ids, carrier);
+    ifaces_[i]->UploadMedia(req_id, media_types, media_ids);
   }
 
 };
@@ -296,8 +289,8 @@ class MediaServiceConcurrentClient : virtual public MediaServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier);
-  int32_t send_UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier);
+  void UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids);
+  int32_t send_UploadMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids);
   void recv_UploadMedia(const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;

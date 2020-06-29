@@ -12,7 +12,7 @@
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../utils.h"
 
 namespace social_network {
@@ -24,8 +24,7 @@ class UserMentionHandler : public UserMentionServiceIf {
                      ClientPool<ThriftClient<ComposePostServiceClient>> *);
   ~UserMentionHandler() override = default;
 
-  void UploadUserMentions(int64_t, const std::vector<std::string> &,
-      const std::map<std::string, std::string> &) override ;
+  void UploadUserMentions(int64_t, const std::vector<std::string> &) override ;
 
  private:
   memcached_pool_st *_memcached_client_pool;
@@ -44,18 +43,17 @@ UserMentionHandler::UserMentionHandler(
 
 void UserMentionHandler::UploadUserMentions(
     int64_t req_id,
-    const std::vector<std::string> &usernames,
-    const std::map<std::string, std::string> &carrier) {
+    const std::vector<std::string> &usernames) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "UploadUserMentions",
-      { opentracing::ChildOf(parent_span->get()) });
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "UploadUserMentions",
+  //     { opentracing::ChildOf(parent_span->get()) });
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   std::vector<UserMention> user_mentions;
   if (!usernames.empty()) {
@@ -229,15 +227,14 @@ void UserMentionHandler::UploadUserMentions(
   }
   auto compose_post_client = compose_post_client_wrapper->GetClient();
   try {
-    compose_post_client->UploadUserMentions(req_id, user_mentions,
-                                            writer_text_map);
+    compose_post_client->UploadUserMentions(req_id, user_mentions);
   } catch (...) {
     _compose_client_pool->Push(compose_post_client_wrapper);
     LOG(error) << "Failed to upload user_mentions to user-mention-service";
     throw;
   }  
   _compose_client_pool->Push(compose_post_client_wrapper);
-  span->Finish();
+  // span->Finish();
 }
 
 }

@@ -52,29 +52,6 @@ uint32_t UniqueIdService_UploadUniqueId_args::read(::apache::thrift::protocol::T
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size35;
-            ::apache::thrift::protocol::TType _ktype36;
-            ::apache::thrift::protocol::TType _vtype37;
-            xfer += iprot->readMapBegin(_ktype36, _vtype37, _size35);
-            uint32_t _i39;
-            for (_i39 = 0; _i39 < _size35; ++_i39)
-            {
-              std::string _key40;
-              xfer += iprot->readString(_key40);
-              std::string& _val41 = this->carrier[_key40];
-              xfer += iprot->readString(_val41);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -100,19 +77,6 @@ uint32_t UniqueIdService_UploadUniqueId_args::write(::apache::thrift::protocol::
   xfer += oprot->writeI32((int32_t)this->post_type);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter42;
-    for (_iter42 = this->carrier.begin(); _iter42 != this->carrier.end(); ++_iter42)
-    {
-      xfer += oprot->writeString(_iter42->first);
-      xfer += oprot->writeString(_iter42->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -134,19 +98,6 @@ uint32_t UniqueIdService_UploadUniqueId_pargs::write(::apache::thrift::protocol:
 
   xfer += oprot->writeFieldBegin("post_type", ::apache::thrift::protocol::T_I32, 2);
   xfer += oprot->writeI32((int32_t)(*(this->post_type)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter43;
-    for (_iter43 = (*(this->carrier)).begin(); _iter43 != (*(this->carrier)).end(); ++_iter43)
-    {
-      xfer += oprot->writeString(_iter43->first);
-      xfer += oprot->writeString(_iter43->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -262,13 +213,13 @@ uint32_t UniqueIdService_UploadUniqueId_presult::read(::apache::thrift::protocol
   return xfer;
 }
 
-void UniqueIdServiceClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+void UniqueIdServiceClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
-  send_UploadUniqueId(req_id, post_type, carrier);
+  send_UploadUniqueId(req_id, post_type);
   recv_UploadUniqueId();
 }
 
-void UniqueIdServiceClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+void UniqueIdServiceClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -276,7 +227,6 @@ void UniqueIdServiceClient::send_UploadUniqueId(const int64_t req_id, const Post
   UniqueIdService_UploadUniqueId_pargs args;
   args.req_id = &req_id;
   args.post_type = &post_type;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -362,7 +312,7 @@ void UniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::t
 
   UniqueIdService_UploadUniqueId_result result;
   try {
-    iface_->UploadUniqueId(args.req_id, args.post_type, args.carrier);
+    iface_->UploadUniqueId(args.req_id, args.post_type);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -402,13 +352,13 @@ void UniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::t
   return processor;
 }
 
-void UniqueIdServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+void UniqueIdServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
-  int32_t seqid = send_UploadUniqueId(req_id, post_type, carrier);
+  int32_t seqid = send_UploadUniqueId(req_id, post_type);
   recv_UploadUniqueId(seqid);
 }
 
-int32_t UniqueIdServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+int32_t UniqueIdServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -417,7 +367,6 @@ int32_t UniqueIdServiceConcurrentClient::send_UploadUniqueId(const int64_t req_i
   UniqueIdService_UploadUniqueId_pargs args;
   args.req_id = &req_id;
   args.post_type = &post_type;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

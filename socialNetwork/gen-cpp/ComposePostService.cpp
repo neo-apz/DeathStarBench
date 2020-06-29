@@ -50,29 +50,6 @@ uint32_t ComposePostService_UploadText_args::read(::apache::thrift::protocol::TP
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size107;
-            ::apache::thrift::protocol::TType _ktype108;
-            ::apache::thrift::protocol::TType _vtype109;
-            xfer += iprot->readMapBegin(_ktype108, _vtype109, _size107);
-            uint32_t _i111;
-            for (_i111 = 0; _i111 < _size107; ++_i111)
-            {
-              std::string _key112;
-              xfer += iprot->readString(_key112);
-              std::string& _val113 = this->carrier[_key112];
-              xfer += iprot->readString(_val113);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -98,19 +75,6 @@ uint32_t ComposePostService_UploadText_args::write(::apache::thrift::protocol::T
   xfer += oprot->writeString(this->text);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter114;
-    for (_iter114 = this->carrier.begin(); _iter114 != this->carrier.end(); ++_iter114)
-    {
-      xfer += oprot->writeString(_iter114->first);
-      xfer += oprot->writeString(_iter114->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -132,19 +96,6 @@ uint32_t ComposePostService_UploadText_pargs::write(::apache::thrift::protocol::
 
   xfer += oprot->writeFieldBegin("text", ::apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString((*(this->text)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter115;
-    for (_iter115 = (*(this->carrier)).begin(); _iter115 != (*(this->carrier)).end(); ++_iter115)
-    {
-      xfer += oprot->writeString(_iter115->first);
-      xfer += oprot->writeString(_iter115->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -298,41 +249,18 @@ uint32_t ComposePostService_UploadMedia_args::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->media.clear();
-            uint32_t _size116;
-            ::apache::thrift::protocol::TType _etype119;
-            xfer += iprot->readListBegin(_etype119, _size116);
-            this->media.resize(_size116);
-            uint32_t _i120;
-            for (_i120 = 0; _i120 < _size116; ++_i120)
+            uint32_t _size35;
+            ::apache::thrift::protocol::TType _etype38;
+            xfer += iprot->readListBegin(_etype38, _size35);
+            this->media.resize(_size35);
+            uint32_t _i39;
+            for (_i39 = 0; _i39 < _size35; ++_i39)
             {
-              xfer += this->media[_i120].read(iprot);
+              xfer += this->media[_i39].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.media = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size121;
-            ::apache::thrift::protocol::TType _ktype122;
-            ::apache::thrift::protocol::TType _vtype123;
-            xfer += iprot->readMapBegin(_ktype122, _vtype123, _size121);
-            uint32_t _i125;
-            for (_i125 = 0; _i125 < _size121; ++_i125)
-            {
-              std::string _key126;
-              xfer += iprot->readString(_key126);
-              std::string& _val127 = this->carrier[_key126];
-              xfer += iprot->readString(_val127);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -361,25 +289,12 @@ uint32_t ComposePostService_UploadMedia_args::write(::apache::thrift::protocol::
   xfer += oprot->writeFieldBegin("media", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->media.size()));
-    std::vector<Media> ::const_iterator _iter128;
-    for (_iter128 = this->media.begin(); _iter128 != this->media.end(); ++_iter128)
+    std::vector<Media> ::const_iterator _iter40;
+    for (_iter40 = this->media.begin(); _iter40 != this->media.end(); ++_iter40)
     {
-      xfer += (*_iter128).write(oprot);
+      xfer += (*_iter40).write(oprot);
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter129;
-    for (_iter129 = this->carrier.begin(); _iter129 != this->carrier.end(); ++_iter129)
-    {
-      xfer += oprot->writeString(_iter129->first);
-      xfer += oprot->writeString(_iter129->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -405,25 +320,12 @@ uint32_t ComposePostService_UploadMedia_pargs::write(::apache::thrift::protocol:
   xfer += oprot->writeFieldBegin("media", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->media)).size()));
-    std::vector<Media> ::const_iterator _iter130;
-    for (_iter130 = (*(this->media)).begin(); _iter130 != (*(this->media)).end(); ++_iter130)
+    std::vector<Media> ::const_iterator _iter41;
+    for (_iter41 = (*(this->media)).begin(); _iter41 != (*(this->media)).end(); ++_iter41)
     {
-      xfer += (*_iter130).write(oprot);
+      xfer += (*_iter41).write(oprot);
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter131;
-    for (_iter131 = (*(this->carrier)).begin(); _iter131 != (*(this->carrier)).end(); ++_iter131)
-    {
-      xfer += oprot->writeString(_iter131->first);
-      xfer += oprot->writeString(_iter131->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -584,33 +486,10 @@ uint32_t ComposePostService_UploadUniqueId_args::read(::apache::thrift::protocol
         break;
       case 3:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast132;
-          xfer += iprot->readI32(ecast132);
-          this->post_type = (PostType::type)ecast132;
+          int32_t ecast42;
+          xfer += iprot->readI32(ecast42);
+          this->post_type = (PostType::type)ecast42;
           this->__isset.post_type = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 4:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size133;
-            ::apache::thrift::protocol::TType _ktype134;
-            ::apache::thrift::protocol::TType _vtype135;
-            xfer += iprot->readMapBegin(_ktype134, _vtype135, _size133);
-            uint32_t _i137;
-            for (_i137 = 0; _i137 < _size133; ++_i137)
-            {
-              std::string _key138;
-              xfer += iprot->readString(_key138);
-              std::string& _val139 = this->carrier[_key138];
-              xfer += iprot->readString(_val139);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -644,19 +523,6 @@ uint32_t ComposePostService_UploadUniqueId_args::write(::apache::thrift::protoco
   xfer += oprot->writeI32((int32_t)this->post_type);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 4);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter140;
-    for (_iter140 = this->carrier.begin(); _iter140 != this->carrier.end(); ++_iter140)
-    {
-      xfer += oprot->writeString(_iter140->first);
-      xfer += oprot->writeString(_iter140->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -682,19 +548,6 @@ uint32_t ComposePostService_UploadUniqueId_pargs::write(::apache::thrift::protoc
 
   xfer += oprot->writeFieldBegin("post_type", ::apache::thrift::protocol::T_I32, 3);
   xfer += oprot->writeI32((int32_t)(*(this->post_type)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 4);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter141;
-    for (_iter141 = (*(this->carrier)).begin(); _iter141 != (*(this->carrier)).end(); ++_iter141)
-    {
-      xfer += oprot->writeString(_iter141->first);
-      xfer += oprot->writeString(_iter141->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -852,29 +705,6 @@ uint32_t ComposePostService_UploadCreator_args::read(::apache::thrift::protocol:
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size142;
-            ::apache::thrift::protocol::TType _ktype143;
-            ::apache::thrift::protocol::TType _vtype144;
-            xfer += iprot->readMapBegin(_ktype143, _vtype144, _size142);
-            uint32_t _i146;
-            for (_i146 = 0; _i146 < _size142; ++_i146)
-            {
-              std::string _key147;
-              xfer += iprot->readString(_key147);
-              std::string& _val148 = this->carrier[_key147];
-              xfer += iprot->readString(_val148);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -900,19 +730,6 @@ uint32_t ComposePostService_UploadCreator_args::write(::apache::thrift::protocol
   xfer += this->creator.write(oprot);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter149;
-    for (_iter149 = this->carrier.begin(); _iter149 != this->carrier.end(); ++_iter149)
-    {
-      xfer += oprot->writeString(_iter149->first);
-      xfer += oprot->writeString(_iter149->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -934,19 +751,6 @@ uint32_t ComposePostService_UploadCreator_pargs::write(::apache::thrift::protoco
 
   xfer += oprot->writeFieldBegin("creator", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += (*(this->creator)).write(oprot);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter150;
-    for (_iter150 = (*(this->carrier)).begin(); _iter150 != (*(this->carrier)).end(); ++_iter150)
-    {
-      xfer += oprot->writeString(_iter150->first);
-      xfer += oprot->writeString(_iter150->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -1100,41 +904,18 @@ uint32_t ComposePostService_UploadUrls_args::read(::apache::thrift::protocol::TP
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->urls.clear();
-            uint32_t _size151;
-            ::apache::thrift::protocol::TType _etype154;
-            xfer += iprot->readListBegin(_etype154, _size151);
-            this->urls.resize(_size151);
-            uint32_t _i155;
-            for (_i155 = 0; _i155 < _size151; ++_i155)
+            uint32_t _size43;
+            ::apache::thrift::protocol::TType _etype46;
+            xfer += iprot->readListBegin(_etype46, _size43);
+            this->urls.resize(_size43);
+            uint32_t _i47;
+            for (_i47 = 0; _i47 < _size43; ++_i47)
             {
-              xfer += this->urls[_i155].read(iprot);
+              xfer += this->urls[_i47].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.urls = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size156;
-            ::apache::thrift::protocol::TType _ktype157;
-            ::apache::thrift::protocol::TType _vtype158;
-            xfer += iprot->readMapBegin(_ktype157, _vtype158, _size156);
-            uint32_t _i160;
-            for (_i160 = 0; _i160 < _size156; ++_i160)
-            {
-              std::string _key161;
-              xfer += iprot->readString(_key161);
-              std::string& _val162 = this->carrier[_key161];
-              xfer += iprot->readString(_val162);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1163,25 +944,12 @@ uint32_t ComposePostService_UploadUrls_args::write(::apache::thrift::protocol::T
   xfer += oprot->writeFieldBegin("urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->urls.size()));
-    std::vector<Url> ::const_iterator _iter163;
-    for (_iter163 = this->urls.begin(); _iter163 != this->urls.end(); ++_iter163)
+    std::vector<Url> ::const_iterator _iter48;
+    for (_iter48 = this->urls.begin(); _iter48 != this->urls.end(); ++_iter48)
     {
-      xfer += (*_iter163).write(oprot);
+      xfer += (*_iter48).write(oprot);
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter164;
-    for (_iter164 = this->carrier.begin(); _iter164 != this->carrier.end(); ++_iter164)
-    {
-      xfer += oprot->writeString(_iter164->first);
-      xfer += oprot->writeString(_iter164->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -1207,25 +975,12 @@ uint32_t ComposePostService_UploadUrls_pargs::write(::apache::thrift::protocol::
   xfer += oprot->writeFieldBegin("urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->urls)).size()));
-    std::vector<Url> ::const_iterator _iter165;
-    for (_iter165 = (*(this->urls)).begin(); _iter165 != (*(this->urls)).end(); ++_iter165)
+    std::vector<Url> ::const_iterator _iter49;
+    for (_iter49 = (*(this->urls)).begin(); _iter49 != (*(this->urls)).end(); ++_iter49)
     {
-      xfer += (*_iter165).write(oprot);
+      xfer += (*_iter49).write(oprot);
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter166;
-    for (_iter166 = (*(this->carrier)).begin(); _iter166 != (*(this->carrier)).end(); ++_iter166)
-    {
-      xfer += oprot->writeString(_iter166->first);
-      xfer += oprot->writeString(_iter166->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -1380,41 +1135,18 @@ uint32_t ComposePostService_UploadUserMentions_args::read(::apache::thrift::prot
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->user_mentions.clear();
-            uint32_t _size167;
-            ::apache::thrift::protocol::TType _etype170;
-            xfer += iprot->readListBegin(_etype170, _size167);
-            this->user_mentions.resize(_size167);
-            uint32_t _i171;
-            for (_i171 = 0; _i171 < _size167; ++_i171)
+            uint32_t _size50;
+            ::apache::thrift::protocol::TType _etype53;
+            xfer += iprot->readListBegin(_etype53, _size50);
+            this->user_mentions.resize(_size50);
+            uint32_t _i54;
+            for (_i54 = 0; _i54 < _size50; ++_i54)
             {
-              xfer += this->user_mentions[_i171].read(iprot);
+              xfer += this->user_mentions[_i54].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.user_mentions = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size172;
-            ::apache::thrift::protocol::TType _ktype173;
-            ::apache::thrift::protocol::TType _vtype174;
-            xfer += iprot->readMapBegin(_ktype173, _vtype174, _size172);
-            uint32_t _i176;
-            for (_i176 = 0; _i176 < _size172; ++_i176)
-            {
-              std::string _key177;
-              xfer += iprot->readString(_key177);
-              std::string& _val178 = this->carrier[_key177];
-              xfer += iprot->readString(_val178);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1443,25 +1175,12 @@ uint32_t ComposePostService_UploadUserMentions_args::write(::apache::thrift::pro
   xfer += oprot->writeFieldBegin("user_mentions", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->user_mentions.size()));
-    std::vector<UserMention> ::const_iterator _iter179;
-    for (_iter179 = this->user_mentions.begin(); _iter179 != this->user_mentions.end(); ++_iter179)
+    std::vector<UserMention> ::const_iterator _iter55;
+    for (_iter55 = this->user_mentions.begin(); _iter55 != this->user_mentions.end(); ++_iter55)
     {
-      xfer += (*_iter179).write(oprot);
+      xfer += (*_iter55).write(oprot);
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter180;
-    for (_iter180 = this->carrier.begin(); _iter180 != this->carrier.end(); ++_iter180)
-    {
-      xfer += oprot->writeString(_iter180->first);
-      xfer += oprot->writeString(_iter180->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -1487,25 +1206,12 @@ uint32_t ComposePostService_UploadUserMentions_pargs::write(::apache::thrift::pr
   xfer += oprot->writeFieldBegin("user_mentions", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->user_mentions)).size()));
-    std::vector<UserMention> ::const_iterator _iter181;
-    for (_iter181 = (*(this->user_mentions)).begin(); _iter181 != (*(this->user_mentions)).end(); ++_iter181)
+    std::vector<UserMention> ::const_iterator _iter56;
+    for (_iter56 = (*(this->user_mentions)).begin(); _iter56 != (*(this->user_mentions)).end(); ++_iter56)
     {
-      xfer += (*_iter181).write(oprot);
+      xfer += (*_iter56).write(oprot);
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter182;
-    for (_iter182 = (*(this->carrier)).begin(); _iter182 != (*(this->carrier)).end(); ++_iter182)
-    {
-      xfer += oprot->writeString(_iter182->first);
-      xfer += oprot->writeString(_iter182->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -1622,13 +1328,13 @@ uint32_t ComposePostService_UploadUserMentions_presult::read(::apache::thrift::p
   return xfer;
 }
 
-void ComposePostServiceClient::UploadText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::UploadText(const int64_t req_id, const std::string& text)
 {
-  send_UploadText(req_id, text, carrier);
+  send_UploadText(req_id, text);
   recv_UploadText();
 }
 
-void ComposePostServiceClient::send_UploadText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::send_UploadText(const int64_t req_id, const std::string& text)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadText", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1636,7 +1342,6 @@ void ComposePostServiceClient::send_UploadText(const int64_t req_id, const std::
   ComposePostService_UploadText_pargs args;
   args.req_id = &req_id;
   args.text = &text;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1680,13 +1385,13 @@ void ComposePostServiceClient::recv_UploadText()
   return;
 }
 
-void ComposePostServiceClient::UploadMedia(const int64_t req_id, const std::vector<Media> & media, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::UploadMedia(const int64_t req_id, const std::vector<Media> & media)
 {
-  send_UploadMedia(req_id, media, carrier);
+  send_UploadMedia(req_id, media);
   recv_UploadMedia();
 }
 
-void ComposePostServiceClient::send_UploadMedia(const int64_t req_id, const std::vector<Media> & media, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::send_UploadMedia(const int64_t req_id, const std::vector<Media> & media)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadMedia", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1694,7 +1399,6 @@ void ComposePostServiceClient::send_UploadMedia(const int64_t req_id, const std:
   ComposePostService_UploadMedia_pargs args;
   args.req_id = &req_id;
   args.media = &media;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1738,13 +1442,13 @@ void ComposePostServiceClient::recv_UploadMedia()
   return;
 }
 
-void ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
-  send_UploadUniqueId(req_id, post_id, post_type, carrier);
+  send_UploadUniqueId(req_id, post_id, post_type);
   recv_UploadUniqueId();
 }
 
-void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1753,7 +1457,6 @@ void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const i
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.post_type = &post_type;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1797,13 +1500,13 @@ void ComposePostServiceClient::recv_UploadUniqueId()
   return;
 }
 
-void ComposePostServiceClient::UploadCreator(const int64_t req_id, const Creator& creator, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::UploadCreator(const int64_t req_id, const Creator& creator)
 {
-  send_UploadCreator(req_id, creator, carrier);
+  send_UploadCreator(req_id, creator);
   recv_UploadCreator();
 }
 
-void ComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Creator& creator, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadCreator", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1811,7 +1514,6 @@ void ComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Cr
   ComposePostService_UploadCreator_pargs args;
   args.req_id = &req_id;
   args.creator = &creator;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1855,13 +1557,13 @@ void ComposePostServiceClient::recv_UploadCreator()
   return;
 }
 
-void ComposePostServiceClient::UploadUrls(const int64_t req_id, const std::vector<Url> & urls, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
 {
-  send_UploadUrls(req_id, urls, carrier);
+  send_UploadUrls(req_id, urls);
   recv_UploadUrls();
 }
 
-void ComposePostServiceClient::send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUrls", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1869,7 +1571,6 @@ void ComposePostServiceClient::send_UploadUrls(const int64_t req_id, const std::
   ComposePostService_UploadUrls_pargs args;
   args.req_id = &req_id;
   args.urls = &urls;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1913,13 +1614,13 @@ void ComposePostServiceClient::recv_UploadUrls()
   return;
 }
 
-void ComposePostServiceClient::UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
 {
-  send_UploadUserMentions(req_id, user_mentions, carrier);
+  send_UploadUserMentions(req_id, user_mentions);
   recv_UploadUserMentions();
 }
 
-void ComposePostServiceClient::send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceClient::send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1927,7 +1628,6 @@ void ComposePostServiceClient::send_UploadUserMentions(const int64_t req_id, con
   ComposePostService_UploadUserMentions_pargs args;
   args.req_id = &req_id;
   args.user_mentions = &user_mentions;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2013,7 +1713,7 @@ void ComposePostServiceProcessor::process_UploadText(int32_t seqid, ::apache::th
 
   ComposePostService_UploadText_result result;
   try {
-    iface_->UploadText(args.req_id, args.text, args.carrier);
+    iface_->UploadText(args.req_id, args.text);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2069,7 +1769,7 @@ void ComposePostServiceProcessor::process_UploadMedia(int32_t seqid, ::apache::t
 
   ComposePostService_UploadMedia_result result;
   try {
-    iface_->UploadMedia(args.req_id, args.media, args.carrier);
+    iface_->UploadMedia(args.req_id, args.media);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2125,7 +1825,7 @@ void ComposePostServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache
 
   ComposePostService_UploadUniqueId_result result;
   try {
-    iface_->UploadUniqueId(args.req_id, args.post_id, args.post_type, args.carrier);
+    iface_->UploadUniqueId(args.req_id, args.post_id, args.post_type);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2181,7 +1881,7 @@ void ComposePostServiceProcessor::process_UploadCreator(int32_t seqid, ::apache:
 
   ComposePostService_UploadCreator_result result;
   try {
-    iface_->UploadCreator(args.req_id, args.creator, args.carrier);
+    iface_->UploadCreator(args.req_id, args.creator);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2237,7 +1937,7 @@ void ComposePostServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::th
 
   ComposePostService_UploadUrls_result result;
   try {
-    iface_->UploadUrls(args.req_id, args.urls, args.carrier);
+    iface_->UploadUrls(args.req_id, args.urls);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2293,7 +1993,7 @@ void ComposePostServiceProcessor::process_UploadUserMentions(int32_t seqid, ::ap
 
   ComposePostService_UploadUserMentions_result result;
   try {
-    iface_->UploadUserMentions(args.req_id, args.user_mentions, args.carrier);
+    iface_->UploadUserMentions(args.req_id, args.user_mentions);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2333,13 +2033,13 @@ void ComposePostServiceProcessor::process_UploadUserMentions(int32_t seqid, ::ap
   return processor;
 }
 
-void ComposePostServiceConcurrentClient::UploadText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceConcurrentClient::UploadText(const int64_t req_id, const std::string& text)
 {
-  int32_t seqid = send_UploadText(req_id, text, carrier);
+  int32_t seqid = send_UploadText(req_id, text);
   recv_UploadText(seqid);
 }
 
-int32_t ComposePostServiceConcurrentClient::send_UploadText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier)
+int32_t ComposePostServiceConcurrentClient::send_UploadText(const int64_t req_id, const std::string& text)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2348,7 +2048,6 @@ int32_t ComposePostServiceConcurrentClient::send_UploadText(const int64_t req_id
   ComposePostService_UploadText_pargs args;
   args.req_id = &req_id;
   args.text = &text;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2417,13 +2116,13 @@ void ComposePostServiceConcurrentClient::recv_UploadText(const int32_t seqid)
   } // end while(true)
 }
 
-void ComposePostServiceConcurrentClient::UploadMedia(const int64_t req_id, const std::vector<Media> & media, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceConcurrentClient::UploadMedia(const int64_t req_id, const std::vector<Media> & media)
 {
-  int32_t seqid = send_UploadMedia(req_id, media, carrier);
+  int32_t seqid = send_UploadMedia(req_id, media);
   recv_UploadMedia(seqid);
 }
 
-int32_t ComposePostServiceConcurrentClient::send_UploadMedia(const int64_t req_id, const std::vector<Media> & media, const std::map<std::string, std::string> & carrier)
+int32_t ComposePostServiceConcurrentClient::send_UploadMedia(const int64_t req_id, const std::vector<Media> & media)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2432,7 +2131,6 @@ int32_t ComposePostServiceConcurrentClient::send_UploadMedia(const int64_t req_i
   ComposePostService_UploadMedia_pargs args;
   args.req_id = &req_id;
   args.media = &media;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2501,13 +2199,13 @@ void ComposePostServiceConcurrentClient::recv_UploadMedia(const int32_t seqid)
   } // end while(true)
 }
 
-void ComposePostServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
-  int32_t seqid = send_UploadUniqueId(req_id, post_id, post_type, carrier);
+  int32_t seqid = send_UploadUniqueId(req_id, post_id, post_type);
   recv_UploadUniqueId(seqid);
 }
 
-int32_t ComposePostServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+int32_t ComposePostServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2517,7 +2215,6 @@ int32_t ComposePostServiceConcurrentClient::send_UploadUniqueId(const int64_t re
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.post_type = &post_type;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2586,13 +2283,13 @@ void ComposePostServiceConcurrentClient::recv_UploadUniqueId(const int32_t seqid
   } // end while(true)
 }
 
-void ComposePostServiceConcurrentClient::UploadCreator(const int64_t req_id, const Creator& creator, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceConcurrentClient::UploadCreator(const int64_t req_id, const Creator& creator)
 {
-  int32_t seqid = send_UploadCreator(req_id, creator, carrier);
+  int32_t seqid = send_UploadCreator(req_id, creator);
   recv_UploadCreator(seqid);
 }
 
-int32_t ComposePostServiceConcurrentClient::send_UploadCreator(const int64_t req_id, const Creator& creator, const std::map<std::string, std::string> & carrier)
+int32_t ComposePostServiceConcurrentClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2601,7 +2298,6 @@ int32_t ComposePostServiceConcurrentClient::send_UploadCreator(const int64_t req
   ComposePostService_UploadCreator_pargs args;
   args.req_id = &req_id;
   args.creator = &creator;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2670,13 +2366,13 @@ void ComposePostServiceConcurrentClient::recv_UploadCreator(const int32_t seqid)
   } // end while(true)
 }
 
-void ComposePostServiceConcurrentClient::UploadUrls(const int64_t req_id, const std::vector<Url> & urls, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceConcurrentClient::UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
 {
-  int32_t seqid = send_UploadUrls(req_id, urls, carrier);
+  int32_t seqid = send_UploadUrls(req_id, urls);
   recv_UploadUrls(seqid);
 }
 
-int32_t ComposePostServiceConcurrentClient::send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls, const std::map<std::string, std::string> & carrier)
+int32_t ComposePostServiceConcurrentClient::send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2685,7 +2381,6 @@ int32_t ComposePostServiceConcurrentClient::send_UploadUrls(const int64_t req_id
   ComposePostService_UploadUrls_pargs args;
   args.req_id = &req_id;
   args.urls = &urls;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2754,13 +2449,13 @@ void ComposePostServiceConcurrentClient::recv_UploadUrls(const int32_t seqid)
   } // end while(true)
 }
 
-void ComposePostServiceConcurrentClient::UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions, const std::map<std::string, std::string> & carrier)
+void ComposePostServiceConcurrentClient::UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
 {
-  int32_t seqid = send_UploadUserMentions(req_id, user_mentions, carrier);
+  int32_t seqid = send_UploadUserMentions(req_id, user_mentions);
   recv_UploadUserMentions(seqid);
 }
 
-int32_t ComposePostServiceConcurrentClient::send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions, const std::map<std::string, std::string> & carrier)
+int32_t ComposePostServiceConcurrentClient::send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2769,7 +2464,6 @@ int32_t ComposePostServiceConcurrentClient::send_UploadUserMentions(const int64_
   ComposePostService_UploadUserMentions_pargs args;
   args.req_id = &req_id;
   args.user_mentions = &user_mentions;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

@@ -15,7 +15,7 @@
 #include "../../gen-cpp/UserService.h"
 #include "../ClientPool.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../RedisClient.h"
 #include "../ThriftClient.h"
 
@@ -32,20 +32,13 @@ class SocialGraphHandler : public SocialGraphServiceIf {
       ClientPool<RedisClient> *,
       ClientPool<ThriftClient<UserServiceClient>> *);
   ~SocialGraphHandler() override = default;
-  void GetFollowers(std::vector<int64_t> &, int64_t, int64_t,
-                    const std::map<std::string, std::string> &) override;
-  void GetFollowees(std::vector<int64_t> &, int64_t, int64_t,
-                    const std::map<std::string, std::string> &) override;
-  void Follow(int64_t, int64_t, int64_t,
-              const std::map<std::string, std::string> &) override;
-  void Unfollow(int64_t, int64_t, int64_t,
-                const std::map<std::string, std::string> &) override;
-  void FollowWithUsername(int64_t, const std::string &, const std::string &,
-              const std::map<std::string, std::string> &) override;
-  void UnfollowWithUsername(int64_t, const std::string &, const std::string &,
-                const std::map<std::string, std::string> &) override;
-  void InsertUser(int64_t, int64_t,
-                  const std::map<std::string, std::string> &) override;
+  void GetFollowers(std::vector<int64_t> &, int64_t, int64_t) override;
+  void GetFollowees(std::vector<int64_t> &, int64_t, int64_t) override;
+  void Follow(int64_t, int64_t, int64_t) override;
+  void Unfollow(int64_t, int64_t, int64_t) override;
+  void FollowWithUsername(int64_t, const std::string &, const std::string &) override;
+  void UnfollowWithUsername(int64_t, const std::string &, const std::string &) override;
+  void InsertUser(int64_t, int64_t) override;
 
 
  private:
@@ -66,18 +59,17 @@ SocialGraphHandler::SocialGraphHandler(
 void SocialGraphHandler::Follow(
     int64_t req_id,
     int64_t user_id,
-    int64_t followee_id,
-    const std::map<std::string, std::string> &carrier) {
+    int64_t followee_id) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "Follow",
-      {opentracing::ChildOf(parent_span->get())});
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "Follow",
+  //     {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   int64_t timestamp = duration_cast<milliseconds>(
       system_clock::now().time_since_epoch()).count();
@@ -124,8 +116,8 @@ void SocialGraphHandler::Follow(
         );
         bson_error_t error;
         bson_t reply;
-        auto update_span = opentracing::Tracer::Global()->StartSpan(
-            "MongoUpdateFollower", {opentracing::ChildOf(&span->context())});
+        // auto update_span = opentracing::Tracer::Global()->StartSpan(
+        //     "MongoUpdateFollower", {opentracing::ChildOf(&span->context())});
         bool updated = mongoc_collection_find_and_modify(
             collection,
             search_not_exist,
@@ -150,7 +142,7 @@ void SocialGraphHandler::Follow(
           mongoc_client_pool_push(_mongodb_client_pool, mongodb_client);
           throw se;
         }
-        update_span->Finish();
+        // update_span->Finish();
         bson_destroy(&reply);
         bson_destroy(update);
         bson_destroy(search_not_exist);
@@ -189,8 +181,8 @@ void SocialGraphHandler::Follow(
             "timestamp", BCON_INT64(timestamp), "}", "}"
         );
         bson_error_t error;
-        auto update_span = opentracing::Tracer::Global()->StartSpan(
-            "MongoUpdateFollowee", {opentracing::ChildOf(&span->context())});
+        // auto update_span = opentracing::Tracer::Global()->StartSpan(
+        //     "MongoUpdateFollowee", {opentracing::ChildOf(&span->context())});
         bson_t reply;
         bool updated = mongoc_collection_find_and_modify(
             collection, search_not_exist, nullptr, update, nullptr, false,
@@ -208,7 +200,7 @@ void SocialGraphHandler::Follow(
           mongoc_client_pool_push(_mongodb_client_pool, mongodb_client);
           throw se;
         }
-        update_span->Finish();
+        // update_span->Finish();
         bson_destroy(update);
         bson_destroy(&reply);
         bson_destroy(search_not_exist);
@@ -227,8 +219,8 @@ void SocialGraphHandler::Follow(
         }
         auto redis_client = redis_client_wrapper->GetClient();
 
-        auto redis_span = opentracing::Tracer::Global()->StartSpan(
-            "RedisUpdate", {opentracing::ChildOf(&span->context())});
+        // auto redis_span = opentracing::Tracer::Global()->StartSpan(
+        //     "RedisUpdate", {opentracing::ChildOf(&span->context())});
         auto num_followee = redis_client->zcard(
             std::to_string(user_id) + ":followees");
         auto num_follower = redis_client->zcard(
@@ -252,7 +244,7 @@ void SocialGraphHandler::Follow(
         }
         redis_client->sync_commit();
         _redis_client_pool->Push(redis_client_wrapper);
-        redis_span->Finish();
+        // redis_span->Finish();
       });
 
   try {
@@ -263,23 +255,22 @@ void SocialGraphHandler::Follow(
     throw;
   }
 
-  span->Finish();
+  // span->Finish();
 }
 
 void SocialGraphHandler::Unfollow(
     int64_t req_id,
     int64_t user_id,
-    int64_t followee_id,
-    const std::map<std::string, std::string> &carrier) {
+    int64_t followee_id) {
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "Unfollow",
-      {opentracing::ChildOf(parent_span->get())});
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "Unfollow",
+  //     {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   std::future<void> mongo_update_follower_future = std::async(
       std::launch::async, [&]() {
@@ -310,8 +301,8 @@ void SocialGraphHandler::Unfollow(
         );
         bson_t reply;
         bson_error_t error;
-        auto update_span = opentracing::Tracer::Global()->StartSpan(
-            "MongoDeleteFollowee", {opentracing::ChildOf(&span->context())});
+        // auto update_span = opentracing::Tracer::Global()->StartSpan(
+        //     "MongoDeleteFollowee", {opentracing::ChildOf(&span->context())});
         bool updated = mongoc_collection_find_and_modify(
             collection, query, nullptr, update, nullptr, false, false,
             true, &reply, &error);
@@ -328,7 +319,7 @@ void SocialGraphHandler::Unfollow(
           mongoc_client_pool_push(_mongodb_client_pool, mongodb_client);
           throw se;
         }
-        update_span->Finish();
+        // update_span->Finish();
         bson_destroy(update);
         bson_destroy(query);
         bson_destroy(&reply);
@@ -365,8 +356,8 @@ void SocialGraphHandler::Unfollow(
         );
         bson_t reply;
         bson_error_t error;
-        auto update_span = opentracing::Tracer::Global()->StartSpan(
-            "MongoDeleteFollower", {opentracing::ChildOf(&span->context())});
+        // auto update_span = opentracing::Tracer::Global()->StartSpan(
+        //     "MongoDeleteFollower", {opentracing::ChildOf(&span->context())});
         bool updated = mongoc_collection_find_and_modify(
             collection, query, nullptr, update, nullptr, false, false,
             true, &reply, &error);
@@ -383,7 +374,7 @@ void SocialGraphHandler::Unfollow(
           mongoc_client_pool_push(_mongodb_client_pool, mongodb_client);
           throw se;
         }
-        update_span->Finish();
+        // update_span->Finish();
         bson_destroy(update);
         bson_destroy(query);
         bson_destroy(&reply);
@@ -402,8 +393,8 @@ void SocialGraphHandler::Unfollow(
         }
         auto redis_client = redis_client_wrapper->GetClient();
 
-        auto redis_span = opentracing::Tracer::Global()->StartSpan(
-            "RedisUpdate", {opentracing::ChildOf(&span->context())});
+        // auto redis_span = opentracing::Tracer::Global()->StartSpan(
+        //     "RedisUpdate", {opentracing::ChildOf(&span->context())});
         auto num_followee = redis_client->zcard(
             std::to_string(user_id) + ":followees");
         auto num_follower = redis_client->zcard(
@@ -424,7 +415,7 @@ void SocialGraphHandler::Unfollow(
         }
         redis_client->sync_commit();
         _redis_client_pool->Push(redis_client_wrapper);
-        redis_span->Finish();
+        // redis_span->Finish();
       });
 
   try {
@@ -435,23 +426,22 @@ void SocialGraphHandler::Unfollow(
     throw;
   }
 
-  span->Finish();
+  // span->Finish();
 
 }
 
 void SocialGraphHandler::GetFollowers(
-    std::vector<int64_t> &_return, const int64_t req_id, const int64_t user_id,
-    const std::map<std::string, std::string> &carrier) {
+    std::vector<int64_t> &_return, const int64_t req_id, const int64_t user_id) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "GetFollowers",
-      {opentracing::ChildOf(parent_span->get())});
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "GetFollowers",
+  //     {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
@@ -462,8 +452,8 @@ void SocialGraphHandler::GetFollowers(
   }
   auto redis_client = redis_client_wrapper->GetClient();
 
-  auto redis_span = opentracing::Tracer::Global()->StartSpan(
-      "RedisGet", {opentracing::ChildOf(&span->context())});
+  // auto redis_span = opentracing::Tracer::Global()->StartSpan(
+  //     "RedisGet", {opentracing::ChildOf(&span->context())});
   auto num_follower = redis_client->zcard(
       std::to_string(user_id) + ":followers");
   redis_client->sync_commit();
@@ -473,7 +463,7 @@ void SocialGraphHandler::GetFollowers(
     std::string key = std::to_string(user_id) + ":followers";
     auto redis_followers = redis_client->zrange(key, 0, -1, false);
     redis_client->sync_commit();
-    redis_span->Finish();
+    // redis_span->Finish();
     auto redis_followers_reply = redis_followers.get();
     if (redis_followers_reply.ok()) {
       auto followers_str = redis_followers_reply.as_array();
@@ -490,7 +480,7 @@ void SocialGraphHandler::GetFollowers(
       throw se;
     }
   } else {
-    redis_span->Finish();
+    // redis_span->Finish();
     _redis_client_pool->Push(redis_client_wrapper);
     mongoc_client_t *mongodb_client = mongoc_client_pool_pop(
         _mongodb_client_pool);
@@ -511,8 +501,8 @@ void SocialGraphHandler::GetFollowers(
     }
     bson_t *query = bson_new();
     BSON_APPEND_INT64(query, "user_id", user_id);
-    auto find_span = opentracing::Tracer::Global()->StartSpan(
-        "MongoFindUser", {opentracing::ChildOf(&span->context())});
+    // auto find_span = opentracing::Tracer::Global()->StartSpan(
+    //     "MongoFindUser", {opentracing::ChildOf(&span->context())});
     mongoc_cursor_t *cursor = mongoc_collection_find_with_opts(
         collection, query, nullptr, nullptr);
     const bson_t *doc;
@@ -548,7 +538,7 @@ void SocialGraphHandler::GetFollowers(
         bson_iter_init(&iter_1, doc);
         index++;
       }
-      find_span->Finish();
+      // find_span->Finish();
       bson_destroy(query);
       mongoc_cursor_destroy(cursor);
       mongoc_collection_destroy(collection);
@@ -556,38 +546,37 @@ void SocialGraphHandler::GetFollowers(
 
       redis_client_wrapper = _redis_client_pool->Pop();
       redis_client = redis_client_wrapper->GetClient();
-      auto redis_insert_span = opentracing::Tracer::Global()->StartSpan(
-          "RedisInsert", {opentracing::ChildOf(&span->context())});
+      // auto redis_insert_span = opentracing::Tracer::Global()->StartSpan(
+      //     "RedisInsert", {opentracing::ChildOf(&span->context())});
       std::string key = std::to_string(user_id) + ":followers";
       std::vector<std::string> options{"NX"};
       redis_client->zadd(key, options, redis_zset);
       redis_client->sync_commit();
-      redis_insert_span->Finish();
+      // redis_insert_span->Finish();
       _redis_client_pool->Push(redis_client_wrapper);
     } else {
-      find_span->Finish();
+      // find_span->Finish();
       bson_destroy(query);
       mongoc_cursor_destroy(cursor);
       mongoc_collection_destroy(collection);
       mongoc_client_pool_push(_mongodb_client_pool, mongodb_client);
     }
   }
-  span->Finish();
+  // span->Finish();
 }
 
 void SocialGraphHandler::GetFollowees(
-    std::vector<int64_t> &_return, const int64_t req_id, const int64_t user_id,
-    const std::map<std::string, std::string> &carrier) {
+    std::vector<int64_t> &_return, const int64_t req_id, const int64_t user_id) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "GetFollowees",
-      {opentracing::ChildOf(parent_span->get())});
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "GetFollowees",
+  //     {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
@@ -598,8 +587,8 @@ void SocialGraphHandler::GetFollowees(
   }
   auto redis_client = redis_client_wrapper->GetClient();
 
-  auto redis_span = opentracing::Tracer::Global()->StartSpan(
-      "RedisGet", {opentracing::ChildOf(&span->context())});
+  // auto redis_span = opentracing::Tracer::Global()->StartSpan(
+  //     "RedisGet", {opentracing::ChildOf(&span->context())});
   auto num_followees = redis_client->zcard(
       std::to_string(user_id) + ":followees");
   redis_client->sync_commit();
@@ -609,7 +598,7 @@ void SocialGraphHandler::GetFollowees(
     std::string key = std::to_string(user_id) + ":followees";
     auto redis_followees = redis_client->zrange(key, 0, -1, false);
     redis_client->sync_commit();
-    redis_span->Finish();
+    // redis_span->Finish();
     auto redis_followees_reply = redis_followees.get();
     if (redis_followees_reply.ok()) {
       auto followees_str = redis_followees_reply.as_array();
@@ -626,7 +615,7 @@ void SocialGraphHandler::GetFollowees(
       throw se;
     }
   } else {
-    redis_span->Finish();
+    // redis_span->Finish();
     mongoc_client_t *mongodb_client = mongoc_client_pool_pop(
         _mongodb_client_pool);
     if (!mongodb_client) {
@@ -646,8 +635,8 @@ void SocialGraphHandler::GetFollowees(
     }
     bson_t *query = bson_new();
     BSON_APPEND_INT64(query, "user_id", user_id);
-    auto find_span = opentracing::Tracer::Global()->StartSpan(
-        "MongoFindUser", {opentracing::ChildOf(&span->context())});
+    // auto find_span = opentracing::Tracer::Global()->StartSpan(
+    //     "MongoFindUser", {opentracing::ChildOf(&span->context())});
     mongoc_cursor_t *cursor = mongoc_collection_find_with_opts(
         collection, query, nullptr, nullptr);
     const bson_t *doc;
@@ -692,39 +681,38 @@ void SocialGraphHandler::GetFollowees(
         bson_iter_init(&iter_1, doc);
         index++;
       }
-      find_span->Finish();
+      // find_span->Finish();
       bson_destroy(query);
       mongoc_cursor_destroy(cursor);
       mongoc_collection_destroy(collection);
       mongoc_client_pool_push(_mongodb_client_pool, mongodb_client);
       redis_client_wrapper = _redis_client_pool->Pop();
       redis_client = redis_client_wrapper->GetClient();
-      auto redis_insert_span = opentracing::Tracer::Global()->StartSpan(
-          "RedisInsert", {opentracing::ChildOf(&span->context())});
+      // auto redis_insert_span = opentracing::Tracer::Global()->StartSpan(
+      //     "RedisInsert", {opentracing::ChildOf(&span->context())});
       std::string key = std::to_string(user_id) + ":followees";
       std::vector<std::string> options{"NX"};
       redis_client->zadd(key, options, redis_zset);
       redis_client->sync_commit();
-      redis_insert_span->Finish();
+      // redis_insert_span->Finish();
       _redis_client_pool->Push(redis_client_wrapper);
     }
   }
-  span->Finish();
+  // span->Finish();
 }
 
 void SocialGraphHandler::InsertUser(
-    int64_t req_id, int64_t user_id,
-    const std::map<std::string, std::string> &carrier) {
+    int64_t req_id, int64_t user_id) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "InsertUser",
-      {opentracing::ChildOf(parent_span->get())});
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "InsertUser",
+  //     {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   mongoc_client_t *mongodb_client = mongoc_client_pool_pop(
       _mongodb_client_pool);
@@ -750,11 +738,11 @@ void SocialGraphHandler::InsertUser(
       "followees", "[", "]"
   );
   bson_error_t error;
-  auto insert_span = opentracing::Tracer::Global()->StartSpan(
-      "MongoInsertUser", {opentracing::ChildOf(&span->context())});
+  // auto insert_span = opentracing::Tracer::Global()->StartSpan(
+  //     "MongoInsertUser", {opentracing::ChildOf(&span->context())});
   bool inserted = mongoc_collection_insert_one(
       collection, new_doc, nullptr, nullptr, &error);
-  insert_span->Finish();
+  // insert_span->Finish();
   if (!inserted) {
     LOG(error) << "Failed to insert social graph for user "
                << user_id << " to MongoDB: " << error.message;
@@ -769,24 +757,23 @@ void SocialGraphHandler::InsertUser(
   bson_destroy(new_doc);
   mongoc_collection_destroy(collection);
   mongoc_client_pool_push(_mongodb_client_pool, mongodb_client);
-  span->Finish();
+  // span->Finish();
 }
 
 void SocialGraphHandler::FollowWithUsername(
     int64_t req_id,
     const std::string &user_name,
-    const std::string &followee_name,
-    const std::map<std::string, std::string> &carrier) {
+    const std::string &followee_name) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "FollowWithUsername",
-      {opentracing::ChildOf(parent_span->get())});
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "FollowWithUsername",
+  //     {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   std::future<int64_t> user_id_future = std::async(
       std::launch::async,[&]() {
@@ -800,7 +787,7 @@ void SocialGraphHandler::FollowWithUsername(
         auto user_client = user_client_wrapper->GetClient();
         int64_t _return;
         try {
-          _return = user_client->GetUserId(req_id, user_name, writer_text_map);
+          _return = user_client->GetUserId(req_id, user_name);
         } catch (...) {
           _user_service_client_pool->Push(user_client_wrapper);
           LOG(error) << "Failed to get user_id from user-service";
@@ -822,7 +809,7 @@ void SocialGraphHandler::FollowWithUsername(
         auto user_client = user_client_wrapper->GetClient();
         int64_t _return;
         try {
-          _return = user_client->GetUserId(req_id, followee_name, writer_text_map);
+          _return = user_client->GetUserId(req_id, followee_name);
         } catch (...) {
           _user_service_client_pool->Push(user_client_wrapper);
           LOG(error) << "Failed to get user_id from user-service";
@@ -843,28 +830,27 @@ void SocialGraphHandler::FollowWithUsername(
 
   if (user_id >= 0 && followee_id >= 0) {
     try {
-      Follow(req_id, user_id, followee_id, writer_text_map);
+      Follow(req_id, user_id, followee_id);
     } catch (...) {
       throw;
     }
   }
-  span->Finish();
+  // span->Finish();
 }
 
 void SocialGraphHandler::UnfollowWithUsername(
     int64_t req_id,
     const std::string &user_name,
-    const std::string &followee_name,
-    const std::map<std::string, std::string> &carrier) {
+    const std::string &followee_name) {
 // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "UnfollowWithUsername",
-      {opentracing::ChildOf(parent_span->get())});
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "UnfollowWithUsername",
+  //     {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   std::future<int64_t> user_id_future = std::async(
       std::launch::async,[&]() {
@@ -878,7 +864,7 @@ void SocialGraphHandler::UnfollowWithUsername(
         auto user_client = user_client_wrapper->GetClient();
         int64_t _return;
         try {
-          _return = user_client->GetUserId(req_id, user_name, writer_text_map);
+          _return = user_client->GetUserId(req_id, user_name);
         } catch (...) {
           _user_service_client_pool->Push(user_client_wrapper);
           LOG(error) << "Failed to get user_id from user-service";
@@ -900,7 +886,7 @@ void SocialGraphHandler::UnfollowWithUsername(
         auto user_client = user_client_wrapper->GetClient();
         int64_t _return;
         try {
-          _return = user_client->GetUserId(req_id, followee_name, writer_text_map);
+          _return = user_client->GetUserId(req_id, followee_name);
         } catch (...) {
           _user_service_client_pool->Push(user_client_wrapper);
           LOG(error) << "Failed to get user_id from user-service";
@@ -921,12 +907,12 @@ void SocialGraphHandler::UnfollowWithUsername(
 
   if (user_id >= 0 && followee_id >= 0) {
     try {
-      Unfollow(req_id, user_id, followee_id, writer_text_map);
+      Unfollow(req_id, user_id, followee_id);
     } catch (...) {
       throw;
     }
   }
-  span->Finish();
+  // span->Finish();
 }
 
 } // namespace social_network

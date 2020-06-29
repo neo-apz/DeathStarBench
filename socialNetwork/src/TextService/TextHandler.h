@@ -12,7 +12,7 @@
 #include "../../gen-cpp/UserMentionService.h"
 #include "../../gen-cpp/UrlShortenService.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
 
@@ -26,8 +26,7 @@ class TextHandler : public TextServiceIf {
       ClientPool<ThriftClient<UserMentionServiceClient>> *);
   ~TextHandler() override = default;
 
-  void UploadText(int64_t, const std::string &,
-      const std::map<std::string, std::string> &) override;
+  void UploadText(int64_t, const std::string &) override;
  private:
   ClientPool<ThriftClient<ComposePostServiceClient>> *_compose_client_pool;
   ClientPool<ThriftClient<UrlShortenServiceClient>> *_url_client_pool;
@@ -45,18 +44,17 @@ TextHandler::TextHandler(
 
 void TextHandler::UploadText(
     int64_t req_id,
-    const std::string &text,
-    const std::map<std::string, std::string> & carrier) {
+    const std::string &text) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "UploadText",
-      { opentracing::ChildOf(parent_span->get()) });
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "UploadText",
+  //     { opentracing::ChildOf(parent_span->get()) });
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   std::vector<std::string> user_mentions;
   std::smatch m;
@@ -90,7 +88,7 @@ void TextHandler::UploadText(
         std::vector<std::string> return_urls;
         auto url_client = url_client_wrapper->GetClient();
         try {
-          url_client->UploadUrls(return_urls, req_id, urls, writer_text_map);
+          url_client->UploadUrls(return_urls, req_id, urls);
         } catch (...) {
           LOG(error) << "Failed to upload urls to url-shorten-service";
           _url_client_pool->Push(url_client_wrapper);
@@ -113,8 +111,7 @@ void TextHandler::UploadText(
         std::vector<std::string> urls;
         auto user_mention_client = user_mention_client_wrapper->GetClient();
         try {
-          user_mention_client->UploadUserMentions(req_id, user_mentions,
-                                                  writer_text_map);
+          user_mention_client->UploadUserMentions(req_id, user_mentions);
         } catch (...) {
           LOG(error) << "Failed to upload user_mentions to user-mention-service";
           _user_mention_client_pool->Push(user_mention_client_wrapper);
@@ -161,7 +158,7 @@ void TextHandler::UploadText(
         }
         auto compose_post_client = compose_post_client_wrapper->GetClient();
         try {
-          compose_post_client->UploadText(req_id, updated_text, writer_text_map);
+          compose_post_client->UploadText(req_id, updated_text);
         } catch (...) {
           LOG(error) << "Failed to upload text to compose-post-service";
           _compose_client_pool->Push(compose_post_client_wrapper);
@@ -184,7 +181,7 @@ void TextHandler::UploadText(
     throw;
   }
 
-  span->Finish();
+  // span->Finish();
 }
 
 } //namespace social_network

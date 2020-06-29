@@ -17,7 +17,7 @@
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 
 #define CUSTOM_EPOCH 1514764800000
 
@@ -34,8 +34,7 @@ class MediaHandler : public MediaServiceIf {
   ~MediaHandler() override = default;
 
   void UploadMedia(int64_t, const std::vector<std::string> &,
-      const std::vector<int64_t> &, const std::map<std::string,
-      std::string> &) override;
+      const std::vector<int64_t> &) override;
 
  private:
   ClientPool<ThriftClient<ComposePostServiceClient>> *_compose_client_pool;
@@ -49,18 +48,17 @@ MediaHandler::MediaHandler(
 void MediaHandler::UploadMedia(
     int64_t req_id,
     const std::vector<std::string> &media_types,
-    const std::vector<int64_t> &media_ids,
-    const std::map<std::string, std::string> &carrier) {
+    const std::vector<int64_t> &media_ids) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "UploadMedia",
-      { opentracing::ChildOf(parent_span->get()) });
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "UploadMedia",
+  //     { opentracing::ChildOf(parent_span->get()) });
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   if (media_types.size() != media_ids.size()) {
     ServiceException se;
@@ -87,14 +85,14 @@ void MediaHandler::UploadMedia(
   }
   auto compose_post_client = compose_post_client_wrapper->GetClient();
   try {
-    compose_post_client->UploadMedia(req_id, media, writer_text_map);
+    compose_post_client->UploadMedia(req_id, media);
   } catch (...) {
     _compose_client_pool->Push(compose_post_client_wrapper);
     LOG(error) << "Failed to upload media to compose-post-service";
     throw;
   }
   _compose_client_pool->Push(compose_post_client_wrapper);
-  span->Finish();
+  // span->Finish();
 
 }
 

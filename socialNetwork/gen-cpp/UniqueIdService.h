@@ -21,7 +21,7 @@ namespace social_network {
 class UniqueIdServiceIf {
  public:
   virtual ~UniqueIdServiceIf() {}
-  virtual void UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void UploadUniqueId(const int64_t req_id, const PostType::type post_type) = 0;
 };
 
 class UniqueIdServiceIfFactory {
@@ -51,16 +51,15 @@ class UniqueIdServiceIfSingletonFactory : virtual public UniqueIdServiceIfFactor
 class UniqueIdServiceNull : virtual public UniqueIdServiceIf {
  public:
   virtual ~UniqueIdServiceNull() {}
-  void UploadUniqueId(const int64_t /* req_id */, const PostType::type /* post_type */, const std::map<std::string, std::string> & /* carrier */) {
+  void UploadUniqueId(const int64_t /* req_id */, const PostType::type /* post_type */) {
     return;
   }
 };
 
 typedef struct _UniqueIdService_UploadUniqueId_args__isset {
-  _UniqueIdService_UploadUniqueId_args__isset() : req_id(false), post_type(false), carrier(false) {}
+  _UniqueIdService_UploadUniqueId_args__isset() : req_id(false), post_type(false) {}
   bool req_id :1;
   bool post_type :1;
-  bool carrier :1;
 } _UniqueIdService_UploadUniqueId_args__isset;
 
 class UniqueIdService_UploadUniqueId_args {
@@ -74,7 +73,6 @@ class UniqueIdService_UploadUniqueId_args {
   virtual ~UniqueIdService_UploadUniqueId_args() throw();
   int64_t req_id;
   PostType::type post_type;
-  std::map<std::string, std::string>  carrier;
 
   _UniqueIdService_UploadUniqueId_args__isset __isset;
 
@@ -82,15 +80,11 @@ class UniqueIdService_UploadUniqueId_args {
 
   void __set_post_type(const PostType::type val);
 
-  void __set_carrier(const std::map<std::string, std::string> & val);
-
   bool operator == (const UniqueIdService_UploadUniqueId_args & rhs) const
   {
     if (!(req_id == rhs.req_id))
       return false;
     if (!(post_type == rhs.post_type))
-      return false;
-    if (!(carrier == rhs.carrier))
       return false;
     return true;
   }
@@ -113,7 +107,6 @@ class UniqueIdService_UploadUniqueId_pargs {
   virtual ~UniqueIdService_UploadUniqueId_pargs() throw();
   const int64_t* req_id;
   const PostType::type* post_type;
-  const std::map<std::string, std::string> * carrier;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -199,8 +192,8 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
-  void send_UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
+  void UploadUniqueId(const int64_t req_id, const PostType::type post_type);
+  void send_UploadUniqueId(const int64_t req_id, const PostType::type post_type);
   void recv_UploadUniqueId();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
@@ -250,13 +243,13 @@ class UniqueIdServiceMultiface : virtual public UniqueIdServiceIf {
     ifaces_.push_back(iface);
   }
  public:
-  void UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier) {
+  void UploadUniqueId(const int64_t req_id, const PostType::type post_type) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->UploadUniqueId(req_id, post_type, carrier);
+      ifaces_[i]->UploadUniqueId(req_id, post_type);
     }
-    ifaces_[i]->UploadUniqueId(req_id, post_type, carrier);
+    ifaces_[i]->UploadUniqueId(req_id, post_type);
   }
 
 };
@@ -289,8 +282,8 @@ class UniqueIdServiceConcurrentClient : virtual public UniqueIdServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
-  int32_t send_UploadUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
+  void UploadUniqueId(const int64_t req_id, const PostType::type post_type);
+  int32_t send_UploadUniqueId(const int64_t req_id, const PostType::type post_type);
   void recv_UploadUniqueId(const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;

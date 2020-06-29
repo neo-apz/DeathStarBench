@@ -74,29 +74,6 @@ uint32_t UserService_RegisterUser_args::read(::apache::thrift::protocol::TProtoc
           xfer += iprot->skip(ftype);
         }
         break;
-      case 6:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size53;
-            ::apache::thrift::protocol::TType _ktype54;
-            ::apache::thrift::protocol::TType _vtype55;
-            xfer += iprot->readMapBegin(_ktype54, _vtype55, _size53);
-            uint32_t _i57;
-            for (_i57 = 0; _i57 < _size53; ++_i57)
-            {
-              std::string _key58;
-              xfer += iprot->readString(_key58);
-              std::string& _val59 = this->carrier[_key58];
-              xfer += iprot->readString(_val59);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -134,19 +111,6 @@ uint32_t UserService_RegisterUser_args::write(::apache::thrift::protocol::TProto
   xfer += oprot->writeString(this->password);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 6);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter60;
-    for (_iter60 = this->carrier.begin(); _iter60 != this->carrier.end(); ++_iter60)
-    {
-      xfer += oprot->writeString(_iter60->first);
-      xfer += oprot->writeString(_iter60->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -180,19 +144,6 @@ uint32_t UserService_RegisterUser_pargs::write(::apache::thrift::protocol::TProt
 
   xfer += oprot->writeFieldBegin("password", ::apache::thrift::protocol::T_STRING, 5);
   xfer += oprot->writeString((*(this->password)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 6);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter61;
-    for (_iter61 = (*(this->carrier)).begin(); _iter61 != (*(this->carrier)).end(); ++_iter61)
-    {
-      xfer += oprot->writeString(_iter61->first);
-      xfer += oprot->writeString(_iter61->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -382,29 +333,6 @@ uint32_t UserService_RegisterUserWithId_args::read(::apache::thrift::protocol::T
           xfer += iprot->skip(ftype);
         }
         break;
-      case 7:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size62;
-            ::apache::thrift::protocol::TType _ktype63;
-            ::apache::thrift::protocol::TType _vtype64;
-            xfer += iprot->readMapBegin(_ktype63, _vtype64, _size62);
-            uint32_t _i66;
-            for (_i66 = 0; _i66 < _size62; ++_i66)
-            {
-              std::string _key67;
-              xfer += iprot->readString(_key67);
-              std::string& _val68 = this->carrier[_key67];
-              xfer += iprot->readString(_val68);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -446,19 +374,6 @@ uint32_t UserService_RegisterUserWithId_args::write(::apache::thrift::protocol::
   xfer += oprot->writeI64(this->user_id);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 7);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter69;
-    for (_iter69 = this->carrier.begin(); _iter69 != this->carrier.end(); ++_iter69)
-    {
-      xfer += oprot->writeString(_iter69->first);
-      xfer += oprot->writeString(_iter69->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -496,19 +411,6 @@ uint32_t UserService_RegisterUserWithId_pargs::write(::apache::thrift::protocol:
 
   xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 6);
   xfer += oprot->writeI64((*(this->user_id)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 7);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter70;
-    for (_iter70 = (*(this->carrier)).begin(); _iter70 != (*(this->carrier)).end(); ++_iter70)
-    {
-      xfer += oprot->writeString(_iter70->first);
-      xfer += oprot->writeString(_iter70->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -674,29 +576,6 @@ uint32_t UserService_Login_args::read(::apache::thrift::protocol::TProtocol* ipr
           xfer += iprot->skip(ftype);
         }
         break;
-      case 4:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size71;
-            ::apache::thrift::protocol::TType _ktype72;
-            ::apache::thrift::protocol::TType _vtype73;
-            xfer += iprot->readMapBegin(_ktype72, _vtype73, _size71);
-            uint32_t _i75;
-            for (_i75 = 0; _i75 < _size71; ++_i75)
-            {
-              std::string _key76;
-              xfer += iprot->readString(_key76);
-              std::string& _val77 = this->carrier[_key76];
-              xfer += iprot->readString(_val77);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -726,19 +605,6 @@ uint32_t UserService_Login_args::write(::apache::thrift::protocol::TProtocol* op
   xfer += oprot->writeString(this->password);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 4);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter78;
-    for (_iter78 = this->carrier.begin(); _iter78 != this->carrier.end(); ++_iter78)
-    {
-      xfer += oprot->writeString(_iter78->first);
-      xfer += oprot->writeString(_iter78->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -764,19 +630,6 @@ uint32_t UserService_Login_pargs::write(::apache::thrift::protocol::TProtocol* o
 
   xfer += oprot->writeFieldBegin("password", ::apache::thrift::protocol::T_STRING, 3);
   xfer += oprot->writeString((*(this->password)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 4);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter79;
-    for (_iter79 = (*(this->carrier)).begin(); _iter79 != (*(this->carrier)).end(); ++_iter79)
-    {
-      xfer += oprot->writeString(_iter79->first);
-      xfer += oprot->writeString(_iter79->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -962,29 +815,6 @@ uint32_t UserService_UploadCreatorWithUserId_args::read(::apache::thrift::protoc
           xfer += iprot->skip(ftype);
         }
         break;
-      case 4:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size80;
-            ::apache::thrift::protocol::TType _ktype81;
-            ::apache::thrift::protocol::TType _vtype82;
-            xfer += iprot->readMapBegin(_ktype81, _vtype82, _size80);
-            uint32_t _i84;
-            for (_i84 = 0; _i84 < _size80; ++_i84)
-            {
-              std::string _key85;
-              xfer += iprot->readString(_key85);
-              std::string& _val86 = this->carrier[_key85];
-              xfer += iprot->readString(_val86);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -1014,19 +844,6 @@ uint32_t UserService_UploadCreatorWithUserId_args::write(::apache::thrift::proto
   xfer += oprot->writeString(this->username);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 4);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter87;
-    for (_iter87 = this->carrier.begin(); _iter87 != this->carrier.end(); ++_iter87)
-    {
-      xfer += oprot->writeString(_iter87->first);
-      xfer += oprot->writeString(_iter87->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1052,19 +869,6 @@ uint32_t UserService_UploadCreatorWithUserId_pargs::write(::apache::thrift::prot
 
   xfer += oprot->writeFieldBegin("username", ::apache::thrift::protocol::T_STRING, 3);
   xfer += oprot->writeString((*(this->username)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 4);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter88;
-    for (_iter88 = (*(this->carrier)).begin(); _iter88 != (*(this->carrier)).end(); ++_iter88)
-    {
-      xfer += oprot->writeString(_iter88->first);
-      xfer += oprot->writeString(_iter88->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -1222,29 +1026,6 @@ uint32_t UserService_UploadCreatorWithUsername_args::read(::apache::thrift::prot
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size89;
-            ::apache::thrift::protocol::TType _ktype90;
-            ::apache::thrift::protocol::TType _vtype91;
-            xfer += iprot->readMapBegin(_ktype90, _vtype91, _size89);
-            uint32_t _i93;
-            for (_i93 = 0; _i93 < _size89; ++_i93)
-            {
-              std::string _key94;
-              xfer += iprot->readString(_key94);
-              std::string& _val95 = this->carrier[_key94];
-              xfer += iprot->readString(_val95);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -1270,19 +1051,6 @@ uint32_t UserService_UploadCreatorWithUsername_args::write(::apache::thrift::pro
   xfer += oprot->writeString(this->username);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter96;
-    for (_iter96 = this->carrier.begin(); _iter96 != this->carrier.end(); ++_iter96)
-    {
-      xfer += oprot->writeString(_iter96->first);
-      xfer += oprot->writeString(_iter96->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1304,19 +1072,6 @@ uint32_t UserService_UploadCreatorWithUsername_pargs::write(::apache::thrift::pr
 
   xfer += oprot->writeFieldBegin("username", ::apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString((*(this->username)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter97;
-    for (_iter97 = (*(this->carrier)).begin(); _iter97 != (*(this->carrier)).end(); ++_iter97)
-    {
-      xfer += oprot->writeString(_iter97->first);
-      xfer += oprot->writeString(_iter97->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -1474,29 +1229,6 @@ uint32_t UserService_GetUserId_args::read(::apache::thrift::protocol::TProtocol*
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size98;
-            ::apache::thrift::protocol::TType _ktype99;
-            ::apache::thrift::protocol::TType _vtype100;
-            xfer += iprot->readMapBegin(_ktype99, _vtype100, _size98);
-            uint32_t _i102;
-            for (_i102 = 0; _i102 < _size98; ++_i102)
-            {
-              std::string _key103;
-              xfer += iprot->readString(_key103);
-              std::string& _val104 = this->carrier[_key103];
-              xfer += iprot->readString(_val104);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -1522,19 +1254,6 @@ uint32_t UserService_GetUserId_args::write(::apache::thrift::protocol::TProtocol
   xfer += oprot->writeString(this->username);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter105;
-    for (_iter105 = this->carrier.begin(); _iter105 != this->carrier.end(); ++_iter105)
-    {
-      xfer += oprot->writeString(_iter105->first);
-      xfer += oprot->writeString(_iter105->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1556,19 +1275,6 @@ uint32_t UserService_GetUserId_pargs::write(::apache::thrift::protocol::TProtoco
 
   xfer += oprot->writeFieldBegin("username", ::apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString((*(this->username)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter106;
-    for (_iter106 = (*(this->carrier)).begin(); _iter106 != (*(this->carrier)).end(); ++_iter106)
-    {
-      xfer += oprot->writeString(_iter106->first);
-      xfer += oprot->writeString(_iter106->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -1704,13 +1410,13 @@ uint32_t UserService_GetUserId_presult::read(::apache::thrift::protocol::TProtoc
   return xfer;
 }
 
-void UserServiceClient::RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password)
 {
-  send_RegisterUser(req_id, first_name, last_name, username, password, carrier);
+  send_RegisterUser(req_id, first_name, last_name, username, password);
   recv_RegisterUser();
 }
 
-void UserServiceClient::send_RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::send_RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1721,7 +1427,6 @@ void UserServiceClient::send_RegisterUser(const int64_t req_id, const std::strin
   args.last_name = &last_name;
   args.username = &username;
   args.password = &password;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1765,13 +1470,13 @@ void UserServiceClient::recv_RegisterUser()
   return;
 }
 
-void UserServiceClient::RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id)
 {
-  send_RegisterUserWithId(req_id, first_name, last_name, username, password, user_id, carrier);
+  send_RegisterUserWithId(req_id, first_name, last_name, username, password, user_id);
   recv_RegisterUserWithId();
 }
 
-void UserServiceClient::send_RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::send_RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1783,7 +1488,6 @@ void UserServiceClient::send_RegisterUserWithId(const int64_t req_id, const std:
   args.username = &username;
   args.password = &password;
   args.user_id = &user_id;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1827,13 +1531,13 @@ void UserServiceClient::recv_RegisterUserWithId()
   return;
 }
 
-void UserServiceClient::Login(std::string& _return, const int64_t req_id, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::Login(std::string& _return, const int64_t req_id, const std::string& username, const std::string& password)
 {
-  send_Login(req_id, username, password, carrier);
+  send_Login(req_id, username, password);
   recv_Login(_return);
 }
 
-void UserServiceClient::send_Login(const int64_t req_id, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::send_Login(const int64_t req_id, const std::string& username, const std::string& password)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("Login", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1842,7 +1546,6 @@ void UserServiceClient::send_Login(const int64_t req_id, const std::string& user
   args.req_id = &req_id;
   args.username = &username;
   args.password = &password;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1891,13 +1594,13 @@ void UserServiceClient::recv_Login(std::string& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "Login failed: unknown result");
 }
 
-void UserServiceClient::UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username)
 {
-  send_UploadCreatorWithUserId(req_id, user_id, username, carrier);
+  send_UploadCreatorWithUserId(req_id, user_id, username);
   recv_UploadCreatorWithUserId();
 }
 
-void UserServiceClient::send_UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::send_UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadCreatorWithUserId", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1906,7 +1609,6 @@ void UserServiceClient::send_UploadCreatorWithUserId(const int64_t req_id, const
   args.req_id = &req_id;
   args.user_id = &user_id;
   args.username = &username;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1950,13 +1652,13 @@ void UserServiceClient::recv_UploadCreatorWithUserId()
   return;
 }
 
-void UserServiceClient::UploadCreatorWithUsername(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::UploadCreatorWithUsername(const int64_t req_id, const std::string& username)
 {
-  send_UploadCreatorWithUsername(req_id, username, carrier);
+  send_UploadCreatorWithUsername(req_id, username);
   recv_UploadCreatorWithUsername();
 }
 
-void UserServiceClient::send_UploadCreatorWithUsername(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::send_UploadCreatorWithUsername(const int64_t req_id, const std::string& username)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadCreatorWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1964,7 +1666,6 @@ void UserServiceClient::send_UploadCreatorWithUsername(const int64_t req_id, con
   UserService_UploadCreatorWithUsername_pargs args;
   args.req_id = &req_id;
   args.username = &username;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2008,13 +1709,13 @@ void UserServiceClient::recv_UploadCreatorWithUsername()
   return;
 }
 
-int64_t UserServiceClient::GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+int64_t UserServiceClient::GetUserId(const int64_t req_id, const std::string& username)
 {
-  send_GetUserId(req_id, username, carrier);
+  send_GetUserId(req_id, username);
   return recv_GetUserId();
 }
 
-void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& username)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -2022,7 +1723,6 @@ void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& 
   UserService_GetUserId_pargs args;
   args.req_id = &req_id;
   args.username = &username;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2113,7 +1813,7 @@ void UserServiceProcessor::process_RegisterUser(int32_t seqid, ::apache::thrift:
 
   UserService_RegisterUser_result result;
   try {
-    iface_->RegisterUser(args.req_id, args.first_name, args.last_name, args.username, args.password, args.carrier);
+    iface_->RegisterUser(args.req_id, args.first_name, args.last_name, args.username, args.password);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2169,7 +1869,7 @@ void UserServiceProcessor::process_RegisterUserWithId(int32_t seqid, ::apache::t
 
   UserService_RegisterUserWithId_result result;
   try {
-    iface_->RegisterUserWithId(args.req_id, args.first_name, args.last_name, args.username, args.password, args.user_id, args.carrier);
+    iface_->RegisterUserWithId(args.req_id, args.first_name, args.last_name, args.username, args.password, args.user_id);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2225,7 +1925,7 @@ void UserServiceProcessor::process_Login(int32_t seqid, ::apache::thrift::protoc
 
   UserService_Login_result result;
   try {
-    iface_->Login(result.success, args.req_id, args.username, args.password, args.carrier);
+    iface_->Login(result.success, args.req_id, args.username, args.password);
     result.__isset.success = true;
   } catch (ServiceException &se) {
     result.se = se;
@@ -2282,7 +1982,7 @@ void UserServiceProcessor::process_UploadCreatorWithUserId(int32_t seqid, ::apac
 
   UserService_UploadCreatorWithUserId_result result;
   try {
-    iface_->UploadCreatorWithUserId(args.req_id, args.user_id, args.username, args.carrier);
+    iface_->UploadCreatorWithUserId(args.req_id, args.user_id, args.username);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2338,7 +2038,7 @@ void UserServiceProcessor::process_UploadCreatorWithUsername(int32_t seqid, ::ap
 
   UserService_UploadCreatorWithUsername_result result;
   try {
-    iface_->UploadCreatorWithUsername(args.req_id, args.username, args.carrier);
+    iface_->UploadCreatorWithUsername(args.req_id, args.username);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -2394,7 +2094,7 @@ void UserServiceProcessor::process_GetUserId(int32_t seqid, ::apache::thrift::pr
 
   UserService_GetUserId_result result;
   try {
-    result.success = iface_->GetUserId(args.req_id, args.username, args.carrier);
+    result.success = iface_->GetUserId(args.req_id, args.username);
     result.__isset.success = true;
   } catch (ServiceException &se) {
     result.se = se;
@@ -2435,13 +2135,13 @@ void UserServiceProcessor::process_GetUserId(int32_t seqid, ::apache::thrift::pr
   return processor;
 }
 
-void UserServiceConcurrentClient::RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier)
+void UserServiceConcurrentClient::RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password)
 {
-  int32_t seqid = send_RegisterUser(req_id, first_name, last_name, username, password, carrier);
+  int32_t seqid = send_RegisterUser(req_id, first_name, last_name, username, password);
   recv_RegisterUser(seqid);
 }
 
-int32_t UserServiceConcurrentClient::send_RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier)
+int32_t UserServiceConcurrentClient::send_RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2453,7 +2153,6 @@ int32_t UserServiceConcurrentClient::send_RegisterUser(const int64_t req_id, con
   args.last_name = &last_name;
   args.username = &username;
   args.password = &password;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2522,13 +2221,13 @@ void UserServiceConcurrentClient::recv_RegisterUser(const int32_t seqid)
   } // end while(true)
 }
 
-void UserServiceConcurrentClient::RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id, const std::map<std::string, std::string> & carrier)
+void UserServiceConcurrentClient::RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id)
 {
-  int32_t seqid = send_RegisterUserWithId(req_id, first_name, last_name, username, password, user_id, carrier);
+  int32_t seqid = send_RegisterUserWithId(req_id, first_name, last_name, username, password, user_id);
   recv_RegisterUserWithId(seqid);
 }
 
-int32_t UserServiceConcurrentClient::send_RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id, const std::map<std::string, std::string> & carrier)
+int32_t UserServiceConcurrentClient::send_RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2541,7 +2240,6 @@ int32_t UserServiceConcurrentClient::send_RegisterUserWithId(const int64_t req_i
   args.username = &username;
   args.password = &password;
   args.user_id = &user_id;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2610,13 +2308,13 @@ void UserServiceConcurrentClient::recv_RegisterUserWithId(const int32_t seqid)
   } // end while(true)
 }
 
-void UserServiceConcurrentClient::Login(std::string& _return, const int64_t req_id, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier)
+void UserServiceConcurrentClient::Login(std::string& _return, const int64_t req_id, const std::string& username, const std::string& password)
 {
-  int32_t seqid = send_Login(req_id, username, password, carrier);
+  int32_t seqid = send_Login(req_id, username, password);
   recv_Login(_return, seqid);
 }
 
-int32_t UserServiceConcurrentClient::send_Login(const int64_t req_id, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier)
+int32_t UserServiceConcurrentClient::send_Login(const int64_t req_id, const std::string& username, const std::string& password)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2626,7 +2324,6 @@ int32_t UserServiceConcurrentClient::send_Login(const int64_t req_id, const std:
   args.req_id = &req_id;
   args.username = &username;
   args.password = &password;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2701,13 +2398,13 @@ void UserServiceConcurrentClient::recv_Login(std::string& _return, const int32_t
   } // end while(true)
 }
 
-void UserServiceConcurrentClient::UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+void UserServiceConcurrentClient::UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username)
 {
-  int32_t seqid = send_UploadCreatorWithUserId(req_id, user_id, username, carrier);
+  int32_t seqid = send_UploadCreatorWithUserId(req_id, user_id, username);
   recv_UploadCreatorWithUserId(seqid);
 }
 
-int32_t UserServiceConcurrentClient::send_UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+int32_t UserServiceConcurrentClient::send_UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2717,7 +2414,6 @@ int32_t UserServiceConcurrentClient::send_UploadCreatorWithUserId(const int64_t 
   args.req_id = &req_id;
   args.user_id = &user_id;
   args.username = &username;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2786,13 +2482,13 @@ void UserServiceConcurrentClient::recv_UploadCreatorWithUserId(const int32_t seq
   } // end while(true)
 }
 
-void UserServiceConcurrentClient::UploadCreatorWithUsername(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+void UserServiceConcurrentClient::UploadCreatorWithUsername(const int64_t req_id, const std::string& username)
 {
-  int32_t seqid = send_UploadCreatorWithUsername(req_id, username, carrier);
+  int32_t seqid = send_UploadCreatorWithUsername(req_id, username);
   recv_UploadCreatorWithUsername(seqid);
 }
 
-int32_t UserServiceConcurrentClient::send_UploadCreatorWithUsername(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+int32_t UserServiceConcurrentClient::send_UploadCreatorWithUsername(const int64_t req_id, const std::string& username)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2801,7 +2497,6 @@ int32_t UserServiceConcurrentClient::send_UploadCreatorWithUsername(const int64_
   UserService_UploadCreatorWithUsername_pargs args;
   args.req_id = &req_id;
   args.username = &username;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2870,13 +2565,13 @@ void UserServiceConcurrentClient::recv_UploadCreatorWithUsername(const int32_t s
   } // end while(true)
 }
 
-int64_t UserServiceConcurrentClient::GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+int64_t UserServiceConcurrentClient::GetUserId(const int64_t req_id, const std::string& username)
 {
-  int32_t seqid = send_GetUserId(req_id, username, carrier);
+  int32_t seqid = send_GetUserId(req_id, username);
   return recv_GetUserId(seqid);
 }
 
-int32_t UserServiceConcurrentClient::send_GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier)
+int32_t UserServiceConcurrentClient::send_GetUserId(const int64_t req_id, const std::string& username)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2885,7 +2580,6 @@ int32_t UserServiceConcurrentClient::send_GetUserId(const int64_t req_id, const 
   UserService_GetUserId_pargs args;
   args.req_id = &req_id;
   args.username = &username;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

@@ -20,37 +20,37 @@ class SocialGraphServiceHandler : virtual public SocialGraphServiceIf {
     // Your initialization goes here
   }
 
-  void GetFollowers(std::vector<int64_t> & _return, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) {
+  void GetFollowers(std::vector<int64_t> & _return, const int64_t req_id, const int64_t user_id) {
     // Your implementation goes here
     printf("GetFollowers\n");
   }
 
-  void GetFollowees(std::vector<int64_t> & _return, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) {
+  void GetFollowees(std::vector<int64_t> & _return, const int64_t req_id, const int64_t user_id) {
     // Your implementation goes here
     printf("GetFollowees\n");
   }
 
-  void Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier) {
+  void Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
     // Your implementation goes here
     printf("Follow\n");
   }
 
-  void Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier) {
+  void Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
     // Your implementation goes here
     printf("Unfollow\n");
   }
 
-  void FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier) {
+  void FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
     // Your implementation goes here
     printf("FollowWithUsername\n");
   }
 
-  void UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier) {
+  void UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
     // Your implementation goes here
     printf("UnfollowWithUsername\n");
   }
 
-  void InsertUser(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) {
+  void InsertUser(const int64_t req_id, const int64_t user_id) {
     // Your implementation goes here
     printf("InsertUser\n");
   }

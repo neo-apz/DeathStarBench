@@ -19,7 +19,7 @@
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 
 // Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
 #define CUSTOM_EPOCH 1514764800000
@@ -55,8 +55,7 @@ class UniqueIdHandler : public UniqueIdServiceIf {
       const std::string &,
       ClientPool<ThriftClient<ComposePostServiceClient>> *);
 
-  void UploadUniqueId(int64_t, PostType::type,
-      const std::map<std::string, std::string> &) override;
+  void UploadUniqueId(int64_t, PostType::type) override;
 
  private:
   std::mutex *_thread_lock;
@@ -75,18 +74,17 @@ UniqueIdHandler::UniqueIdHandler(
 
 void UniqueIdHandler::UploadUniqueId(
     int64_t req_id,
-    PostType::type post_type,
-    const std::map<std::string, std::string> & carrier) {
+    PostType::type post_type) {
 
   // Initialize a span
-  TextMapReader reader(carrier);
-  std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "UploadUniqueId",
-      { opentracing::ChildOf(parent_span->get()) });
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapReader reader(carrier);
+  // std::map<std::string, std::string> writer_text_map;
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "UploadUniqueId",
+  //     { opentracing::ChildOf(parent_span->get()) });
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   _thread_lock->lock();
   int64_t timestamp = duration_cast<milliseconds>(
@@ -131,7 +129,7 @@ void UniqueIdHandler::UploadUniqueId(
   }
   auto compose_post_client = compose_post_client_wrapper->GetClient();
   try {
-    compose_post_client->UploadUniqueId(req_id, post_id, post_type, writer_text_map);    
+    compose_post_client->UploadUniqueId(req_id, post_id, post_type);    
   } catch (...) {
     _compose_client_pool->Push(compose_post_client_wrapper);
     LOG(error) << "Failed to upload unique-id to compose-post-service";
@@ -139,7 +137,7 @@ void UniqueIdHandler::UploadUniqueId(
   }
   _compose_client_pool->Push(compose_post_client_wrapper);
 
-  span->Finish();
+  // span->Finish();
 }
 
 /*

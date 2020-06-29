@@ -50,29 +50,6 @@ uint32_t TextService_UploadText_args::read(::apache::thrift::protocol::TProtocol
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size44;
-            ::apache::thrift::protocol::TType _ktype45;
-            ::apache::thrift::protocol::TType _vtype46;
-            xfer += iprot->readMapBegin(_ktype45, _vtype46, _size44);
-            uint32_t _i48;
-            for (_i48 = 0; _i48 < _size44; ++_i48)
-            {
-              std::string _key49;
-              xfer += iprot->readString(_key49);
-              std::string& _val50 = this->carrier[_key49];
-              xfer += iprot->readString(_val50);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -98,19 +75,6 @@ uint32_t TextService_UploadText_args::write(::apache::thrift::protocol::TProtoco
   xfer += oprot->writeString(this->text);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter51;
-    for (_iter51 = this->carrier.begin(); _iter51 != this->carrier.end(); ++_iter51)
-    {
-      xfer += oprot->writeString(_iter51->first);
-      xfer += oprot->writeString(_iter51->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -132,19 +96,6 @@ uint32_t TextService_UploadText_pargs::write(::apache::thrift::protocol::TProtoc
 
   xfer += oprot->writeFieldBegin("text", ::apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString((*(this->text)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter52;
-    for (_iter52 = (*(this->carrier)).begin(); _iter52 != (*(this->carrier)).end(); ++_iter52)
-    {
-      xfer += oprot->writeString(_iter52->first);
-      xfer += oprot->writeString(_iter52->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -260,13 +211,13 @@ uint32_t TextService_UploadText_presult::read(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-void TextServiceClient::UploadText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier)
+void TextServiceClient::UploadText(const int64_t req_id, const std::string& text)
 {
-  send_UploadText(req_id, text, carrier);
+  send_UploadText(req_id, text);
   recv_UploadText();
 }
 
-void TextServiceClient::send_UploadText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier)
+void TextServiceClient::send_UploadText(const int64_t req_id, const std::string& text)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadText", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -274,7 +225,6 @@ void TextServiceClient::send_UploadText(const int64_t req_id, const std::string&
   TextService_UploadText_pargs args;
   args.req_id = &req_id;
   args.text = &text;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -360,7 +310,7 @@ void TextServiceProcessor::process_UploadText(int32_t seqid, ::apache::thrift::p
 
   TextService_UploadText_result result;
   try {
-    iface_->UploadText(args.req_id, args.text, args.carrier);
+    iface_->UploadText(args.req_id, args.text);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -400,13 +350,13 @@ void TextServiceProcessor::process_UploadText(int32_t seqid, ::apache::thrift::p
   return processor;
 }
 
-void TextServiceConcurrentClient::UploadText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier)
+void TextServiceConcurrentClient::UploadText(const int64_t req_id, const std::string& text)
 {
-  int32_t seqid = send_UploadText(req_id, text, carrier);
+  int32_t seqid = send_UploadText(req_id, text);
   recv_UploadText(seqid);
 }
 
-int32_t TextServiceConcurrentClient::send_UploadText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier)
+int32_t TextServiceConcurrentClient::send_UploadText(const int64_t req_id, const std::string& text)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -415,7 +365,6 @@ int32_t TextServiceConcurrentClient::send_UploadText(const int64_t req_id, const
   TextService_UploadText_pargs args;
   args.req_id = &req_id;
   args.text = &text;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

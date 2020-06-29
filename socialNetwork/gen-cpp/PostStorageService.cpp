@@ -50,29 +50,6 @@ uint32_t PostStorageService_StorePost_args::read(::apache::thrift::protocol::TPr
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size183;
-            ::apache::thrift::protocol::TType _ktype184;
-            ::apache::thrift::protocol::TType _vtype185;
-            xfer += iprot->readMapBegin(_ktype184, _vtype185, _size183);
-            uint32_t _i187;
-            for (_i187 = 0; _i187 < _size183; ++_i187)
-            {
-              std::string _key188;
-              xfer += iprot->readString(_key188);
-              std::string& _val189 = this->carrier[_key188];
-              xfer += iprot->readString(_val189);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -98,19 +75,6 @@ uint32_t PostStorageService_StorePost_args::write(::apache::thrift::protocol::TP
   xfer += this->post.write(oprot);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter190;
-    for (_iter190 = this->carrier.begin(); _iter190 != this->carrier.end(); ++_iter190)
-    {
-      xfer += oprot->writeString(_iter190->first);
-      xfer += oprot->writeString(_iter190->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -132,19 +96,6 @@ uint32_t PostStorageService_StorePost_pargs::write(::apache::thrift::protocol::T
 
   xfer += oprot->writeFieldBegin("post", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += (*(this->post)).write(oprot);
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter191;
-    for (_iter191 = (*(this->carrier)).begin(); _iter191 != (*(this->carrier)).end(); ++_iter191)
-    {
-      xfer += oprot->writeString(_iter191->first);
-      xfer += oprot->writeString(_iter191->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -302,29 +253,6 @@ uint32_t PostStorageService_ReadPost_args::read(::apache::thrift::protocol::TPro
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size192;
-            ::apache::thrift::protocol::TType _ktype193;
-            ::apache::thrift::protocol::TType _vtype194;
-            xfer += iprot->readMapBegin(_ktype193, _vtype194, _size192);
-            uint32_t _i196;
-            for (_i196 = 0; _i196 < _size192; ++_i196)
-            {
-              std::string _key197;
-              xfer += iprot->readString(_key197);
-              std::string& _val198 = this->carrier[_key197];
-              xfer += iprot->readString(_val198);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -350,19 +278,6 @@ uint32_t PostStorageService_ReadPost_args::write(::apache::thrift::protocol::TPr
   xfer += oprot->writeI64(this->post_id);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter199;
-    for (_iter199 = this->carrier.begin(); _iter199 != this->carrier.end(); ++_iter199)
-    {
-      xfer += oprot->writeString(_iter199->first);
-      xfer += oprot->writeString(_iter199->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -384,19 +299,6 @@ uint32_t PostStorageService_ReadPost_pargs::write(::apache::thrift::protocol::TP
 
   xfer += oprot->writeFieldBegin("post_id", ::apache::thrift::protocol::T_I64, 2);
   xfer += oprot->writeI64((*(this->post_id)));
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter200;
-    for (_iter200 = (*(this->carrier)).begin(); _iter200 != (*(this->carrier)).end(); ++_iter200)
-    {
-      xfer += oprot->writeString(_iter200->first);
-      xfer += oprot->writeString(_iter200->second);
-    }
-    xfer += oprot->writeMapEnd();
-  }
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -570,41 +472,18 @@ uint32_t PostStorageService_ReadPosts_args::read(::apache::thrift::protocol::TPr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->post_ids.clear();
-            uint32_t _size201;
-            ::apache::thrift::protocol::TType _etype204;
-            xfer += iprot->readListBegin(_etype204, _size201);
-            this->post_ids.resize(_size201);
-            uint32_t _i205;
-            for (_i205 = 0; _i205 < _size201; ++_i205)
+            uint32_t _size57;
+            ::apache::thrift::protocol::TType _etype60;
+            xfer += iprot->readListBegin(_etype60, _size57);
+            this->post_ids.resize(_size57);
+            uint32_t _i61;
+            for (_i61 = 0; _i61 < _size57; ++_i61)
             {
-              xfer += iprot->readI64(this->post_ids[_i205]);
+              xfer += iprot->readI64(this->post_ids[_i61]);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.post_ids = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->carrier.clear();
-            uint32_t _size206;
-            ::apache::thrift::protocol::TType _ktype207;
-            ::apache::thrift::protocol::TType _vtype208;
-            xfer += iprot->readMapBegin(_ktype207, _vtype208, _size206);
-            uint32_t _i210;
-            for (_i210 = 0; _i210 < _size206; ++_i210)
-            {
-              std::string _key211;
-              xfer += iprot->readString(_key211);
-              std::string& _val212 = this->carrier[_key211];
-              xfer += iprot->readString(_val212);
-            }
-            xfer += iprot->readMapEnd();
-          }
-          this->__isset.carrier = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -633,25 +512,12 @@ uint32_t PostStorageService_ReadPosts_args::write(::apache::thrift::protocol::TP
   xfer += oprot->writeFieldBegin("post_ids", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->post_ids.size()));
-    std::vector<int64_t> ::const_iterator _iter213;
-    for (_iter213 = this->post_ids.begin(); _iter213 != this->post_ids.end(); ++_iter213)
+    std::vector<int64_t> ::const_iterator _iter62;
+    for (_iter62 = this->post_ids.begin(); _iter62 != this->post_ids.end(); ++_iter62)
     {
-      xfer += oprot->writeI64((*_iter213));
+      xfer += oprot->writeI64((*_iter62));
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter214;
-    for (_iter214 = this->carrier.begin(); _iter214 != this->carrier.end(); ++_iter214)
-    {
-      xfer += oprot->writeString(_iter214->first);
-      xfer += oprot->writeString(_iter214->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -677,25 +543,12 @@ uint32_t PostStorageService_ReadPosts_pargs::write(::apache::thrift::protocol::T
   xfer += oprot->writeFieldBegin("post_ids", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>((*(this->post_ids)).size()));
-    std::vector<int64_t> ::const_iterator _iter215;
-    for (_iter215 = (*(this->post_ids)).begin(); _iter215 != (*(this->post_ids)).end(); ++_iter215)
+    std::vector<int64_t> ::const_iterator _iter63;
+    for (_iter63 = (*(this->post_ids)).begin(); _iter63 != (*(this->post_ids)).end(); ++_iter63)
     {
-      xfer += oprot->writeI64((*_iter215));
+      xfer += oprot->writeI64((*_iter63));
     }
     xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-
-  xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter216;
-    for (_iter216 = (*(this->carrier)).begin(); _iter216 != (*(this->carrier)).end(); ++_iter216)
-    {
-      xfer += oprot->writeString(_iter216->first);
-      xfer += oprot->writeString(_iter216->second);
-    }
-    xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
 
@@ -734,14 +587,14 @@ uint32_t PostStorageService_ReadPosts_result::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size217;
-            ::apache::thrift::protocol::TType _etype220;
-            xfer += iprot->readListBegin(_etype220, _size217);
-            this->success.resize(_size217);
-            uint32_t _i221;
-            for (_i221 = 0; _i221 < _size217; ++_i221)
+            uint32_t _size64;
+            ::apache::thrift::protocol::TType _etype67;
+            xfer += iprot->readListBegin(_etype67, _size64);
+            this->success.resize(_size64);
+            uint32_t _i68;
+            for (_i68 = 0; _i68 < _size64; ++_i68)
             {
-              xfer += this->success[_i221].read(iprot);
+              xfer += this->success[_i68].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -780,10 +633,10 @@ uint32_t PostStorageService_ReadPosts_result::write(::apache::thrift::protocol::
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Post> ::const_iterator _iter222;
-      for (_iter222 = this->success.begin(); _iter222 != this->success.end(); ++_iter222)
+      std::vector<Post> ::const_iterator _iter69;
+      for (_iter69 = this->success.begin(); _iter69 != this->success.end(); ++_iter69)
       {
-        xfer += (*_iter222).write(oprot);
+        xfer += (*_iter69).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -828,14 +681,14 @@ uint32_t PostStorageService_ReadPosts_presult::read(::apache::thrift::protocol::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size223;
-            ::apache::thrift::protocol::TType _etype226;
-            xfer += iprot->readListBegin(_etype226, _size223);
-            (*(this->success)).resize(_size223);
-            uint32_t _i227;
-            for (_i227 = 0; _i227 < _size223; ++_i227)
+            uint32_t _size70;
+            ::apache::thrift::protocol::TType _etype73;
+            xfer += iprot->readListBegin(_etype73, _size70);
+            (*(this->success)).resize(_size70);
+            uint32_t _i74;
+            for (_i74 = 0; _i74 < _size70; ++_i74)
             {
-              xfer += (*(this->success))[_i227].read(iprot);
+              xfer += (*(this->success))[_i74].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -864,13 +717,13 @@ uint32_t PostStorageService_ReadPosts_presult::read(::apache::thrift::protocol::
   return xfer;
 }
 
-void PostStorageServiceClient::StorePost(const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceClient::StorePost(const int64_t req_id, const Post& post)
 {
-  send_StorePost(req_id, post, carrier);
+  send_StorePost(req_id, post);
   recv_StorePost();
 }
 
-void PostStorageServiceClient::send_StorePost(const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceClient::send_StorePost(const int64_t req_id, const Post& post)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -878,7 +731,6 @@ void PostStorageServiceClient::send_StorePost(const int64_t req_id, const Post& 
   PostStorageService_StorePost_pargs args;
   args.req_id = &req_id;
   args.post = &post;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -922,13 +774,13 @@ void PostStorageServiceClient::recv_StorePost()
   return;
 }
 
-void PostStorageServiceClient::ReadPost(Post& _return, const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceClient::ReadPost(Post& _return, const int64_t req_id, const int64_t post_id)
 {
-  send_ReadPost(req_id, post_id, carrier);
+  send_ReadPost(req_id, post_id);
   recv_ReadPost(_return);
 }
 
-void PostStorageServiceClient::send_ReadPost(const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceClient::send_ReadPost(const int64_t req_id, const int64_t post_id)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ReadPost", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -936,7 +788,6 @@ void PostStorageServiceClient::send_ReadPost(const int64_t req_id, const int64_t
   PostStorageService_ReadPost_pargs args;
   args.req_id = &req_id;
   args.post_id = &post_id;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -985,13 +836,13 @@ void PostStorageServiceClient::recv_ReadPost(Post& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPost failed: unknown result");
 }
 
-void PostStorageServiceClient::ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceClient::ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids)
 {
-  send_ReadPosts(req_id, post_ids, carrier);
+  send_ReadPosts(req_id, post_ids);
   recv_ReadPosts(_return);
 }
 
-void PostStorageServiceClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ReadPosts", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -999,7 +850,6 @@ void PostStorageServiceClient::send_ReadPosts(const int64_t req_id, const std::v
   PostStorageService_ReadPosts_pargs args;
   args.req_id = &req_id;
   args.post_ids = &post_ids;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1090,7 +940,7 @@ void PostStorageServiceProcessor::process_StorePost(int32_t seqid, ::apache::thr
 
   PostStorageService_StorePost_result result;
   try {
-    iface_->StorePost(args.req_id, args.post, args.carrier);
+    iface_->StorePost(args.req_id, args.post);
   } catch (ServiceException &se) {
     result.se = se;
     result.__isset.se = true;
@@ -1146,7 +996,7 @@ void PostStorageServiceProcessor::process_ReadPost(int32_t seqid, ::apache::thri
 
   PostStorageService_ReadPost_result result;
   try {
-    iface_->ReadPost(result.success, args.req_id, args.post_id, args.carrier);
+    iface_->ReadPost(result.success, args.req_id, args.post_id);
     result.__isset.success = true;
   } catch (ServiceException &se) {
     result.se = se;
@@ -1203,7 +1053,7 @@ void PostStorageServiceProcessor::process_ReadPosts(int32_t seqid, ::apache::thr
 
   PostStorageService_ReadPosts_result result;
   try {
-    iface_->ReadPosts(result.success, args.req_id, args.post_ids, args.carrier);
+    iface_->ReadPosts(result.success, args.req_id, args.post_ids);
     result.__isset.success = true;
   } catch (ServiceException &se) {
     result.se = se;
@@ -1244,13 +1094,13 @@ void PostStorageServiceProcessor::process_ReadPosts(int32_t seqid, ::apache::thr
   return processor;
 }
 
-void PostStorageServiceConcurrentClient::StorePost(const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceConcurrentClient::StorePost(const int64_t req_id, const Post& post)
 {
-  int32_t seqid = send_StorePost(req_id, post, carrier);
+  int32_t seqid = send_StorePost(req_id, post);
   recv_StorePost(seqid);
 }
 
-int32_t PostStorageServiceConcurrentClient::send_StorePost(const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier)
+int32_t PostStorageServiceConcurrentClient::send_StorePost(const int64_t req_id, const Post& post)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -1259,7 +1109,6 @@ int32_t PostStorageServiceConcurrentClient::send_StorePost(const int64_t req_id,
   PostStorageService_StorePost_pargs args;
   args.req_id = &req_id;
   args.post = &post;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1328,13 +1177,13 @@ void PostStorageServiceConcurrentClient::recv_StorePost(const int32_t seqid)
   } // end while(true)
 }
 
-void PostStorageServiceConcurrentClient::ReadPost(Post& _return, const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceConcurrentClient::ReadPost(Post& _return, const int64_t req_id, const int64_t post_id)
 {
-  int32_t seqid = send_ReadPost(req_id, post_id, carrier);
+  int32_t seqid = send_ReadPost(req_id, post_id);
   recv_ReadPost(_return, seqid);
 }
 
-int32_t PostStorageServiceConcurrentClient::send_ReadPost(const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier)
+int32_t PostStorageServiceConcurrentClient::send_ReadPost(const int64_t req_id, const int64_t post_id)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -1343,7 +1192,6 @@ int32_t PostStorageServiceConcurrentClient::send_ReadPost(const int64_t req_id, 
   PostStorageService_ReadPost_pargs args;
   args.req_id = &req_id;
   args.post_id = &post_id;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1418,13 +1266,13 @@ void PostStorageServiceConcurrentClient::recv_ReadPost(Post& _return, const int3
   } // end while(true)
 }
 
-void PostStorageServiceConcurrentClient::ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier)
+void PostStorageServiceConcurrentClient::ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids)
 {
-  int32_t seqid = send_ReadPosts(req_id, post_ids, carrier);
+  int32_t seqid = send_ReadPosts(req_id, post_ids);
   recv_ReadPosts(_return, seqid);
 }
 
-int32_t PostStorageServiceConcurrentClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier)
+int32_t PostStorageServiceConcurrentClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -1433,7 +1281,6 @@ int32_t PostStorageServiceConcurrentClient::send_ReadPosts(const int64_t req_id,
   PostStorageService_ReadPosts_pargs args;
   args.req_id = &req_id;
   args.post_ids = &post_ids;
-  args.carrier = &carrier;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
