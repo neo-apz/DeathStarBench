@@ -74,6 +74,13 @@ service UniqueIdService {
   ) throws (1: ServiceException se)
 }
 
+service MyUniqueIdService {
+  void UploadUniqueId (
+      1: i64 req_id,
+      2: PostType post_type
+  ) throws (1: ServiceException se)
+}
+
 service TextService {
   void UploadText (
       1: i64 req_id,
@@ -165,6 +172,39 @@ service ComposePostService {
       1: i64 req_id,
       2: list<UserMention> user_mentions
       // 3: map<string, string> carrier
+  ) throws (1: ServiceException se)
+}
+
+service MyComposePostService {
+  void UploadText(
+      1: i64 req_id,
+      2: string text
+  ) throws (1: ServiceException se)
+
+  void UploadMedia(
+      1: i64 req_id,
+      2: list<Media> media
+  ) throws (1: ServiceException se)
+
+  void UploadUniqueId(
+      1: i64 req_id,
+      2: i64 post_id,
+      3: PostType post_type
+  ) throws (1: ServiceException se)
+
+  void UploadCreator(
+      1: i64 req_id,
+      2: Creator creator
+  ) throws (1: ServiceException se)
+
+  void UploadUrls(
+      1: i64 req_id,
+      2: list<Url> urls
+  ) throws (1: ServiceException se)
+
+  void UploadUserMentions(
+      1: i64 req_id,
+      2: list<UserMention> user_mentions
   ) throws (1: ServiceException se)
 }
 

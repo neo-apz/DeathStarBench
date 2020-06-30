@@ -13,11 +13,11 @@
 #include <sys/socket.h>
 
 
-#include "../../gen-cpp/UniqueIdService.h"
-#include "../../gen-cpp/ComposePostService.h"
+#include "../../gen-cpp/MyUniqueIdService.h"
+#include "../../gen-cpp/MyComposePostService.h"
 #include "../../gen-cpp/social_network_types.h"
-#include "../ClientPool.h"
-#include "../ThriftClient.h"
+// #include "../ClientPool.h"
+#include "../MyCommon/MyThriftClient.h"
 #include "../logger.h"
 // #include "../tracing.h"
 
@@ -47,44 +47,38 @@ static int GetCounter(int64_t timestamp) {
   }
 }
 
-class MyUniqueIdHandler : public UniqueIdServiceIf {
+class MyUniqueIdHandler : public MyUniqueIdServiceIf {
  public:
   ~MyUniqueIdHandler() override = default;
   MyUniqueIdHandler(
       std::mutex *,
       const std::string &,
-      ClientPool<ThriftClient<ComposePostServiceClient>> *);
+      MyThriftClient<MyComposePostServiceClient> *);
+      // std::shared_ptr<MyComposePostServiceProcessor>);
 
   void UploadUniqueId(int64_t, PostType::type) override;
 
  private:
   std::mutex *_thread_lock;
   std::string _machine_id;
-  ClientPool<ThriftClient<ComposePostServiceClient>> *_compose_client_pool;
+  MyThriftClient<MyComposePostServiceClient> *_compose_client;
+  // std::shared_ptr<MyComposePostServiceProcessor> _compose_processor;
 };
 
 MyUniqueIdHandler::MyUniqueIdHandler(
     std::mutex *thread_lock,
     const std::string &machine_id,
-    ClientPool<ThriftClient<ComposePostServiceClient>> *compose_client_pool) {
+    MyThriftClient<MyComposePostServiceClient> *compose_client){
+    // std::shared_ptr<MyComposePostServiceProcessor> compose_processor) {
   _thread_lock = thread_lock;
   _machine_id = machine_id;
-  _compose_client_pool = compose_client_pool;
+  _compose_client = compose_client;
+  // _compose_processor = compose_processor;
 }
 
 void MyUniqueIdHandler::UploadUniqueId(
     int64_t req_id,
     PostType::type post_type) {
-
-  // Initialize a span
-  // TextMapReader reader(carrier);
-  // std::map<std::string, std::string> writer_text_map;
-  // TextMapWriter writer(writer_text_map);
-  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  // auto span = opentracing::Tracer::Global()->StartSpan(
-  //     "UploadUniqueId",
-  //     { opentracing::ChildOf(parent_span->get()) });
-  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   int64_t timestamp = duration_cast<milliseconds>(
       system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH;
@@ -120,24 +114,19 @@ void MyUniqueIdHandler::UploadUniqueId(
       << req_id << " is " << post_id;
 
   // Upload to compose post service
-  auto compose_post_client_wrapper = _compose_client_pool->Pop();
-  if (!compose_post_client_wrapper) {
+  if (!_compose_client) {
     ServiceException se;
     se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
     se.message = "Failed to connect to compose-post-service";
     throw se;
   }
-  auto compose_post_client = compose_post_client_wrapper->GetClient();
+  auto compose_post_client = _compose_client->GetClient();
   try {
     compose_post_client->UploadUniqueId(req_id, post_id, post_type);    
   } catch (...) {
-    _compose_client_pool->Push(compose_post_client_wrapper);
     LOG(error) << "Failed to upload unique-id to compose-post-service";
     throw;
   }
-  _compose_client_pool->Push(compose_post_client_wrapper);
-
-  // span->Finish();
 }
 
 /*

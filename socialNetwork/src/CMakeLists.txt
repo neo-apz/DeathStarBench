@@ -54,3 +54,6 @@ add_subdirectory(HomeTimelineService)
 
 # My Services
 add_subdirectory(MyUniqueIdService)
+
+# Fake Services
+# add_subdirectory(FakeComposePostService)

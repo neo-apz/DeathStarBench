@@ -249,14 +249,14 @@ uint32_t ComposePostService_UploadMedia_args::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->media.clear();
-            uint32_t _size35;
-            ::apache::thrift::protocol::TType _etype38;
-            xfer += iprot->readListBegin(_etype38, _size35);
-            this->media.resize(_size35);
-            uint32_t _i39;
-            for (_i39 = 0; _i39 < _size35; ++_i39)
+            uint32_t _size36;
+            ::apache::thrift::protocol::TType _etype39;
+            xfer += iprot->readListBegin(_etype39, _size36);
+            this->media.resize(_size36);
+            uint32_t _i40;
+            for (_i40 = 0; _i40 < _size36; ++_i40)
             {
-              xfer += this->media[_i39].read(iprot);
+              xfer += this->media[_i40].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -289,10 +289,10 @@ uint32_t ComposePostService_UploadMedia_args::write(::apache::thrift::protocol::
   xfer += oprot->writeFieldBegin("media", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->media.size()));
-    std::vector<Media> ::const_iterator _iter40;
-    for (_iter40 = this->media.begin(); _iter40 != this->media.end(); ++_iter40)
+    std::vector<Media> ::const_iterator _iter41;
+    for (_iter41 = this->media.begin(); _iter41 != this->media.end(); ++_iter41)
     {
-      xfer += (*_iter40).write(oprot);
+      xfer += (*_iter41).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -320,10 +320,10 @@ uint32_t ComposePostService_UploadMedia_pargs::write(::apache::thrift::protocol:
   xfer += oprot->writeFieldBegin("media", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->media)).size()));
-    std::vector<Media> ::const_iterator _iter41;
-    for (_iter41 = (*(this->media)).begin(); _iter41 != (*(this->media)).end(); ++_iter41)
+    std::vector<Media> ::const_iterator _iter42;
+    for (_iter42 = (*(this->media)).begin(); _iter42 != (*(this->media)).end(); ++_iter42)
     {
-      xfer += (*_iter41).write(oprot);
+      xfer += (*_iter42).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -486,9 +486,9 @@ uint32_t ComposePostService_UploadUniqueId_args::read(::apache::thrift::protocol
         break;
       case 3:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast42;
-          xfer += iprot->readI32(ecast42);
-          this->post_type = (PostType::type)ecast42;
+          int32_t ecast43;
+          xfer += iprot->readI32(ecast43);
+          this->post_type = (PostType::type)ecast43;
           this->__isset.post_type = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -904,14 +904,14 @@ uint32_t ComposePostService_UploadUrls_args::read(::apache::thrift::protocol::TP
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->urls.clear();
-            uint32_t _size43;
-            ::apache::thrift::protocol::TType _etype46;
-            xfer += iprot->readListBegin(_etype46, _size43);
-            this->urls.resize(_size43);
-            uint32_t _i47;
-            for (_i47 = 0; _i47 < _size43; ++_i47)
+            uint32_t _size44;
+            ::apache::thrift::protocol::TType _etype47;
+            xfer += iprot->readListBegin(_etype47, _size44);
+            this->urls.resize(_size44);
+            uint32_t _i48;
+            for (_i48 = 0; _i48 < _size44; ++_i48)
             {
-              xfer += this->urls[_i47].read(iprot);
+              xfer += this->urls[_i48].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -944,10 +944,10 @@ uint32_t ComposePostService_UploadUrls_args::write(::apache::thrift::protocol::T
   xfer += oprot->writeFieldBegin("urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->urls.size()));
-    std::vector<Url> ::const_iterator _iter48;
-    for (_iter48 = this->urls.begin(); _iter48 != this->urls.end(); ++_iter48)
+    std::vector<Url> ::const_iterator _iter49;
+    for (_iter49 = this->urls.begin(); _iter49 != this->urls.end(); ++_iter49)
     {
-      xfer += (*_iter48).write(oprot);
+      xfer += (*_iter49).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -975,10 +975,10 @@ uint32_t ComposePostService_UploadUrls_pargs::write(::apache::thrift::protocol::
   xfer += oprot->writeFieldBegin("urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->urls)).size()));
-    std::vector<Url> ::const_iterator _iter49;
-    for (_iter49 = (*(this->urls)).begin(); _iter49 != (*(this->urls)).end(); ++_iter49)
+    std::vector<Url> ::const_iterator _iter50;
+    for (_iter50 = (*(this->urls)).begin(); _iter50 != (*(this->urls)).end(); ++_iter50)
     {
-      xfer += (*_iter49).write(oprot);
+      xfer += (*_iter50).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -1135,14 +1135,14 @@ uint32_t ComposePostService_UploadUserMentions_args::read(::apache::thrift::prot
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->user_mentions.clear();
-            uint32_t _size50;
-            ::apache::thrift::protocol::TType _etype53;
-            xfer += iprot->readListBegin(_etype53, _size50);
-            this->user_mentions.resize(_size50);
-            uint32_t _i54;
-            for (_i54 = 0; _i54 < _size50; ++_i54)
+            uint32_t _size51;
+            ::apache::thrift::protocol::TType _etype54;
+            xfer += iprot->readListBegin(_etype54, _size51);
+            this->user_mentions.resize(_size51);
+            uint32_t _i55;
+            for (_i55 = 0; _i55 < _size51; ++_i55)
             {
-              xfer += this->user_mentions[_i54].read(iprot);
+              xfer += this->user_mentions[_i55].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -1175,10 +1175,10 @@ uint32_t ComposePostService_UploadUserMentions_args::write(::apache::thrift::pro
   xfer += oprot->writeFieldBegin("user_mentions", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->user_mentions.size()));
-    std::vector<UserMention> ::const_iterator _iter55;
-    for (_iter55 = this->user_mentions.begin(); _iter55 != this->user_mentions.end(); ++_iter55)
+    std::vector<UserMention> ::const_iterator _iter56;
+    for (_iter56 = this->user_mentions.begin(); _iter56 != this->user_mentions.end(); ++_iter56)
     {
-      xfer += (*_iter55).write(oprot);
+      xfer += (*_iter56).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -1206,10 +1206,10 @@ uint32_t ComposePostService_UploadUserMentions_pargs::write(::apache::thrift::pr
   xfer += oprot->writeFieldBegin("user_mentions", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->user_mentions)).size()));
-    std::vector<UserMention> ::const_iterator _iter56;
-    for (_iter56 = (*(this->user_mentions)).begin(); _iter56 != (*(this->user_mentions)).end(); ++_iter56)
+    std::vector<UserMention> ::const_iterator _iter57;
+    for (_iter57 = (*(this->user_mentions)).begin(); _iter57 != (*(this->user_mentions)).end(); ++_iter57)
     {
-      xfer += (*_iter56).write(oprot);
+      xfer += (*_iter57).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }

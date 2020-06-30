@@ -400,14 +400,14 @@ uint32_t UserTimelineService_ReadUserTimeline_result::read(::apache::thrift::pro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size86;
-            ::apache::thrift::protocol::TType _etype89;
-            xfer += iprot->readListBegin(_etype89, _size86);
-            this->success.resize(_size86);
-            uint32_t _i90;
-            for (_i90 = 0; _i90 < _size86; ++_i90)
+            uint32_t _size109;
+            ::apache::thrift::protocol::TType _etype112;
+            xfer += iprot->readListBegin(_etype112, _size109);
+            this->success.resize(_size109);
+            uint32_t _i113;
+            for (_i113 = 0; _i113 < _size109; ++_i113)
             {
-              xfer += this->success[_i90].read(iprot);
+              xfer += this->success[_i113].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -446,10 +446,10 @@ uint32_t UserTimelineService_ReadUserTimeline_result::write(::apache::thrift::pr
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Post> ::const_iterator _iter91;
-      for (_iter91 = this->success.begin(); _iter91 != this->success.end(); ++_iter91)
+      std::vector<Post> ::const_iterator _iter114;
+      for (_iter114 = this->success.begin(); _iter114 != this->success.end(); ++_iter114)
       {
-        xfer += (*_iter91).write(oprot);
+        xfer += (*_iter114).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -494,14 +494,14 @@ uint32_t UserTimelineService_ReadUserTimeline_presult::read(::apache::thrift::pr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size92;
-            ::apache::thrift::protocol::TType _etype95;
-            xfer += iprot->readListBegin(_etype95, _size92);
-            (*(this->success)).resize(_size92);
-            uint32_t _i96;
-            for (_i96 = 0; _i96 < _size92; ++_i96)
+            uint32_t _size115;
+            ::apache::thrift::protocol::TType _etype118;
+            xfer += iprot->readListBegin(_etype118, _size115);
+            (*(this->success)).resize(_size115);
+            uint32_t _i119;
+            for (_i119 = 0; _i119 < _size115; ++_i119)
             {
-              xfer += (*(this->success))[_i96].read(iprot);
+              xfer += (*(this->success))[_i119].read(iprot);
             }
             xfer += iprot->readListEnd();
           }

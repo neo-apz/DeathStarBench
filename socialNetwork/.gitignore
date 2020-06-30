@@ -13,6 +13,6 @@ wrk2/deps/luajit/src/lj_vm.s
 wrk2/deps/luajit/src/luajit
 wrk2/wrk
 
-cmake_build/
+cmake-build/
 
 .vscode/
