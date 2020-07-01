@@ -10,6 +10,7 @@
 #include "MyUniqueIdHandler.h"
 
 #include "../MyCommon/MyThriftClient.h"
+#include "../MyCommon/MagicBreakPoint.h"
 
 using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TServerSocket;
@@ -82,7 +83,9 @@ int main(int argc, char *argv[]) {
     std::make_shared<MyUniqueIdServiceProcessor>(handler);
 
   std::cout << "Generating requests ..." << std::endl;
-  ClientSendUniqueId(&uniqueIdClient, 3);
+  // ClientSendUniqueId(&uniqueIdClient, 3);
+
+  qflex_magic_break(1234, reinterpret_cast<uint64_t>(&uniqueIdClient), 3);
 
   std::cout << "Processing the generated requests ..." << std::endl;
   ProcessUniqueIdRequests(processor, &uniqueIdClient, 3);

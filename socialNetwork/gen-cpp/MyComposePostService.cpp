@@ -1446,7 +1446,7 @@ void MyComposePostServiceClient::recv_UploadMedia()
 void MyComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_id, post_type);
-  qflex_magic_break(1234, reinterpret_cast<uint64_t>(this->getOutputProtocol().get()), reinterpret_cast<uint64_t>(this->getInputProtocol().get()));
+  // qflex_magic_break(1234, reinterpret_cast<uint64_t>(this->getOutputProtocol().get()), reinterpret_cast<uint64_t>(this->getInputProtocol().get()));
   _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
   recv_UploadUniqueId();
 }
