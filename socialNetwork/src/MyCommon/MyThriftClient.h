@@ -6,11 +6,14 @@
 #include <iostream>
 #include <boost/log/trivial.hpp>
 
-# include<thrift/transport/TBufferTransports.h>
+// #include <thrift/transport/TBufferTransports.h>
+#include "MyTMemoryBuffer.h"
+
 #include <thrift/protocol/TCompactProtocol.h>
 #include <thrift/transport/TTransportUtils.h>
 #include <thrift/stdcxx.h>
 // #include "logger.h"
+
 #include "MyGenericClient.h"
 
 namespace social_network {
@@ -31,6 +34,7 @@ template<class TThriftClient>
 class MyThriftClient : public MyGenericClient{
  public:
   MyThriftClient(uint32_t sz);
+  MyThriftClient(uint8_t* cltIbuf, uint32_t ISz, uint8_t* cltObuf, uint32_t OSz);
 
   MyThriftClient(const MyThriftClient &) = delete;
   MyThriftClient &operator=(const MyThriftClient &) = delete;
@@ -41,6 +45,11 @@ class MyThriftClient : public MyGenericClient{
 
   TThriftClient *GetClient() const;
 
+  void GetBuffer(uint8_t** cltIBufPtr, uint32_t* ISz,
+            uint8_t** cltOBufPtr, uint32_t* OSz);
+
+  void WroteBytes(uint32_t len, bool input);
+
   void Connect() override;
   void Disconnect() override;
   void KeepAlive() override;
@@ -50,8 +59,8 @@ class MyThriftClient : public MyGenericClient{
  private:
   TThriftClient *_client;
 
-  std::shared_ptr<TMemoryBuffer> _cltITransport;
-  std::shared_ptr<TMemoryBuffer> _cltOTransport;
+  std::shared_ptr<MyTMemoryBuffer> _cltITransport;
+  std::shared_ptr<MyTMemoryBuffer> _cltOTransport;
 
   std::shared_ptr<TCompactProtocol> _ctlIProt;
   std::shared_ptr<TCompactProtocol> _ctlOProt;
@@ -60,13 +69,42 @@ class MyThriftClient : public MyGenericClient{
 
 template<class TThriftClient>
 MyThriftClient<TThriftClient>::MyThriftClient(uint32_t sz) {
-  _cltITransport = std::make_shared<TMemoryBuffer>(sz);
-  _cltOTransport = std::make_shared<TMemoryBuffer>(sz);
+  _cltITransport = std::make_shared<MyTMemoryBuffer>(sz);
+  _cltOTransport = std::make_shared<MyTMemoryBuffer>(sz);
 
   _ctlIProt = std::make_shared<TCompactProtocol>(_cltITransport);
   _ctlOProt = std::make_shared<TCompactProtocol>(_cltOTransport);
 
   _client = new TThriftClient(_ctlIProt, _ctlOProt);
+}
+
+template<class TThriftClient>
+MyThriftClient<TThriftClient>::MyThriftClient(uint8_t* cltIbuf, uint32_t ISz,
+                                              uint8_t* cltObuf, uint32_t OSz) {
+  _cltITransport = std::make_shared<MyTMemoryBuffer>(cltIbuf, ISz, MyTMemoryBuffer::TAKE_OWNERSHIP);
+  _cltOTransport = std::make_shared<MyTMemoryBuffer>(cltObuf, OSz, MyTMemoryBuffer::TAKE_OWNERSHIP);
+
+  _ctlIProt = std::make_shared<TCompactProtocol>(_cltITransport);
+  _ctlOProt = std::make_shared<TCompactProtocol>(_cltOTransport);
+
+  _client = new TThriftClient(_ctlIProt, _ctlOProt);
+}
+
+
+template<class TThriftClient>
+void MyThriftClient<TThriftClient>::GetBuffer(uint8_t** cltIBufPtr, uint32_t* ISz,
+                                              uint8_t** cltOBufPtr, uint32_t* OSz){
+  _cltITransport->getBuffer(cltIBufPtr, ISz);
+  _cltOTransport->getBuffer(cltOBufPtr, OSz);
+}
+
+template<class TThriftClient>
+void MyThriftClient<TThriftClient>::WroteBytes(uint32_t len, bool input) {
+
+  if (input)
+    _cltITransport->wroteBytes(len);
+  else
+    _cltOTransport->wroteBytes(len);
 }
 
 template<class TThriftClient>
