@@ -19,7 +19,7 @@ using apache::thrift::protocol::TBinaryProtocolFactory;
 using namespace social_network;
 
 #define BUFFER_SIZE (1024 * 32)
-#define ITERATION 1
+#define ITERATION 10
 
 void sigintHandler(int sig) {
   exit(EXIT_SUCCESS);
@@ -58,7 +58,7 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
             << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
             << " OSz: " << OSz << std::endl;
 
-  len = OSz - BUFFER_SIZE;
+  len = OSz;
   uniqueIdClient->WroteBytes(len, false);
 
 }

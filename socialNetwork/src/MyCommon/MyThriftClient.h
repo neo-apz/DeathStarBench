@@ -81,8 +81,8 @@ MyThriftClient<TThriftClient>::MyThriftClient(uint32_t sz) {
 template<class TThriftClient>
 MyThriftClient<TThriftClient>::MyThriftClient(uint8_t* cltIbuf, uint32_t ISz,
                                               uint8_t* cltObuf, uint32_t OSz) {
-  _cltITransport = std::make_shared<MyTMemoryBuffer>(cltIbuf, ISz, MyTMemoryBuffer::TAKE_OWNERSHIP);
-  _cltOTransport = std::make_shared<MyTMemoryBuffer>(cltObuf, OSz, MyTMemoryBuffer::TAKE_OWNERSHIP);
+  _cltITransport = std::make_shared<MyTMemoryBuffer>(cltIbuf, ISz, MyTMemoryBuffer::TAKE_COOWNERSHIP);
+  _cltOTransport = std::make_shared<MyTMemoryBuffer>(cltObuf, OSz, MyTMemoryBuffer::TAKE_COOWNERSHIP);
 
   _ctlIProt = std::make_shared<TCompactProtocol>(_cltITransport);
   _ctlOProt = std::make_shared<TCompactProtocol>(_cltOTransport);

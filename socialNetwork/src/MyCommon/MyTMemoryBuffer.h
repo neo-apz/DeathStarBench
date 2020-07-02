@@ -479,7 +479,7 @@ public:
    *   and will be responsible for freeing it.
    *   The membory must have been allocated with malloc.
    */
-  enum MemoryPolicy { OBSERVE = 1, COPY = 2, TAKE_OWNERSHIP = 3 };
+  enum MemoryPolicy { OBSERVE = 1, COPY = 2, TAKE_OWNERSHIP = 3, TAKE_COOWNERSHIP = 4 };
 
   /**
    * Construct a MyTMemoryBuffer with a default-sized buffer,
@@ -513,8 +513,14 @@ public:
 
     switch (policy) {
     case OBSERVE:
-    case TAKE_OWNERSHIP:
       initCommon(buf, sz, policy == TAKE_OWNERSHIP, sz);
+      break;
+    case TAKE_OWNERSHIP:
+      initCommon(buf, sz, policy == TAKE_OWNERSHIP, 0);
+      break;
+    case TAKE_COOWNERSHIP:
+      coowner_ = true;
+      initCommon(buf, sz, policy == TAKE_COOWNERSHIP, 0);
       break;
     case COPY:
       initCommon(NULL, sz, true, 0);
@@ -527,7 +533,7 @@ public:
   }
 
   ~MyTMemoryBuffer() {
-    if (owner_) {
+    if (owner_ && !coowner_) {
       std::free(buffer_);
     }
   }
@@ -718,6 +724,8 @@ protected:
 
   // Is this object the owner of the buffer?
   bool owner_;
+
+  bool coowner_ = false;
 
   // Don't forget to update constrctors, initCommon, and swap if
   // you add new members.
