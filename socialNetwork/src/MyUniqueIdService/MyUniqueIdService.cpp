@@ -10,7 +10,11 @@
 #include "MyUniqueIdHandler.h"
 
 #include "../MyCommon/MyThriftClient.h"
+
+#ifdef __aarch64__
 #include "../MyCommon/MagicBreakPoint.h"
+#endif
+
 
 using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TServerSocket;
@@ -32,17 +36,19 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   uint32_t ISz, OSz, len;
 
   uniqueIdClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
-
   ISz = BUFFER_SIZE - ISz;
   OSz = BUFFER_SIZE - OSz;
-
   std::cout << "After GetBuffer: IBuf:" << (uint64_t) cltIBufPtr
             << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
             << " OSz: " << OSz << std::endl;
 
- MyThriftClient<MyUniqueIdServiceClient> newUniqueIdClient(cltIBufPtr, ISz, cltOBufPtr, OSz);
+
+#ifdef __aarch64__
+  len = call_magic_4_64(1234, (uint64_t) cltIBufPtr, ISz, (uint64_t) cltOBufPtr, OSz);
+#else
+  MyThriftClient<MyUniqueIdServiceClient> newUniqueIdClient(cltIBufPtr, ISz, cltOBufPtr, OSz);
   
-  // newUniqueIdClient.Connect();
+  newUniqueIdClient.Connect();
   auto client = newUniqueIdClient.GetClient();
 
   int64_t req_id = 0xFFFFFFFFFFFF; // rand!
@@ -54,13 +60,15 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
 
   newUniqueIdClient.GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
 
-  std::cout << "After NewClient: IBuf:" << (uint64_t) cltIBufPtr
-            << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
-            << " OSz: " << OSz << std::endl;
+  // std::cout << "After NewClient: IBuf:" << (uint64_t) cltIBufPtr
+  //           << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
+  //           << " OSz: " << OSz << std::endl;
 
   len = OSz;
-  uniqueIdClient->WroteBytes(len, false);
 
+#endif
+
+  uniqueIdClient->WroteBytes(len, false);
 }
 
 void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
@@ -84,7 +92,7 @@ void ProcessUniqueIdRequests(std::shared_ptr<MyUniqueIdServiceProcessor> process
   auto srvIProt = uniqueIdClient->GetClient()->getOutputProtocol();
   auto srvOProt = uniqueIdClient->GetClient()->getInputProtocol();
 
-  std::cout << "Before the process loop." << std::endl;
+  // std::cout << "Before the process loop." << std::endl;
 
   while (count--){
     processor->process(srvIProt, srvOProt, nullptr);
