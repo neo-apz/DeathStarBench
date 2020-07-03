@@ -22,8 +22,9 @@ using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::protocol::TBinaryProtocolFactory;
 using namespace social_network;
 
-#define BUFFER_SIZE (1024 * 32)
-#define ITERATION 10
+#define ITERATION 10000
+#define BUFFER_SIZE ITERATION * 50
+
 
 void sigintHandler(int sig) {
   exit(EXIT_SUCCESS);
@@ -93,6 +94,9 @@ void ProcessUniqueIdRequests(std::shared_ptr<MyUniqueIdServiceProcessor> process
   auto srvOProt = uniqueIdClient->GetClient()->getInputProtocol();
 
   // std::cout << "Before the process loop." << std::endl;
+  #ifdef __aarch64__
+  BREAKPOINT();
+  #endif
 
   while (count--){
     processor->process(srvIProt, srvOProt, nullptr);

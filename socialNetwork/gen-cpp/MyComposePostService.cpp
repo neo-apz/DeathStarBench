@@ -2540,7 +2540,7 @@ void FakeComposePostHandler::UploadUniqueId(
     const int64_t post_id,
     const PostType::type post_type) {
 
-  std::cout << "FakeComposePostHandler: Fake Processing UploadUniqueId!" << std::endl;
+  // std::cout << "FakeComposePostHandler: Fake Processing UploadUniqueId!" << std::endl;
 }
 
 void FakeComposePostHandler::UploadText(int64_t req_id, const std::string& text) {}
