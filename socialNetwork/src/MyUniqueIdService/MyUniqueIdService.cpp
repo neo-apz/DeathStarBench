@@ -36,14 +36,15 @@ std::string machine_id;
 #define ITERATION 10000
 #define BUFFER_SIZE  50
 
-void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient){
+void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
+    uint64_t buffer_size){
   
   uint8_t *cltIBufPtr, *cltOBufPtr;
   uint32_t ISz, OSz, len;
 
   uniqueIdClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
-  ISz = BUFFER_SIZE - ISz;
-  OSz = BUFFER_SIZE - OSz;
+  ISz = buffer_size - ISz;
+  OSz = buffer_size - OSz;
   // std::cout << "After GetBuffer: IBuf:" << (uint64_t) cltIBufPtr
   //           << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
   //           << " OSz: " << OSz << std::endl;
@@ -143,6 +144,8 @@ int main(int argc, char *argv[]) {
     num_iterations = atoi(argv[2]);
   }
 
+  uint64_t buffer_size = num_iterations * BUFFER_SIZE;
+
   if (GetMachineId(&machine_id) != 0) {
     exit(EXIT_FAILURE);
   }
@@ -161,11 +164,11 @@ int main(int argc, char *argv[]) {
   #endif
 
   for (int i = 0; i < num_threads; i++) {
-    uniqueIdClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(num_iterations * BUFFER_SIZE);
-    composeClients[i] = new MyThriftClient<MyComposePostServiceClient>(num_iterations * BUFFER_SIZE);
+    uniqueIdClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
+    composeClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
     
     cout << "Generating requests - Thread " << i << " ... " << endl;
-    clientThreads[i] = std::thread(ClientSendUniqueIdPointerBased, uniqueIdClients[i]);
+    clientThreads[i] = std::thread(ClientSendUniqueIdPointerBased, uniqueIdClients[i], buffer_size);
   }
 
   for (int i = 0; i < num_threads; i++) {
