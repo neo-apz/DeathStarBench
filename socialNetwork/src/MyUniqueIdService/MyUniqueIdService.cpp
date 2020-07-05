@@ -96,7 +96,8 @@ void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
 }
 
 void ProcessUniqueIdRequests(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
-                             std::shared_ptr<MyUniqueIdHandler> handler){
+                             std::shared_ptr<MyUniqueIdHandler> handler,
+                             int tid, int max_tid){
   
   auto srvIProt = uniqueIdClient->GetClient()->getOutputProtocol();
   auto srvOProt = uniqueIdClient->GetClient()->getInputProtocol();
@@ -108,7 +109,12 @@ void ProcessUniqueIdRequests(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdCl
 
   // std::cout << "Before the process loop." << std::endl;
   #ifdef __aarch64__
-  BREAKPOINT();
+  if (tid == max_tid) {
+    start = true;
+    BREAKPOINT();
+  }
+
+  while(!start);
   #endif
 
   while (count--){
@@ -183,7 +189,15 @@ int main(int argc, char *argv[]) {
     clientThreads[i].join();
     
     // cout << "Processing the generated requests - Thread " << i << " ... " << endl;
-    serverThreads[i] = std::thread(ProcessUniqueIdRequests, uniqueIdClients[i], handler);
+    serverThreads[i] = std::thread(ProcessUniqueIdRequests, uniqueIdClients[i], handler,
+                                   i, num_threads - 1);
+
+    #ifdef __aarch64__
+    CPU_ZERO(&cpuSet[i]);
+    CPU_SET(i+1, &cpuSet[i]);
+    pthread_setaffinity_np(serverThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
+    #endif
+
   }
 
   cout << "Getting responses " << endl;
