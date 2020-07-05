@@ -38,9 +38,10 @@ static int counter = 0;
 
 static int GetCounter(int64_t timestamp) {
   if (current_timestamp > timestamp) {
-    LOG(fatal) << "Timestamps are not incremental.";
-    std::cout << " Current timestamp: " << current_timestamp << " timestamp: " << timestamp << std::endl;
-    exit(EXIT_FAILURE);
+    // LOG(fatal) << "Timestamps are not incremental.";
+    // std::cout << " Current timestamp: " << current_timestamp << " timestamp: " << timestamp << std::endl;
+    // exit(EXIT_FAILURE);
+    return counter++;
   }
   if (current_timestamp == timestamp) {
     return counter++;

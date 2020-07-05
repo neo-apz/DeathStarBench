@@ -163,11 +163,13 @@ int main(int argc, char *argv[]) {
     sched_setaffinity(0, sizeof(mask), &mask);
   #endif
 
+
+  cout << "Generating requests"  << endl;
   for (int i = 0; i < num_threads; i++) {
     uniqueIdClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
     // composeClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
     
-    cout << "Generating requests - Thread " << i << " ... " << endl;
+    // cout << "Generating requests - Thread " << i << " ... " << endl;
     clientThreads[i] = std::thread(ClientSendUniqueIdPointerBased, uniqueIdClients[i], buffer_size);
   }
 
@@ -176,23 +178,19 @@ int main(int argc, char *argv[]) {
                                                   &composeClientPool);
 
 
+  cout << "Processing the generated requests" << endl;
   for (int i = 0; i < num_threads; i++) {
     clientThreads[i].join();
     
-    // std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
-    //                                               &thread_lock, machine_id,
-    //                                               composeClients[i]);
-
-    // std::shared_ptr<MyUniqueIdServiceProcessor> processor = std::make_shared<MyUniqueIdServiceProcessor>(handler);
-
-    cout << "Processing the generated requests - Thread " << i << " ... " << endl;
+    // cout << "Processing the generated requests - Thread " << i << " ... " << endl;
     serverThreads[i] = std::thread(ProcessUniqueIdRequests, uniqueIdClients[i], handler);
   }
 
+  cout << "Getting responses " << endl;
   for (int i = 0; i < num_threads; i++) {
     serverThreads[i].join();
 
-    cout << "Getting responses - Thread " << i << " ... " << endl;
+    // cout << "Getting responses - Thread " << i << " ... " << endl;
     clientThreads[i] = std::thread(ClientRecvUniqueId, uniqueIdClients[i]);
   }
 
@@ -200,28 +198,6 @@ int main(int argc, char *argv[]) {
     clientThreads[i].join();
   }
 
-
-  // MyThriftClient<MyUniqueIdServiceClient> uniqueIdClient(BUFFER_SIZE);
-  // MyThriftClient<MyComposePostServiceClient> composeClient(BUFFER_SIZE);
-
-  // std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
-  //   &thread_lock, machine_id, &composeClient);
-
-  // std::shared_ptr<MyUniqueIdServiceProcessor> processor = 
-  //   std::make_shared<MyUniqueIdServiceProcessor>(handler);
-
-  // std::cout << "Generating requests ..." << std::endl;
-  // ClientSendUniqueId(&uniqueIdClient, 3);
-  // ClientSendUniqueIdPointerBased(&uniqueIdClient, ITERATION);
-
-  // std::cout << "Pointer: " << (&uniqueIdClient) << std::endl;
-  // qflex_magic_break(1234, reinterpret_cast<uint64_t>(&uniqueIdClient), 3);
-
-  // std::cout << "Processing the generated requests ..." << std::endl;
-  // ProcessUniqueIdRequests(processor, &uniqueIdClient, ITERATION);
-
-  // std::cout << "Getting responses ..." << std::endl;
-  // ClientRecvUniqueId(&uniqueIdClient, ITERATION);
 
   return 0;
 }
