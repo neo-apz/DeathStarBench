@@ -208,6 +208,7 @@ int main(int argc, char *argv[]) {
 
   for (int i = 0; i < num_threads; i++) {
     clientThreads[i].join();
+    delete uniqueIdClients[i];
   }
 
 

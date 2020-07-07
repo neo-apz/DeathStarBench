@@ -39,6 +39,12 @@ endif()
 
 set(THRIFT_GEN_CPP_DIR ../../gen-cpp)
 
+if (ASAN)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fPIE -pie -g")
+    message("-- ASAN enabled!")
+endif()
+
+
 add_subdirectory(TextService)
 add_subdirectory(UniqueIdService)
 add_subdirectory(UserService)
