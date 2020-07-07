@@ -38,10 +38,8 @@ static int counter = 0;
 
 static int GetCounter(int64_t timestamp) {
   if (current_timestamp > timestamp) {
-    // LOG(fatal) << "Timestamps are not incremental.";
-    // std::cout << " Current timestamp: " << current_timestamp << " timestamp: " << timestamp << std::endl;
-    // exit(EXIT_FAILURE);
-    return counter++;
+    LOG(fatal) << "Timestamps are not incremental.";
+    exit(EXIT_FAILURE);
   }
   if (current_timestamp == timestamp) {
     return counter++;
@@ -87,8 +85,12 @@ void MyUniqueIdHandler::UploadUniqueId(
     int64_t req_id,
     PostType::type post_type) {
 
+  _thread_lock->lock();  
   int64_t timestamp = duration_cast<milliseconds>(
       system_clock::now().time_since_epoch()).count() - CUSTOM_EPOCH;
+  int idx = GetCounter(timestamp);
+  _thread_lock->unlock();
+  
   std::stringstream sstream;
   sstream << std::hex << timestamp;
   std::string timestamp_hex(sstream.str());
@@ -98,10 +100,6 @@ void MyUniqueIdHandler::UploadUniqueId(
   } else if (timestamp_hex.size() < 10) {
     timestamp_hex = std::string(10 - timestamp_hex.size(), '0') + timestamp_hex;
   }
-
-  _thread_lock->lock();  
-  int idx = GetCounter(timestamp);
-  _thread_lock->unlock();
 
   // Empty the sstream buffer.
   sstream.clear();
