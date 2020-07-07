@@ -12,7 +12,7 @@
 #include "../MyCommon/MyClientPool.h"
 #include "../MyCommon/MyThriftClient.h"
 
-#ifdef __aarch64__
+#ifdef FLEXUS
   #include "../MyCommon/MagicBreakPoint.h"
 #endif
 
@@ -29,7 +29,7 @@ uint64_t num_iterations;
 std::mutex thread_lock;
 std::string machine_id;
 
-#ifdef __aarch64__
+#ifdef FLEXUS
   cpu_set_t cpuSet[16];
   volatile bool start = false;
 #endif
@@ -51,7 +51,7 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   //           << " OSz: " << OSz << std::endl;
 
 
-#ifdef __aarch64__
+#ifdef FLEXUS
   len = call_magic_4_64(1234, (uint64_t) cltIBufPtr, ISz, (uint64_t) cltOBufPtr, OSz);
 #else
   MyThriftClient<MyUniqueIdServiceClient> newUniqueIdClient(cltIBufPtr, ISz, cltOBufPtr, OSz);
@@ -108,7 +108,7 @@ void ProcessUniqueIdRequests(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdCl
   uint64_t count = num_iterations;
 
   // std::cout << "Before the process loop." << std::endl;
-  #ifdef __aarch64__
+  #ifdef FLEXUS
   if (tid == max_tid) {
     start = true;
     BREAKPOINT();
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
                                                   &thread_lock, machine_id,
                                                   &composeClientPool);
 
-  #ifdef __aarch64__
+  #ifdef FLEXUS
     cpu_set_t  mask;
     CPU_ZERO(&mask);
     CPU_SET(0, &mask);
@@ -190,7 +190,7 @@ int main(int argc, char *argv[]) {
     serverThreads[i] = std::thread(ProcessUniqueIdRequests, uniqueIdClients[i], handler,
                                    i, num_threads - 1);
 
-    #ifdef __aarch64__
+    #ifdef FLEXUS
     CPU_ZERO(&cpuSet[i]);
     CPU_SET(i+1, &cpuSet[i]);
     pthread_setaffinity_np(serverThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);

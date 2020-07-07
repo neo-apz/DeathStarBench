@@ -1,3 +1,8 @@
+if (FLEXUS)
+    add_definitions(-DFLEXUS)
+    message("-- Flexus enabled!")
+endif()
+
 add_executable(
     MyUniqueIdService
     MyUniqueIdService.cpp
