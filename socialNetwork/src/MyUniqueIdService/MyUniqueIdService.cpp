@@ -162,14 +162,6 @@ int main(int argc, char *argv[]) {
   std::thread clientThreads[num_threads];
   std::thread serverThreads[num_threads];
 
-  #ifdef __aarch64__
-    cpu_set_t  mask;
-    CPU_ZERO(&mask);
-    CPU_SET(0, &mask);
-    sched_setaffinity(0, sizeof(mask), &mask);
-  #endif
-
-
   cout << "Generating requests"  << endl;
   for (int i = 0; i < num_threads; i++) {
     uniqueIdClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
@@ -183,6 +175,12 @@ int main(int argc, char *argv[]) {
                                                   &thread_lock, machine_id,
                                                   &composeClientPool);
 
+  #ifdef __aarch64__
+    cpu_set_t  mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask);
+    sched_setaffinity(0, sizeof(mask), &mask);
+  #endif
 
   cout << "Processing the generated requests" << endl;
   for (int i = 0; i < num_threads; i++) {
