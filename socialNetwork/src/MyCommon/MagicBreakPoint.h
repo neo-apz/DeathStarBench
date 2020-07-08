@@ -42,8 +42,8 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
 #endif
 }
 
-
+#ifdef FLEXUS
 #define BREAKPOINT() do { \
                         call_magic_2_64(999, 0, 0); \
                     } while (0)
-
+#endif

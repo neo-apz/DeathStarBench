@@ -12,7 +12,7 @@
 #include "../MyCommon/MyClientPool.h"
 #include "../MyCommon/MyThriftClient.h"
 
-#ifdef FLEXUS
+#ifdef __aarch64__
   #include "../MyCommon/MagicBreakPoint.h"
 #endif
 
@@ -29,8 +29,11 @@ uint64_t num_iterations;
 std::mutex thread_lock;
 std::string machine_id;
 
-#ifdef FLEXUS
+#ifdef __aarch64__
   cpu_set_t cpuSet[16];
+#endif
+
+#ifdef FLEXUS
   volatile bool start = false;
 #endif
 
@@ -51,7 +54,7 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   //           << " OSz: " << OSz << std::endl;
 
 
-#ifdef FLEXUS
+#ifdef __aarch64__
   len = call_magic_4_64(1234, (uint64_t) cltIBufPtr, ISz, (uint64_t) cltOBufPtr, OSz);
 #else
   MyThriftClient<MyUniqueIdServiceClient> newUniqueIdClient(cltIBufPtr, ISz, cltOBufPtr, OSz);
@@ -75,7 +78,6 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   //           << " OSz: " << OSz << std::endl;
 
   len = OSz;
-
 #endif
 
   uniqueIdClient->WroteBytes(len, false);
@@ -175,7 +177,7 @@ int main(int argc, char *argv[]) {
                                                   &thread_lock, machine_id,
                                                   &composeClientPool);
 
-  #ifdef FLEXUS
+  #ifdef __aarch64__
     cpu_set_t  mask;
     CPU_ZERO(&mask);
     CPU_SET(0, &mask);
@@ -190,7 +192,7 @@ int main(int argc, char *argv[]) {
     serverThreads[i] = std::thread(ProcessUniqueIdRequests, uniqueIdClients[i], handler,
                                    i, num_threads - 1);
 
-    #ifdef FLEXUS
+    #ifdef __aarch64__
     CPU_ZERO(&cpuSet[i]);
     CPU_SET(i+1, &cpuSet[i]);
     pthread_setaffinity_np(serverThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
@@ -198,13 +200,14 @@ int main(int argc, char *argv[]) {
 
   }
 
-  cout << "Getting responses " << endl;
   for (int i = 0; i < num_threads; i++) {
     serverThreads[i].join();
 
     // cout << "Getting responses - Thread " << i << " ... " << endl;
     clientThreads[i] = std::thread(ClientRecvUniqueId, uniqueIdClients[i]);
   }
+
+  cout << "Getting responses " << endl;
 
   for (int i = 0; i < num_threads; i++) {
     clientThreads[i].join();
