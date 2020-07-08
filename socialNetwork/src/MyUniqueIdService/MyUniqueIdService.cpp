@@ -83,14 +83,15 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   uniqueIdClient->WroteBytes(len, false);
 }
 
-void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
-                      uint32_t count){
+void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient){
   
   uniqueIdClient->Connect();
   auto client = uniqueIdClient->GetClient();
 
   int64_t req_id = 0xFFFFFFFFFFFF; // rand!
   PostType::type post_type = (PostType::type) 0;
+
+  uint64_t count = num_iterations;
 
   while(count--){
     client->send_UploadUniqueId(req_id, post_type);
@@ -163,7 +164,7 @@ int main(int argc, char *argv[]) {
   // MyThriftClient<MyComposePostServiceClient>* composeClients[num_threads];
 
   MyClientPool<MyThriftClient<MyComposePostServiceClient>> composeClientPool (
-    "compose-post", buffer_size, 0, 16, 1000);
+    "compose-post", buffer_size, 16, 16, 1000);
   
   std::thread clientThreads[num_threads];
   std::thread serverThreads[num_threads];
@@ -174,7 +175,8 @@ int main(int argc, char *argv[]) {
     // composeClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
     
     // cout << "Generating requests - Thread " << i << " ... " << endl;
-    clientThreads[i] = std::thread(ClientSendUniqueIdPointerBased, uniqueIdClients[i], buffer_size);
+    // clientThreads[i] = std::thread(ClientSendUniqueIdPointerBased, uniqueIdClients[i], buffer_size);
+    clientThreads[i] = std::thread(ClientSendUniqueId, uniqueIdClients[i]);
   }
 
   std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(

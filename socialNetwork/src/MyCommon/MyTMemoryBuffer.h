@@ -441,7 +441,7 @@ private:
     if (buf == NULL && size != 0) {
       assert(owner);
       buf = (uint8_t*)std::malloc(size);
-      read_pagemap( (unsigned long) buf);
+      // read_pagemap( (unsigned long) buf);
       if (buf == NULL) {
 	throw std::bad_alloc();
       }
