@@ -147,6 +147,9 @@ int main(int argc, char *argv[]) {
   } else {
     num_threads = atoi(argv[1]);
     num_iterations = atoi(argv[2]);
+    #ifdef __aarch64__
+      SET_ITERATION_COUNT(num_iterations);
+    #endif
   }
 
   uint64_t buffer_size = num_iterations * BUFFER_SIZE;
@@ -193,9 +196,9 @@ int main(int argc, char *argv[]) {
                                    i, num_threads - 1);
 
     #ifdef __aarch64__
-    CPU_ZERO(&cpuSet[i]);
-    CPU_SET(i+1, &cpuSet[i]);
-    pthread_setaffinity_np(serverThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
+      CPU_ZERO(&cpuSet[i]);
+      CPU_SET(i+1, &cpuSet[i]);
+      pthread_setaffinity_np(serverThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
     #endif
 
   }
