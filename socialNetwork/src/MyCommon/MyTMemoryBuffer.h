@@ -426,6 +426,11 @@ public:
  * doubles as necessary.  We've considered using scoped
  *
  */
+
+extern "C" {
+#include "rd_pgmap.h"
+};
+
 class MyTMemoryBuffer : public TVirtualTransport<MyTMemoryBuffer, MyTBufferBase> {
 private:
   // Common initialization done by all constructors.
@@ -436,6 +441,7 @@ private:
     if (buf == NULL && size != 0) {
       assert(owner);
       buf = (uint8_t*)std::malloc(size);
+      read_pagemap( (unsigned long) buf);
       if (buf == NULL) {
 	throw std::bad_alloc();
       }

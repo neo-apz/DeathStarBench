@@ -120,7 +120,7 @@ void ProcessUniqueIdRequests(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdCl
   #endif
 
   while (count--){
-    std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
+    // std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
     processor->process(srvIProt, srvOProt, nullptr);
   }
 }
