@@ -40,6 +40,11 @@ std::string machine_id;
 #define ITERATION 10000
 #define BUFFER_SIZE  50
 
+// extern "C" {
+// #include "../MyCommon/rd_pgmap.h"
+// };
+
+
 void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
     uint64_t buffer_size){
   
@@ -47,6 +52,11 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   uint32_t ISz, OSz, len;
 
   uniqueIdClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+
+  // for (int i = 0; i < buffer_size; i++){
+  //   read_pagemap( (unsigned long) (cltIBufPtr + i));
+  // }
+
   ISz = buffer_size - ISz;
   OSz = buffer_size - OSz;
   // std::cout << "After GetBuffer: IBuf:" << (uint64_t) cltIBufPtr
@@ -123,6 +133,9 @@ void ProcessUniqueIdRequests(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdCl
   while (count--){
     // std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
     processor->process(srvIProt, srvOProt, nullptr);
+    #ifdef __aarch64__
+      SET_ITERATION_COUNT(num_iterations);
+    #endif
   }
 }
 
@@ -149,12 +162,13 @@ int main(int argc, char *argv[]) {
   } else {
     num_threads = atoi(argv[1]);
     num_iterations = atoi(argv[2]);
-    #ifdef __aarch64__
-      SET_ITERATION_COUNT(num_iterations);
-    #endif
+    // #ifdef __aarch64__
+    //   SET_ITERATION_COUNT(num_iterations);
+    // #endif
   }
 
   uint64_t buffer_size = num_iterations * BUFFER_SIZE;
+  std::cout << "Buffer size: " << buffer_size << std::endl;
 
   if (GetMachineId(&machine_id) != 0) {
     exit(EXIT_FAILURE);
