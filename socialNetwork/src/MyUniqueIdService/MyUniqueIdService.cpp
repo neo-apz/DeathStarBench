@@ -204,7 +204,6 @@ int main(int argc, char *argv[]) {
     sched_setaffinity(0, sizeof(mask), &mask);
   #endif
 
-  cout << "Processing the generated requests" << endl;
   for (int i = 0; i < num_threads; i++) {
     clientThreads[i].join();
     
@@ -219,6 +218,8 @@ int main(int argc, char *argv[]) {
     #endif
 
   }
+
+  cout << "Processing the generated requests" << endl;
 
   for (int i = 0; i < num_threads; i++) {
     serverThreads[i].join();
