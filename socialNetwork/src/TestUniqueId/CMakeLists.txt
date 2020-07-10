@@ -20,6 +20,13 @@ add_executable(
     ${THRIFT_GEN_CPP_DIR}/social_network_types.cpp
 )
 
+add_executable(
+    TestFunction
+    TestFunction.cpp
+    ${THRIFT_GEN_CPP_DIR}/social_network_types.cpp
+)
+
+
 target_include_directories(
     TestUniqueIdService PRIVATE
 )
@@ -31,6 +38,11 @@ target_include_directories(
 target_include_directories(
     FakeComposePost PRIVATE
 )
+
+target_include_directories(
+    TestFunction PRIVATE
+)
+
 
 target_link_libraries(
     TestUniqueIdService
@@ -51,6 +63,13 @@ target_link_libraries(
 
 target_link_libraries(
     FakeComposePost
+    ${THRIFT_LIB}
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${Boost_LIBRARIES}
+)
+
+target_link_libraries(
+    TestFunction
     ${THRIFT_LIB}
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
