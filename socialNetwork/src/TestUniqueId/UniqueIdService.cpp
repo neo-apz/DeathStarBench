@@ -13,14 +13,18 @@
 
 #include <signal.h>
 
-#include <thrift/server/TThreadedServer.h>
+#include <thrift/server/TSimpleServer.h>
 #include <thrift/protocol/TCompactProtocol.h>
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
 
 #include "UniqueIdHandler.h"
 
-using apache::thrift::server::TThreadedServer;
+#include <pthread.h>
+
+
+// using apache::thrift::server::TThreadedServer;
+using apache::thrift::server::TSimpleServer;
 using apache::thrift::transport::TServerSocket;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::protocol::TCompactProtocolFactory;
@@ -42,7 +46,8 @@ int main(int argc, char *argv[]) {
 
   int port = 4000;
 
-  std::string compose_post_addr = "127.0.0.1";
+  std::string compose_post_addr = "10.0.2.2";
+    // std::string compose_post_addr = "localhost";
   int compose_post_port = 5000;
 
   std::string machine_id;
@@ -54,7 +59,14 @@ int main(int argc, char *argv[]) {
   ClientPool<ThriftClient<ComposePostServiceClient>> compose_post_client_pool(
       "compose-post", compose_post_addr, compose_post_port, 0, 128, 1000);
 
-  TThreadedServer server (
+  
+  cpu_set_t  mask;
+  CPU_ZERO(&mask);
+  CPU_SET(4, &mask);
+  sched_setaffinity(0, sizeof(mask), &mask);
+
+  // TSimpleServer
+  TSimpleServer server (
       std::make_shared<UniqueIdServiceProcessor>(
           std::make_shared<UniqueIdHandler>(
               &thread_lock, machine_id, &compose_post_client_pool)),
