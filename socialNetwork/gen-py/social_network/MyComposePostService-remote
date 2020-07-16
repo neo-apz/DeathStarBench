@@ -16,7 +16,7 @@ else:
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
 
-from social_network import ComposePostService
+from social_network import MyComposePostService
 from social_network.ttypes import *
 
 if len(sys.argv) <= 1 or sys.argv[1] == '--help':
@@ -106,7 +106,7 @@ else:
     else:
         transport = TTransport.TBufferedTransport(socket)
 protocol = TBinaryProtocol(transport)
-client = ComposePostService.Client(protocol)
+client = MyComposePostService.Client(protocol)
 transport.open()
 
 if cmd == 'UploadText':

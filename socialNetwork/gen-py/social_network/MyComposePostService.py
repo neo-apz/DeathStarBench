@@ -19,65 +19,57 @@ all_structs = []
 
 
 class Iface(object):
-    def RegisterUser(self, req_id, first_name, last_name, username, password):
+    def UploadText(self, req_id, text):
         """
         Parameters:
          - req_id
-         - first_name
-         - last_name
-         - username
-         - password
+         - text
 
         """
         pass
 
-    def RegisterUserWithId(self, req_id, first_name, last_name, username, password, user_id):
+    def UploadMedia(self, req_id, media):
         """
         Parameters:
          - req_id
-         - first_name
-         - last_name
-         - username
-         - password
-         - user_id
+         - media
 
         """
         pass
 
-    def Login(self, req_id, username, password):
+    def UploadUniqueId(self, req_id, post_id, post_type):
         """
         Parameters:
          - req_id
-         - username
-         - password
+         - post_id
+         - post_type
 
         """
         pass
 
-    def UploadCreatorWithUserId(self, req_id, user_id, username):
+    def UploadCreator(self, req_id, creator):
         """
         Parameters:
          - req_id
-         - user_id
-         - username
+         - creator
 
         """
         pass
 
-    def UploadCreatorWithUsername(self, req_id, username):
+    def UploadUrls(self, req_id, urls):
         """
         Parameters:
          - req_id
-         - username
+         - urls
 
         """
         pass
 
-    def GetUserId(self, req_id, username):
+    def UploadUserMentions(self, req_id, user_mentions):
         """
         Parameters:
          - req_id
-         - username
+         - user_mentions
 
         """
         pass
@@ -90,32 +82,26 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def RegisterUser(self, req_id, first_name, last_name, username, password):
+    def UploadText(self, req_id, text):
         """
         Parameters:
          - req_id
-         - first_name
-         - last_name
-         - username
-         - password
+         - text
 
         """
-        self.send_RegisterUser(req_id, first_name, last_name, username, password)
-        self.recv_RegisterUser()
+        self.send_UploadText(req_id, text)
+        self.recv_UploadText()
 
-    def send_RegisterUser(self, req_id, first_name, last_name, username, password):
-        self._oprot.writeMessageBegin('RegisterUser', TMessageType.CALL, self._seqid)
-        args = RegisterUser_args()
+    def send_UploadText(self, req_id, text):
+        self._oprot.writeMessageBegin('UploadText', TMessageType.CALL, self._seqid)
+        args = UploadText_args()
         args.req_id = req_id
-        args.first_name = first_name
-        args.last_name = last_name
-        args.username = username
-        args.password = password
+        args.text = text
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_RegisterUser(self):
+    def recv_UploadText(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -123,41 +109,33 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = RegisterUser_result()
+        result = UploadText_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.se is not None:
             raise result.se
         return
 
-    def RegisterUserWithId(self, req_id, first_name, last_name, username, password, user_id):
+    def UploadMedia(self, req_id, media):
         """
         Parameters:
          - req_id
-         - first_name
-         - last_name
-         - username
-         - password
-         - user_id
+         - media
 
         """
-        self.send_RegisterUserWithId(req_id, first_name, last_name, username, password, user_id)
-        self.recv_RegisterUserWithId()
+        self.send_UploadMedia(req_id, media)
+        self.recv_UploadMedia()
 
-    def send_RegisterUserWithId(self, req_id, first_name, last_name, username, password, user_id):
-        self._oprot.writeMessageBegin('RegisterUserWithId', TMessageType.CALL, self._seqid)
-        args = RegisterUserWithId_args()
+    def send_UploadMedia(self, req_id, media):
+        self._oprot.writeMessageBegin('UploadMedia', TMessageType.CALL, self._seqid)
+        args = UploadMedia_args()
         args.req_id = req_id
-        args.first_name = first_name
-        args.last_name = last_name
-        args.username = username
-        args.password = password
-        args.user_id = user_id
+        args.media = media
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_RegisterUserWithId(self):
+    def recv_UploadMedia(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -165,35 +143,35 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = RegisterUserWithId_result()
+        result = UploadMedia_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.se is not None:
             raise result.se
         return
 
-    def Login(self, req_id, username, password):
+    def UploadUniqueId(self, req_id, post_id, post_type):
         """
         Parameters:
          - req_id
-         - username
-         - password
+         - post_id
+         - post_type
 
         """
-        self.send_Login(req_id, username, password)
-        return self.recv_Login()
+        self.send_UploadUniqueId(req_id, post_id, post_type)
+        self.recv_UploadUniqueId()
 
-    def send_Login(self, req_id, username, password):
-        self._oprot.writeMessageBegin('Login', TMessageType.CALL, self._seqid)
-        args = Login_args()
+    def send_UploadUniqueId(self, req_id, post_id, post_type):
+        self._oprot.writeMessageBegin('UploadUniqueId', TMessageType.CALL, self._seqid)
+        args = UploadUniqueId_args()
         args.req_id = req_id
-        args.username = username
-        args.password = password
+        args.post_id = post_id
+        args.post_type = post_type
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_Login(self):
+    def recv_UploadUniqueId(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -201,71 +179,33 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = Login_result()
-        result.read(iprot)
-        iprot.readMessageEnd()
-        if result.success is not None:
-            return result.success
-        if result.se is not None:
-            raise result.se
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "Login failed: unknown result")
-
-    def UploadCreatorWithUserId(self, req_id, user_id, username):
-        """
-        Parameters:
-         - req_id
-         - user_id
-         - username
-
-        """
-        self.send_UploadCreatorWithUserId(req_id, user_id, username)
-        self.recv_UploadCreatorWithUserId()
-
-    def send_UploadCreatorWithUserId(self, req_id, user_id, username):
-        self._oprot.writeMessageBegin('UploadCreatorWithUserId', TMessageType.CALL, self._seqid)
-        args = UploadCreatorWithUserId_args()
-        args.req_id = req_id
-        args.user_id = user_id
-        args.username = username
-        args.write(self._oprot)
-        self._oprot.writeMessageEnd()
-        self._oprot.trans.flush()
-
-    def recv_UploadCreatorWithUserId(self):
-        iprot = self._iprot
-        (fname, mtype, rseqid) = iprot.readMessageBegin()
-        if mtype == TMessageType.EXCEPTION:
-            x = TApplicationException()
-            x.read(iprot)
-            iprot.readMessageEnd()
-            raise x
-        result = UploadCreatorWithUserId_result()
+        result = UploadUniqueId_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.se is not None:
             raise result.se
         return
 
-    def UploadCreatorWithUsername(self, req_id, username):
+    def UploadCreator(self, req_id, creator):
         """
         Parameters:
          - req_id
-         - username
+         - creator
 
         """
-        self.send_UploadCreatorWithUsername(req_id, username)
-        self.recv_UploadCreatorWithUsername()
+        self.send_UploadCreator(req_id, creator)
+        self.recv_UploadCreator()
 
-    def send_UploadCreatorWithUsername(self, req_id, username):
-        self._oprot.writeMessageBegin('UploadCreatorWithUsername', TMessageType.CALL, self._seqid)
-        args = UploadCreatorWithUsername_args()
+    def send_UploadCreator(self, req_id, creator):
+        self._oprot.writeMessageBegin('UploadCreator', TMessageType.CALL, self._seqid)
+        args = UploadCreator_args()
         args.req_id = req_id
-        args.username = username
+        args.creator = creator
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_UploadCreatorWithUsername(self):
+    def recv_UploadCreator(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -273,33 +213,33 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = UploadCreatorWithUsername_result()
+        result = UploadCreator_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.se is not None:
             raise result.se
         return
 
-    def GetUserId(self, req_id, username):
+    def UploadUrls(self, req_id, urls):
         """
         Parameters:
          - req_id
-         - username
+         - urls
 
         """
-        self.send_GetUserId(req_id, username)
-        return self.recv_GetUserId()
+        self.send_UploadUrls(req_id, urls)
+        self.recv_UploadUrls()
 
-    def send_GetUserId(self, req_id, username):
-        self._oprot.writeMessageBegin('GetUserId', TMessageType.CALL, self._seqid)
-        args = GetUserId_args()
+    def send_UploadUrls(self, req_id, urls):
+        self._oprot.writeMessageBegin('UploadUrls', TMessageType.CALL, self._seqid)
+        args = UploadUrls_args()
         args.req_id = req_id
-        args.username = username
+        args.urls = urls
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_GetUserId(self):
+    def recv_UploadUrls(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -307,26 +247,58 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = GetUserId_result()
+        result = UploadUrls_result()
         result.read(iprot)
         iprot.readMessageEnd()
-        if result.success is not None:
-            return result.success
         if result.se is not None:
             raise result.se
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "GetUserId failed: unknown result")
+        return
+
+    def UploadUserMentions(self, req_id, user_mentions):
+        """
+        Parameters:
+         - req_id
+         - user_mentions
+
+        """
+        self.send_UploadUserMentions(req_id, user_mentions)
+        self.recv_UploadUserMentions()
+
+    def send_UploadUserMentions(self, req_id, user_mentions):
+        self._oprot.writeMessageBegin('UploadUserMentions', TMessageType.CALL, self._seqid)
+        args = UploadUserMentions_args()
+        args.req_id = req_id
+        args.user_mentions = user_mentions
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_UploadUserMentions(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = UploadUserMentions_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.se is not None:
+            raise result.se
+        return
 
 
 class Processor(Iface, TProcessor):
     def __init__(self, handler):
         self._handler = handler
         self._processMap = {}
-        self._processMap["RegisterUser"] = Processor.process_RegisterUser
-        self._processMap["RegisterUserWithId"] = Processor.process_RegisterUserWithId
-        self._processMap["Login"] = Processor.process_Login
-        self._processMap["UploadCreatorWithUserId"] = Processor.process_UploadCreatorWithUserId
-        self._processMap["UploadCreatorWithUsername"] = Processor.process_UploadCreatorWithUsername
-        self._processMap["GetUserId"] = Processor.process_GetUserId
+        self._processMap["UploadText"] = Processor.process_UploadText
+        self._processMap["UploadMedia"] = Processor.process_UploadMedia
+        self._processMap["UploadUniqueId"] = Processor.process_UploadUniqueId
+        self._processMap["UploadCreator"] = Processor.process_UploadCreator
+        self._processMap["UploadUrls"] = Processor.process_UploadUrls
+        self._processMap["UploadUserMentions"] = Processor.process_UploadUserMentions
 
     def process(self, iprot, oprot):
         (name, type, seqid) = iprot.readMessageBegin()
@@ -343,13 +315,13 @@ class Processor(Iface, TProcessor):
             self._processMap[name](self, seqid, iprot, oprot)
         return True
 
-    def process_RegisterUser(self, seqid, iprot, oprot):
-        args = RegisterUser_args()
+    def process_UploadText(self, seqid, iprot, oprot):
+        args = UploadText_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = RegisterUser_result()
+        result = UploadText_result()
         try:
-            self._handler.RegisterUser(args.req_id, args.first_name, args.last_name, args.username, args.password)
+            self._handler.UploadText(args.req_id, args.text)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -364,18 +336,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("RegisterUser", msg_type, seqid)
+        oprot.writeMessageBegin("UploadText", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_RegisterUserWithId(self, seqid, iprot, oprot):
-        args = RegisterUserWithId_args()
+    def process_UploadMedia(self, seqid, iprot, oprot):
+        args = UploadMedia_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = RegisterUserWithId_result()
+        result = UploadMedia_result()
         try:
-            self._handler.RegisterUserWithId(args.req_id, args.first_name, args.last_name, args.username, args.password, args.user_id)
+            self._handler.UploadMedia(args.req_id, args.media)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -390,18 +362,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("RegisterUserWithId", msg_type, seqid)
+        oprot.writeMessageBegin("UploadMedia", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_Login(self, seqid, iprot, oprot):
-        args = Login_args()
+    def process_UploadUniqueId(self, seqid, iprot, oprot):
+        args = UploadUniqueId_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = Login_result()
+        result = UploadUniqueId_result()
         try:
-            result.success = self._handler.Login(args.req_id, args.username, args.password)
+            self._handler.UploadUniqueId(args.req_id, args.post_id, args.post_type)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -416,18 +388,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("Login", msg_type, seqid)
+        oprot.writeMessageBegin("UploadUniqueId", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_UploadCreatorWithUserId(self, seqid, iprot, oprot):
-        args = UploadCreatorWithUserId_args()
+    def process_UploadCreator(self, seqid, iprot, oprot):
+        args = UploadCreator_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = UploadCreatorWithUserId_result()
+        result = UploadCreator_result()
         try:
-            self._handler.UploadCreatorWithUserId(args.req_id, args.user_id, args.username)
+            self._handler.UploadCreator(args.req_id, args.creator)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -442,18 +414,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("UploadCreatorWithUserId", msg_type, seqid)
+        oprot.writeMessageBegin("UploadCreator", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_UploadCreatorWithUsername(self, seqid, iprot, oprot):
-        args = UploadCreatorWithUsername_args()
+    def process_UploadUrls(self, seqid, iprot, oprot):
+        args = UploadUrls_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = UploadCreatorWithUsername_result()
+        result = UploadUrls_result()
         try:
-            self._handler.UploadCreatorWithUsername(args.req_id, args.username)
+            self._handler.UploadUrls(args.req_id, args.urls)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -468,18 +440,18 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("UploadCreatorWithUsername", msg_type, seqid)
+        oprot.writeMessageBegin("UploadUrls", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
-    def process_GetUserId(self, seqid, iprot, oprot):
-        args = GetUserId_args()
+    def process_UploadUserMentions(self, seqid, iprot, oprot):
+        args = UploadUserMentions_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = GetUserId_result()
+        result = UploadUserMentions_result()
         try:
-            result.success = self._handler.GetUserId(args.req_id, args.username)
+            self._handler.UploadUserMentions(args.req_id, args.user_mentions)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -494,7 +466,7 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("GetUserId", msg_type, seqid)
+        oprot.writeMessageBegin("UploadUserMentions", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -502,24 +474,18 @@ class Processor(Iface, TProcessor):
 # HELPER FUNCTIONS AND STRUCTURES
 
 
-class RegisterUser_args(object):
+class UploadText_args(object):
     """
     Attributes:
      - req_id
-     - first_name
-     - last_name
-     - username
-     - password
+     - text
 
     """
 
 
-    def __init__(self, req_id=None, first_name=None, last_name=None, username=None, password=None,):
+    def __init__(self, req_id=None, text=None,):
         self.req_id = req_id
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
-        self.password = password
+        self.text = text
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -537,22 +503,7 @@ class RegisterUser_args(object):
                     iprot.skip(ftype)
             elif fid == 2:
                 if ftype == TType.STRING:
-                    self.first_name = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.STRING:
-                    self.last_name = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 4:
-                if ftype == TType.STRING:
-                    self.username = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 5:
-                if ftype == TType.STRING:
-                    self.password = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                    self.text = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
                 else:
                     iprot.skip(ftype)
             else:
@@ -564,26 +515,14 @@ class RegisterUser_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('RegisterUser_args')
+        oprot.writeStructBegin('UploadText_args')
         if self.req_id is not None:
             oprot.writeFieldBegin('req_id', TType.I64, 1)
             oprot.writeI64(self.req_id)
             oprot.writeFieldEnd()
-        if self.first_name is not None:
-            oprot.writeFieldBegin('first_name', TType.STRING, 2)
-            oprot.writeString(self.first_name.encode('utf-8') if sys.version_info[0] == 2 else self.first_name)
-            oprot.writeFieldEnd()
-        if self.last_name is not None:
-            oprot.writeFieldBegin('last_name', TType.STRING, 3)
-            oprot.writeString(self.last_name.encode('utf-8') if sys.version_info[0] == 2 else self.last_name)
-            oprot.writeFieldEnd()
-        if self.username is not None:
-            oprot.writeFieldBegin('username', TType.STRING, 4)
-            oprot.writeString(self.username.encode('utf-8') if sys.version_info[0] == 2 else self.username)
-            oprot.writeFieldEnd()
-        if self.password is not None:
-            oprot.writeFieldBegin('password', TType.STRING, 5)
-            oprot.writeString(self.password.encode('utf-8') if sys.version_info[0] == 2 else self.password)
+        if self.text is not None:
+            oprot.writeFieldBegin('text', TType.STRING, 2)
+            oprot.writeString(self.text.encode('utf-8') if sys.version_info[0] == 2 else self.text)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -601,18 +540,15 @@ class RegisterUser_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(RegisterUser_args)
-RegisterUser_args.thrift_spec = (
+all_structs.append(UploadText_args)
+UploadText_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
-    (2, TType.STRING, 'first_name', 'UTF8', None, ),  # 2
-    (3, TType.STRING, 'last_name', 'UTF8', None, ),  # 3
-    (4, TType.STRING, 'username', 'UTF8', None, ),  # 4
-    (5, TType.STRING, 'password', 'UTF8', None, ),  # 5
+    (2, TType.STRING, 'text', 'UTF8', None, ),  # 2
 )
 
 
-class RegisterUser_result(object):
+class UploadText_result(object):
     """
     Attributes:
      - se
@@ -647,7 +583,7 @@ class RegisterUser_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('RegisterUser_result')
+        oprot.writeStructBegin('UploadText_result')
         if self.se is not None:
             oprot.writeFieldBegin('se', TType.STRUCT, 1)
             self.se.write(oprot)
@@ -668,33 +604,25 @@ class RegisterUser_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(RegisterUser_result)
-RegisterUser_result.thrift_spec = (
+all_structs.append(UploadText_result)
+UploadText_result.thrift_spec = (
     None,  # 0
     (1, TType.STRUCT, 'se', [ServiceException, None], None, ),  # 1
 )
 
 
-class RegisterUserWithId_args(object):
+class UploadMedia_args(object):
     """
     Attributes:
      - req_id
-     - first_name
-     - last_name
-     - username
-     - password
-     - user_id
+     - media
 
     """
 
 
-    def __init__(self, req_id=None, first_name=None, last_name=None, username=None, password=None, user_id=None,):
+    def __init__(self, req_id=None, media=None,):
         self.req_id = req_id
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
-        self.password = password
-        self.user_id = user_id
+        self.media = media
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -711,28 +639,14 @@ class RegisterUserWithId_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 2:
-                if ftype == TType.STRING:
-                    self.first_name = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.STRING:
-                    self.last_name = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 4:
-                if ftype == TType.STRING:
-                    self.username = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 5:
-                if ftype == TType.STRING:
-                    self.password = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 6:
-                if ftype == TType.I64:
-                    self.user_id = iprot.readI64()
+                if ftype == TType.LIST:
+                    self.media = []
+                    (_etype45, _size42) = iprot.readListBegin()
+                    for _i46 in range(_size42):
+                        _elem47 = Media()
+                        _elem47.read(iprot)
+                        self.media.append(_elem47)
+                    iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -744,30 +658,17 @@ class RegisterUserWithId_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('RegisterUserWithId_args')
+        oprot.writeStructBegin('UploadMedia_args')
         if self.req_id is not None:
             oprot.writeFieldBegin('req_id', TType.I64, 1)
             oprot.writeI64(self.req_id)
             oprot.writeFieldEnd()
-        if self.first_name is not None:
-            oprot.writeFieldBegin('first_name', TType.STRING, 2)
-            oprot.writeString(self.first_name.encode('utf-8') if sys.version_info[0] == 2 else self.first_name)
-            oprot.writeFieldEnd()
-        if self.last_name is not None:
-            oprot.writeFieldBegin('last_name', TType.STRING, 3)
-            oprot.writeString(self.last_name.encode('utf-8') if sys.version_info[0] == 2 else self.last_name)
-            oprot.writeFieldEnd()
-        if self.username is not None:
-            oprot.writeFieldBegin('username', TType.STRING, 4)
-            oprot.writeString(self.username.encode('utf-8') if sys.version_info[0] == 2 else self.username)
-            oprot.writeFieldEnd()
-        if self.password is not None:
-            oprot.writeFieldBegin('password', TType.STRING, 5)
-            oprot.writeString(self.password.encode('utf-8') if sys.version_info[0] == 2 else self.password)
-            oprot.writeFieldEnd()
-        if self.user_id is not None:
-            oprot.writeFieldBegin('user_id', TType.I64, 6)
-            oprot.writeI64(self.user_id)
+        if self.media is not None:
+            oprot.writeFieldBegin('media', TType.LIST, 2)
+            oprot.writeListBegin(TType.STRUCT, len(self.media))
+            for iter48 in self.media:
+                iter48.write(oprot)
+            oprot.writeListEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -785,19 +686,15 @@ class RegisterUserWithId_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(RegisterUserWithId_args)
-RegisterUserWithId_args.thrift_spec = (
+all_structs.append(UploadMedia_args)
+UploadMedia_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
-    (2, TType.STRING, 'first_name', 'UTF8', None, ),  # 2
-    (3, TType.STRING, 'last_name', 'UTF8', None, ),  # 3
-    (4, TType.STRING, 'username', 'UTF8', None, ),  # 4
-    (5, TType.STRING, 'password', 'UTF8', None, ),  # 5
-    (6, TType.I64, 'user_id', None, None, ),  # 6
+    (2, TType.LIST, 'media', (TType.STRUCT, [Media, None], False), None, ),  # 2
 )
 
 
-class RegisterUserWithId_result(object):
+class UploadMedia_result(object):
     """
     Attributes:
      - se
@@ -832,7 +729,7 @@ class RegisterUserWithId_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('RegisterUserWithId_result')
+        oprot.writeStructBegin('UploadMedia_result')
         if self.se is not None:
             oprot.writeFieldBegin('se', TType.STRUCT, 1)
             self.se.write(oprot)
@@ -853,187 +750,27 @@ class RegisterUserWithId_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(RegisterUserWithId_result)
-RegisterUserWithId_result.thrift_spec = (
+all_structs.append(UploadMedia_result)
+UploadMedia_result.thrift_spec = (
     None,  # 0
     (1, TType.STRUCT, 'se', [ServiceException, None], None, ),  # 1
 )
 
 
-class Login_args(object):
+class UploadUniqueId_args(object):
     """
     Attributes:
      - req_id
-     - username
-     - password
+     - post_id
+     - post_type
 
     """
 
 
-    def __init__(self, req_id=None, username=None, password=None,):
+    def __init__(self, req_id=None, post_id=None, post_type=None,):
         self.req_id = req_id
-        self.username = username
-        self.password = password
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 1:
-                if ftype == TType.I64:
-                    self.req_id = iprot.readI64()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.STRING:
-                    self.username = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.STRING:
-                    self.password = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('Login_args')
-        if self.req_id is not None:
-            oprot.writeFieldBegin('req_id', TType.I64, 1)
-            oprot.writeI64(self.req_id)
-            oprot.writeFieldEnd()
-        if self.username is not None:
-            oprot.writeFieldBegin('username', TType.STRING, 2)
-            oprot.writeString(self.username.encode('utf-8') if sys.version_info[0] == 2 else self.username)
-            oprot.writeFieldEnd()
-        if self.password is not None:
-            oprot.writeFieldBegin('password', TType.STRING, 3)
-            oprot.writeString(self.password.encode('utf-8') if sys.version_info[0] == 2 else self.password)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-all_structs.append(Login_args)
-Login_args.thrift_spec = (
-    None,  # 0
-    (1, TType.I64, 'req_id', None, None, ),  # 1
-    (2, TType.STRING, 'username', 'UTF8', None, ),  # 2
-    (3, TType.STRING, 'password', 'UTF8', None, ),  # 3
-)
-
-
-class Login_result(object):
-    """
-    Attributes:
-     - success
-     - se
-
-    """
-
-
-    def __init__(self, success=None, se=None,):
-        self.success = success
-        self.se = se
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 0:
-                if ftype == TType.STRING:
-                    self.success = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 1:
-                if ftype == TType.STRUCT:
-                    self.se = ServiceException()
-                    self.se.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('Login_result')
-        if self.success is not None:
-            oprot.writeFieldBegin('success', TType.STRING, 0)
-            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
-            oprot.writeFieldEnd()
-        if self.se is not None:
-            oprot.writeFieldBegin('se', TType.STRUCT, 1)
-            self.se.write(oprot)
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-all_structs.append(Login_result)
-Login_result.thrift_spec = (
-    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
-    (1, TType.STRUCT, 'se', [ServiceException, None], None, ),  # 1
-)
-
-
-class UploadCreatorWithUserId_args(object):
-    """
-    Attributes:
-     - req_id
-     - user_id
-     - username
-
-    """
-
-
-    def __init__(self, req_id=None, user_id=None, username=None,):
-        self.req_id = req_id
-        self.user_id = user_id
-        self.username = username
+        self.post_id = post_id
+        self.post_type = post_type
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -1051,12 +788,12 @@ class UploadCreatorWithUserId_args(object):
                     iprot.skip(ftype)
             elif fid == 2:
                 if ftype == TType.I64:
-                    self.user_id = iprot.readI64()
+                    self.post_id = iprot.readI64()
                 else:
                     iprot.skip(ftype)
             elif fid == 3:
-                if ftype == TType.STRING:
-                    self.username = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                if ftype == TType.I32:
+                    self.post_type = iprot.readI32()
                 else:
                     iprot.skip(ftype)
             else:
@@ -1068,18 +805,18 @@ class UploadCreatorWithUserId_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('UploadCreatorWithUserId_args')
+        oprot.writeStructBegin('UploadUniqueId_args')
         if self.req_id is not None:
             oprot.writeFieldBegin('req_id', TType.I64, 1)
             oprot.writeI64(self.req_id)
             oprot.writeFieldEnd()
-        if self.user_id is not None:
-            oprot.writeFieldBegin('user_id', TType.I64, 2)
-            oprot.writeI64(self.user_id)
+        if self.post_id is not None:
+            oprot.writeFieldBegin('post_id', TType.I64, 2)
+            oprot.writeI64(self.post_id)
             oprot.writeFieldEnd()
-        if self.username is not None:
-            oprot.writeFieldBegin('username', TType.STRING, 3)
-            oprot.writeString(self.username.encode('utf-8') if sys.version_info[0] == 2 else self.username)
+        if self.post_type is not None:
+            oprot.writeFieldBegin('post_type', TType.I32, 3)
+            oprot.writeI32(self.post_type)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -1097,16 +834,16 @@ class UploadCreatorWithUserId_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(UploadCreatorWithUserId_args)
-UploadCreatorWithUserId_args.thrift_spec = (
+all_structs.append(UploadUniqueId_args)
+UploadUniqueId_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
-    (2, TType.I64, 'user_id', None, None, ),  # 2
-    (3, TType.STRING, 'username', 'UTF8', None, ),  # 3
+    (2, TType.I64, 'post_id', None, None, ),  # 2
+    (3, TType.I32, 'post_type', None, None, ),  # 3
 )
 
 
-class UploadCreatorWithUserId_result(object):
+class UploadUniqueId_result(object):
     """
     Attributes:
      - se
@@ -1141,7 +878,7 @@ class UploadCreatorWithUserId_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('UploadCreatorWithUserId_result')
+        oprot.writeStructBegin('UploadUniqueId_result')
         if self.se is not None:
             oprot.writeFieldBegin('se', TType.STRUCT, 1)
             self.se.write(oprot)
@@ -1162,25 +899,25 @@ class UploadCreatorWithUserId_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(UploadCreatorWithUserId_result)
-UploadCreatorWithUserId_result.thrift_spec = (
+all_structs.append(UploadUniqueId_result)
+UploadUniqueId_result.thrift_spec = (
     None,  # 0
     (1, TType.STRUCT, 'se', [ServiceException, None], None, ),  # 1
 )
 
 
-class UploadCreatorWithUsername_args(object):
+class UploadCreator_args(object):
     """
     Attributes:
      - req_id
-     - username
+     - creator
 
     """
 
 
-    def __init__(self, req_id=None, username=None,):
+    def __init__(self, req_id=None, creator=None,):
         self.req_id = req_id
-        self.username = username
+        self.creator = creator
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -1197,8 +934,9 @@ class UploadCreatorWithUsername_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 2:
-                if ftype == TType.STRING:
-                    self.username = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                if ftype == TType.STRUCT:
+                    self.creator = Creator()
+                    self.creator.read(iprot)
                 else:
                     iprot.skip(ftype)
             else:
@@ -1210,14 +948,14 @@ class UploadCreatorWithUsername_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('UploadCreatorWithUsername_args')
+        oprot.writeStructBegin('UploadCreator_args')
         if self.req_id is not None:
             oprot.writeFieldBegin('req_id', TType.I64, 1)
             oprot.writeI64(self.req_id)
             oprot.writeFieldEnd()
-        if self.username is not None:
-            oprot.writeFieldBegin('username', TType.STRING, 2)
-            oprot.writeString(self.username.encode('utf-8') if sys.version_info[0] == 2 else self.username)
+        if self.creator is not None:
+            oprot.writeFieldBegin('creator', TType.STRUCT, 2)
+            self.creator.write(oprot)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -1235,15 +973,15 @@ class UploadCreatorWithUsername_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(UploadCreatorWithUsername_args)
-UploadCreatorWithUsername_args.thrift_spec = (
+all_structs.append(UploadCreator_args)
+UploadCreator_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
-    (2, TType.STRING, 'username', 'UTF8', None, ),  # 2
+    (2, TType.STRUCT, 'creator', [Creator, None], None, ),  # 2
 )
 
 
-class UploadCreatorWithUsername_result(object):
+class UploadCreator_result(object):
     """
     Attributes:
      - se
@@ -1278,7 +1016,7 @@ class UploadCreatorWithUsername_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('UploadCreatorWithUsername_result')
+        oprot.writeStructBegin('UploadCreator_result')
         if self.se is not None:
             oprot.writeFieldBegin('se', TType.STRUCT, 1)
             self.se.write(oprot)
@@ -1299,25 +1037,25 @@ class UploadCreatorWithUsername_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(UploadCreatorWithUsername_result)
-UploadCreatorWithUsername_result.thrift_spec = (
+all_structs.append(UploadCreator_result)
+UploadCreator_result.thrift_spec = (
     None,  # 0
     (1, TType.STRUCT, 'se', [ServiceException, None], None, ),  # 1
 )
 
 
-class GetUserId_args(object):
+class UploadUrls_args(object):
     """
     Attributes:
      - req_id
-     - username
+     - urls
 
     """
 
 
-    def __init__(self, req_id=None, username=None,):
+    def __init__(self, req_id=None, urls=None,):
         self.req_id = req_id
-        self.username = username
+        self.urls = urls
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -1334,8 +1072,14 @@ class GetUserId_args(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 2:
-                if ftype == TType.STRING:
-                    self.username = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                if ftype == TType.LIST:
+                    self.urls = []
+                    (_etype52, _size49) = iprot.readListBegin()
+                    for _i53 in range(_size49):
+                        _elem54 = Url()
+                        _elem54.read(iprot)
+                        self.urls.append(_elem54)
+                    iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -1347,14 +1091,17 @@ class GetUserId_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('GetUserId_args')
+        oprot.writeStructBegin('UploadUrls_args')
         if self.req_id is not None:
             oprot.writeFieldBegin('req_id', TType.I64, 1)
             oprot.writeI64(self.req_id)
             oprot.writeFieldEnd()
-        if self.username is not None:
-            oprot.writeFieldBegin('username', TType.STRING, 2)
-            oprot.writeString(self.username.encode('utf-8') if sys.version_info[0] == 2 else self.username)
+        if self.urls is not None:
+            oprot.writeFieldBegin('urls', TType.LIST, 2)
+            oprot.writeListBegin(TType.STRUCT, len(self.urls))
+            for iter55 in self.urls:
+                iter55.write(oprot)
+            oprot.writeListEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -1372,25 +1119,23 @@ class GetUserId_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(GetUserId_args)
-GetUserId_args.thrift_spec = (
+all_structs.append(UploadUrls_args)
+UploadUrls_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
-    (2, TType.STRING, 'username', 'UTF8', None, ),  # 2
+    (2, TType.LIST, 'urls', (TType.STRUCT, [Url, None], False), None, ),  # 2
 )
 
 
-class GetUserId_result(object):
+class UploadUrls_result(object):
     """
     Attributes:
-     - success
      - se
 
     """
 
 
-    def __init__(self, success=None, se=None,):
-        self.success = success
+    def __init__(self, se=None,):
         self.se = se
 
     def read(self, iprot):
@@ -1402,12 +1147,7 @@ class GetUserId_result(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 0:
-                if ftype == TType.I64:
-                    self.success = iprot.readI64()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 1:
+            if fid == 1:
                 if ftype == TType.STRUCT:
                     self.se = ServiceException()
                     self.se.read(iprot)
@@ -1422,11 +1162,7 @@ class GetUserId_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('GetUserId_result')
-        if self.success is not None:
-            oprot.writeFieldBegin('success', TType.I64, 0)
-            oprot.writeI64(self.success)
-            oprot.writeFieldEnd()
+        oprot.writeStructBegin('UploadUrls_result')
         if self.se is not None:
             oprot.writeFieldBegin('se', TType.STRUCT, 1)
             self.se.write(oprot)
@@ -1447,9 +1183,155 @@ class GetUserId_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(GetUserId_result)
-GetUserId_result.thrift_spec = (
-    (0, TType.I64, 'success', None, None, ),  # 0
+all_structs.append(UploadUrls_result)
+UploadUrls_result.thrift_spec = (
+    None,  # 0
+    (1, TType.STRUCT, 'se', [ServiceException, None], None, ),  # 1
+)
+
+
+class UploadUserMentions_args(object):
+    """
+    Attributes:
+     - req_id
+     - user_mentions
+
+    """
+
+
+    def __init__(self, req_id=None, user_mentions=None,):
+        self.req_id = req_id
+        self.user_mentions = user_mentions
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I64:
+                    self.req_id = iprot.readI64()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 2:
+                if ftype == TType.LIST:
+                    self.user_mentions = []
+                    (_etype59, _size56) = iprot.readListBegin()
+                    for _i60 in range(_size56):
+                        _elem61 = UserMention()
+                        _elem61.read(iprot)
+                        self.user_mentions.append(_elem61)
+                    iprot.readListEnd()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('UploadUserMentions_args')
+        if self.req_id is not None:
+            oprot.writeFieldBegin('req_id', TType.I64, 1)
+            oprot.writeI64(self.req_id)
+            oprot.writeFieldEnd()
+        if self.user_mentions is not None:
+            oprot.writeFieldBegin('user_mentions', TType.LIST, 2)
+            oprot.writeListBegin(TType.STRUCT, len(self.user_mentions))
+            for iter62 in self.user_mentions:
+                iter62.write(oprot)
+            oprot.writeListEnd()
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(UploadUserMentions_args)
+UploadUserMentions_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I64, 'req_id', None, None, ),  # 1
+    (2, TType.LIST, 'user_mentions', (TType.STRUCT, [UserMention, None], False), None, ),  # 2
+)
+
+
+class UploadUserMentions_result(object):
+    """
+    Attributes:
+     - se
+
+    """
+
+
+    def __init__(self, se=None,):
+        self.se = se
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.STRUCT:
+                    self.se = ServiceException()
+                    self.se.read(iprot)
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('UploadUserMentions_result')
+        if self.se is not None:
+            oprot.writeFieldBegin('se', TType.STRUCT, 1)
+            self.se.write(oprot)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(UploadUserMentions_result)
+UploadUserMentions_result.thrift_spec = (
+    None,  # 0
     (1, TType.STRUCT, 'se', [ServiceException, None], None, ),  # 1
 )
 fix_spec(all_structs)

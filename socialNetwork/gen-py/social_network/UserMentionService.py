@@ -19,12 +19,11 @@ all_structs = []
 
 
 class Iface(object):
-    def UploadUserMentions(self, req_id, usernames, carrier):
+    def UploadUserMentions(self, req_id, usernames):
         """
         Parameters:
          - req_id
          - usernames
-         - carrier
 
         """
         pass
@@ -37,23 +36,21 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def UploadUserMentions(self, req_id, usernames, carrier):
+    def UploadUserMentions(self, req_id, usernames):
         """
         Parameters:
          - req_id
          - usernames
-         - carrier
 
         """
-        self.send_UploadUserMentions(req_id, usernames, carrier)
+        self.send_UploadUserMentions(req_id, usernames)
         self.recv_UploadUserMentions()
 
-    def send_UploadUserMentions(self, req_id, usernames, carrier):
+    def send_UploadUserMentions(self, req_id, usernames):
         self._oprot.writeMessageBegin('UploadUserMentions', TMessageType.CALL, self._seqid)
         args = UploadUserMentions_args()
         args.req_id = req_id
         args.usernames = usernames
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -101,7 +98,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = UploadUserMentions_result()
         try:
-            self._handler.UploadUserMentions(args.req_id, args.usernames, args.carrier)
+            self._handler.UploadUserMentions(args.req_id, args.usernames)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -129,15 +126,13 @@ class UploadUserMentions_args(object):
     Attributes:
      - req_id
      - usernames
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, usernames=None, carrier=None,):
+    def __init__(self, req_id=None, usernames=None,):
         self.req_id = req_id
         self.usernames = usernames
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -156,22 +151,11 @@ class UploadUserMentions_args(object):
             elif fid == 2:
                 if ftype == TType.LIST:
                     self.usernames = []
-                    (_etype330, _size327) = iprot.readListBegin()
-                    for _i331 in range(_size327):
-                        _elem332 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.usernames.append(_elem332)
+                    (_etype108, _size105) = iprot.readListBegin()
+                    for _i109 in range(_size105):
+                        _elem110 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.usernames.append(_elem110)
                     iprot.readListEnd()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype334, _vtype335, _size333) = iprot.readMapBegin()
-                    for _i337 in range(_size333):
-                        _key338 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val339 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key338] = _val339
-                    iprot.readMapEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -191,17 +175,9 @@ class UploadUserMentions_args(object):
         if self.usernames is not None:
             oprot.writeFieldBegin('usernames', TType.LIST, 2)
             oprot.writeListBegin(TType.STRING, len(self.usernames))
-            for iter340 in self.usernames:
-                oprot.writeString(iter340.encode('utf-8') if sys.version_info[0] == 2 else iter340)
+            for iter111 in self.usernames:
+                oprot.writeString(iter111.encode('utf-8') if sys.version_info[0] == 2 else iter111)
             oprot.writeListEnd()
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter341, viter342 in self.carrier.items():
-                oprot.writeString(kiter341.encode('utf-8') if sys.version_info[0] == 2 else kiter341)
-                oprot.writeString(viter342.encode('utf-8') if sys.version_info[0] == 2 else viter342)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -224,7 +200,6 @@ UploadUserMentions_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.LIST, 'usernames', (TType.STRING, 'UTF8', False), None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 

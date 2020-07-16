@@ -19,14 +19,13 @@ all_structs = []
 
 
 class Iface(object):
-    def ReadHomeTimeline(self, req_id, user_id, start, stop, carrier):
+    def ReadHomeTimeline(self, req_id, user_id, start, stop):
         """
         Parameters:
          - req_id
          - user_id
          - start
          - stop
-         - carrier
 
         """
         pass
@@ -39,27 +38,25 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def ReadHomeTimeline(self, req_id, user_id, start, stop, carrier):
+    def ReadHomeTimeline(self, req_id, user_id, start, stop):
         """
         Parameters:
          - req_id
          - user_id
          - start
          - stop
-         - carrier
 
         """
-        self.send_ReadHomeTimeline(req_id, user_id, start, stop, carrier)
+        self.send_ReadHomeTimeline(req_id, user_id, start, stop)
         return self.recv_ReadHomeTimeline()
 
-    def send_ReadHomeTimeline(self, req_id, user_id, start, stop, carrier):
+    def send_ReadHomeTimeline(self, req_id, user_id, start, stop):
         self._oprot.writeMessageBegin('ReadHomeTimeline', TMessageType.CALL, self._seqid)
         args = ReadHomeTimeline_args()
         args.req_id = req_id
         args.user_id = user_id
         args.start = start
         args.stop = stop
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -109,7 +106,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = ReadHomeTimeline_result()
         try:
-            result.success = self._handler.ReadHomeTimeline(args.req_id, args.user_id, args.start, args.stop, args.carrier)
+            result.success = self._handler.ReadHomeTimeline(args.req_id, args.user_id, args.start, args.stop)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -139,17 +136,15 @@ class ReadHomeTimeline_args(object):
      - user_id
      - start
      - stop
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, user_id=None, start=None, stop=None, carrier=None,):
+    def __init__(self, req_id=None, user_id=None, start=None, stop=None,):
         self.req_id = req_id
         self.user_id = user_id
         self.start = start
         self.stop = stop
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -180,17 +175,6 @@ class ReadHomeTimeline_args(object):
                     self.stop = iprot.readI32()
                 else:
                     iprot.skip(ftype)
-            elif fid == 5:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype210, _vtype211, _size209) = iprot.readMapBegin()
-                    for _i213 in range(_size209):
-                        _key214 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val215 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key214] = _val215
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -217,14 +201,6 @@ class ReadHomeTimeline_args(object):
             oprot.writeFieldBegin('stop', TType.I32, 4)
             oprot.writeI32(self.stop)
             oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 5)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter216, viter217 in self.carrier.items():
-                oprot.writeString(kiter216.encode('utf-8') if sys.version_info[0] == 2 else kiter216)
-                oprot.writeString(viter217.encode('utf-8') if sys.version_info[0] == 2 else viter217)
-            oprot.writeMapEnd()
-            oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
 
@@ -248,7 +224,6 @@ ReadHomeTimeline_args.thrift_spec = (
     (2, TType.I64, 'user_id', None, None, ),  # 2
     (3, TType.I32, 'start', None, None, ),  # 3
     (4, TType.I32, 'stop', None, None, ),  # 4
-    (5, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 5
 )
 
 
@@ -277,11 +252,11 @@ class ReadHomeTimeline_result(object):
             if fid == 0:
                 if ftype == TType.LIST:
                     self.success = []
-                    (_etype221, _size218) = iprot.readListBegin()
-                    for _i222 in range(_size218):
-                        _elem223 = Post()
-                        _elem223.read(iprot)
-                        self.success.append(_elem223)
+                    (_etype80, _size77) = iprot.readListBegin()
+                    for _i81 in range(_size77):
+                        _elem82 = Post()
+                        _elem82.read(iprot)
+                        self.success.append(_elem82)
                     iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
@@ -304,8 +279,8 @@ class ReadHomeTimeline_result(object):
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.LIST, 0)
             oprot.writeListBegin(TType.STRUCT, len(self.success))
-            for iter224 in self.success:
-                iter224.write(oprot)
+            for iter83 in self.success:
+                iter83.write(oprot)
             oprot.writeListEnd()
             oprot.writeFieldEnd()
         if self.se is not None:

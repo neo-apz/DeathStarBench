@@ -19,63 +19,57 @@ all_structs = []
 
 
 class Iface(object):
-    def UploadText(self, req_id, text, carrier):
+    def UploadText(self, req_id, text):
         """
         Parameters:
          - req_id
          - text
-         - carrier
 
         """
         pass
 
-    def UploadMedia(self, req_id, media, carrier):
+    def UploadMedia(self, req_id, media):
         """
         Parameters:
          - req_id
          - media
-         - carrier
 
         """
         pass
 
-    def UploadUniqueId(self, req_id, post_id, post_type, carrier):
+    def UploadUniqueId(self, req_id, post_id, post_type):
         """
         Parameters:
          - req_id
          - post_id
          - post_type
-         - carrier
 
         """
         pass
 
-    def UploadCreator(self, req_id, creator, carrier):
+    def UploadCreator(self, req_id, creator):
         """
         Parameters:
          - req_id
          - creator
-         - carrier
 
         """
         pass
 
-    def UploadUrls(self, req_id, urls, carrier):
+    def UploadUrls(self, req_id, urls):
         """
         Parameters:
          - req_id
          - urls
-         - carrier
 
         """
         pass
 
-    def UploadUserMentions(self, req_id, user_mentions, carrier):
+    def UploadUserMentions(self, req_id, user_mentions):
         """
         Parameters:
          - req_id
          - user_mentions
-         - carrier
 
         """
         pass
@@ -88,23 +82,21 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def UploadText(self, req_id, text, carrier):
+    def UploadText(self, req_id, text):
         """
         Parameters:
          - req_id
          - text
-         - carrier
 
         """
-        self.send_UploadText(req_id, text, carrier)
+        self.send_UploadText(req_id, text)
         self.recv_UploadText()
 
-    def send_UploadText(self, req_id, text, carrier):
+    def send_UploadText(self, req_id, text):
         self._oprot.writeMessageBegin('UploadText', TMessageType.CALL, self._seqid)
         args = UploadText_args()
         args.req_id = req_id
         args.text = text
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -124,23 +116,21 @@ class Client(Iface):
             raise result.se
         return
 
-    def UploadMedia(self, req_id, media, carrier):
+    def UploadMedia(self, req_id, media):
         """
         Parameters:
          - req_id
          - media
-         - carrier
 
         """
-        self.send_UploadMedia(req_id, media, carrier)
+        self.send_UploadMedia(req_id, media)
         self.recv_UploadMedia()
 
-    def send_UploadMedia(self, req_id, media, carrier):
+    def send_UploadMedia(self, req_id, media):
         self._oprot.writeMessageBegin('UploadMedia', TMessageType.CALL, self._seqid)
         args = UploadMedia_args()
         args.req_id = req_id
         args.media = media
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -160,25 +150,23 @@ class Client(Iface):
             raise result.se
         return
 
-    def UploadUniqueId(self, req_id, post_id, post_type, carrier):
+    def UploadUniqueId(self, req_id, post_id, post_type):
         """
         Parameters:
          - req_id
          - post_id
          - post_type
-         - carrier
 
         """
-        self.send_UploadUniqueId(req_id, post_id, post_type, carrier)
+        self.send_UploadUniqueId(req_id, post_id, post_type)
         self.recv_UploadUniqueId()
 
-    def send_UploadUniqueId(self, req_id, post_id, post_type, carrier):
+    def send_UploadUniqueId(self, req_id, post_id, post_type):
         self._oprot.writeMessageBegin('UploadUniqueId', TMessageType.CALL, self._seqid)
         args = UploadUniqueId_args()
         args.req_id = req_id
         args.post_id = post_id
         args.post_type = post_type
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -198,23 +186,21 @@ class Client(Iface):
             raise result.se
         return
 
-    def UploadCreator(self, req_id, creator, carrier):
+    def UploadCreator(self, req_id, creator):
         """
         Parameters:
          - req_id
          - creator
-         - carrier
 
         """
-        self.send_UploadCreator(req_id, creator, carrier)
+        self.send_UploadCreator(req_id, creator)
         self.recv_UploadCreator()
 
-    def send_UploadCreator(self, req_id, creator, carrier):
+    def send_UploadCreator(self, req_id, creator):
         self._oprot.writeMessageBegin('UploadCreator', TMessageType.CALL, self._seqid)
         args = UploadCreator_args()
         args.req_id = req_id
         args.creator = creator
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -234,23 +220,21 @@ class Client(Iface):
             raise result.se
         return
 
-    def UploadUrls(self, req_id, urls, carrier):
+    def UploadUrls(self, req_id, urls):
         """
         Parameters:
          - req_id
          - urls
-         - carrier
 
         """
-        self.send_UploadUrls(req_id, urls, carrier)
+        self.send_UploadUrls(req_id, urls)
         self.recv_UploadUrls()
 
-    def send_UploadUrls(self, req_id, urls, carrier):
+    def send_UploadUrls(self, req_id, urls):
         self._oprot.writeMessageBegin('UploadUrls', TMessageType.CALL, self._seqid)
         args = UploadUrls_args()
         args.req_id = req_id
         args.urls = urls
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -270,23 +254,21 @@ class Client(Iface):
             raise result.se
         return
 
-    def UploadUserMentions(self, req_id, user_mentions, carrier):
+    def UploadUserMentions(self, req_id, user_mentions):
         """
         Parameters:
          - req_id
          - user_mentions
-         - carrier
 
         """
-        self.send_UploadUserMentions(req_id, user_mentions, carrier)
+        self.send_UploadUserMentions(req_id, user_mentions)
         self.recv_UploadUserMentions()
 
-    def send_UploadUserMentions(self, req_id, user_mentions, carrier):
+    def send_UploadUserMentions(self, req_id, user_mentions):
         self._oprot.writeMessageBegin('UploadUserMentions', TMessageType.CALL, self._seqid)
         args = UploadUserMentions_args()
         args.req_id = req_id
         args.user_mentions = user_mentions
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -339,7 +321,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = UploadText_result()
         try:
-            self._handler.UploadText(args.req_id, args.text, args.carrier)
+            self._handler.UploadText(args.req_id, args.text)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -365,7 +347,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = UploadMedia_result()
         try:
-            self._handler.UploadMedia(args.req_id, args.media, args.carrier)
+            self._handler.UploadMedia(args.req_id, args.media)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -391,7 +373,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = UploadUniqueId_result()
         try:
-            self._handler.UploadUniqueId(args.req_id, args.post_id, args.post_type, args.carrier)
+            self._handler.UploadUniqueId(args.req_id, args.post_id, args.post_type)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -417,7 +399,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = UploadCreator_result()
         try:
-            self._handler.UploadCreator(args.req_id, args.creator, args.carrier)
+            self._handler.UploadCreator(args.req_id, args.creator)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -443,7 +425,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = UploadUrls_result()
         try:
-            self._handler.UploadUrls(args.req_id, args.urls, args.carrier)
+            self._handler.UploadUrls(args.req_id, args.urls)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -469,7 +451,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = UploadUserMentions_result()
         try:
-            self._handler.UploadUserMentions(args.req_id, args.user_mentions, args.carrier)
+            self._handler.UploadUserMentions(args.req_id, args.user_mentions)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -497,15 +479,13 @@ class UploadText_args(object):
     Attributes:
      - req_id
      - text
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, text=None, carrier=None,):
+    def __init__(self, req_id=None, text=None,):
         self.req_id = req_id
         self.text = text
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -526,17 +506,6 @@ class UploadText_args(object):
                     self.text = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
                 else:
                     iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype94, _vtype95, _size93) = iprot.readMapBegin()
-                    for _i97 in range(_size93):
-                        _key98 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val99 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key98] = _val99
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -554,14 +523,6 @@ class UploadText_args(object):
         if self.text is not None:
             oprot.writeFieldBegin('text', TType.STRING, 2)
             oprot.writeString(self.text.encode('utf-8') if sys.version_info[0] == 2 else self.text)
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter100, viter101 in self.carrier.items():
-                oprot.writeString(kiter100.encode('utf-8') if sys.version_info[0] == 2 else kiter100)
-                oprot.writeString(viter101.encode('utf-8') if sys.version_info[0] == 2 else viter101)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -584,7 +545,6 @@ UploadText_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.STRING, 'text', 'UTF8', None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 
@@ -656,15 +616,13 @@ class UploadMedia_args(object):
     Attributes:
      - req_id
      - media
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, media=None, carrier=None,):
+    def __init__(self, req_id=None, media=None,):
         self.req_id = req_id
         self.media = media
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -683,23 +641,12 @@ class UploadMedia_args(object):
             elif fid == 2:
                 if ftype == TType.LIST:
                     self.media = []
-                    (_etype105, _size102) = iprot.readListBegin()
-                    for _i106 in range(_size102):
-                        _elem107 = Media()
-                        _elem107.read(iprot)
-                        self.media.append(_elem107)
+                    (_etype24, _size21) = iprot.readListBegin()
+                    for _i25 in range(_size21):
+                        _elem26 = Media()
+                        _elem26.read(iprot)
+                        self.media.append(_elem26)
                     iprot.readListEnd()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype109, _vtype110, _size108) = iprot.readMapBegin()
-                    for _i112 in range(_size108):
-                        _key113 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val114 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key113] = _val114
-                    iprot.readMapEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -719,17 +666,9 @@ class UploadMedia_args(object):
         if self.media is not None:
             oprot.writeFieldBegin('media', TType.LIST, 2)
             oprot.writeListBegin(TType.STRUCT, len(self.media))
-            for iter115 in self.media:
-                iter115.write(oprot)
+            for iter27 in self.media:
+                iter27.write(oprot)
             oprot.writeListEnd()
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter116, viter117 in self.carrier.items():
-                oprot.writeString(kiter116.encode('utf-8') if sys.version_info[0] == 2 else kiter116)
-                oprot.writeString(viter117.encode('utf-8') if sys.version_info[0] == 2 else viter117)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -752,7 +691,6 @@ UploadMedia_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.LIST, 'media', (TType.STRUCT, [Media, None], False), None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 
@@ -825,16 +763,14 @@ class UploadUniqueId_args(object):
      - req_id
      - post_id
      - post_type
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, post_id=None, post_type=None, carrier=None,):
+    def __init__(self, req_id=None, post_id=None, post_type=None,):
         self.req_id = req_id
         self.post_id = post_id
         self.post_type = post_type
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -860,17 +796,6 @@ class UploadUniqueId_args(object):
                     self.post_type = iprot.readI32()
                 else:
                     iprot.skip(ftype)
-            elif fid == 4:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype119, _vtype120, _size118) = iprot.readMapBegin()
-                    for _i122 in range(_size118):
-                        _key123 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val124 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key123] = _val124
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -892,14 +817,6 @@ class UploadUniqueId_args(object):
         if self.post_type is not None:
             oprot.writeFieldBegin('post_type', TType.I32, 3)
             oprot.writeI32(self.post_type)
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 4)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter125, viter126 in self.carrier.items():
-                oprot.writeString(kiter125.encode('utf-8') if sys.version_info[0] == 2 else kiter125)
-                oprot.writeString(viter126.encode('utf-8') if sys.version_info[0] == 2 else viter126)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -923,7 +840,6 @@ UploadUniqueId_args.thrift_spec = (
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.I64, 'post_id', None, None, ),  # 2
     (3, TType.I32, 'post_type', None, None, ),  # 3
-    (4, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 4
 )
 
 
@@ -995,15 +911,13 @@ class UploadCreator_args(object):
     Attributes:
      - req_id
      - creator
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, creator=None, carrier=None,):
+    def __init__(self, req_id=None, creator=None,):
         self.req_id = req_id
         self.creator = creator
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -1025,17 +939,6 @@ class UploadCreator_args(object):
                     self.creator.read(iprot)
                 else:
                     iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype128, _vtype129, _size127) = iprot.readMapBegin()
-                    for _i131 in range(_size127):
-                        _key132 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val133 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key132] = _val133
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -1053,14 +956,6 @@ class UploadCreator_args(object):
         if self.creator is not None:
             oprot.writeFieldBegin('creator', TType.STRUCT, 2)
             self.creator.write(oprot)
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter134, viter135 in self.carrier.items():
-                oprot.writeString(kiter134.encode('utf-8') if sys.version_info[0] == 2 else kiter134)
-                oprot.writeString(viter135.encode('utf-8') if sys.version_info[0] == 2 else viter135)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -1083,7 +978,6 @@ UploadCreator_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.STRUCT, 'creator', [Creator, None], None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 
@@ -1155,15 +1049,13 @@ class UploadUrls_args(object):
     Attributes:
      - req_id
      - urls
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, urls=None, carrier=None,):
+    def __init__(self, req_id=None, urls=None,):
         self.req_id = req_id
         self.urls = urls
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -1182,23 +1074,12 @@ class UploadUrls_args(object):
             elif fid == 2:
                 if ftype == TType.LIST:
                     self.urls = []
-                    (_etype139, _size136) = iprot.readListBegin()
-                    for _i140 in range(_size136):
-                        _elem141 = Url()
-                        _elem141.read(iprot)
-                        self.urls.append(_elem141)
+                    (_etype31, _size28) = iprot.readListBegin()
+                    for _i32 in range(_size28):
+                        _elem33 = Url()
+                        _elem33.read(iprot)
+                        self.urls.append(_elem33)
                     iprot.readListEnd()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype143, _vtype144, _size142) = iprot.readMapBegin()
-                    for _i146 in range(_size142):
-                        _key147 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val148 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key147] = _val148
-                    iprot.readMapEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -1218,17 +1099,9 @@ class UploadUrls_args(object):
         if self.urls is not None:
             oprot.writeFieldBegin('urls', TType.LIST, 2)
             oprot.writeListBegin(TType.STRUCT, len(self.urls))
-            for iter149 in self.urls:
-                iter149.write(oprot)
+            for iter34 in self.urls:
+                iter34.write(oprot)
             oprot.writeListEnd()
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter150, viter151 in self.carrier.items():
-                oprot.writeString(kiter150.encode('utf-8') if sys.version_info[0] == 2 else kiter150)
-                oprot.writeString(viter151.encode('utf-8') if sys.version_info[0] == 2 else viter151)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -1251,7 +1124,6 @@ UploadUrls_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.LIST, 'urls', (TType.STRUCT, [Url, None], False), None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 
@@ -1323,15 +1195,13 @@ class UploadUserMentions_args(object):
     Attributes:
      - req_id
      - user_mentions
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, user_mentions=None, carrier=None,):
+    def __init__(self, req_id=None, user_mentions=None,):
         self.req_id = req_id
         self.user_mentions = user_mentions
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -1350,23 +1220,12 @@ class UploadUserMentions_args(object):
             elif fid == 2:
                 if ftype == TType.LIST:
                     self.user_mentions = []
-                    (_etype155, _size152) = iprot.readListBegin()
-                    for _i156 in range(_size152):
-                        _elem157 = UserMention()
-                        _elem157.read(iprot)
-                        self.user_mentions.append(_elem157)
+                    (_etype38, _size35) = iprot.readListBegin()
+                    for _i39 in range(_size35):
+                        _elem40 = UserMention()
+                        _elem40.read(iprot)
+                        self.user_mentions.append(_elem40)
                     iprot.readListEnd()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype159, _vtype160, _size158) = iprot.readMapBegin()
-                    for _i162 in range(_size158):
-                        _key163 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val164 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key163] = _val164
-                    iprot.readMapEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -1386,17 +1245,9 @@ class UploadUserMentions_args(object):
         if self.user_mentions is not None:
             oprot.writeFieldBegin('user_mentions', TType.LIST, 2)
             oprot.writeListBegin(TType.STRUCT, len(self.user_mentions))
-            for iter165 in self.user_mentions:
-                iter165.write(oprot)
+            for iter41 in self.user_mentions:
+                iter41.write(oprot)
             oprot.writeListEnd()
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter166, viter167 in self.carrier.items():
-                oprot.writeString(kiter166.encode('utf-8') if sys.version_info[0] == 2 else kiter166)
-                oprot.writeString(viter167.encode('utf-8') if sys.version_info[0] == 2 else viter167)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -1419,7 +1270,6 @@ UploadUserMentions_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.LIST, 'user_mentions', (TType.STRUCT, [UserMention, None], False), None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 

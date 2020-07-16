@@ -19,32 +19,29 @@ all_structs = []
 
 
 class Iface(object):
-    def StorePost(self, req_id, post, carrier):
+    def StorePost(self, req_id, post):
         """
         Parameters:
          - req_id
          - post
-         - carrier
 
         """
         pass
 
-    def ReadPost(self, req_id, post_id, carrier):
+    def ReadPost(self, req_id, post_id):
         """
         Parameters:
          - req_id
          - post_id
-         - carrier
 
         """
         pass
 
-    def ReadPosts(self, req_id, post_ids, carrier):
+    def ReadPosts(self, req_id, post_ids):
         """
         Parameters:
          - req_id
          - post_ids
-         - carrier
 
         """
         pass
@@ -57,23 +54,21 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def StorePost(self, req_id, post, carrier):
+    def StorePost(self, req_id, post):
         """
         Parameters:
          - req_id
          - post
-         - carrier
 
         """
-        self.send_StorePost(req_id, post, carrier)
+        self.send_StorePost(req_id, post)
         self.recv_StorePost()
 
-    def send_StorePost(self, req_id, post, carrier):
+    def send_StorePost(self, req_id, post):
         self._oprot.writeMessageBegin('StorePost', TMessageType.CALL, self._seqid)
         args = StorePost_args()
         args.req_id = req_id
         args.post = post
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -93,23 +88,21 @@ class Client(Iface):
             raise result.se
         return
 
-    def ReadPost(self, req_id, post_id, carrier):
+    def ReadPost(self, req_id, post_id):
         """
         Parameters:
          - req_id
          - post_id
-         - carrier
 
         """
-        self.send_ReadPost(req_id, post_id, carrier)
+        self.send_ReadPost(req_id, post_id)
         return self.recv_ReadPost()
 
-    def send_ReadPost(self, req_id, post_id, carrier):
+    def send_ReadPost(self, req_id, post_id):
         self._oprot.writeMessageBegin('ReadPost', TMessageType.CALL, self._seqid)
         args = ReadPost_args()
         args.req_id = req_id
         args.post_id = post_id
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -131,23 +124,21 @@ class Client(Iface):
             raise result.se
         raise TApplicationException(TApplicationException.MISSING_RESULT, "ReadPost failed: unknown result")
 
-    def ReadPosts(self, req_id, post_ids, carrier):
+    def ReadPosts(self, req_id, post_ids):
         """
         Parameters:
          - req_id
          - post_ids
-         - carrier
 
         """
-        self.send_ReadPosts(req_id, post_ids, carrier)
+        self.send_ReadPosts(req_id, post_ids)
         return self.recv_ReadPosts()
 
-    def send_ReadPosts(self, req_id, post_ids, carrier):
+    def send_ReadPosts(self, req_id, post_ids):
         self._oprot.writeMessageBegin('ReadPosts', TMessageType.CALL, self._seqid)
         args = ReadPosts_args()
         args.req_id = req_id
         args.post_ids = post_ids
-        args.carrier = carrier
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -199,7 +190,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = StorePost_result()
         try:
-            self._handler.StorePost(args.req_id, args.post, args.carrier)
+            self._handler.StorePost(args.req_id, args.post)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -225,7 +216,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = ReadPost_result()
         try:
-            result.success = self._handler.ReadPost(args.req_id, args.post_id, args.carrier)
+            result.success = self._handler.ReadPost(args.req_id, args.post_id)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -251,7 +242,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = ReadPosts_result()
         try:
-            result.success = self._handler.ReadPosts(args.req_id, args.post_ids, args.carrier)
+            result.success = self._handler.ReadPosts(args.req_id, args.post_ids)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -279,15 +270,13 @@ class StorePost_args(object):
     Attributes:
      - req_id
      - post
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, post=None, carrier=None,):
+    def __init__(self, req_id=None, post=None,):
         self.req_id = req_id
         self.post = post
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -309,17 +298,6 @@ class StorePost_args(object):
                     self.post.read(iprot)
                 else:
                     iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype169, _vtype170, _size168) = iprot.readMapBegin()
-                    for _i172 in range(_size168):
-                        _key173 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val174 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key173] = _val174
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -337,14 +315,6 @@ class StorePost_args(object):
         if self.post is not None:
             oprot.writeFieldBegin('post', TType.STRUCT, 2)
             self.post.write(oprot)
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter175, viter176 in self.carrier.items():
-                oprot.writeString(kiter175.encode('utf-8') if sys.version_info[0] == 2 else kiter175)
-                oprot.writeString(viter176.encode('utf-8') if sys.version_info[0] == 2 else viter176)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -367,7 +337,6 @@ StorePost_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.STRUCT, 'post', [Post, None], None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 
@@ -439,15 +408,13 @@ class ReadPost_args(object):
     Attributes:
      - req_id
      - post_id
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, post_id=None, carrier=None,):
+    def __init__(self, req_id=None, post_id=None,):
         self.req_id = req_id
         self.post_id = post_id
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -468,17 +435,6 @@ class ReadPost_args(object):
                     self.post_id = iprot.readI64()
                 else:
                     iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype178, _vtype179, _size177) = iprot.readMapBegin()
-                    for _i181 in range(_size177):
-                        _key182 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val183 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key182] = _val183
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -496,14 +452,6 @@ class ReadPost_args(object):
         if self.post_id is not None:
             oprot.writeFieldBegin('post_id', TType.I64, 2)
             oprot.writeI64(self.post_id)
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter184, viter185 in self.carrier.items():
-                oprot.writeString(kiter184.encode('utf-8') if sys.version_info[0] == 2 else kiter184)
-                oprot.writeString(viter185.encode('utf-8') if sys.version_info[0] == 2 else viter185)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -526,7 +474,6 @@ ReadPost_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.I64, 'post_id', None, None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 
@@ -610,15 +557,13 @@ class ReadPosts_args(object):
     Attributes:
      - req_id
      - post_ids
-     - carrier
 
     """
 
 
-    def __init__(self, req_id=None, post_ids=None, carrier=None,):
+    def __init__(self, req_id=None, post_ids=None,):
         self.req_id = req_id
         self.post_ids = post_ids
-        self.carrier = carrier
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -637,22 +582,11 @@ class ReadPosts_args(object):
             elif fid == 2:
                 if ftype == TType.LIST:
                     self.post_ids = []
-                    (_etype189, _size186) = iprot.readListBegin()
-                    for _i190 in range(_size186):
-                        _elem191 = iprot.readI64()
-                        self.post_ids.append(_elem191)
+                    (_etype66, _size63) = iprot.readListBegin()
+                    for _i67 in range(_size63):
+                        _elem68 = iprot.readI64()
+                        self.post_ids.append(_elem68)
                     iprot.readListEnd()
-                else:
-                    iprot.skip(ftype)
-            elif fid == 3:
-                if ftype == TType.MAP:
-                    self.carrier = {}
-                    (_ktype193, _vtype194, _size192) = iprot.readMapBegin()
-                    for _i196 in range(_size192):
-                        _key197 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val198 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.carrier[_key197] = _val198
-                    iprot.readMapEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -672,17 +606,9 @@ class ReadPosts_args(object):
         if self.post_ids is not None:
             oprot.writeFieldBegin('post_ids', TType.LIST, 2)
             oprot.writeListBegin(TType.I64, len(self.post_ids))
-            for iter199 in self.post_ids:
-                oprot.writeI64(iter199)
+            for iter69 in self.post_ids:
+                oprot.writeI64(iter69)
             oprot.writeListEnd()
-            oprot.writeFieldEnd()
-        if self.carrier is not None:
-            oprot.writeFieldBegin('carrier', TType.MAP, 3)
-            oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.carrier))
-            for kiter200, viter201 in self.carrier.items():
-                oprot.writeString(kiter200.encode('utf-8') if sys.version_info[0] == 2 else kiter200)
-                oprot.writeString(viter201.encode('utf-8') if sys.version_info[0] == 2 else viter201)
-            oprot.writeMapEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -705,7 +631,6 @@ ReadPosts_args.thrift_spec = (
     None,  # 0
     (1, TType.I64, 'req_id', None, None, ),  # 1
     (2, TType.LIST, 'post_ids', (TType.I64, None, False), None, ),  # 2
-    (3, TType.MAP, 'carrier', (TType.STRING, 'UTF8', TType.STRING, 'UTF8', False), None, ),  # 3
 )
 
 
@@ -734,11 +659,11 @@ class ReadPosts_result(object):
             if fid == 0:
                 if ftype == TType.LIST:
                     self.success = []
-                    (_etype205, _size202) = iprot.readListBegin()
-                    for _i206 in range(_size202):
-                        _elem207 = Post()
-                        _elem207.read(iprot)
-                        self.success.append(_elem207)
+                    (_etype73, _size70) = iprot.readListBegin()
+                    for _i74 in range(_size70):
+                        _elem75 = Post()
+                        _elem75.read(iprot)
+                        self.success.append(_elem75)
                     iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
@@ -761,8 +686,8 @@ class ReadPosts_result(object):
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.LIST, 0)
             oprot.writeListBegin(TType.STRUCT, len(self.success))
-            for iter208 in self.success:
-                iter208.write(oprot)
+            for iter76 in self.success:
+                iter76.write(oprot)
             oprot.writeListEnd()
             oprot.writeFieldEnd()
         if self.se is not None:
