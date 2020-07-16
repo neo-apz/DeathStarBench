@@ -58,10 +58,12 @@ int main(int argc, char *argv[]) {
   int64_t req_id = 0xFFFFFFFFFFFF; // rand!
   PostType::type post_type = (PostType::type) 0;
 
+  int count = 0;
 
   while (true)
   {
       client->UploadUniqueId(req_id, post_type);
+      std::cout << "Request " << ++count << std::endl;
   }
 
   transport->close();

@@ -13,6 +13,10 @@
 
 #include "../../gen-cpp/social_network_types.h"
 
+#include "stopwatch.h"
+
+#define ITERATIONS 40000000
+
 // Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
 #define CUSTOM_EPOCH 1514764800000
 
@@ -180,16 +184,35 @@ int main(int argc, char *argv[]) {
     int64_t req_id = 0xFFFFFFFFFFFF; // rand!
     PostType::type post_type = (PostType::type) 0;
 
-    int64_t* ids = (int64_t*) malloc(sizeof(int64_t) * 400000000);
+    volatile int64_t* ids = (int64_t*) malloc(sizeof(int64_t) * ITERATIONS);
 
     uint64_t i = 0;
 
-    while (i < 400000000)
+    // stopwatch sw;
+
+    // Stopwatch<std::chrono::microseconds> sw;
+
+    // sw.start();
+    while (i < ITERATIONS)
     {
+        // sw_start(&sw);
+        
         ids[i++] = handler->UploadUniqueId(req_id, post_type);
+        // sw_stop(&sw, false);
+
         // std::cout << ids[i-1] << std::endl;
     }
+    // sw.stop();
+
+    // std::cout << "AVG Time: " << sw_getAVG(sw) << " us." << std::endl;
+    // std::cout << "Total " << sw.total << std::endl;
+    // std::cout << "Count " << sw.count << std::endl;
+
     
+    // sw.post_process();
+
+    // std::cout << "AVG Time: " << sw.mean() * 1.0 / ITERATIONS << std::endl;
+    // std::cout << "STDEV: " << sw.standard_deviation() << std::endl;
 
     return 0;
 }

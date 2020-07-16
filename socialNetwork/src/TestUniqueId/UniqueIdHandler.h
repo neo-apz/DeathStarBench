@@ -21,6 +21,8 @@
 #include "../logger.h"
 // #include "../tracing.h"
 
+#include "stopwatch.h"
+
 // Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
 #define CUSTOM_EPOCH 1514764800000
 
@@ -53,7 +55,8 @@ class UniqueIdHandler : public UniqueIdServiceIf {
   UniqueIdHandler(
       std::mutex *,
       const std::string &,
-      ClientPool<ThriftClient<ComposePostServiceClient>> *);
+      ClientPool<ThriftClient<ComposePostServiceClient>> *,
+      Stopwatch<std::chrono::microseconds>* SW);
 
   void UploadUniqueId(int64_t, PostType::type) override;
 
@@ -61,20 +64,31 @@ class UniqueIdHandler : public UniqueIdServiceIf {
   std::mutex *_thread_lock;
   std::string _machine_id;
   ClientPool<ThriftClient<ComposePostServiceClient>> *_compose_client_pool;
+  // stopwatch* _sw;
+  // uint64_t* _count;
+
+  Stopwatch<std::chrono::microseconds>* _SW;
+
 };
 
 UniqueIdHandler::UniqueIdHandler(
     std::mutex *thread_lock,
     const std::string &machine_id,
-    ClientPool<ThriftClient<ComposePostServiceClient>> *compose_client_pool) {
+    ClientPool<ThriftClient<ComposePostServiceClient>> *compose_client_pool,
+    Stopwatch<std::chrono::microseconds>* SW) {
   _thread_lock = thread_lock;
   _machine_id = machine_id;
   _compose_client_pool = compose_client_pool;
+  // _count = count;
+  _SW = SW;
 }
 
 void UniqueIdHandler::UploadUniqueId(
     int64_t req_id,
     PostType::type post_type) {
+
+  // sw_start(_sw);
+  // _SW->start();
 
   // Initialize a span
   // TextMapReader reader(carrier);
@@ -119,6 +133,10 @@ void UniqueIdHandler::UploadUniqueId(
   LOG(debug) << "The post_id of the request "
       << req_id << " is " << post_id;
 
+  // sw_stop(_sw, false);
+
+  // _SW->start();
+
   // Upload to compose post service
   auto compose_post_client_wrapper = _compose_client_pool->Pop();
   if (!compose_post_client_wrapper) {
@@ -138,6 +156,8 @@ void UniqueIdHandler::UploadUniqueId(
   _compose_client_pool->Push(compose_post_client_wrapper);
 
   // span->Finish();
+  // (*_count) = (*_count) + 1;
+  // _SW->stop();
 }
 
 /*
