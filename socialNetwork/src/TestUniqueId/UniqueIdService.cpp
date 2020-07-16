@@ -65,8 +65,18 @@ int main(int argc, char *argv[]) {
 
   int port = 4000;
 
-  // std::string compose_post_addr = "10.0.2.2";
-    std::string compose_post_addr = "localhost";
+  std::string compose_post_addr;
+
+  if (argc != 2) {
+    std::cout << "Invalid input! Usage: ./binary <address> \n" << std::endl;
+    exit(-1);
+  } else {
+    compose_post_addr = argv[1];
+    // #ifdef __aarch64__
+    //   SET_ITERATION_COUNT(num_iterations);
+    // #endif
+  }
+
   int compose_post_port = 5000;
 
   std::string machine_id;
