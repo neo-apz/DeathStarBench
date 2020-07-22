@@ -27,6 +27,8 @@ using apache::thrift::transport::TTransport;
 
 using namespace social_network;
 
+#define FIVE_MINS 1000*300
+
 void sigintHandler(int sig) {
   exit(EXIT_SUCCESS);
 }
@@ -45,7 +47,13 @@ int main(int argc, char *argv[]) {
 
   std::string server_addr = "127.0.0.1";
 
-  std::shared_ptr<TTransport> socket = std::shared_ptr<TTransport>(new TSocket(server_addr, server_port));;
+
+
+  std::shared_ptr<TSocket> socket = std::shared_ptr<TSocket>(new TSocket(server_addr, server_port));
+  socket->setKeepAlive(true);
+  socket->setConnTimeout(FIVE_MINS);
+  socket->setRecvTimeout(FIVE_MINS);
+  socket->setSendTimeout(FIVE_MINS);
   std::shared_ptr<TTransport> transport = std::shared_ptr<TTransport>(new TFramedTransport(socket));
   std::shared_ptr<TProtocol> protocol = std::shared_ptr<TProtocol>(new TCompactProtocol(transport));
 

@@ -64,15 +64,23 @@ void sigintHandler(int sig) {
 
 }// namespace social_network
 
+#define FIVE_MINS 1000*300
+
 int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
 
   int port = 5000;
+
+  std::shared_ptr<TServerSocket> socket = std::shared_ptr<TServerSocket>(new TServerSocket("0.0.0.0", port));
+  socket->setKeepAlive(true);
+  socket->setAcceptTimeout(FIVE_MINS);
+  socket->setRecvTimeout(FIVE_MINS);
+  socket->setSendTimeout(FIVE_MINS);
   
   TThreadedServer server(
       std::make_shared<ComposePostServiceProcessor>(
           std::make_shared<ComposePostHandler>()),
-      std::make_shared<TServerSocket>("0.0.0.0", port),
+      socket,
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TCompactProtocolFactory>()
   );
