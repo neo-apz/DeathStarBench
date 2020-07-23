@@ -71,11 +71,16 @@ int main(int argc, char *argv[]) {
 
   int port = 5000;
 
+  cpu_set_t  mask;
+  CPU_ZERO(&mask);
+  CPU_SET(8, &mask);
+  sched_setaffinity(0, sizeof(mask), &mask);
+
   std::shared_ptr<TServerSocket> socket = std::shared_ptr<TServerSocket>(new TServerSocket("0.0.0.0", port));
-  socket->setKeepAlive(true);
-  socket->setAcceptTimeout(FIVE_MINS);
-  socket->setRecvTimeout(FIVE_MINS);
-  socket->setSendTimeout(FIVE_MINS);
+  // socket->setKeepAlive(true);
+  // socket->setAcceptTimeout(FIVE_MINS);
+  // socket->setRecvTimeout(FIVE_MINS);
+  // socket->setSendTimeout(FIVE_MINS);
   
   TThreadedServer server(
       std::make_shared<ComposePostServiceProcessor>(

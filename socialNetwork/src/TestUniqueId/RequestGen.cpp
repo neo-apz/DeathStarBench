@@ -47,13 +47,16 @@ int main(int argc, char *argv[]) {
 
   std::string server_addr = "127.0.0.1";
 
-
+  cpu_set_t  mask;
+  CPU_ZERO(&mask);
+  CPU_SET(12, &mask);
+  sched_setaffinity(0, sizeof(mask), &mask);
 
   std::shared_ptr<TSocket> socket = std::shared_ptr<TSocket>(new TSocket(server_addr, server_port));
-  socket->setKeepAlive(true);
-  socket->setConnTimeout(FIVE_MINS);
-  socket->setRecvTimeout(FIVE_MINS);
-  socket->setSendTimeout(FIVE_MINS);
+  // socket->setKeepAlive(true);
+  // socket->setConnTimeout(FIVE_MINS);
+  // socket->setRecvTimeout(FIVE_MINS);
+  // socket->setSendTimeout(FIVE_MINS);
   std::shared_ptr<TTransport> transport = std::shared_ptr<TTransport>(new TFramedTransport(socket));
   std::shared_ptr<TProtocol> protocol = std::shared_ptr<TProtocol>(new TCompactProtocol(transport));
 
@@ -71,7 +74,7 @@ int main(int argc, char *argv[]) {
   while (true)
   {
       client->UploadUniqueId(req_id, post_type);
-      std::cout << "Request " << ++count << std::endl;
+      // std::cout << "Request " << ++count << std::endl;
   }
 
   transport->close();
