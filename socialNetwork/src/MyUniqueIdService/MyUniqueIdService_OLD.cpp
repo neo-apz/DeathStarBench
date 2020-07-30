@@ -46,7 +46,7 @@ std::string machine_id;
 
 
 void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
-                                    uint64_t buffer_size){
+    uint64_t buffer_size){
   
   uint8_t *cltIBufPtr, *cltOBufPtr;
   uint32_t ISz, OSz, len;
@@ -57,12 +57,12 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   //   read_pagemap( (unsigned long) (cltIBufPtr + i));
   // }
 
-  std::cout << "Before Send: IBuf:" << (uint64_t) cltIBufPtr
-            << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
-            << " OSz: " << OSz << std::endl;
-
   ISz = buffer_size - ISz;
   OSz = buffer_size - OSz;
+  // std::cout << "After GetBuffer: IBuf:" << (uint64_t) cltIBufPtr
+  //           << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
+  //           << " OSz: " << OSz << std::endl;
+
 
 #ifdef __aarch64__
   len = call_magic_4_64(1234, (uint64_t) cltIBufPtr, ISz, (uint64_t) cltOBufPtr, OSz);
@@ -75,13 +75,17 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   int64_t req_id = 0xFFFFFFFFFFFF; // rand!
   PostType::type post_type = (PostType::type) 0;
 
-  client->send_UploadUniqueId(req_id, post_type);
+  uint64_t count = num_iterations;
+
+  while(count--){
+    client->send_UploadUniqueId(req_id, post_type);
+  }
 
   newUniqueIdClient.GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
 
-  std::cout << "After Send: IBuf:" << (uint64_t) cltIBufPtr
-            << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
-            << " OSz: " << OSz << std::endl;
+  // std::cout << "After NewClient: IBuf:" << (uint64_t) cltIBufPtr
+  //           << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
+  //           << " OSz: " << OSz << std::endl;
 
   len = OSz;
 #endif
@@ -89,51 +93,23 @@ void ClientSendUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uni
   uniqueIdClient->WroteBytes(len, false);
 }
 
-void ClientRecvUniqueIdPointerBased(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
-                                    uint64_t buffer_size){
-  
-  uint8_t *cltIBufPtr, *cltOBufPtr;
-  uint32_t ISz, OSz, len;
-
-  uniqueIdClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
-
-  std::cout << "Before Receive: IBuf:" << (uint64_t) cltIBufPtr
-            << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
-            << " OSz: " << OSz << std::endl;
-
-  // ISz = buffer_size - ISz;
-  // OSz = buffer_size - OSz;
-
-  MyThriftClient<MyUniqueIdServiceClient> newUniqueIdClient(cltIBufPtr, buffer_size - ISz,
-                                                            cltOBufPtr, buffer_size - OSz);
-  
-  newUniqueIdClient.Connect();
-  newUniqueIdClient.WroteBytes(ISz, true);
-  
-  auto client = newUniqueIdClient.GetClient();
-
-  client->recv_UploadUniqueId();
-
-  newUniqueIdClient.GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
-
-  std::cout << "After Receive: IBuf:" << (uint64_t) cltIBufPtr
-            << " ISz: " << ISz << " OBuf: " << (uint64_t) cltOBufPtr
-            << " OSz: " << OSz << std::endl;
-
-  len = OSz;
-  uniqueIdClient->ReadBytes(len, false);
-}
-
-void ClientRecvUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient){
+void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient){
   
   uniqueIdClient->Connect();
   auto client = uniqueIdClient->GetClient();
 
-  client->recv_UploadUniqueId();
+  int64_t req_id = 0xFFFFFFFFFFFF; // rand!
+  PostType::type post_type = (PostType::type) 0;
+
+  uint64_t count = num_iterations;
+
+  while(count--){
+    client->send_UploadUniqueId(req_id, post_type);
+  }
 }
 
-void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
-                             std::shared_ptr<MyUniqueIdHandler> handler, uint64_t buffer_size,
+void ProcessUniqueIdRequests(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient,
+                             std::shared_ptr<MyUniqueIdHandler> handler,
                              int tid, int max_tid){
   
   auto srvIProt = uniqueIdClient->GetClient()->getOutputProtocol();
@@ -144,6 +120,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *uniqueId
 
   uint64_t count = num_iterations;
 
+  // std::cout << "Before the process loop." << std::endl;
   #ifdef FLEXUS
   if (tid == max_tid) {
     start = true;
@@ -154,16 +131,23 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *uniqueId
   #endif
 
   while (count--){
-    ClientSendUniqueIdPointerBased(uniqueIdClient, buffer_size);
-
-    std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
+    // std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
     processor->process(srvIProt, srvOProt, nullptr);
-    
     #ifdef __aarch64__
-      PROCESS_END();
+      SET_ITERATION_COUNT(num_iterations);
     #endif
+  }
+}
 
-    ClientRecvUniqueIdPointerBased(uniqueIdClient, buffer_size);
+void ClientRecvUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient){
+  
+  uniqueIdClient->Connect();
+  auto client = uniqueIdClient->GetClient();
+
+  uint64_t count = num_iterations;
+
+  while(count--){
+    client->recv_UploadUniqueId();
   }
 }
 
@@ -178,14 +162,10 @@ int main(int argc, char *argv[]) {
   } else {
     num_threads = atoi(argv[1]);
     num_iterations = atoi(argv[2]);
+    // #ifdef __aarch64__
+    //   SET_ITERATION_COUNT(num_iterations);
+    // #endif
   }
-
-  #ifdef __aarch64__
-    cpu_set_t  mask;
-    CPU_ZERO(&mask);
-    CPU_SET(0, &mask);
-    sched_setaffinity(0, sizeof(mask), &mask);
-  #endif
 
   uint64_t buffer_size = num_iterations * BUFFER_SIZE;
   std::cout << "Buffer size: " << buffer_size << std::endl;
@@ -195,37 +175,66 @@ int main(int argc, char *argv[]) {
   }
 
   MyThriftClient<MyUniqueIdServiceClient>* uniqueIdClients[num_threads];
+  // MyThriftClient<MyComposePostServiceClient>* composeClients[num_threads];
 
   MyClientPool<MyThriftClient<MyComposePostServiceClient>> composeClientPool (
     "compose-post", buffer_size, 16, 16, 1000);
-
-  std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
-                                              &thread_lock, machine_id,
-                                              &composeClientPool);
   
-  std::thread threads[num_threads];
+  std::thread clientThreads[num_threads];
+  std::thread serverThreads[num_threads];
 
+  cout << "Generating requests"  << endl;
   for (int i = 0; i < num_threads; i++) {
     uniqueIdClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
+    // composeClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
+    
+    // cout << "Generating requests - Thread " << i << " ... " << endl;
+    // clientThreads[i] = std::thread(ClientSendUniqueIdPointerBased, uniqueIdClients[i], buffer_size);
+    clientThreads[i] = std::thread(ClientSendUniqueId, uniqueIdClients[i]);
+  }
 
-    threads[i] = std::thread(GenAndProcessUniqueIdReqs,
-                              uniqueIdClients[i], handler, buffer_size,
-                              i, num_threads - 1);
+  std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
+                                                  &thread_lock, machine_id,
+                                                  &composeClientPool);
+
+  #ifdef __aarch64__
+    cpu_set_t  mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask);
+    sched_setaffinity(0, sizeof(mask), &mask);
+  #endif
+
+  for (int i = 0; i < num_threads; i++) {
+    clientThreads[i].join();
+    
+    // cout << "Processing the generated requests - Thread " << i << " ... " << endl;
+    serverThreads[i] = std::thread(ProcessUniqueIdRequests, uniqueIdClients[i], handler,
+                                   i, num_threads - 1);
 
     #ifdef __aarch64__
       CPU_ZERO(&cpuSet[i]);
       CPU_SET(i+1, &cpuSet[i]);
-      pthread_setaffinity_np(threads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
+      pthread_setaffinity_np(serverThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
     #endif
+
   }
 
-  for (int i = 0; i < num_threads; i++) {
-    threads[i].join();
-  }
+  cout << "Processing the generated requests" << endl;
 
   for (int i = 0; i < num_threads; i++) {
+    serverThreads[i].join();
+
+    // cout << "Getting responses - Thread " << i << " ... " << endl;
+    clientThreads[i] = std::thread(ClientRecvUniqueId, uniqueIdClients[i]);
+  }
+
+  cout << "Getting responses " << endl;
+
+  for (int i = 0; i < num_threads; i++) {
+    clientThreads[i].join();
     delete uniqueIdClients[i];
   }
+
 
   return 0;
 }

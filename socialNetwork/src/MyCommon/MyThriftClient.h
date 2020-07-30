@@ -49,6 +49,7 @@ class MyThriftClient : public MyGenericClient{
             uint8_t** cltOBufPtr, uint32_t* OSz);
 
   void WroteBytes(uint32_t len, bool input);
+  void ReadBytes(uint32_t len, bool input);
 
   void Connect() override;
   void Disconnect() override;
@@ -105,6 +106,15 @@ void MyThriftClient<TThriftClient>::WroteBytes(uint32_t len, bool input) {
     _cltITransport->wroteBytes(len);
   else
     _cltOTransport->wroteBytes(len);
+}
+
+template<class TThriftClient>
+void MyThriftClient<TThriftClient>::ReadBytes(uint32_t len, bool input) {
+
+  if (input)
+    _cltITransport->consume(len);
+  else
+    _cltOTransport->consume(len);
 }
 
 template<class TThriftClient>

@@ -1,3 +1,10 @@
+#ifdef __aarch64__
+
+#define MAGIC_BREAKPOINT        999
+#define MAGIC_PROCESS_END       1200
+
+#endif
+
 static inline __attribute__ ((always_inline))
     uint64_t  call_magic_2_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2){
 #ifdef __aarch64__
@@ -44,12 +51,12 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
 
 #ifdef FLEXUS
 #define BREAKPOINT() do { \
-                        call_magic_2_64(999, 0, 0); \
+                        call_magic_2_64(MAGIC_BREAKPOINT, 0, 0); \
                     } while (0)
 #endif
 
 #ifdef __aarch64__
-#define SET_ITERATION_COUNT(COUNT) do { \
-                                      call_magic_2_64(1200, COUNT, 0); \
-                                   } while (0)
+#define PROCESS_END() do { \
+                        call_magic_2_64(MAGIC_PROCESS_END, 0, 0); \
+                    } while (0)
 #endif
