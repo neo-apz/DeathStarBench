@@ -13,7 +13,7 @@
 #include "../../MyCommon/MyThriftClient.h"
 
 #ifdef __aarch64__
-  #include "../MyCommon/MagicBreakPoint.h"
+  #include "../../MyCommon/MagicBreakPoint.h"
 #endif
 
 
