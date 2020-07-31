@@ -16,7 +16,7 @@
 
 #include "MyGenericClient.h"
 
-namespace social_network {
+namespace my_social_network {
 
 
 using namespace ::apache::thrift;

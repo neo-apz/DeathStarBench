@@ -14,20 +14,17 @@
 
 
 #include "../../gen-cpp/MyUniqueIdService.h"
-#include "../../gen-cpp/MyComposePostService.h"
-#include "../../gen-cpp/social_network_types.h"
+#include "../../gen-cpp/FakeComposePostService.h"
+#include "../../gen-cpp/my_social_network_types.h"
 
-// #include "../ClientPool.h"
-#include "../MyCommon/MyClientPool.h"
-// #include "../MyCommon/MyThriftClient.h"
+#include "../../MyCommon/MyClientPool.h"
 
-#include "../logger.h"
-// #include "../tracing.h"
+#include "../../MyCommon/logger.h"
 
 // Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
 #define CUSTOM_EPOCH 1514764800000
 
-namespace social_network {
+namespace my_social_network {
 
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
@@ -56,7 +53,7 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
   MyUniqueIdHandler(
       std::mutex *,
       const std::string &,
-      MyClientPool<MyThriftClient<MyComposePostServiceClient>> *);
+      MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *);
       // std::shared_ptr<MyComposePostServiceProcessor>);
 
   void UploadUniqueId(int64_t, PostType::type) override;
@@ -64,7 +61,7 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
  private:
   std::mutex *_thread_lock;
   std::string _machine_id;
-  MyClientPool<MyThriftClient<MyComposePostServiceClient>> *_compose_client_pool;
+  MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *_compose_client_pool;
   // MyThriftClient<MyComposePostServiceClient> *_compose_client;
   // std::shared_ptr<MyComposePostServiceProcessor> _compose_processor;
 };
@@ -72,7 +69,7 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
 MyUniqueIdHandler::MyUniqueIdHandler(
     std::mutex *thread_lock,
     const std::string &machine_id,
-    MyClientPool<MyThriftClient<MyComposePostServiceClient>> *compose_client_pool){
+    MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *compose_client_pool){
     // std::shared_ptr<MyComposePostServiceProcessor> compose_processor) {
   _thread_lock = thread_lock;
   _machine_id = machine_id;
@@ -205,6 +202,6 @@ int GetMachineId (std::string *mac_hash) {
   return 0;
 }
 
-} // namespace social_network
+} // namespace my_social_network
 
 #endif //SOCIAL_NETWORK_MICROSERVICES_MYUNIQUEIDHANDLER_H

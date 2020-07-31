@@ -1445,6 +1445,7 @@ void FakeComposePostServiceClient::recv_UploadMedia()
 void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_id, post_type);
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
   recv_UploadUniqueId();
 }
 
@@ -2531,6 +2532,22 @@ void FakeComposePostServiceConcurrentClient::recv_UploadUserMentions(const int32
     this->sync_.waitForWork(seqid);
   } // end while(true)
 }
+
+void FakeComposePostHandler::UploadUniqueId(
+    int64_t req_id,
+    const int64_t post_id,
+    const PostType::type post_type) {
+
+  // std::cout << "FakeComposePostHandler: Fake Processing UploadUniqueId!" << std::endl;
+}
+
+void FakeComposePostHandler::UploadText(int64_t req_id, const std::string& text) {}
+void FakeComposePostHandler::UploadMedia(int64_t req_id, const std::vector<Media>& media) {}
+void FakeComposePostHandler::UploadCreator(int64_t req_id, const Creator& creator) {}
+void FakeComposePostHandler::UploadUrls(int64_t req_id, const std::vector<Url> & urls) {}
+void FakeComposePostHandler::UploadUserMentions(const int64_t req_id,
+    const std::vector<UserMention> & user_mentions) {}
+
 
 } // namespace
 

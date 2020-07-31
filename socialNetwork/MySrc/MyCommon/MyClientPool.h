@@ -8,11 +8,11 @@
 #include <chrono>
 #include <string>
 
-#include "../logger.h"
+#include "logger.h"
 
 #include "MyThriftClient.h"
 
-namespace social_network {
+namespace my_social_network {
 
 template<class MyTClient>
 class MyClientPool {

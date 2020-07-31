@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace social_network {
+namespace my_social_network {
 
 class MyGenericClient{
  public:
