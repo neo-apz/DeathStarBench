@@ -6,6 +6,10 @@
  */
 #include "FakeComposePostService.h"
 
+#ifdef __aarch64__
+  #include "../MyCommon/MagicBreakPoint.h"
+#endif
+
 namespace my_social_network {
 
 
@@ -1445,7 +1449,13 @@ void FakeComposePostServiceClient::recv_UploadMedia()
 void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_id, post_type);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
   _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_UploadUniqueId();
 }
 

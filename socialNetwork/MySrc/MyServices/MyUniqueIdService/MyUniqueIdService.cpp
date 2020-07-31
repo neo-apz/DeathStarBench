@@ -81,12 +81,25 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *uniqueId
   #endif
 
   while (count--){
+
+    #ifdef FLEXUS
+      SKIP_BEGIN();
+    #endif
     ClientSendUniqueId(uniqueIdClient);
+    #ifdef FLEXUS
+      SKIP_END();
+    #endif
 
     // std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
     processor->process(srvIProt, srvOProt, nullptr);
 
+    #ifdef FLEXUS
+      SKIP_BEGIN();
+    #endif
     ClientRecvUniqueId(uniqueIdClient);
+    #ifdef FLEXUS
+      SKIP_END();
+    #endif
   }
 }
 

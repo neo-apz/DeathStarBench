@@ -3,6 +3,9 @@
 #define MAGIC_BREAKPOINT        999
 #define MAGIC_PROCESS_END       1200
 
+#define MAGIC_SKIP_BEGIN       998
+#define MAGIC_SKIP_END       998
+
 #endif
 
 static inline __attribute__ ((always_inline))
@@ -53,6 +56,15 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
 #define BREAKPOINT() do { \
                         call_magic_2_64(MAGIC_BREAKPOINT, 0, 0); \
                     } while (0)
+
+#define SKIP_BEGIN() do { \
+                        call_magic_2_64(MAGIC_SKIP_BEGIN, 1, 0); \
+                    } while (0)
+
+#define SKIP_END() do { \
+                        call_magic_2_64(MAGIC_SKIP_END, 0, 0); \
+                    } while (0)
+
 #endif
 
 #ifdef __aarch64__
@@ -60,3 +72,4 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
                         call_magic_2_64(MAGIC_PROCESS_END, 0, 0); \
                     } while (0)
 #endif
+
