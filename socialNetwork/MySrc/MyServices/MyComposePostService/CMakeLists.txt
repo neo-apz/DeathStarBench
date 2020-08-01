@@ -4,7 +4,10 @@ add_executable(
     MyComposePostService.cpp
     ${COMMON_DIR}/MyTMemoryBuffer.cpp
     ${THRIFT_GEN_CPP_DIR}/MyComposePostService.cpp
-    ${THRIFT_GEN_CPP_DIR}/FakeComposePostService.cpp
+    ${THRIFT_GEN_CPP_DIR}/FakeRedis.cpp
+    ${THRIFT_GEN_CPP_DIR}/FakePostStorageService.cpp
+    ${THRIFT_GEN_CPP_DIR}/FakeUserTimelineService.cpp
+    ${THRIFT_GEN_CPP_DIR}/FakeRabbitmq.cpp
     ${THRIFT_GEN_CPP_DIR}/my_social_network_types.cpp
 )
 

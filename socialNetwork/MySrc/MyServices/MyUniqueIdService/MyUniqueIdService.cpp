@@ -1,11 +1,3 @@
-
-#include <signal.h>
-
-#include <thrift/server/TThreadedServer.h>
-#include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/transport/TServerSocket.h>
-#include <thrift/transport/TBufferTransports.h>
-
 #include "../../MyCommon/utils.h"
 #include "MyUniqueIdHandler.h"
 
@@ -17,10 +9,6 @@
 #endif
 
 
-using apache::thrift::server::TThreadedServer;
-using apache::thrift::transport::TServerSocket;
-using apache::thrift::transport::TFramedTransportFactory;
-using apache::thrift::protocol::TBinaryProtocolFactory;
 using namespace my_social_network;
 
 using namespace std;
@@ -37,7 +25,6 @@ std::string machine_id;
   volatile bool start = false;
 #endif
 
-#define ITERATION 10000
 #define BUFFER_SIZE  50
 
 void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient){

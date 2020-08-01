@@ -9,6 +9,8 @@
 #include "../../gen-cpp/MyComposePostService.h"
 #include "../../gen-cpp/FakePostStorageService.h"
 #include "../../gen-cpp/FakeUserTimelineService.h"
+#include "../../gen-cpp/FakeRedis.h"
+#include "../../gen-cpp/FakeRabbitmq.h"
 
 #include "../../MyCommon/MyClientPool.h"
 
@@ -52,9 +54,6 @@ class MyComposePostHandler : public MyComposePostServiceIf {
   MyClientPool<MyThriftClient<FakeUserTimelineServiceClient>>
       *_user_timeline_client_pool;
   MyClientPool<MyThriftClient<FakeRabbitmqClient>> *_rabbitmq_client_pool;
-  std::exception_ptr _rabbitmq_teptr;
-  std::exception_ptr _post_storage_teptr;
-  std::exception_ptr _user_timeline_teptr;
 
   void _ComposeAndUpload(int64_t req_id);
 
@@ -78,17 +77,15 @@ MyComposePostHandler::MyComposePostHandler(
   _post_storage_client_pool = post_storage_client_pool;
   _user_timeline_client_pool = user_timeline_client_pool;
   _rabbitmq_client_pool = rabbitmq_client_pool;
-  _rabbitmq_teptr = nullptr;
-  _post_storage_teptr = nullptr;
-  _user_timeline_teptr = nullptr;
 }
 
 void MyComposePostHandler::UploadCreator(
     int64_t req_id,
     const Creator &creator) {
 
-  std::string creator_str = "{\"user_id\": " + std::to_string(creator.user_id)
-      + ", \"username\": \"" + creator.username + "\"}";
+  std::string field = "creator";
+  std::string incr_field = "num_components";
+  int64_t num_components;
 
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
@@ -98,37 +95,31 @@ void MyComposePostHandler::UploadCreator(
     throw se;
   }
   auto redis_client = redis_client_wrapper->GetClient();
-  // auto add_span = opentracing::Tracer::Global()->StartSpan(
-  //     "RedisHashSet", {opentracing::ChildOf(&span->context())});
-  auto hset_reply = redis_client->hset(std::to_string(req_id),
-      "creator", creator_str);
-  auto hlen_reply = redis_client->hincrby(std::to_string(req_id),
-                                          "num_components", 1);
-  redis_client->expire(std::to_string(req_id), REDIS_EXPIRE_TIME);
-  redis_client->sync_commit();
-  // add_span->Finish();
+
+  try{
+    redis_client->HSetCreator(req_id, field, creator);
+    num_components = redis_client->HIncrBy(req_id, incr_field, 1);
+  } catch (...) {
+    _redis_client_pool->Push(redis_client_wrapper);
+    LOG(error) << "Failed to send requests to redis-service";
+    throw;
+  }
+
   _redis_client_pool->Push(redis_client_wrapper);
 
-  auto num_components_reply = hlen_reply.get();
-  if (!num_components_reply.ok() || !hset_reply.get().ok()) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_REDIS_ERROR;
-    se.message = "Failed to retrieve message from Redis";
-    throw se;
-  }
-
-  if (num_components_reply.as_integer() == NUM_COMPONENTS) {
+  if (num_components == NUM_COMPONENTS) {
     _ComposeAndUpload(req_id);
   }
-
-  // span->Finish();
-
 }
 
 void MyComposePostHandler::UploadText(
     int64_t req_id,
     const std::string &text) {
 
+  std::string field = "text";
+  std::string incr_field = "num_components";
+  int64_t num_components;
+
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
     ServiceException se;
@@ -137,45 +128,30 @@ void MyComposePostHandler::UploadText(
     throw se;
   }
   auto redis_client = redis_client_wrapper->GetClient();
-  // auto add_span = opentracing::Tracer::Global()->StartSpan(
-  //     "RedisHashSet", {opentracing::ChildOf(&span->context())});
-  auto hset_reply = redis_client->hset(std::to_string(req_id), "text", text);
-  auto hlen_reply = redis_client->hincrby(std::to_string(req_id),
-      "num_components", 1);
-  redis_client->expire(std::to_string(req_id), REDIS_EXPIRE_TIME);
-  redis_client->sync_commit();
-  // add_span->Finish();
+
+  try{
+    redis_client->HSetText(req_id, field, text);
+    num_components = redis_client->HIncrBy(req_id, incr_field, 1);
+  } catch (...) {
+    _redis_client_pool->Push(redis_client_wrapper);
+    LOG(error) << "Failed to send requests to redis-service";
+    throw;
+  }
+
   _redis_client_pool->Push(redis_client_wrapper);
 
-  auto num_components_reply = hlen_reply.get();
-  if (!num_components_reply.ok() || !hset_reply.get().ok()) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_REDIS_ERROR;
-    se.message = "Failed to retrieve message from Redis";
-    throw se;
-  }
-
-  if (num_components_reply.as_integer() == NUM_COMPONENTS) {
+  if (num_components == NUM_COMPONENTS) {
     _ComposeAndUpload(req_id);
   }
-
-  // span->Finish();
-
 }
 
 void MyComposePostHandler::UploadMedia(
     int64_t req_id,
     const std::vector<Media> &media) {
 
-  std::string media_str = "[";
-  if (!media.empty()) {
-    for (auto &item : media) {
-      media_str += "{\"media_id\": " + std::to_string(item.media_id) +
-          ", \"media_type\": \"" + item.media_type + "\"},";
-    }
-    media_str.pop_back();
-  }
-  media_str += "]";
+  std::string field = "media";
+  std::string incr_field = "num_components";
+  int64_t num_components;
 
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
@@ -185,31 +161,21 @@ void MyComposePostHandler::UploadMedia(
     throw se;
   }
   auto redis_client = redis_client_wrapper->GetClient();
-  // auto add_span = opentracing::Tracer::Global()->StartSpan(
-  //     "RedisHashSet", {opentracing::ChildOf(&span->context())});
-  auto hset_reply = redis_client->hset(std::to_string(req_id),
-      "media", media_str);
-  auto hlen_reply = redis_client->hincrby(std::to_string(req_id),
-                                          "num_components", 1);
-  redis_client->expire(std::to_string(req_id), REDIS_EXPIRE_TIME);
-  redis_client->sync_commit();
-  // add_span->Finish();
+
+  try{
+    redis_client->HSetMedia(req_id, field, media);
+    num_components = redis_client->HIncrBy(req_id, incr_field, 1);
+  } catch (...) {
+    _redis_client_pool->Push(redis_client_wrapper);
+    LOG(error) << "Failed to send requests to redis-service";
+    throw;
+  }
+
   _redis_client_pool->Push(redis_client_wrapper);
 
-  auto num_components_reply = hlen_reply.get();
-  if (!num_components_reply.ok() || !hset_reply.get().ok()) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_REDIS_ERROR;
-    se.message = "Failed to retrieve message from Redis";
-    throw se;
-  }
-
-  if (num_components_reply.as_integer() == NUM_COMPONENTS) {
+  if (num_components == NUM_COMPONENTS) {
     _ComposeAndUpload(req_id);
   }
-
-  // span->Finish();
-
 }
 
 void MyComposePostHandler::UploadUniqueId(
@@ -217,15 +183,10 @@ void MyComposePostHandler::UploadUniqueId(
     const int64_t post_id,
     const PostType::type post_type) {
 
-  // Initialize a span
-  // TextMapReader reader(carrier);
-  // std::map<std::string, std::string> writer_text_map;
-  // TextMapWriter writer(writer_text_map);
-  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  // auto span = opentracing::Tracer::Global()->StartSpan(
-  //     "UploadUniqueId",
-  //     { opentracing::ChildOf(parent_span->get()) });
-  // opentracing::Tracer::Global()->Inject(span->context(), writer);
+  std::string field1 = "post_id";
+  std::string field2 = "post_type";
+  std::string incr_field = "num_components";
+  int64_t num_components;
 
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
@@ -235,59 +196,31 @@ void MyComposePostHandler::UploadUniqueId(
     throw se;
   }
   auto redis_client = redis_client_wrapper->GetClient();
-  // auto add_span = opentracing::Tracer::Global()->StartSpan(
-  //     "RedisHashSet", {opentracing::ChildOf(&span->context())});
-  auto hset_reply_0 = redis_client->hset(std::to_string(req_id), "post_id",
-      std::to_string(post_id));
-  auto hset_reply_1 = redis_client->hset(std::to_string(req_id), "post_type",
-      std::to_string(post_type));
-  auto hlen_reply = redis_client->hincrby(std::to_string(req_id),
-                                          "num_components", 1);
-  redis_client->expire(std::to_string(req_id), REDIS_EXPIRE_TIME);
-  redis_client->sync_commit();
-  // add_span->Finish();
+
+  try{
+    redis_client->HSetPostId(req_id, field1, post_id);
+    redis_client->HSetPostType(req_id, field2, post_type);
+    num_components = redis_client->HIncrBy(req_id, incr_field, 1);
+  } catch (...) {
+    _redis_client_pool->Push(redis_client_wrapper);
+    LOG(error) << "Failed to send requests to redis-service";
+    throw;
+  }
+
   _redis_client_pool->Push(redis_client_wrapper);
 
-  auto num_components_reply = hlen_reply.get();
-  if (!num_components_reply.ok() || !hset_reply_0.get().ok() ||
-      !hset_reply_1.get().ok()) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_REDIS_ERROR;
-    se.message = "Failed to retrieve message from Redis";
-    throw se;
-  }
-;
-  if (num_components_reply.as_integer() == NUM_COMPONENTS) {
+  if (num_components == NUM_COMPONENTS) {
     _ComposeAndUpload(req_id);
   }
-
-  // span->Finish();
-
 }
 
 void MyComposePostHandler::UploadUrls(
     int64_t req_id,
     const std::vector<Url> &urls) {
 
-  // Initialize a span
-  // TextMapReader reader(carrier);
-  // std::map<std::string, std::string> writer_text_map;
-  // TextMapWriter writer(writer_text_map);
-  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  // auto span = opentracing::Tracer::Global()->StartSpan(
-  //     "UploadUrls",
-  //     { opentracing::ChildOf(parent_span->get()) });
-  // opentracing::Tracer::Global()->Inject(span->context(), writer);
-
-  std::string urls_str = "[";
-  if (!urls.empty()) {
-    for (auto &item : urls) {
-      urls_str += "{\"shortened_url\": \"" + item.shortened_url +
-          "\", \"expanded_url\": \"" + item.expanded_url + "\"},";
-    }
-    urls_str.pop_back();
-  }
-  urls_str += "]";
+  std::string field = "urls";
+  std::string incr_field = "num_components";
+  int64_t num_components;
 
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
@@ -297,55 +230,30 @@ void MyComposePostHandler::UploadUrls(
     throw se;
   }
   auto redis_client = redis_client_wrapper->GetClient();
-  // auto add_span = opentracing::Tracer::Global()->StartSpan(
-  //     "RedisHashSet", {opentracing::ChildOf(&span->context())});
-  auto hset_reply = redis_client->hset(std::to_string(req_id), "urls", urls_str);
-  auto hlen_reply = redis_client->hincrby(std::to_string(req_id),
-                                          "num_components", 1);
-  redis_client->expire(std::to_string(req_id), REDIS_EXPIRE_TIME);
-  redis_client->sync_commit();
-  // add_span->Finish();
+
+  try{
+    redis_client->HSetUrls(req_id, field, urls);
+    num_components = redis_client->HIncrBy(req_id, incr_field, 1);
+  } catch (...) {
+    _redis_client_pool->Push(redis_client_wrapper);
+    LOG(error) << "Failed to send requests to redis-service";
+    throw;
+  }
+
   _redis_client_pool->Push(redis_client_wrapper);
 
-  auto num_components_reply = hlen_reply.get();
-  if (!num_components_reply.ok() || !hset_reply.get().ok()) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_REDIS_ERROR;
-    se.message = "Failed to retrieve message from Redis";
-    throw se;
-  }
-
-  if (num_components_reply.as_integer() == NUM_COMPONENTS) {
+  if (num_components == NUM_COMPONENTS) {
     _ComposeAndUpload(req_id);
   }
-
-  // span->Finish();
-
 }
 
 void MyComposePostHandler::UploadUserMentions(
     const int64_t req_id,
     const std::vector<UserMention> &user_mentions) {
 
-  // Initialize a span
-  // TextMapReader reader(carrier);
-  // std::map<std::string, std::string> writer_text_map;
-  // TextMapWriter writer(writer_text_map);
-  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  // auto span = opentracing::Tracer::Global()->StartSpan(
-  //     "UploadUserMentions",
-  //     { opentracing::ChildOf(parent_span->get()) });
-  // opentracing::Tracer::Global()->Inject(span->context(), writer);
-
-  std::string user_mentions_str = "[";
-  if (!user_mentions.empty()) {
-    for (auto &item : user_mentions) {
-      user_mentions_str += "{\"user_id\": " + std::to_string(item.user_id) +
-          ", \"username\": \"" + item.username + "\"},";
-    }
-    user_mentions_str.pop_back();
-  }
-  user_mentions_str += "]";
+  std::string field = "user_mentions";
+  std::string incr_field = "num_components";
+  int64_t num_components;
 
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
@@ -355,37 +263,42 @@ void MyComposePostHandler::UploadUserMentions(
     throw se;
   }
   auto redis_client = redis_client_wrapper->GetClient();
-  // auto add_span = opentracing::Tracer::Global()->StartSpan(
-  //     "RedisHashSet", {opentracing::ChildOf(&span->context())});
-  auto hset_reply = redis_client->hset(std::to_string(req_id),
-      "user_mentions", user_mentions_str);
-  auto hlen_reply = redis_client->hincrby(std::to_string(req_id),
-                                          "num_components", 1);
-  redis_client->expire(std::to_string(req_id), REDIS_EXPIRE_TIME);
-  redis_client->sync_commit();
-  // add_span->Finish();
+
+  try{
+    redis_client->HSetUserMentions(req_id, field, user_mentions);
+    num_components = redis_client->HIncrBy(req_id, incr_field, 1);
+  } catch (...) {
+    _redis_client_pool->Push(redis_client_wrapper);
+    LOG(error) << "Failed to send requests to redis-service";
+    throw;
+  }
+
   _redis_client_pool->Push(redis_client_wrapper);
 
-  auto num_components_reply = hlen_reply.get();
-  if (!num_components_reply.ok() || !hset_reply.get().ok()) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_REDIS_ERROR;
-    se.message = "Failed to retrieve message from Redis";
-    throw se;
-  }
-
-  if (num_components_reply.as_integer() == NUM_COMPONENTS) {
+  if (num_components == NUM_COMPONENTS) {
     _ComposeAndUpload(req_id);
   }
-
-
-  // span->Finish();
-
 }
 
 void MyComposePostHandler::_ComposeAndUpload(
     int64_t req_id) {
 
+  std::string field1 = "text";
+  std::string field2 = "creator";
+  std::string field3 = "media";
+  std::string field4 = "post_id";
+  std::string field5 = "urls";
+  std::string field6 = "user_mentions";
+  std::string field7 = "post_type";
+
+  std::string text;
+  Creator creator;
+  std::vector<Media> media;
+  int64_t post_id;
+  std::vector<Url> urls;
+  std::vector<UserMention> user_mentions;
+  PostType::type post_type;
+
   auto redis_client_wrapper = _redis_client_pool->Pop();
   if (!redis_client_wrapper) {
     ServiceException se;
@@ -394,48 +307,19 @@ void MyComposePostHandler::_ComposeAndUpload(
     throw se;
   }
   auto redis_client = redis_client_wrapper->GetClient();
-  auto f_text_reply = redis_client->hget(std::to_string(req_id), "text");
-  auto f_creator_reply = redis_client->hget(std::to_string(req_id), "creator");
-  auto f_media_reply = redis_client->hget(std::to_string(req_id), "media");
-  auto f_post_id_reply = redis_client->hget(
-      std::to_string(req_id), "post_id");
-  auto f_urls_reply = redis_client->hget(std::to_string(req_id), "urls");
-  auto f_user_mentions_reply = redis_client->hget(
-      std::to_string(req_id), "user_mentions");
-  auto f_post_type_reply = redis_client->hget(
-      std::to_string(req_id), "post_type");
-  redis_client->sync_commit();
 
-  cpp_redis::reply text_reply;
-  cpp_redis::reply creator_reply;
-  cpp_redis::reply media_reply;
-  cpp_redis::reply post_id_reply;
-  cpp_redis::reply urls_reply;
-  cpp_redis::reply user_mentions_reply;
-  cpp_redis::reply post_type_reply;
-  try {
-    text_reply = f_text_reply.get();
-    creator_reply = f_creator_reply.get();
-    media_reply = f_media_reply.get();
-    post_id_reply = f_post_id_reply.get();
-    urls_reply = f_urls_reply.get();
-    user_mentions_reply = f_user_mentions_reply.get();
-    post_type_reply = f_post_type_reply.get();
+  try{
+    redis_client->HGetText(text, req_id, field1);
+    redis_client->HGetCreator(creator, req_id, field2);
+    redis_client->HGetMedia(media, req_id, field3);
+    post_id = redis_client->HGetPostId(req_id, field4);
+    redis_client->HGetUrls(urls, req_id, field5);
+    redis_client->HGetUserMentions(user_mentions, req_id, field6);
+    post_type = redis_client->HGetPostType(req_id, field7);
   } catch (...) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_REDIS_ERROR;
-    se.message = "Failed to retrieve messages from Redis";
     _redis_client_pool->Push(redis_client_wrapper);
-    throw se;
-  }
-
-  if (!text_reply.ok() || !creator_reply.ok() || !media_reply.ok() ||
-      !post_id_reply.ok() || !urls_reply.ok() || !user_mentions_reply.ok()) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_REDIS_ERROR;
-    se.message = "Failed to retrieve messages from Redis";
-    _redis_client_pool->Push(redis_client_wrapper);
-    throw se;
+    LOG(error) << "Failed to send requests to redis-service";
+    throw;
   }
 
   _redis_client_pool->Push(redis_client_wrapper);
@@ -443,91 +327,28 @@ void MyComposePostHandler::_ComposeAndUpload(
   // Compose the post
   Post post;
   post.req_id = req_id;
-  post.text = text_reply.as_string();
-  post.post_id = std::stoul(post_id_reply.as_string());
+  post.text = text;
+  post.post_id = post_id;
   post.timestamp = duration_cast<milliseconds>(
       system_clock::now().time_since_epoch()).count();
-  post.post_type = static_cast<PostType::type>(stoi(post_type_reply.as_string()));
-
-  LOG(debug) << creator_reply.as_string();
-
-  json creator_json = json::parse(creator_reply.as_string());
-  post.creator.user_id = creator_json["user_id"];
-  post.creator.username = creator_json["username"];
-
-  LOG(debug) << user_mentions_reply.as_string();
+  post.post_type = post_type;
+  post.creator = creator;
 
   std::vector<int64_t> user_mentions_id;
-
-  json user_mentions_json = json::parse(user_mentions_reply.as_string());
-  for (auto &item : user_mentions_json) {
-    UserMention user_mention;
-    user_mention.user_id = item["user_id"];
-    user_mention.username = item["username"];
-    post.user_mentions.emplace_back(user_mention);
-    user_mentions_id.emplace_back(user_mention.user_id);
+  for (auto &mention : user_mentions) {
+    user_mentions_id.emplace_back(mention.user_id);  
   }
-
-  json media_json = json::parse(media_reply.as_string());
-  for (auto &item : media_json) {
-    Media media;
-    media.media_id = item["media_id"];
-    media.media_type = item["media_type"];
-    post.media.emplace_back(media);
-  }
-
-  json urls_json = json::parse(urls_reply.as_string());
-  for (auto &item : urls_json) {
-    Url url;
-    url.shortened_url = item["shortened_url"];
-    url.expanded_url = item["expanded_url"];
-    post.urls.emplace_back(url);
-  }
+  post.user_mentions = user_mentions;
+  post.media = media;
+  post.urls = urls;
 
   // Upload the post
-  std::thread upload_post_worker(&MyComposePostHandler::_UploadPostHelper,
-                                   this, req_id, std::ref(post));
+  _UploadPostHelper(req_id, post);
 
-  std::thread upload_user_timeline_worker(
-      &MyComposePostHandler::_UploadUserTimelineHelper, this, req_id,
-      post.post_id, post.creator.user_id, post.timestamp);
+  _UploadUserTimelineHelper(req_id, post.post_id, post.creator.user_id, post.timestamp);
 
-  std::thread upload_home_timeline_worker(
-      &MyComposePostHandler::_UploadHomeTimelineHelper, this, req_id,
-      post.post_id, post.creator.user_id, post.timestamp,
-      std::ref(user_mentions_id));
-
-  upload_post_worker.join();
-  upload_user_timeline_worker.join();
-  upload_home_timeline_worker.join();
-
-  if (_user_timeline_teptr) {
-    try{
-      std::rethrow_exception(_user_timeline_teptr);
-    }
-    catch(const std::exception &ex)
-    {
-      LOG(error) << "Thread exited with exception: " << ex.what();
-    }
-  }
-  if (_rabbitmq_teptr) {
-    try{
-      std::rethrow_exception(_rabbitmq_teptr);
-    }
-    catch(const std::exception &ex)
-    {
-      LOG(error) << "Thread exited with exception: " << ex.what();
-    }
-  }
-  if (_post_storage_teptr) {
-    try{
-      std::rethrow_exception(_post_storage_teptr);
-    }
-    catch(const std::exception &ex)
-    {
-      LOG(error) << "Thread exited with exception: " << ex.what();
-    }
-  }
+  _UploadHomeTimelineHelper(req_id, post.post_id, post.creator.user_id, post.timestamp,
+                            user_mentions_id);
 }
 
 void MyComposePostHandler::_UploadPostHelper(
@@ -552,7 +373,7 @@ void MyComposePostHandler::_UploadPostHelper(
     _post_storage_client_pool->Push(post_storage_client_wrapper);
   } catch (...) {
     LOG(error) << "Failed to connect to post-storage-service";
-    _post_storage_teptr = std::current_exception();
+    throw;
   }
 }
 
@@ -580,7 +401,7 @@ void MyComposePostHandler::_UploadUserTimelineHelper(
     _user_timeline_client_pool->Push(user_timeline_client_wrapper);
   } catch (...) {
     LOG(error) << "Failed to write user-timeline to user-timeline-service";
-    _user_timeline_teptr = std::current_exception();
+    throw;
   }
 }
 
@@ -590,47 +411,26 @@ void MyComposePostHandler::_UploadHomeTimelineHelper(
     int64_t user_id,
     int64_t timestamp,
     const std::vector<int64_t> &user_mentions_id) {
-  try {
-    std::string user_mentions_id_str = "[";
-    for (auto &i : user_mentions_id){
-      user_mentions_id_str += std::to_string(i) + ", ";
-    }
-    user_mentions_id_str = user_mentions_id_str.substr(0,
-        user_mentions_id_str.length() - 2);
-    user_mentions_id_str += "]";
-    // std::string carrier_str = "{";
-    // for (auto &item : carrier) {
-    //   carrier_str += "\"" + item.first + "\" : \"" + item.second + "\", ";
-    // }
-    // carrier_str = carrier_str.substr(0, carrier_str.length() - 2);
-    // carrier_str += "}";
-
-    std::string msg_str = "{ \"req_id\": " + std::to_string(req_id) +
-        ", \"post_id\": " + std::to_string(post_id) +
-        ", \"user_id\": " + std::to_string(user_id) +
-        ", \"timestamp\": " + std::to_string(timestamp) +
-        ", \"user_mentions_id\": " + user_mentions_id_str +
-        // ", \"carrier\": " + carrier_str +
-        "}";
-
-    auto rabbitmq_client_wrapper = _rabbitmq_client_pool->Pop();
-    if (!rabbitmq_client_wrapper) {
-      ServiceException se;
-      se.errorCode = ErrorCode::SE_RABBITMQ_CONN_ERROR;
-      se.message = "Failed to connect to home-timeline-rabbitmq";
-      throw se;
-    }
-    auto rabbitmq_channel = rabbitmq_client_wrapper->GetChannel();
-    auto msg = AmqpClient::BasicMessage::Create(msg_str);
-    rabbitmq_channel->BasicPublish("", "write-home-timeline", msg);
-    _rabbitmq_client_pool->Push(rabbitmq_client_wrapper);
-  } catch (...) {
-    LOG(error) << "Failed to connect to home-timeline-rabbitmq";
-    _rabbitmq_teptr = std::current_exception();
+  
+  auto rabbitmq_client_wrapper = _rabbitmq_client_pool->Pop();
+  if (!rabbitmq_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_RABBITMQ_CONN_ERROR;
+    se.message = "Failed to connect to home-timeline-rabbitmq";
+    throw se;
   }
+  auto rabbitmq_client = rabbitmq_client_wrapper->GetClient();
+  try {
+    rabbitmq_client->UploadHomeTimeline(req_id, post_id, user_id, timestamp,
+                                        user_mentions_id);
+  } catch (...) {
+    _rabbitmq_client_pool->Push(rabbitmq_client_wrapper);
+    LOG(error) << "Failed to connect to home-timeline-rabbitmq";
+    throw;
+  }
+  
+  _rabbitmq_client_pool->Push(rabbitmq_client_wrapper);
 }
-
-
 
 } // namespace my_social_network
 
