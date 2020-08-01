@@ -520,3 +520,98 @@ service FakeMediaService {
       // 4: map<string, string> carrier
   ) throws (1: ServiceException se)
 }
+
+service FakeRedis {
+  void HSetCreator(
+      1: i64 req_id,
+      2: string field,
+      3: Creator creator
+  ) throws (1: ServiceException se)
+
+  void HSetText(
+      1: i64 req_id,
+      2: string field,
+      3: string text
+  ) throws (1: ServiceException se)
+
+  void HSetMedia(
+      1: i64 req_id,
+      2: string field,
+      3: list<Media> media
+  ) throws (1: ServiceException se)
+
+  void HSetPostId(
+      1: i64 req_id,
+      2: string field,
+      3: i64 post_id
+  ) throws (1: ServiceException se)
+
+  void HSetPostType(
+      1: i64 req_id,
+      2: string field,
+      3: PostType post_type
+  ) throws (1: ServiceException se)
+
+  void HSetUrls(
+      1: i64 req_id,
+      2: string field,
+      3: list<Url> urls
+  ) throws (1: ServiceException se)
+
+  void HSetUserMentions(
+      1: i64 req_id,
+      2: string field,
+      3: list<UserMention> user_mentions
+  ) throws (1: ServiceException se)
+
+  Creator HGetCreator(
+      1: i64 req_id,
+      2: string field
+  ) throws (1: ServiceException se)
+
+  string HGetText(
+      1: i64 req_id,
+      2: string field
+  ) throws (1: ServiceException se)
+
+  list<Media> HGetMedia(
+      1: i64 req_id,
+      2: string field
+  ) throws (1: ServiceException se)
+
+  i64 HGetPostId(
+      1: i64 req_id,
+      2: string field
+  ) throws (1: ServiceException se)
+
+  PostType HGetPostType(
+      1: i64 req_id,
+      2: string field
+  ) throws (1: ServiceException se)
+
+  list<Url> HGetUrls(
+      1: i64 req_id,
+      2: string field
+  ) throws (1: ServiceException se)
+
+  list<UserMention> HGetUserMentions(
+      1: i64 req_id,
+      2: string field
+  ) throws (1: ServiceException se)
+
+  i64 HIncrBy(
+      1: i64 key,
+      2: string field,
+      3: i64 value
+  ) throws (1: ServiceException se)
+}
+
+service FakeRabbitmq {
+  void UploadHomeTimeline(
+    1: i64 req_id,
+    2: i64 post_id,
+    3: i64 user_id,
+    4: i64 timestamp,
+    5: list<i64> user_mentions_id
+  ) throws (1: ServiceException se)
+}

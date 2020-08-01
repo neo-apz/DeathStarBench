@@ -1,7 +1,6 @@
 
 
 # add_subdirectory(TextService)
-# add_subdirectory(UniqueIdService)
 # add_subdirectory(UserService)
 # add_subdirectory(SocialGraphService)
 # add_subdirectory(WriteHomeTimelineService)
@@ -15,7 +14,7 @@
 
 # My Services
 add_subdirectory(MyUniqueIdService)
-
+add_subdirectory(MyComposePostService)
 
 # Fake Services
 # add_subdirectory(FakeComposePostService)
