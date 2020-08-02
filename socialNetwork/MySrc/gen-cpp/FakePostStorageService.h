@@ -413,13 +413,49 @@ class FakePostStorageService_ReadPosts_presult {
 
 };
 
+class FakePostStorageServiceProcessor : public ::apache::thrift::TDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<FakePostStorageServiceIf> iface_;
+  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
+ private:
+  typedef  void (FakePostStorageServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_StorePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_ReadPost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_ReadPosts(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+ public:
+  FakePostStorageServiceProcessor(::apache::thrift::stdcxx::shared_ptr<FakePostStorageServiceIf> iface) :
+    iface_(iface) {
+    processMap_["StorePost"] = &FakePostStorageServiceProcessor::process_StorePost;
+    processMap_["ReadPost"] = &FakePostStorageServiceProcessor::process_ReadPost;
+    processMap_["ReadPosts"] = &FakePostStorageServiceProcessor::process_ReadPosts;
+  }
+
+  virtual ~FakePostStorageServiceProcessor() {}
+};
+
+class FakePostStorageHandler : virtual public FakePostStorageServiceIf {
+  public:
+    FakePostStorageHandler() = default;
+    ~FakePostStorageHandler() = default;
+
+    void StorePost(const int64_t req_id, const Post& post);
+    void ReadPost(Post& _return, const int64_t req_id, const int64_t post_id);
+    void ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids);
+};
+
 class FakePostStorageServiceClient : virtual public FakePostStorageServiceIf {
  public:
   FakePostStorageServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
+    std::shared_ptr<FakePostStorageHandler> handler = std::make_shared<FakePostStorageHandler>();
+    _fakeProcessor = std::make_shared<FakePostStorageServiceProcessor>(handler);
   }
   FakePostStorageServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
+    std::shared_ptr<FakePostStorageHandler> handler = std::make_shared<FakePostStorageHandler>();
+    _fakeProcessor = std::make_shared<FakePostStorageServiceProcessor>(handler);
   }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -452,28 +488,9 @@ class FakePostStorageServiceClient : virtual public FakePostStorageServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
-};
 
-class FakePostStorageServiceProcessor : public ::apache::thrift::TDispatchProcessor {
- protected:
-  ::apache::thrift::stdcxx::shared_ptr<FakePostStorageServiceIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
-  typedef  void (FakePostStorageServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
-  typedef std::map<std::string, ProcessFunction> ProcessMap;
-  ProcessMap processMap_;
-  void process_StorePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_ReadPost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_ReadPosts(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
- public:
-  FakePostStorageServiceProcessor(::apache::thrift::stdcxx::shared_ptr<FakePostStorageServiceIf> iface) :
-    iface_(iface) {
-    processMap_["StorePost"] = &FakePostStorageServiceProcessor::process_StorePost;
-    processMap_["ReadPost"] = &FakePostStorageServiceProcessor::process_ReadPost;
-    processMap_["ReadPosts"] = &FakePostStorageServiceProcessor::process_ReadPosts;
-  }
-
-  virtual ~FakePostStorageServiceProcessor() {}
+  std::shared_ptr<FakePostStorageServiceProcessor> _fakeProcessor;
 };
 
 class FakePostStorageServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

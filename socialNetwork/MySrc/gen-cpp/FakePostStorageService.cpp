@@ -720,6 +720,13 @@ uint32_t FakePostStorageService_ReadPosts_presult::read(::apache::thrift::protoc
 void FakePostStorageServiceClient::StorePost(const int64_t req_id, const Post& post)
 {
   send_StorePost(req_id, post);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_StorePost();
 }
 
@@ -1354,6 +1361,18 @@ void FakePostStorageServiceConcurrentClient::recv_ReadPosts(std::vector<Post> & 
     this->sync_.waitForWork(seqid);
   } // end while(true)
 }
+
+  void FakePostStorageHandler::StorePost(
+    const int64_t req_id, const Post& post) {}
+  
+  void FakePostStorageHandler::ReadPost(
+    Post& _return, const int64_t req_id, const int64_t post_id) {}
+  
+  void FakePostStorageHandler::ReadPosts(
+    std::vector<Post> & _return,
+    const int64_t req_id,
+    const std::vector<int64_t> & post_ids) {}
+
 
 } // namespace
 
