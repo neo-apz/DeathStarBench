@@ -3536,6 +3536,13 @@ uint32_t FakeRedis_HIncrBy_presult::read(::apache::thrift::protocol::TProtocol* 
 void FakeRedisClient::HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator)
 {
   send_HSetCreator(req_id, field, creator);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HSetCreator();
 }
 
@@ -6736,8 +6743,8 @@ int64_t FakeRedisConcurrentClient::recv_HIncrBy(const int32_t seqid)
     const std::string& field) {
 
       Creator creator;
-      creator.user_id = 1234;
-      creator.username = "username";
+      creator.user_id = 9876543210;
+      creator.username = "sample_username";
       _return = creator;
   }
   
@@ -6745,7 +6752,7 @@ int64_t FakeRedisConcurrentClient::recv_HIncrBy(const int32_t seqid)
     std::string& _return,
     const int64_t req_id,
     const std::string& field) {
-      _return = "This is a sample text.";
+      _return = "This is a just sample post, nothing more, nothing less!";
     }
   
   void FakeRedisHandler::HGetMedia(
@@ -6753,7 +6760,7 @@ int64_t FakeRedisConcurrentClient::recv_HIncrBy(const int32_t seqid)
     const int64_t req_id,
     const std::string& field) {
 
-      for (int i = 0; i < 3; i++){
+      for (int i = 0; i < 2; i++){
         Media media;
         media.media_id = 12345;
         media.media_type = "Video";
@@ -6764,7 +6771,7 @@ int64_t FakeRedisConcurrentClient::recv_HIncrBy(const int32_t seqid)
   int64_t FakeRedisHandler::HGetPostId(
     const int64_t req_id,
     const std::string& field) {
-      return 1234567;
+      return 123456789087;
     }
   
   PostType::type FakeRedisHandler::HGetPostType(
@@ -6777,7 +6784,7 @@ int64_t FakeRedisConcurrentClient::recv_HIncrBy(const int32_t seqid)
     std::vector<Url> & _return,
     const int64_t req_id,
     const std::string& field) {
-      for (int i = 0; i < 3; i++){
+      for (int i = 0; i < 2; i++){
         Url url;
         url.expanded_url = "http://www.expandedURL.com/thisisthefullurlinitsexpandedformat";
         url.shortened_url = "http://www.short.en/XCBNHJKL";

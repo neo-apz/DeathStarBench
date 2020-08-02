@@ -6,6 +6,9 @@
  */
 #include "FakeUserTimelineService.h"
 
+#ifdef __aarch64__
+  #include "../MyCommon/MagicBreakPoint.h"
+#endif
 namespace my_social_network {
 
 

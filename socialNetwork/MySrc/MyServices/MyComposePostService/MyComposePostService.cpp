@@ -23,27 +23,129 @@ uint64_t num_iterations;
 #endif
 
 #define BUFFER_SIZE  50
+#define REQ_ID_BEGIN 1234567898765432
 
-void ClientSendComposePost(MyThriftClient<MyComposePostServiceClient> *composePostClient){
+struct MsgType {
+  enum type {
+    USER_MENTIONS = 0,
+    TEXT = 1,
+    MEDIA = 2,
+    UNIQUE_ID = 3,
+    CREATOR = 4,
+    URLS = 5,
+    SIZE = 6
+  };
+};
+
+void ClientSendComposePost(
+  MyThriftClient<MyComposePostServiceClient> *composePostClient,
+  int64_t req_id, uint64_t iter_count){
   
   composePostClient->Connect();
   auto client = composePostClient->GetClient();
 
-  int64_t req_id = 12345678; // TODO rand!
+  MsgType::type msg_type = (MsgType::type) (iter_count % MsgType::SIZE);
 
-  client->send_UploadText(req_id, "This is a sample post!");
+  switch (msg_type)
+  {
+  case MsgType::TEXT :
+    client->send_UploadText(req_id, "This is a just sample post, nothing more, nothing less!");
+    break;
+  case MsgType::MEDIA:
+    {
+      std::vector<Media> media_vector;
+      
+      for(int i=0; i < 2; i++){
+        Media media;
+        media.media_id = 12345;
+        media.media_type = "Video";
+        media_vector.emplace_back(media);
+      }
+      client->send_UploadMedia(req_id, media_vector);
+    }
+    break;
+  case MsgType::UNIQUE_ID :
+    client->send_UploadUniqueId(req_id, 123456789087, PostType::POST);
+    break;
+  case MsgType::CREATOR :
+    {
+      Creator creator;
+      creator.user_id = 9876543210;
+      creator.username = "sample_username";
+      client->send_UploadCreator(req_id, creator);
+    }
+    break;
+  case MsgType::URLS :
+    {
+      std::vector<Url> urls;
+      for (int i = 0; i < 2; i++){
+        Url url;
+        url.expanded_url = "http://www.expandedURL.com/thisisthefullurlinitsexpandedformat";
+        url.shortened_url = "http://www.short.en/XCBNHJKL";
+        urls.emplace_back(url);
+      }
+      client->send_UploadUrls(req_id, urls);
+    }
+    break;
+  case MsgType::USER_MENTIONS :
+    {
+      std::vector<UserMention> user_mentions;
+      for (int i = 0; i < 2; i++){
+        UserMention user_mention;
+        user_mention.user_id = 12345689876543210;
+        user_mention.username = "my_username";
+        user_mentions.emplace_back(user_mention);
+      }
+      client->send_UploadUserMentions(req_id, user_mentions);
+    }
+    break;    
+  default:
+    cout << "This is an error, wrong message type!" << endl;
+    exit(1);
+  }
+
 }
 
-void ClientRecvComposePost(MyThriftClient<MyComposePostServiceClient> *composePostClient){
+void ClientRecvComposePost(
+  MyThriftClient<MyComposePostServiceClient> *composePostClient,
+  int64_t *req_id, uint64_t iter_count){
   
   composePostClient->Connect();
   auto client = composePostClient->GetClient();
 
-  client->recv_UploadText();
+  MsgType::type msg_type = (MsgType::type) (iter_count % MsgType::SIZE);
+
+  switch (msg_type)
+  {
+  case MsgType::TEXT :
+    client->recv_UploadText();
+    break;
+  case MsgType::MEDIA :
+    client->recv_UploadMedia();
+    break;
+  case MsgType::UNIQUE_ID :
+    client->recv_UploadUniqueId();
+    break;
+  case MsgType::CREATOR :
+    client->recv_UploadCreator();
+    break;
+  case MsgType::URLS :
+    client->recv_UploadUrls();
+    break;
+  case MsgType::USER_MENTIONS :
+    client->recv_UploadUserMentions();
+    *req_id = (*req_id) + 1;
+    break;    
+  default:
+    cout << "This is an error, wrong message type!" << endl;
+    exit(1);
+  }
+
 }
 
 void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *composePostClient,
                                   std::shared_ptr<MyComposePostHandler> handler,
+                                  int64_t req_id,
                                   int tid, int max_tid) {
 
   auto srvIProt = composePostClient->GetClient()->getOutputProtocol();
@@ -53,7 +155,7 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *co
   std::shared_ptr<MyComposePostServiceProcessor> processor =
       std::make_shared<MyComposePostServiceProcessor>(handler);
 
-  uint64_t count = num_iterations;
+  uint64_t count = 1;
 
   #ifdef FLEXUS
   if (tid == max_tid) {
@@ -64,12 +166,12 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *co
   while(!start);
   #endif
 
-  while (count--){
+  while (count <= num_iterations){
 
     #ifdef FLEXUS
       SKIP_BEGIN();
     #endif
-    ClientSendComposePost(composePostClient);
+    ClientSendComposePost(composePostClient, req_id, count);
     #ifdef FLEXUS
       SKIP_END();
     #endif
@@ -80,10 +182,12 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *co
     #ifdef FLEXUS
       SKIP_BEGIN();
     #endif
-    ClientRecvComposePost(composePostClient);
+    ClientRecvComposePost(composePostClient, &req_id, count);
     #ifdef FLEXUS
       SKIP_END();
     #endif
+
+    count++;
   }
 
 }
@@ -134,11 +238,16 @@ int main(int argc, char *argv[]) {
 
   std::thread processThreads[num_threads];
 
+  int64_t req_id_begin = REQ_ID_BEGIN;
+
   for (int i = 0; i < num_threads; i++) {
     composePostClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
 
     processThreads[i] = std::thread(GenAndProcessComposePostReqs,
-                                      composePostClients[i], handler, i, num_threads - 1);
+                                      composePostClients[i], handler, req_id_begin,
+                                      i, num_threads - 1);
+
+    req_id_begin += num_iterations + 2;
 
     #ifdef __aarch64__
       CPU_ZERO(&cpuSet[i]);

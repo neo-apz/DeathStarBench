@@ -188,13 +188,43 @@ class FakeRabbitmq_UploadHomeTimeline_presult {
 
 };
 
+class FakeRabbitmqProcessor : public ::apache::thrift::TDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<FakeRabbitmqIf> iface_;
+  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
+ private:
+  typedef  void (FakeRabbitmqProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_UploadHomeTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+ public:
+  FakeRabbitmqProcessor(::apache::thrift::stdcxx::shared_ptr<FakeRabbitmqIf> iface) :
+    iface_(iface) {
+    processMap_["UploadHomeTimeline"] = &FakeRabbitmqProcessor::process_UploadHomeTimeline;
+  }
+
+  virtual ~FakeRabbitmqProcessor() {}
+};
+
+class FakeRabbitmqHandler : virtual public FakeRabbitmqIf {
+  public:
+    FakeRabbitmqHandler() = default;
+    ~FakeRabbitmqHandler() = default;
+
+    void UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id);
+};
+
 class FakeRabbitmqClient : virtual public FakeRabbitmqIf {
  public:
   FakeRabbitmqClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
+    std::shared_ptr<FakeRabbitmqHandler> handler = std::make_shared<FakeRabbitmqHandler>();
+    _fakeProcessor = std::make_shared<FakeRabbitmqProcessor>(handler);
   }
   FakeRabbitmqClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
+    std::shared_ptr<FakeRabbitmqHandler> handler = std::make_shared<FakeRabbitmqHandler>();
+    _fakeProcessor = std::make_shared<FakeRabbitmqProcessor>(handler);
   }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -221,24 +251,9 @@ class FakeRabbitmqClient : virtual public FakeRabbitmqIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
-};
 
-class FakeRabbitmqProcessor : public ::apache::thrift::TDispatchProcessor {
- protected:
-  ::apache::thrift::stdcxx::shared_ptr<FakeRabbitmqIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
-  typedef  void (FakeRabbitmqProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
-  typedef std::map<std::string, ProcessFunction> ProcessMap;
-  ProcessMap processMap_;
-  void process_UploadHomeTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
- public:
-  FakeRabbitmqProcessor(::apache::thrift::stdcxx::shared_ptr<FakeRabbitmqIf> iface) :
-    iface_(iface) {
-    processMap_["UploadHomeTimeline"] = &FakeRabbitmqProcessor::process_UploadHomeTimeline;
-  }
-
-  virtual ~FakeRabbitmqProcessor() {}
+  std::shared_ptr<FakeRabbitmqProcessor> _fakeProcessor;
 };
 
 class FakeRabbitmqProcessorFactory : public ::apache::thrift::TProcessorFactory {

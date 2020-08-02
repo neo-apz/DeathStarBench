@@ -132,7 +132,6 @@ void MyComposePostHandler::UploadText(
   try{
     redis_client->HSetText(req_id, field, text);
     num_components = redis_client->HIncrBy(req_id, incr_field, 1);
-    std::cout << num_components << std::endl;
   } catch (...) {
     _redis_client_pool->Push(redis_client_wrapper);
     LOG(error) << "Failed to send requests to redis-service";
