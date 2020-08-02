@@ -11,6 +11,8 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <mutex>
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -1900,13 +1902,113 @@ class FakeRedis_HIncrBy_presult {
 
 };
 
+class FakeRedisProcessor : public ::apache::thrift::TDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<FakeRedisIf> iface_;
+  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
+ private:
+  typedef  void (FakeRedisProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_HSetCreator(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HSetText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HSetMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HSetPostId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HSetPostType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HSetUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HSetUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HGetCreator(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HGetText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HGetMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HGetPostId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HGetPostType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HGetUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HGetUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_HIncrBy(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+ public:
+  FakeRedisProcessor(::apache::thrift::stdcxx::shared_ptr<FakeRedisIf> iface) :
+    iface_(iface) {
+    processMap_["HSetCreator"] = &FakeRedisProcessor::process_HSetCreator;
+    processMap_["HSetText"] = &FakeRedisProcessor::process_HSetText;
+    processMap_["HSetMedia"] = &FakeRedisProcessor::process_HSetMedia;
+    processMap_["HSetPostId"] = &FakeRedisProcessor::process_HSetPostId;
+    processMap_["HSetPostType"] = &FakeRedisProcessor::process_HSetPostType;
+    processMap_["HSetUrls"] = &FakeRedisProcessor::process_HSetUrls;
+    processMap_["HSetUserMentions"] = &FakeRedisProcessor::process_HSetUserMentions;
+    processMap_["HGetCreator"] = &FakeRedisProcessor::process_HGetCreator;
+    processMap_["HGetText"] = &FakeRedisProcessor::process_HGetText;
+    processMap_["HGetMedia"] = &FakeRedisProcessor::process_HGetMedia;
+    processMap_["HGetPostId"] = &FakeRedisProcessor::process_HGetPostId;
+    processMap_["HGetPostType"] = &FakeRedisProcessor::process_HGetPostType;
+    processMap_["HGetUrls"] = &FakeRedisProcessor::process_HGetUrls;
+    processMap_["HGetUserMentions"] = &FakeRedisProcessor::process_HGetUserMentions;
+    processMap_["HIncrBy"] = &FakeRedisProcessor::process_HIncrBy;
+  }
+
+  virtual ~FakeRedisProcessor() {}
+};
+
+static std::map<int64_t, std::map<std::string, std::string>> _hashtable;
+static std::mutex _ht_thread_lock;
+static std::map<int64_t, int64_t> _counter_hashtable;
+static std::mutex _cht_thread_lock;
+
+static void HTSetFieldValue(int64_t key, std::string field, std::string value){
+  _ht_thread_lock.lock();
+  _hashtable[key][field] = value;
+  _ht_thread_lock.unlock();
+}
+
+static std::string HTGetFieldValue(int64_t key, std::string field){
+  _ht_thread_lock.lock();
+  std::string value = _hashtable[key][field];
+  _ht_thread_lock.unlock();
+
+  return value;
+}
+
+static int64_t HTCounterIncrement(int64_t key, int64_t value){
+  _cht_thread_lock.lock();
+  _counter_hashtable[key] += value;
+  _cht_thread_lock.unlock();
+  
+  return _counter_hashtable[key];
+}
+
+class FakeRedisHandler : public FakeRedisIf {
+  public:
+    FakeRedisHandler() = default;
+    ~FakeRedisHandler() = default;
+
+  void HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator);
+  void HSetText(const int64_t req_id, const std::string& field, const std::string& text);
+  void HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media);
+  void HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id);
+  void HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type);
+  void HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls);
+  void HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions);
+  void HGetCreator(Creator& _return, const int64_t req_id, const std::string& field);
+  void HGetText(std::string& _return, const int64_t req_id, const std::string& field);
+  void HGetMedia(std::vector<Media> & _return, const int64_t req_id, const std::string& field);
+  int64_t HGetPostId(const int64_t req_id, const std::string& field);
+  PostType::type HGetPostType(const int64_t req_id, const std::string& field);
+  void HGetUrls(std::vector<Url> & _return, const int64_t req_id, const std::string& field);
+  void HGetUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::string& field);
+  int64_t HIncrBy(const int64_t key, const std::string& field, const int64_t value);
+
+};
+
 class FakeRedisClient : virtual public FakeRedisIf {
  public:
   FakeRedisClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
+    std::shared_ptr<FakeRedisHandler> handler = std::make_shared<FakeRedisHandler>();
+    _fakeProcessor = std::make_shared<FakeRedisProcessor>(handler);
   }
   FakeRedisClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
+    std::shared_ptr<FakeRedisHandler> handler = std::make_shared<FakeRedisHandler>();
+    _fakeProcessor = std::make_shared<FakeRedisProcessor>(handler);
   }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -1975,52 +2077,9 @@ class FakeRedisClient : virtual public FakeRedisIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
-};
 
-class FakeRedisProcessor : public ::apache::thrift::TDispatchProcessor {
- protected:
-  ::apache::thrift::stdcxx::shared_ptr<FakeRedisIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
-  typedef  void (FakeRedisProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
-  typedef std::map<std::string, ProcessFunction> ProcessMap;
-  ProcessMap processMap_;
-  void process_HSetCreator(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HSetText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HSetMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HSetPostId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HSetPostType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HSetUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HSetUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HGetCreator(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HGetText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HGetMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HGetPostId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HGetPostType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HGetUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HGetUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_HIncrBy(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
- public:
-  FakeRedisProcessor(::apache::thrift::stdcxx::shared_ptr<FakeRedisIf> iface) :
-    iface_(iface) {
-    processMap_["HSetCreator"] = &FakeRedisProcessor::process_HSetCreator;
-    processMap_["HSetText"] = &FakeRedisProcessor::process_HSetText;
-    processMap_["HSetMedia"] = &FakeRedisProcessor::process_HSetMedia;
-    processMap_["HSetPostId"] = &FakeRedisProcessor::process_HSetPostId;
-    processMap_["HSetPostType"] = &FakeRedisProcessor::process_HSetPostType;
-    processMap_["HSetUrls"] = &FakeRedisProcessor::process_HSetUrls;
-    processMap_["HSetUserMentions"] = &FakeRedisProcessor::process_HSetUserMentions;
-    processMap_["HGetCreator"] = &FakeRedisProcessor::process_HGetCreator;
-    processMap_["HGetText"] = &FakeRedisProcessor::process_HGetText;
-    processMap_["HGetMedia"] = &FakeRedisProcessor::process_HGetMedia;
-    processMap_["HGetPostId"] = &FakeRedisProcessor::process_HGetPostId;
-    processMap_["HGetPostType"] = &FakeRedisProcessor::process_HGetPostType;
-    processMap_["HGetUrls"] = &FakeRedisProcessor::process_HGetUrls;
-    processMap_["HGetUserMentions"] = &FakeRedisProcessor::process_HGetUserMentions;
-    processMap_["HIncrBy"] = &FakeRedisProcessor::process_HIncrBy;
-  }
-
-  virtual ~FakeRedisProcessor() {}
+  std::shared_ptr<FakeRedisProcessor> _fakeProcessor;
 };
 
 class FakeRedisProcessorFactory : public ::apache::thrift::TProcessorFactory {

@@ -6,6 +6,12 @@
  */
 #include "FakeRedis.h"
 
+#include <iostream>
+
+#ifdef __aarch64__
+  #include "../MyCommon/MagicBreakPoint.h"
+#endif
+
 namespace my_social_network {
 
 
@@ -3588,6 +3594,13 @@ void FakeRedisClient::recv_HSetCreator()
 void FakeRedisClient::HSetText(const int64_t req_id, const std::string& field, const std::string& text)
 {
   send_HSetText(req_id, field, text);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HSetText();
 }
 
@@ -3646,6 +3659,13 @@ void FakeRedisClient::recv_HSetText()
 void FakeRedisClient::HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media)
 {
   send_HSetMedia(req_id, field, media);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HSetMedia();
 }
 
@@ -3704,6 +3724,13 @@ void FakeRedisClient::recv_HSetMedia()
 void FakeRedisClient::HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id)
 {
   send_HSetPostId(req_id, field, post_id);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HSetPostId();
 }
 
@@ -3762,6 +3789,13 @@ void FakeRedisClient::recv_HSetPostId()
 void FakeRedisClient::HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type)
 {
   send_HSetPostType(req_id, field, post_type);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HSetPostType();
 }
 
@@ -3820,6 +3854,13 @@ void FakeRedisClient::recv_HSetPostType()
 void FakeRedisClient::HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls)
 {
   send_HSetUrls(req_id, field, urls);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HSetUrls();
 }
 
@@ -3878,6 +3919,13 @@ void FakeRedisClient::recv_HSetUrls()
 void FakeRedisClient::HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions)
 {
   send_HSetUserMentions(req_id, field, user_mentions);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HSetUserMentions();
 }
 
@@ -3936,6 +3984,13 @@ void FakeRedisClient::recv_HSetUserMentions()
 void FakeRedisClient::HGetCreator(Creator& _return, const int64_t req_id, const std::string& field)
 {
   send_HGetCreator(req_id, field);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HGetCreator(_return);
 }
 
@@ -3998,6 +4053,13 @@ void FakeRedisClient::recv_HGetCreator(Creator& _return)
 void FakeRedisClient::HGetText(std::string& _return, const int64_t req_id, const std::string& field)
 {
   send_HGetText(req_id, field);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HGetText(_return);
 }
 
@@ -4060,6 +4122,13 @@ void FakeRedisClient::recv_HGetText(std::string& _return)
 void FakeRedisClient::HGetMedia(std::vector<Media> & _return, const int64_t req_id, const std::string& field)
 {
   send_HGetMedia(req_id, field);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HGetMedia(_return);
 }
 
@@ -4122,6 +4191,13 @@ void FakeRedisClient::recv_HGetMedia(std::vector<Media> & _return)
 int64_t FakeRedisClient::HGetPostId(const int64_t req_id, const std::string& field)
 {
   send_HGetPostId(req_id, field);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   return recv_HGetPostId();
 }
 
@@ -4184,6 +4260,13 @@ int64_t FakeRedisClient::recv_HGetPostId()
 PostType::type FakeRedisClient::HGetPostType(const int64_t req_id, const std::string& field)
 {
   send_HGetPostType(req_id, field);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   return recv_HGetPostType();
 }
 
@@ -4246,6 +4329,13 @@ PostType::type FakeRedisClient::recv_HGetPostType()
 void FakeRedisClient::HGetUrls(std::vector<Url> & _return, const int64_t req_id, const std::string& field)
 {
   send_HGetUrls(req_id, field);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HGetUrls(_return);
 }
 
@@ -4308,6 +4398,13 @@ void FakeRedisClient::recv_HGetUrls(std::vector<Url> & _return)
 void FakeRedisClient::HGetUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::string& field)
 {
   send_HGetUserMentions(req_id, field);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_HGetUserMentions(_return);
 }
 
@@ -4370,6 +4467,13 @@ void FakeRedisClient::recv_HGetUserMentions(std::vector<UserMention> & _return)
 int64_t FakeRedisClient::HIncrBy(const int64_t key, const std::string& field, const int64_t value)
 {
   send_HIncrBy(key, field, value);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   return recv_HIncrBy();
 }
 
@@ -6604,6 +6708,105 @@ int64_t FakeRedisConcurrentClient::recv_HIncrBy(const int32_t seqid)
     this->sync_.waitForWork(seqid);
   } // end while(true)
 }
+
+  void FakeRedisHandler::HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator) {}
+  
+  void FakeRedisHandler::HSetText(
+    const int64_t req_id,
+    const std::string& field,
+    const std::string& text) {
+
+    HTSetFieldValue(req_id, field, text);
+
+  }
+  
+  void FakeRedisHandler::HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media) {}
+  
+  void FakeRedisHandler::HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id) {}
+  
+  void FakeRedisHandler::HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type) {}
+  
+  void FakeRedisHandler::HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls) {}
+  
+  void FakeRedisHandler::HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions) {}
+  
+  void FakeRedisHandler::HGetCreator(
+    Creator& _return,
+    const int64_t req_id,
+    const std::string& field) {
+
+      Creator creator;
+      creator.user_id = 1234;
+      creator.username = "username";
+      _return = creator;
+  }
+  
+  void FakeRedisHandler::HGetText(
+    std::string& _return,
+    const int64_t req_id,
+    const std::string& field) {
+      _return = "This is a sample text.";
+    }
+  
+  void FakeRedisHandler::HGetMedia(
+    std::vector<Media> & _return,
+    const int64_t req_id,
+    const std::string& field) {
+
+      for (int i = 0; i < 3; i++){
+        Media media;
+        media.media_id = 12345;
+        media.media_type = "Video";
+        _return.emplace_back(media);
+      }
+    }
+  
+  int64_t FakeRedisHandler::HGetPostId(
+    const int64_t req_id,
+    const std::string& field) {
+      return 1234567;
+    }
+  
+  PostType::type FakeRedisHandler::HGetPostType(
+    const int64_t req_id,
+    const std::string& field) {
+      return PostType::POST;
+    }
+  
+  void FakeRedisHandler::HGetUrls(
+    std::vector<Url> & _return,
+    const int64_t req_id,
+    const std::string& field) {
+      for (int i = 0; i < 3; i++){
+        Url url;
+        url.expanded_url = "http://www.expandedURL.com/thisisthefullurlinitsexpandedformat";
+        url.shortened_url = "http://www.short.en/XCBNHJKL";
+        _return.emplace_back(url);
+      }
+    }
+  
+  void FakeRedisHandler::HGetUserMentions(
+    std::vector<UserMention> & _return,
+    const int64_t req_id,
+    const std::string& field) {
+      for (int i = 0; i < 3; i++){
+        UserMention user_mention;
+        user_mention.user_id = 12345689876543210;
+        user_mention.username = "my_username";
+        _return.emplace_back(user_mention);
+      }
+    }
+  
+  int64_t FakeRedisHandler::HIncrBy(
+    const int64_t key,
+    const std::string& field,
+    const int64_t value) {
+
+    if (field.compare("num_components") == 0){
+      return HTCounterIncrement(key, value);
+    }
+    return -1;
+  }
 
 } // namespace
 

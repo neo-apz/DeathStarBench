@@ -29,7 +29,7 @@ void ClientSendComposePost(MyThriftClient<MyComposePostServiceClient> *composePo
   composePostClient->Connect();
   auto client = composePostClient->GetClient();
 
-  int64_t req_id = 0xFFFFFFFFFFFF; // rand!
+  int64_t req_id = 12345678; // TODO rand!
 
   client->send_UploadText(req_id, "This is a sample post!");
 }
