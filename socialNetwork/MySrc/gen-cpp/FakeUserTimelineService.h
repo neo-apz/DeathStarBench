@@ -318,13 +318,46 @@ class FakeUserTimelineService_ReadUserTimeline_presult {
 
 };
 
+class FakeUserTimelineServiceProcessor : public ::apache::thrift::TDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<FakeUserTimelineServiceIf> iface_;
+  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
+ private:
+  typedef  void (FakeUserTimelineServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_WriteUserTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_ReadUserTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+ public:
+  FakeUserTimelineServiceProcessor(::apache::thrift::stdcxx::shared_ptr<FakeUserTimelineServiceIf> iface) :
+    iface_(iface) {
+    processMap_["WriteUserTimeline"] = &FakeUserTimelineServiceProcessor::process_WriteUserTimeline;
+    processMap_["ReadUserTimeline"] = &FakeUserTimelineServiceProcessor::process_ReadUserTimeline;
+  }
+
+  virtual ~FakeUserTimelineServiceProcessor() {}
+};
+
+class FakeUserTimelineHandler : virtual public FakeUserTimelineServiceIf {
+  public:
+    FakeUserTimelineHandler() = default;
+    ~FakeUserTimelineHandler() = default;
+
+  void WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp);
+  void ReadUserTimeline(std::vector<Post> & _return, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop);
+};
+
 class FakeUserTimelineServiceClient : virtual public FakeUserTimelineServiceIf {
  public:
   FakeUserTimelineServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
+    std::shared_ptr<FakeUserTimelineHandler> handler = std::make_shared<FakeUserTimelineHandler>();
+    _fakeProcessor = std::make_shared<FakeUserTimelineServiceProcessor>(handler);
   }
   FakeUserTimelineServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
+    std::shared_ptr<FakeUserTimelineHandler> handler = std::make_shared<FakeUserTimelineHandler>();
+    _fakeProcessor = std::make_shared<FakeUserTimelineServiceProcessor>(handler);
   }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -354,26 +387,9 @@ class FakeUserTimelineServiceClient : virtual public FakeUserTimelineServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
-};
-
-class FakeUserTimelineServiceProcessor : public ::apache::thrift::TDispatchProcessor {
- protected:
-  ::apache::thrift::stdcxx::shared_ptr<FakeUserTimelineServiceIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
+ 
  private:
-  typedef  void (FakeUserTimelineServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
-  typedef std::map<std::string, ProcessFunction> ProcessMap;
-  ProcessMap processMap_;
-  void process_WriteUserTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_ReadUserTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
- public:
-  FakeUserTimelineServiceProcessor(::apache::thrift::stdcxx::shared_ptr<FakeUserTimelineServiceIf> iface) :
-    iface_(iface) {
-    processMap_["WriteUserTimeline"] = &FakeUserTimelineServiceProcessor::process_WriteUserTimeline;
-    processMap_["ReadUserTimeline"] = &FakeUserTimelineServiceProcessor::process_ReadUserTimeline;
-  }
-
-  virtual ~FakeUserTimelineServiceProcessor() {}
+  std::shared_ptr<FakeUserTimelineServiceProcessor> _fakeProcessor; 
 };
 
 class FakeUserTimelineServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

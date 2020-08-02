@@ -533,6 +533,13 @@ uint32_t FakeUserTimelineService_ReadUserTimeline_presult::read(::apache::thrift
 void FakeUserTimelineServiceClient::WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp)
 {
   send_WriteUserTimeline(req_id, post_id, user_id, timestamp);
+  #ifdef FLEXUS
+      SKIP_BEGIN();
+  #endif
+  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  #ifdef FLEXUS
+      SKIP_END();
+  #endif
   recv_WriteUserTimeline();
 }
 
@@ -967,6 +974,24 @@ void FakeUserTimelineServiceConcurrentClient::recv_ReadUserTimeline(std::vector<
     this->sync_.waitForWork(seqid);
   } // end while(true)
 }
+
+void FakeUserTimelineHandler::WriteUserTimeline(
+  const int64_t req_id,
+  const int64_t post_id,
+  const int64_t user_id,
+  const int64_t timestamp) {}
+
+void FakeUserTimelineHandler::ReadUserTimeline(
+  std::vector<Post> & _return,
+  const int64_t req_id,
+  const int64_t user_id,
+  const int32_t start,
+  const int32_t stop) {
+
+    throw ::apache::thrift::TApplicationException(
+      ::apache::thrift::TApplicationException::MISSING_RESULT,
+      "ReadUserTimeline Not Implemented!");
+  }
 
 } // namespace
 
