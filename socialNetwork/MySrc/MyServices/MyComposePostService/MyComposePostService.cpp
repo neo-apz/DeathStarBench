@@ -22,7 +22,7 @@ uint64_t num_iterations;
   volatile bool start = false;
 #endif
 
-#define BUFFER_SIZE  50
+#define BUFFER_SIZE  220
 #define REQ_ID_BEGIN 1234567898765432
 
 struct MsgType {
@@ -159,8 +159,8 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *co
 
   #ifdef FLEXUS
   if (tid == max_tid) {
-    start = true;
     BREAKPOINT();
+    start = true;
   }
 
   while(!start);
@@ -178,6 +178,10 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *co
 
     // std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
     processor->process(srvIProt, srvOProt, nullptr);
+
+    #ifdef __aarch64__
+      PROCESS_END(count);
+    #endif
 
     #ifdef FLEXUS
       SKIP_BEGIN();
@@ -220,7 +224,7 @@ int main(int argc, char *argv[]) {
     "redis", buffer_size, 16, 16, 1000);
 
   MyClientPool<MyThriftClient<FakePostStorageServiceClient>> fakePostStorageClientPool (
-    "post-storage", buffer_size, 16, 16, 1000);
+    "post-storage", buffer_size * 2, 16, 16, 1000);
 
   MyClientPool<MyThriftClient<FakeUserTimelineServiceClient>> fakeUserTimelineClientPool (
     "user-timeline", buffer_size, 16, 16, 1000);    

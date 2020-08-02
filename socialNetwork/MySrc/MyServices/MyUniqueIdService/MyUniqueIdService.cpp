@@ -56,18 +56,18 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *uniqueId
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
       std::make_shared<MyUniqueIdServiceProcessor>(handler);
 
-  uint64_t count = num_iterations;
+  uint64_t count = 1;
 
   #ifdef FLEXUS
   if (tid == max_tid) {
-    start = true;
     BREAKPOINT();
+    start = true;
   }
 
   while(!start);
   #endif
 
-  while (count--){
+  while (count <= num_iterations){
 
     #ifdef FLEXUS
       SKIP_BEGIN();
@@ -77,8 +77,11 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *uniqueId
       SKIP_END();
     #endif
 
-    // std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
     processor->process(srvIProt, srvOProt, nullptr);
+
+    #ifdef __aarch64__
+      PROCESS_END(count);
+    #endif
 
     #ifdef FLEXUS
       SKIP_BEGIN();
@@ -87,6 +90,8 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *uniqueId
     #ifdef FLEXUS
       SKIP_END();
     #endif
+
+    count++;
   }
 }
 

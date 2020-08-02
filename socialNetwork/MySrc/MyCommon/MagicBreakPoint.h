@@ -68,8 +68,8 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
 #endif
 
 #ifdef __aarch64__
-#define PROCESS_END() do { \
-                        call_magic_2_64(MAGIC_PROCESS_END, 0, 0); \
+#define PROCESS_END(PROCESS_COUNT) do { \
+                        call_magic_2_64(MAGIC_PROCESS_END, PROCESS_COUNT, 0); \
                     } while (0)
 #endif
 
