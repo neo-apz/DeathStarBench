@@ -11,7 +11,7 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
-#include <mutex>
+#include "../MyCommon/MyLock.h"
 
 namespace my_social_network {
 
@@ -1949,9 +1949,9 @@ class FakeRedisProcessor : public ::apache::thrift::TDispatchProcessor {
 };
 
 static std::map<int64_t, std::map<std::string, std::string>> _hashtable;
-static std::mutex _ht_thread_lock;
+static MyLock _ht_thread_lock;
 static std::map<int64_t, int64_t> _counter_hashtable;
-static std::mutex _cht_thread_lock;
+static MyLock _cht_thread_lock;
 
 static void HTSetFieldValue(int64_t key, std::string field, std::string value){
   _ht_thread_lock.lock();

@@ -176,7 +176,8 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *co
       SKIP_END();
     #endif
 
-    // std::cout << "Processing Thread " << tid << " count=" << count+1  << std::endl;
+    // std::cout << "Processing Thread " << tid << " count=" << count  << std::endl;
+    // cout << "Process " << count << " finished!" << endl;
     processor->process(srvIProt, srvOProt, nullptr);
 
     #ifdef __aarch64__
