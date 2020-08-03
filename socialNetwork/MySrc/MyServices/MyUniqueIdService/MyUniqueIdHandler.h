@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <chrono>
-#include <mutex>
+// #include <mutex>
 #include <sstream>
 #include <iomanip>
 #include <arpa/inet.h>
@@ -18,6 +18,7 @@
 #include "../../gen-cpp/my_social_network_types.h"
 
 #include "../../MyCommon/MyClientPool.h"
+#include "../../MyCommon/MyLock.h"
 
 #include "../../MyCommon/logger.h"
 
@@ -51,7 +52,7 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
  public:
   ~MyUniqueIdHandler() override = default;
   MyUniqueIdHandler(
-      std::mutex *,
+      MyLock *,
       const std::string &,
       MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *);
       // std::shared_ptr<MyComposePostServiceProcessor>);
@@ -59,7 +60,8 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
   void UploadUniqueId(int64_t, PostType::type) override;
 
  private:
-  std::mutex *_thread_lock;
+  // std::mutex *_thread_lock;
+  MyLock *_thread_lock;
   std::string _machine_id;
   MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *_compose_client_pool;
   // MyThriftClient<MyComposePostServiceClient> *_compose_client;
@@ -67,7 +69,7 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
 };
 
 MyUniqueIdHandler::MyUniqueIdHandler(
-    std::mutex *thread_lock,
+    MyLock *thread_lock,
     const std::string &machine_id,
     MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *compose_client_pool){
     // std::shared_ptr<MyComposePostServiceProcessor> compose_processor) {

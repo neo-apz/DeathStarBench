@@ -3,6 +3,7 @@
 
 #include "../../MyCommon/MyClientPool.h"
 #include "../../MyCommon/MyThriftClient.h"
+#include "../../MyCommon/MyLock.h"
 
 #ifdef __aarch64__
   #include "../../MyCommon/MagicBreakPoint.h"
@@ -14,7 +15,8 @@ using namespace my_social_network;
 using namespace std;
 
 uint64_t num_iterations;
-std::mutex thread_lock;
+// std::mutex thread_lock;
+MyLock thread_lock;
 std::string machine_id;
 
 #ifdef __aarch64__
@@ -82,6 +84,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *uniqueId
     #ifdef __aarch64__
       PROCESS_END(count);
     #endif
+    // cout << "Process " << count << " finished!" << endl;
 
     #ifdef FLEXUS
       SKIP_BEGIN();
