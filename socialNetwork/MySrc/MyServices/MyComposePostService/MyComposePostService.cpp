@@ -24,6 +24,7 @@ uint64_t num_iterations;
 
 #define BUFFER_SIZE  220
 #define REQ_ID_BEGIN 1234567898765432
+#define WARM_UP_ITER  100
 
 struct MsgType {
   enum type {
@@ -156,6 +157,19 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *co
       std::make_shared<MyComposePostServiceProcessor>(handler);
 
   uint64_t count = 1;
+
+  while (count <= WARM_UP_ITER){
+    ClientSendComposePost(composePostClient, req_id, count);
+
+    processor->process(srvIProt, srvOProt, nullptr);
+    #ifdef __aarch64__
+      PROCESS_END(count);
+    #endif
+    
+    ClientRecvComposePost(composePostClient, &req_id, count);
+    count++;
+  }
+
 
   #ifdef FLEXUS
   if (tid == max_tid) {
