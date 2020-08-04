@@ -3533,16 +3533,17 @@ uint32_t FakeRedis_HIncrBy_presult::read(::apache::thrift::protocol::TProtocol* 
   return xfer;
 }
 
+bool FakeRedisClient::isReqGenPhase{ true };
+
 void FakeRedisClient::HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator)
 {
   send_HSetCreator(req_id, field, creator);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+  
   recv_HSetCreator();
 }
 
@@ -3601,13 +3602,12 @@ void FakeRedisClient::recv_HSetCreator()
 void FakeRedisClient::HSetText(const int64_t req_id, const std::string& field, const std::string& text)
 {
   send_HSetText(req_id, field, text);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+
   recv_HSetText();
 }
 
@@ -3666,13 +3666,12 @@ void FakeRedisClient::recv_HSetText()
 void FakeRedisClient::HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media)
 {
   send_HSetMedia(req_id, field, media);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+
   recv_HSetMedia();
 }
 
@@ -3731,13 +3730,12 @@ void FakeRedisClient::recv_HSetMedia()
 void FakeRedisClient::HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id)
 {
   send_HSetPostId(req_id, field, post_id);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+
   recv_HSetPostId();
 }
 
@@ -3796,13 +3794,12 @@ void FakeRedisClient::recv_HSetPostId()
 void FakeRedisClient::HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type)
 {
   send_HSetPostType(req_id, field, post_type);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+
   recv_HSetPostType();
 }
 
@@ -3861,13 +3858,12 @@ void FakeRedisClient::recv_HSetPostType()
 void FakeRedisClient::HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls)
 {
   send_HSetUrls(req_id, field, urls);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+
   recv_HSetUrls();
 }
 
@@ -3926,13 +3922,12 @@ void FakeRedisClient::recv_HSetUrls()
 void FakeRedisClient::HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions)
 {
   send_HSetUserMentions(req_id, field, user_mentions);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+
   recv_HSetUserMentions();
 }
 
@@ -3991,13 +3986,12 @@ void FakeRedisClient::recv_HSetUserMentions()
 void FakeRedisClient::HGetCreator(Creator& _return, const int64_t req_id, const std::string& field)
 {
   send_HGetCreator(req_id, field);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return _fakeProcessor->iface_->HGetCreator(_return, req_id, field);
+  }
+
   recv_HGetCreator(_return);
 }
 
@@ -4060,13 +4054,12 @@ void FakeRedisClient::recv_HGetCreator(Creator& _return)
 void FakeRedisClient::HGetText(std::string& _return, const int64_t req_id, const std::string& field)
 {
   send_HGetText(req_id, field);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return _fakeProcessor->iface_->HGetText(_return, req_id, field);
+  }
+
   recv_HGetText(_return);
 }
 
@@ -4129,13 +4122,12 @@ void FakeRedisClient::recv_HGetText(std::string& _return)
 void FakeRedisClient::HGetMedia(std::vector<Media> & _return, const int64_t req_id, const std::string& field)
 {
   send_HGetMedia(req_id, field);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return _fakeProcessor->iface_->HGetMedia(_return, req_id, field);
+  }
+
   recv_HGetMedia(_return);
 }
 
@@ -4198,13 +4190,12 @@ void FakeRedisClient::recv_HGetMedia(std::vector<Media> & _return)
 int64_t FakeRedisClient::HGetPostId(const int64_t req_id, const std::string& field)
 {
   send_HGetPostId(req_id, field);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return _fakeProcessor->iface_->HGetPostId(req_id, field);
+  }
+
   return recv_HGetPostId();
 }
 
@@ -4267,13 +4258,12 @@ int64_t FakeRedisClient::recv_HGetPostId()
 PostType::type FakeRedisClient::HGetPostType(const int64_t req_id, const std::string& field)
 {
   send_HGetPostType(req_id, field);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return _fakeProcessor->iface_->HGetPostType(req_id, field);
+  }
+
   return recv_HGetPostType();
 }
 
@@ -4336,13 +4326,12 @@ PostType::type FakeRedisClient::recv_HGetPostType()
 void FakeRedisClient::HGetUrls(std::vector<Url> & _return, const int64_t req_id, const std::string& field)
 {
   send_HGetUrls(req_id, field);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return _fakeProcessor->iface_->HGetUrls(_return, req_id, field);
+  }
+
   recv_HGetUrls(_return);
 }
 
@@ -4405,13 +4394,12 @@ void FakeRedisClient::recv_HGetUrls(std::vector<Url> & _return)
 void FakeRedisClient::HGetUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::string& field)
 {
   send_HGetUserMentions(req_id, field);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return _fakeProcessor->iface_->HGetUserMentions(_return, req_id, field);
+  }
+
   recv_HGetUserMentions(_return);
 }
 
@@ -4474,13 +4462,12 @@ void FakeRedisClient::recv_HGetUserMentions(std::vector<UserMention> & _return)
 int64_t FakeRedisClient::HIncrBy(const int64_t key, const std::string& field, const int64_t value)
 {
   send_HIncrBy(key, field, value);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return HTGetCounter(key);
+  }
+
   return recv_HIncrBy();
 }
 

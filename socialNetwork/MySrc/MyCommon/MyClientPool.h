@@ -2,8 +2,8 @@
 #define SOCIAL_NETWORK_MICROSERVICES_MYCLIENTPOOL_H
 
 #include <vector>
-// #include <mutex>
-#include "MyLock.h"
+#include <mutex>
+// #include "MyLock.h"
 #include <condition_variable>
 #include <deque>
 #include <chrono>
@@ -42,9 +42,9 @@ class MyClientPool {
   int _max_pool_size{};
   int _curr_pool_size{};
   int _timeout_ms;
-  // std::mutex _mtx;
-  // std::condition_variable _cv;
-  MyLock _lock;
+  std::mutex _mtx;
+  std::condition_variable _cv;
+  // MyLock _lock;
 
 };
 
@@ -77,10 +77,11 @@ MyClientPool<MyTClient>::~MyClientPool() {
 template<class MyTClient>
 MyTClient * MyClientPool<MyTClient>::Pop() {
   MyTClient * client = nullptr;
-  // std::unique_lock<std::mutex> cv_lock(_mtx);
-  _lock.lock();
+  std::unique_lock<std::mutex> cv_lock(_mtx);
+  // _lock.lock();
   {
     while (_pool.size() == 0) {
+      // LOG(error) << "MyClientPool EMPTY!";
       // Create a new a client if current pool size is less than
       // the max pool size.
       if (_curr_pool_size < _max_pool_size) {
@@ -89,21 +90,21 @@ MyTClient * MyClientPool<MyTClient>::Pop() {
           _curr_pool_size++;
           break;
         } catch (...) {
-          // cv_lock.unlock();
-          _lock.unlock();
+          cv_lock.unlock();
+          // _lock.unlock();
           return nullptr;
         }
       } else {
-          _lock.unlock();
-        //   auto wait_time = std::chrono::system_clock::now() +
-        //     std::chrono::milliseconds(_timeout_ms);
-        // bool wait_success = _cv.wait_until(cv_lock, wait_time,
-        //     [this] { return _pool.size() > 0; });
-        // if (!wait_success) {
-          LOG(warning) << "MyClientPool pop timeout";
-          // cv_lock.unlock();
+          // _lock.unlock();
+          auto wait_time = std::chrono::system_clock::now() +
+            std::chrono::milliseconds(_timeout_ms);
+          bool wait_success = _cv.wait_until(cv_lock, wait_time,
+            [this] { return _pool.size() > 0; });
+          if (!wait_success) {
+            LOG(warning) << "MyClientPool pop timeout";
+          cv_lock.unlock();
           return nullptr;
-        // }
+          }
       }
     }
     if (!client){
@@ -112,7 +113,8 @@ MyTClient * MyClientPool<MyTClient>::Pop() {
     }
 
   } // _lock.lock()
-  _lock.unlock();
+  cv_lock.unlock();
+  // _lock.unlock();
 
   if (client) {
     try {
@@ -128,34 +130,34 @@ MyTClient * MyClientPool<MyTClient>::Pop() {
 
 template<class MyTClient>
 void MyClientPool<MyTClient>::Push(MyTClient *client) {
-  // std::unique_lock<std::mutex> cv_lock(_mtx);
-  _lock.lock();
+  std::unique_lock<std::mutex> cv_lock(_mtx);
+  // _lock.lock();
   client->KeepAlive();
   _pool.push_back(client);
-  // cv_lock.unlock();
-  _lock.unlock();
-  // _cv.notify_one();
+  cv_lock.unlock();
+  // _lock.unlock();
+  _cv.notify_one();
 }
 
 template<class MyTClient>
 void MyClientPool<MyTClient>::Push(MyTClient *client, int timeout_ms) {
-  // std::unique_lock<std::mutex> cv_lock(_mtx);
-  _lock.lock();
+  std::unique_lock<std::mutex> cv_lock(_mtx);
+  // _lock.lock();
   client->KeepAlive(timeout_ms);
   _pool.push_back(client);
-  // cv_lock.unlock();
-  _lock.unlock();
-  // _cv.notify_one();
+  cv_lock.unlock();
+  // _lock.unlock();
+  _cv.notify_one();
 }
 
 template<class MyTClient>
 void MyClientPool<MyTClient>::Remove(MyTClient *client) {
-  // std::unique_lock<std::mutex> lock(_mtx);
-  _lock.lock();
+  std::unique_lock<std::mutex> lock(_mtx);
+  // _lock.lock();
   delete client;
   _curr_pool_size--;
-  // lock.unlock();
-  _lock.unlock();
+  lock.unlock();
+  // _lock.unlock();
 }
 
 } // namespace social_network

@@ -1903,7 +1903,7 @@ class FakeRedis_HIncrBy_presult {
 };
 
 class FakeRedisProcessor : public ::apache::thrift::TDispatchProcessor {
- protected:
+ public:
   ::apache::thrift::stdcxx::shared_ptr<FakeRedisIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
@@ -1970,9 +1970,18 @@ static std::string HTGetFieldValue(int64_t key, std::string field){
 static int64_t HTCounterIncrement(int64_t key, int64_t value){
   _cht_thread_lock.lock();
   _counter_hashtable[key] += value;
+  int64_t return_value = _counter_hashtable[key];
   _cht_thread_lock.unlock();
   
-  return _counter_hashtable[key];
+  return return_value;
+}
+
+static int64_t HTGetCounter(int64_t key){
+  _cht_thread_lock.lock();
+  int64_t value = _counter_hashtable[key];
+  _cht_thread_lock.unlock();
+  
+  return value;
 }
 
 class FakeRedisHandler : public FakeRedisIf {
@@ -2080,6 +2089,8 @@ class FakeRedisClient : virtual public FakeRedisIf {
 
  private:
   std::shared_ptr<FakeRedisProcessor> _fakeProcessor;
+ public:
+  static bool isReqGenPhase;
 };
 
 class FakeRedisProcessorFactory : public ::apache::thrift::TProcessorFactory {

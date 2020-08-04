@@ -854,6 +854,9 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
 
  private:
   std::shared_ptr<FakeComposePostServiceProcessor> _fakeProcessor;
+
+ public:
+  static bool isReqGenPhase;
 };
 
 class FakeComposePostServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

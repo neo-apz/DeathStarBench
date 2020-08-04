@@ -254,6 +254,8 @@ class FakeRabbitmqClient : virtual public FakeRabbitmqIf {
 
  private:
   std::shared_ptr<FakeRabbitmqProcessor> _fakeProcessor;
+ public:
+  static bool isReqGenPhase;
 };
 
 class FakeRabbitmqProcessorFactory : public ::apache::thrift::TProcessorFactory {

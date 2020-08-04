@@ -491,6 +491,8 @@ class FakePostStorageServiceClient : virtual public FakePostStorageServiceIf {
 
  private:
   std::shared_ptr<FakePostStorageServiceProcessor> _fakeProcessor;
+ public:
+  static bool isReqGenPhase;
 };
 
 class FakePostStorageServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

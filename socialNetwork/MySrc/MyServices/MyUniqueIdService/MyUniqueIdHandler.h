@@ -17,7 +17,7 @@
 #include "../../gen-cpp/FakeComposePostService.h"
 #include "../../gen-cpp/my_social_network_types.h"
 
-#include "../../MyCommon/MyClientPool.h"
+#include "../../MyCommon/ClientPoolMap.h"
 #include "../../MyCommon/MyLock.h"
 
 #include "../../MyCommon/logger.h"
@@ -54,30 +54,27 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
   MyUniqueIdHandler(
       MyLock *,
       const std::string &,
-      MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *);
-      // std::shared_ptr<MyComposePostServiceProcessor>);
+      ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> *);
 
   void UploadUniqueId(int64_t, PostType::type) override;
+
+  void setReqGenPhase(bool phase);
 
  private:
   // std::mutex *_thread_lock;
   MyLock *_thread_lock;
   std::string _machine_id;
-  MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *_compose_client_pool;
-  // MyThriftClient<MyComposePostServiceClient> *_compose_client;
-  // std::shared_ptr<MyComposePostServiceProcessor> _compose_processor;
+  // MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *_compose_client_pool;
+  ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> *_compose_client_pool;
 };
 
 MyUniqueIdHandler::MyUniqueIdHandler(
     MyLock *thread_lock,
     const std::string &machine_id,
-    MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *compose_client_pool){
-    // std::shared_ptr<MyComposePostServiceProcessor> compose_processor) {
+    ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> *compose_client_pool){
   _thread_lock = thread_lock;
   _machine_id = machine_id;
-  // _compose_clients = compose_clients;
   _compose_client_pool = compose_client_pool;
-  // _compose_processor = compose_processor;
 }
 
 void MyUniqueIdHandler::UploadUniqueId(
@@ -128,9 +125,10 @@ void MyUniqueIdHandler::UploadUniqueId(
   auto compose_post_client = compose_post_client_wrapper->GetClient();
   try {
     compose_post_client->UploadUniqueId(req_id, post_id, post_type);    
-  } catch (...) {
+  } catch (const std::exception &e) {
     _compose_client_pool->Push(compose_post_client_wrapper);
     LOG(error) << "Failed to upload unique-id to compose-post-service";
+    std::cerr << e.what() << std::endl;
     throw;
   }
 

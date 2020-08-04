@@ -1446,17 +1446,19 @@ void FakeComposePostServiceClient::recv_UploadMedia()
   return;
 }
 
+bool FakeComposePostServiceClient::isReqGenPhase{ true };
+
 void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_id, post_type);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+
   recv_UploadUniqueId();
+  // std::cout << "After recv!" << std::endl;
 }
 
 void FakeComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)

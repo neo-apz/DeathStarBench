@@ -533,16 +533,16 @@ uint32_t FakeUserTimelineService_ReadUserTimeline_presult::read(::apache::thrift
   return xfer;
 }
 
+bool FakeUserTimelineServiceClient::isReqGenPhase{ true };
+
 void FakeUserTimelineServiceClient::WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp)
 {
   send_WriteUserTimeline(req_id, post_id, user_id, timestamp);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  if (isReqGenPhase) {
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+  
   recv_WriteUserTimeline();
 }
 

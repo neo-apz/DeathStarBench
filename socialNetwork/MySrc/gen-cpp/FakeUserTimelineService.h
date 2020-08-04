@@ -390,6 +390,8 @@ class FakeUserTimelineServiceClient : virtual public FakeUserTimelineServiceIf {
  
  private:
   std::shared_ptr<FakeUserTimelineServiceProcessor> _fakeProcessor; 
+ public:
+  static bool isReqGenPhase;
 };
 
 class FakeUserTimelineServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

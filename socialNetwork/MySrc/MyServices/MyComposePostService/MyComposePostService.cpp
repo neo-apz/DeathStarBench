@@ -1,7 +1,6 @@
 #include "../../MyCommon/utils.h"
 #include "MyComposePostHandler.h"
 
-#include "../../MyCommon/MyClientPool.h"
 #include "../../MyCommon/MyThriftClient.h"
 
 #ifdef __aarch64__
@@ -14,13 +13,10 @@ using namespace std;
 
 uint64_t num_iterations;
 
-#ifdef __aarch64__
-  cpu_set_t cpuSet[16];
-#endif
+cpu_set_t *cpuSet;
 
-#ifdef FLEXUS
-  volatile bool start = false;
-#endif
+volatile bool start = false;
+pthread_barrier_t barrier;
 
 #define BUFFER_SIZE  220
 #define REQ_ID_BEGIN 1234567898765432
@@ -39,18 +35,19 @@ struct MsgType {
 };
 
 void ClientSendComposePost(
-  MyThriftClient<MyComposePostServiceClient> *composePostClient,
-  int64_t req_id, uint64_t iter_count){
+  MyThriftClient<MyComposePostServiceClient> *reqGenPhaseClient,
+  MyThriftClient<MyComposePostServiceClient> *processPhaseClient,
+  int64_t req_id, MsgType::type msg_type){
   
-  composePostClient->Connect();
-  auto client = composePostClient->GetClient();
-
-  MsgType::type msg_type = (MsgType::type) (iter_count % MsgType::SIZE);
+  reqGenPhaseClient->Connect();
+  auto client1 = reqGenPhaseClient->GetClient();
+  auto client2 = processPhaseClient->GetClient();
 
   switch (msg_type)
   {
   case MsgType::TEXT :
-    client->send_UploadText(req_id, "This is a just sample post, nothing more, nothing less!");
+    client1->send_UploadText(req_id, "This is a just sample post, nothing more, nothing less!");
+    client2->send_UploadText(req_id, "This is a just sample post, nothing more, nothing less!");
     break;
   case MsgType::MEDIA:
     {
@@ -62,18 +59,21 @@ void ClientSendComposePost(
         media.media_type = "Video";
         media_vector.emplace_back(media);
       }
-      client->send_UploadMedia(req_id, media_vector);
+      client1->send_UploadMedia(req_id, media_vector);
+      client2->send_UploadMedia(req_id, media_vector);
     }
     break;
   case MsgType::UNIQUE_ID :
-    client->send_UploadUniqueId(req_id, 123456789087, PostType::POST);
+    client1->send_UploadUniqueId(req_id, 123456789087, PostType::POST);
+    client2->send_UploadUniqueId(req_id, 123456789087, PostType::POST);
     break;
   case MsgType::CREATOR :
     {
       Creator creator;
       creator.user_id = 9876543210;
       creator.username = "sample_username";
-      client->send_UploadCreator(req_id, creator);
+      client1->send_UploadCreator(req_id, creator);
+      client2->send_UploadCreator(req_id, creator);
     }
     break;
   case MsgType::URLS :
@@ -85,7 +85,8 @@ void ClientSendComposePost(
         url.shortened_url = "http://www.short.en/XCBNHJKL";
         urls.emplace_back(url);
       }
-      client->send_UploadUrls(req_id, urls);
+      client1->send_UploadUrls(req_id, urls);
+      client2->send_UploadUrls(req_id, urls);
     }
     break;
   case MsgType::USER_MENTIONS :
@@ -97,7 +98,8 @@ void ClientSendComposePost(
         user_mention.username = "my_username";
         user_mentions.emplace_back(user_mention);
       }
-      client->send_UploadUserMentions(req_id, user_mentions);
+      client1->send_UploadUserMentions(req_id, user_mentions);
+      client2->send_UploadUserMentions(req_id, user_mentions);
     }
     break;    
   default:
@@ -108,13 +110,10 @@ void ClientSendComposePost(
 }
 
 void ClientRecvComposePost(
-  MyThriftClient<MyComposePostServiceClient> *composePostClient,
-  int64_t *req_id, uint64_t iter_count){
+  MyThriftClient<MyComposePostServiceClient> *composePostClient, MsgType::type msg_type){
   
   composePostClient->Connect();
   auto client = composePostClient->GetClient();
-
-  MsgType::type msg_type = (MsgType::type) (iter_count % MsgType::SIZE);
 
   switch (msg_type)
   {
@@ -135,7 +134,6 @@ void ClientRecvComposePost(
     break;
   case MsgType::USER_MENTIONS :
     client->recv_UploadUserMentions();
-    *req_id = (*req_id) + 1;
     break;    
   default:
     cout << "This is an error, wrong message type!" << endl;
@@ -144,67 +142,84 @@ void ClientRecvComposePost(
 
 }
 
-void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *composePostClient,
+void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *reqGenPhaseClient,
+                                  MyThriftClient<MyComposePostServiceClient> *processPhaseClient,
                                   std::shared_ptr<MyComposePostHandler> handler,
                                   int64_t req_id,
                                   int tid, int max_tid) {
 
-  auto srvIProt = composePostClient->GetClient()->getOutputProtocol();
-  auto srvOProt = composePostClient->GetClient()->getInputProtocol();
+  auto srvIProt = reqGenPhaseClient->GetClient()->getOutputProtocol();
+  auto srvOProt = reqGenPhaseClient->GetClient()->getInputProtocol();
 
 
-  std::shared_ptr<MyComposePostServiceProcessor> processor =
+  std::shared_ptr<MyComposePostServiceProcessor> reqGenprocessor =
       std::make_shared<MyComposePostServiceProcessor>(handler);
+
+  FakePostStorageServiceClient::isReqGenPhase = true;
+  FakeRedisClient::isReqGenPhase = true;
+  FakeRabbitmqClient::isReqGenPhase = true;
+  FakeUserTimelineServiceClient::isReqGenPhase = true;
 
   uint64_t count = 1;
 
-  while (count <= WARM_UP_ITER){
-    ClientSendComposePost(composePostClient, req_id, count);
+  MsgType::type msg_type;
+  
+  while (count <= num_iterations){
 
-    processor->process(srvIProt, srvOProt, nullptr);
-    #ifdef __aarch64__
-      PROCESS_END(count);
-    #endif
+    msg_type = (MsgType::type) (count % MsgType::SIZE);
+
+    ClientSendComposePost(reqGenPhaseClient, processPhaseClient, req_id, msg_type);
+
+    reqGenprocessor->process(srvIProt, srvOProt, nullptr);
     
-    ClientRecvComposePost(composePostClient, &req_id, count);
+    ClientRecvComposePost(reqGenPhaseClient, msg_type);
     count++;
+
+    if (msg_type == MsgType::USER_MENTIONS) {
+      req_id++;
+    }
+
   }
 
+  std::shared_ptr<MyComposePostServiceProcessor> processPhaseprocessor =
+      std::make_shared<MyComposePostServiceProcessor>(handler);
 
-  #ifdef FLEXUS
+  srvIProt = processPhaseClient->GetClient()->getOutputProtocol();
+  srvOProt = processPhaseClient->GetClient()->getInputProtocol();
+
+  pthread_barrier_wait(&barrier);
+
   if (tid == max_tid) {
+    #ifdef FLEXUS
     BREAKPOINT();
+    #endif
     start = true;
   }
 
   while(!start);
-  #endif
+
+  count = 1;
+  FakePostStorageServiceClient::isReqGenPhase = false;
+  FakeRedisClient::isReqGenPhase = false;
+  FakeRabbitmqClient::isReqGenPhase = false;
+  FakeUserTimelineServiceClient::isReqGenPhase = false;
 
   while (count <= num_iterations){
 
-    #ifdef FLEXUS
-      SKIP_BEGIN();
-    #endif
-    ClientSendComposePost(composePostClient, req_id, count);
-    #ifdef FLEXUS
-      SKIP_END();
-    #endif
+    // msg_type = (MsgType::type) (count % MsgType::SIZE);
 
     // std::cout << "Processing Thread " << tid << " count=" << count  << std::endl;
     // cout << "Process " << count << " finished!" << endl;
-    processor->process(srvIProt, srvOProt, nullptr);
+    processPhaseprocessor->process(srvIProt, srvOProt, nullptr);
 
     #ifdef __aarch64__
       PROCESS_END(count);
     #endif
 
-    #ifdef FLEXUS
-      SKIP_BEGIN();
-    #endif
-    ClientRecvComposePost(composePostClient, &req_id, count);
-    #ifdef FLEXUS
-      SKIP_END();
-    #endif
+    // ClientRecvComposePost(composePostClient, &req_id, count);
+    // if (msg_type == MsgType::USER_MENTIONS) {
+    //   req_id++;
+    // }
 
     count++;
   }
@@ -224,28 +239,29 @@ int main(int argc, char *argv[]) {
     num_iterations = atoi(argv[2]);
   }
 
-  #ifdef __aarch64__
-    cpu_set_t  mask;
-    CPU_ZERO(&mask);
-    CPU_SET(0, &mask);
-    sched_setaffinity(0, sizeof(mask), &mask);
-  #endif
+  cpu_set_t  mask;
+  CPU_ZERO(&mask);
+  CPU_SET(0, &mask);
+  sched_setaffinity(0, sizeof(mask), &mask);
 
   uint64_t buffer_size = num_iterations * BUFFER_SIZE;
 
-  MyThriftClient<MyComposePostServiceClient>* composePostClients[num_threads];
+  pthread_barrier_init(&barrier, NULL, num_threads);
 
-  MyClientPool<MyThriftClient<FakeRedisClient>> fakeRedisClientPool (
-    "redis", buffer_size, 16, 16, 1000);
+  MyThriftClient<MyComposePostServiceClient>* reqGenPhaseClients[num_threads];
+  MyThriftClient<MyComposePostServiceClient>* processPhaseClients[num_threads];
 
-  MyClientPool<MyThriftClient<FakePostStorageServiceClient>> fakePostStorageClientPool (
-    "post-storage", buffer_size * 2, 16, 16, 1000);
+  ClientPoolMap<MyThriftClient<FakeRedisClient>> fakeRedisClientPool (
+    "redis", buffer_size, num_threads);
 
-  MyClientPool<MyThriftClient<FakeUserTimelineServiceClient>> fakeUserTimelineClientPool (
-    "user-timeline", buffer_size, 16, 16, 1000);    
+  ClientPoolMap<MyThriftClient<FakePostStorageServiceClient>> fakePostStorageClientPool (
+    "post-storage", buffer_size * 2, num_threads);
 
-  MyClientPool<MyThriftClient<FakeRabbitmqClient>> fakeRabbitmqClientPool (
-    "rabbitmq", buffer_size, 16, 16, 1000);
+  ClientPoolMap<MyThriftClient<FakeUserTimelineServiceClient>> fakeUserTimelineClientPool (
+    "user-timeline", buffer_size, num_threads);    
+
+  ClientPoolMap<MyThriftClient<FakeRabbitmqClient>> fakeRabbitmqClientPool (
+    "rabbitmq", buffer_size, num_threads);
 
 
   std::shared_ptr<MyComposePostHandler> handler = std::make_shared<MyComposePostHandler>(
@@ -259,20 +275,24 @@ int main(int argc, char *argv[]) {
 
   int64_t req_id_begin = REQ_ID_BEGIN;
 
+  cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
+
   for (int i = 0; i < num_threads; i++) {
-    composePostClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
+    reqGenPhaseClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
+    processPhaseClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
 
     processThreads[i] = std::thread(GenAndProcessComposePostReqs,
-                                      composePostClients[i], handler, req_id_begin,
+                                      reqGenPhaseClients[i],
+                                      processPhaseClients[i],
+                                      handler,
+                                      req_id_begin,
                                       i, num_threads - 1);
 
     req_id_begin += num_iterations + 2;
 
-    #ifdef __aarch64__
-      CPU_ZERO(&cpuSet[i]);
-      CPU_SET(i+1, &cpuSet[i]);
-      pthread_setaffinity_np(processThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
-    #endif                                  
+    CPU_ZERO(&cpuSet[i]);
+    CPU_SET(i+1, &cpuSet[i]);
+    pthread_setaffinity_np(processThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
   }
 
   for (int i = 0; i < num_threads; i++) {
@@ -280,7 +300,8 @@ int main(int argc, char *argv[]) {
   }
 
   for (int i = 0; i < num_threads; i++) {
-    delete composePostClients[i];
+    delete reqGenPhaseClients[i];
+    delete processPhaseClients[i];
   }
 
   return 0;

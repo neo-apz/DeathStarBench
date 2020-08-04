@@ -291,16 +291,17 @@ uint32_t FakeRabbitmq_UploadHomeTimeline_presult::read(::apache::thrift::protoco
   return xfer;
 }
 
+bool FakeRabbitmqClient::isReqGenPhase{ true };
+
 void FakeRabbitmqClient::UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id)
 {
   send_UploadHomeTimeline(req_id, post_id, user_id, timestamp, user_mentions_id);
-  #ifdef FLEXUS
-      SKIP_BEGIN();
-  #endif
-  _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-  #ifdef FLEXUS
-      SKIP_END();
-  #endif
+  
+  if (isReqGenPhase){
+    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    return;
+  }
+  
   recv_UploadHomeTimeline();
 }
 

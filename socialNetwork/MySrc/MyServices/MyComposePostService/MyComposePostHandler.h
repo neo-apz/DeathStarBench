@@ -12,7 +12,7 @@
 #include "../../gen-cpp/FakeRedis.h"
 #include "../../gen-cpp/FakeRabbitmq.h"
 
-#include "../../MyCommon/MyClientPool.h"
+#include "../../MyCommon/ClientPoolMap.h"
 
 #include "../../MyCommon/logger.h"
 
@@ -27,10 +27,10 @@ using std::chrono::system_clock;
 class MyComposePostHandler : public MyComposePostServiceIf {
  public:
   MyComposePostHandler(
-      MyClientPool<MyThriftClient<FakeRedisClient>> *,
-      MyClientPool<MyThriftClient<FakePostStorageServiceClient>> *,
-      MyClientPool<MyThriftClient<FakeUserTimelineServiceClient>> *,
-      MyClientPool<MyThriftClient<FakeRabbitmqClient>> *);
+      ClientPoolMap<MyThriftClient<FakeRedisClient>> *,
+      ClientPoolMap<MyThriftClient<FakePostStorageServiceClient>> *,
+      ClientPoolMap<MyThriftClient<FakeUserTimelineServiceClient>> *,
+      ClientPoolMap<MyThriftClient<FakeRabbitmqClient>> *);
   ~MyComposePostHandler() override = default;
 
   void UploadText(int64_t req_id, const std::string& text) override;
@@ -48,12 +48,12 @@ class MyComposePostHandler : public MyComposePostServiceIf {
       const std::vector<UserMention> & user_mentions) override;
 
  private:
-  MyClientPool<MyThriftClient<FakeRedisClient>> *_redis_client_pool;
-  MyClientPool<MyThriftClient<FakePostStorageServiceClient>>
+  ClientPoolMap<MyThriftClient<FakeRedisClient>> *_redis_client_pool;
+  ClientPoolMap<MyThriftClient<FakePostStorageServiceClient>>
       *_post_storage_client_pool;
-  MyClientPool<MyThriftClient<FakeUserTimelineServiceClient>>
+  ClientPoolMap<MyThriftClient<FakeUserTimelineServiceClient>>
       *_user_timeline_client_pool;
-  MyClientPool<MyThriftClient<FakeRabbitmqClient>> *_rabbitmq_client_pool;
+  ClientPoolMap<MyThriftClient<FakeRabbitmqClient>> *_rabbitmq_client_pool;
 
   void _ComposeAndUpload(int64_t req_id);
 
@@ -69,10 +69,10 @@ class MyComposePostHandler : public MyComposePostServiceIf {
 };
 
 MyComposePostHandler::MyComposePostHandler(
-    MyClientPool<MyThriftClient<FakeRedisClient>>  * redis_client_pool,
-    MyClientPool<MyThriftClient<FakePostStorageServiceClient>> *post_storage_client_pool,
-    MyClientPool<MyThriftClient<FakeUserTimelineServiceClient>> *user_timeline_client_pool,
-    MyClientPool<MyThriftClient<FakeRabbitmqClient>> *rabbitmq_client_pool) {
+    ClientPoolMap<MyThriftClient<FakeRedisClient>>  * redis_client_pool,
+    ClientPoolMap<MyThriftClient<FakePostStorageServiceClient>> *post_storage_client_pool,
+    ClientPoolMap<MyThriftClient<FakeUserTimelineServiceClient>> *user_timeline_client_pool,
+    ClientPoolMap<MyThriftClient<FakeRabbitmqClient>> *rabbitmq_client_pool) {
   _redis_client_pool = redis_client_pool;
   _post_storage_client_pool = post_storage_client_pool;
   _user_timeline_client_pool = user_timeline_client_pool;
