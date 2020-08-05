@@ -14,7 +14,15 @@ find_package(Threads)
 find_package(OpenSSL REQUIRED)
 
 set(Boost_USE_STATIC_LIBS ON)
-find_package(Boost 1.59.0 EXACT REQUIRED COMPONENTS log log_setup)
+
+if (ARM)
+  message("-- Configuring for ARM.")
+  find_package(Boost 1.58.0 EXACT REQUIRED COMPONENTS log log_setup)
+else()
+  message("-- Configuring for x86.")
+  find_package(Boost 1.59.0 EXACT REQUIRED COMPONENTS log log_setup)
+endif()
+
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   link_directories(${Boost_LIBRARY_DIRS})
