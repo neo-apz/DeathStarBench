@@ -1948,38 +1948,123 @@ class FakeRedisProcessor : public ::apache::thrift::TDispatchProcessor {
   virtual ~FakeRedisProcessor() {}
 };
 
-static std::map<int64_t, std::map<std::string, std::string>> _hashtable;
-static MyLock _ht_thread_lock;
-static std::map<int64_t, int64_t> _counter_hashtable;
-static MyLock _cht_thread_lock;
+static std::map<int64_t, Creator> _ht_creator;
+static std::map<int64_t, std::string> _ht_text;
+static std::map<int64_t, std::vector<Media>> _ht_media;
+static std::map<int64_t, int64_t> _ht_postid;
+static std::map<int64_t, PostType::type> _ht_posttype;
+static std::map<int64_t, std::vector<Url>> _ht_urls;
+static std::map<int64_t, std::vector<UserMention>> _ht_usermentions;
+static MyLock _ht_creator_lock;
+static MyLock _ht_text_lock;
+static MyLock _ht_media_lock;
+static MyLock _ht_postid_lock;
+static MyLock _ht_posttype_lock;
+static MyLock _ht_urls_lock;
+static MyLock _ht_usermentions_lock;
+static std::map<int64_t, int64_t> _ht_counter;
+static MyLock _ht_counter_lock;
 
-static void HTSetFieldValue(int64_t key, std::string field, std::string value){
-  _ht_thread_lock.lock();
-  _hashtable[key][field] = value;
-  _ht_thread_lock.unlock();
+static void HTSetCreator(int64_t key, Creator value){
+  _ht_creator_lock.lock();
+  _ht_creator[key] = value;
+  _ht_creator_lock.unlock();
 }
 
-static std::string HTGetFieldValue(int64_t key, std::string field){
-  _ht_thread_lock.lock();
-  std::string value = _hashtable[key][field];
-  _ht_thread_lock.unlock();
+static void HTGetCreator(int64_t key, Creator& value){
+  _ht_creator_lock.lock();
+  value = _ht_creator[key];
+  _ht_creator_lock.unlock();
+}
+
+static void HTSetText(int64_t key, std::string value){
+  _ht_text_lock.lock();
+  _ht_text[key] = value;
+  _ht_text_lock.unlock();
+}
+
+static void HTGetText(int64_t key, std::string& value){
+  _ht_text_lock.lock();
+  value = _ht_text[key];
+  _ht_text_lock.unlock();
+}
+
+static void HTSetMedia(int64_t key, std::vector<Media> value){
+  _ht_media_lock.lock();
+  _ht_media[key] = value;
+  _ht_media_lock.unlock();
+}
+
+static void HTGetMedia(int64_t key, std::vector<Media>& value){
+  _ht_media_lock.lock();
+  value = _ht_media[key];
+  _ht_media_lock.unlock();
+}
+
+static void HTSetPostId(int64_t key, int64_t value){
+  _ht_postid_lock.lock();
+  _ht_postid[key] = value;
+  _ht_postid_lock.unlock();
+}
+
+static int64_t HTGetPostId(int64_t key){
+  _ht_postid_lock.lock();
+  int64_t value = _ht_postid[key];
+  _ht_postid_lock.unlock();
+  return value;
+}
+
+static void HTSetPostType(int64_t key, PostType::type value){
+  _ht_posttype_lock.lock();
+  _ht_posttype[key] = value;
+  _ht_posttype_lock.unlock();
+}
+
+static PostType::type HTGetPostType(int64_t key){
+  _ht_posttype_lock.lock();
+  PostType::type value = _ht_posttype[key];
+  _ht_posttype_lock.unlock();
 
   return value;
 }
 
+static void HTSetUrls(int64_t key, std::vector<Url> value){
+  _ht_urls_lock.lock();
+  _ht_urls[key] = value;
+  _ht_urls_lock.unlock();
+}
+
+static void HTGetUrls(int64_t key, std::vector<Url>& value){
+  _ht_urls_lock.lock();
+  value = _ht_urls[key];
+  _ht_urls_lock.unlock();
+}
+
+static void HTSetUserMentions(int64_t key, std::vector<UserMention> value){
+  _ht_usermentions_lock.lock();
+  _ht_usermentions[key] = value;
+  _ht_usermentions_lock.unlock();
+}
+
+static void HTGetUserMentions(int64_t key, std::vector<UserMention>& value){
+  _ht_usermentions_lock.lock();
+  value = _ht_usermentions[key];
+  _ht_usermentions_lock.unlock();
+}
+
 static int64_t HTCounterIncrement(int64_t key, int64_t value){
-  _cht_thread_lock.lock();
-  _counter_hashtable[key] += value;
-  int64_t return_value = _counter_hashtable[key];
-  _cht_thread_lock.unlock();
+  _ht_counter_lock.lock();
+  _ht_counter[key] += value;
+  int64_t return_value = _ht_counter[key];
+  _ht_counter_lock.unlock();
   
   return return_value;
 }
 
 static int64_t HTGetCounter(int64_t key){
-  _cht_thread_lock.lock();
-  int64_t value = _counter_hashtable[key];
-  _cht_thread_lock.unlock();
+  _ht_counter_lock.lock();
+  int64_t value = _ht_counter[key];
+  _ht_counter_lock.unlock();
   
   return value;
 }

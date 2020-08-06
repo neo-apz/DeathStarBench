@@ -3,6 +3,9 @@
 
 #include "../../MyCommon/MyThriftClient.h"
 
+#include "../../MyCommon/stopwatch.h"
+#include "../../MyCommon/RandomGenerator.h"
+
 #ifdef __aarch64__
   #include "../../MyCommon/MagicBreakPoint.h"
 #endif
@@ -19,7 +22,8 @@ volatile bool start = false;
 pthread_barrier_t barrier;
 
 #define BUFFER_SIZE  220
-#define REQ_ID_BEGIN 1234567898765432
+#define REQ_ID_BEGIN 0xFFFFFFFFFFFF
+#define RAND_NUM_LIMIT 0xFFFFFFFFFFFFFF
 #define WARM_UP_ITER  100
 
 struct MsgType {
@@ -37,107 +41,124 @@ struct MsgType {
 void ClientSendComposePost(
   MyThriftClient<MyComposePostServiceClient> *reqGenPhaseClient,
   MyThriftClient<MyComposePostServiceClient> *processPhaseClient,
-  int64_t req_id, MsgType::type msg_type){
+  int64_t req_id, uint32_t* msg_types, RandomGenerator* randGen){
   
   reqGenPhaseClient->Connect();
   auto client1 = reqGenPhaseClient->GetClient();
   auto client2 = processPhaseClient->GetClient();
 
-  switch (msg_type)
-  {
-  case MsgType::TEXT :
-    client1->send_UploadText(req_id, "This is a just sample post, nothing more, nothing less!");
-    client2->send_UploadText(req_id, "This is a just sample post, nothing more, nothing less!");
-    break;
-  case MsgType::MEDIA:
-    {
-      std::vector<Media> media_vector;
-      
-      for(int i=0; i < 2; i++){
-        Media media;
-        media.media_id = 12345;
-        media.media_type = "Video";
-        media_vector.emplace_back(media);
-      }
-      client1->send_UploadMedia(req_id, media_vector);
-      client2->send_UploadMedia(req_id, media_vector);
-    }
-    break;
-  case MsgType::UNIQUE_ID :
-    client1->send_UploadUniqueId(req_id, 123456789087, PostType::POST);
-    client2->send_UploadUniqueId(req_id, 123456789087, PostType::POST);
-    break;
-  case MsgType::CREATOR :
-    {
-      Creator creator;
-      creator.user_id = 9876543210;
-      creator.username = "sample_username";
-      client1->send_UploadCreator(req_id, creator);
-      client2->send_UploadCreator(req_id, creator);
-    }
-    break;
-  case MsgType::URLS :
-    {
-      std::vector<Url> urls;
-      for (int i = 0; i < 2; i++){
-        Url url;
-        url.expanded_url = "http://www.expandedURL.com/thisisthefullurlinitsexpandedformat";
-        url.shortened_url = "http://www.short.en/XCBNHJKL";
-        urls.emplace_back(url);
-      }
-      client1->send_UploadUrls(req_id, urls);
-      client2->send_UploadUrls(req_id, urls);
-    }
-    break;
-  case MsgType::USER_MENTIONS :
-    {
-      std::vector<UserMention> user_mentions;
-      for (int i = 0; i < 2; i++){
-        UserMention user_mention;
-        user_mention.user_id = 12345689876543210;
-        user_mention.username = "my_username";
-        user_mentions.emplace_back(user_mention);
-      }
-      client1->send_UploadUserMentions(req_id, user_mentions);
-      client2->send_UploadUserMentions(req_id, user_mentions);
-    }
-    break;    
-  default:
-    cout << "This is an error, wrong message type!" << endl;
-    exit(1);
-  }
+  MsgType::type msg_type;
+  for (int i = 0; i < MsgType::SIZE; i++) {
+    msg_type = (MsgType::type) msg_types[i];
 
+    switch (msg_type) {
+      case MsgType::TEXT:
+        {
+          string str = randGen->getAlphaNumericString(120);
+          client1->send_UploadText(req_id, str);
+          client2->send_UploadText(req_id, str);
+        }
+        break;
+      case MsgType::MEDIA:
+        {
+          std::vector<Media> media_vector;
+          uint32_t iters = randGen->getUInt32(1, 4);
+          for(int i=0; i < iters; i++){
+            Media media;
+            media.media_id = randGen->getInt64(RAND_NUM_LIMIT);
+            media.media_type = randGen->getAlphaString(10);
+            media_vector.emplace_back(media);
+          }
+          client1->send_UploadMedia(req_id, media_vector);
+          client2->send_UploadMedia(req_id, media_vector);
+        }
+        break;
+      case MsgType::UNIQUE_ID:
+        {
+          int64_t id = randGen->getInt64(RAND_NUM_LIMIT);
+          PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
+          client1->send_UploadUniqueId(req_id, id, post_type);
+          client2->send_UploadUniqueId(req_id, id, post_type);
+        }
+        break;
+      case MsgType::CREATOR :
+        {
+          Creator creator;
+          creator.user_id = randGen->getInt64(RAND_NUM_LIMIT);
+          creator.username = randGen->getAlphaNumericString(12);
+          client1->send_UploadCreator(req_id, creator);
+          client2->send_UploadCreator(req_id, creator);
+        }
+        break;
+      case MsgType::URLS :
+        {
+          std::vector<Url> urls;
+          uint32_t iters = randGen->getUInt32(1, 4);
+          for (int i = 0; i < iters; i++){
+            Url url;
+            url.expanded_url = randGen->getAlphaNumericString(60);
+            url.shortened_url = randGen->getAlphaNumericString(25);
+            urls.emplace_back(url);
+          }
+          client1->send_UploadUrls(req_id, urls);
+          client2->send_UploadUrls(req_id, urls);
+        }
+        break;
+      case MsgType::USER_MENTIONS :
+        {
+          std::vector<UserMention> user_mentions;
+          uint32_t iters = randGen->getUInt32(1, 4);
+          for (int i = 0; i < iters; i++){
+            UserMention user_mention;
+            user_mention.user_id = randGen->getInt64(RAND_NUM_LIMIT);
+            user_mention.username = randGen->getAlphaNumericString(12);
+            user_mentions.emplace_back(user_mention);
+          }
+          client1->send_UploadUserMentions(req_id, user_mentions);
+          client2->send_UploadUserMentions(req_id, user_mentions);
+        }
+        break;    
+      default:
+        cout << "This is an error, wrong message type!" << endl;
+        exit(1);
+    }     
+  }
 }
 
 void ClientRecvComposePost(
-  MyThriftClient<MyComposePostServiceClient> *composePostClient, MsgType::type msg_type){
+  MyThriftClient<MyComposePostServiceClient> *composePostClient, uint32_t* msg_types){
   
   composePostClient->Connect();
   auto client = composePostClient->GetClient();
 
-  switch (msg_type)
-  {
-  case MsgType::TEXT :
-    client->recv_UploadText();
-    break;
-  case MsgType::MEDIA :
-    client->recv_UploadMedia();
-    break;
-  case MsgType::UNIQUE_ID :
-    client->recv_UploadUniqueId();
-    break;
-  case MsgType::CREATOR :
-    client->recv_UploadCreator();
-    break;
-  case MsgType::URLS :
-    client->recv_UploadUrls();
-    break;
-  case MsgType::USER_MENTIONS :
-    client->recv_UploadUserMentions();
-    break;    
-  default:
-    cout << "This is an error, wrong message type!" << endl;
-    exit(1);
+  MsgType::type msg_type;
+
+  for (int i; i < MsgType::SIZE; i++) {
+    msg_type = (MsgType::type) msg_types[i];
+    switch (msg_type)
+    {
+      case MsgType::TEXT :
+        client->recv_UploadText();
+        break;
+      case MsgType::MEDIA :
+        client->recv_UploadMedia();
+        break;
+      case MsgType::UNIQUE_ID :
+        client->recv_UploadUniqueId();
+        break;
+      case MsgType::CREATOR :
+        client->recv_UploadCreator();
+        break;
+      case MsgType::URLS :
+        client->recv_UploadUrls();
+        break;
+      case MsgType::USER_MENTIONS :
+        client->recv_UploadUserMentions();
+        break;    
+      default:
+        cout << "This is an error, wrong message type!" << endl;
+        exit(1);
+    } 
   }
 
 }
@@ -160,25 +181,24 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *re
   FakeRabbitmqClient::isReqGenPhase = true;
   FakeUserTimelineServiceClient::isReqGenPhase = true;
 
+  RandomGenerator randGen(tid);
+
   uint64_t count = 1;
 
-  MsgType::type msg_type;
+  uint64_t iterations = num_iterations / MsgType::SIZE;
   
-  while (count <= num_iterations){
+  uint32_t msg_types[MsgType::SIZE];
+  while (count <= iterations){
+    randGen.getUInt32Set(msg_types, MsgType::SIZE);
 
-    msg_type = (MsgType::type) (count % MsgType::SIZE);
+    ClientSendComposePost(reqGenPhaseClient, processPhaseClient, req_id, msg_types, &randGen);
 
-    ClientSendComposePost(reqGenPhaseClient, processPhaseClient, req_id, msg_type);
-
-    reqGenprocessor->process(srvIProt, srvOProt, nullptr);
+    for (int i = 0; i < MsgType::SIZE; i++)
+      reqGenprocessor->process(srvIProt, srvOProt, nullptr);
     
-    ClientRecvComposePost(reqGenPhaseClient, msg_type);
+    ClientRecvComposePost(reqGenPhaseClient, msg_types);
     count++;
-
-    if (msg_type == MsgType::USER_MENTIONS) {
-      req_id++;
-    }
-
+    req_id++;
   }
 
   std::shared_ptr<MyComposePostServiceProcessor> processPhaseprocessor =
@@ -204,7 +224,11 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *re
   FakeRabbitmqClient::isReqGenPhase = false;
   FakeUserTimelineServiceClient::isReqGenPhase = false;
 
-  while (count <= num_iterations){
+  Stopwatch<std::chrono::microseconds> sw;
+  // sw.start();
+
+  iterations = iterations * MsgType::SIZE;
+  while (count <= iterations){
 
     // msg_type = (MsgType::type) (count % MsgType::SIZE);
 
@@ -223,6 +247,10 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *re
 
     count++;
   }
+
+  // sw.stop();
+  // sw.post_process();
+  // LOG(warning) << "[" << tid << "] AVG (us) = " <<  ((sw.mean() * 1.0) / num_iterations);
 
 }
 

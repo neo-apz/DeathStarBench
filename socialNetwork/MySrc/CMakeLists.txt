@@ -45,4 +45,4 @@ endif()
 
 add_subdirectory(MyServices)
 
-
+string( REPLACE "-DNDEBUG" "" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")

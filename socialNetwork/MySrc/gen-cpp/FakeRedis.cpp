@@ -6703,92 +6703,161 @@ int64_t FakeRedisConcurrentClient::recv_HIncrBy(const int32_t seqid)
   } // end while(true)
 }
 
-  void FakeRedisHandler::HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator) {}
+  void FakeRedisHandler::HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator) {
+    
+    if (field != "creator") {
+      std::cerr << "Bad field!" << std::endl;
+      exit(1);
+    }
+
+    HTSetCreator(req_id, creator);
+  }
   
   void FakeRedisHandler::HSetText(
     const int64_t req_id,
     const std::string& field,
     const std::string& text) {
 
-    HTSetFieldValue(req_id, field, text);
+    if (field != "text") {
+      std::cerr << "Bad field!" << std::endl;
+      exit(1);
+    }
 
+    HTSetText(req_id, text);
   }
   
-  void FakeRedisHandler::HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media) {}
+  void FakeRedisHandler::HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media) {
+    if (field != "media") {
+      std::cerr << "Bad field!" << std::endl;
+      exit(1);
+    }
+
+    HTSetMedia(req_id, media);
+  }
   
-  void FakeRedisHandler::HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id) {}
+  void FakeRedisHandler::HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id) {
+    if (field != "post_id") {
+      std::cerr << "Bad field!" << std::endl;
+      exit(1);
+    }
+
+    HTSetPostId(req_id, post_id);
+  }
   
-  void FakeRedisHandler::HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type) {}
+  void FakeRedisHandler::HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type) {
+    if (field != "post_type") {
+      std::cerr << "Bad field!" << std::endl;
+      exit(1);
+    }
+
+    HTSetPostType(req_id, post_type);
+  }
   
-  void FakeRedisHandler::HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls) {}
+  void FakeRedisHandler::HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls) {
+    if (field != "urls") {
+      std::cerr << "Bad field!" << std::endl;
+      exit(1);
+    }
+
+    HTSetUrls(req_id, urls);
+  }
   
-  void FakeRedisHandler::HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions) {}
+  void FakeRedisHandler::HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions) {
+    if (field != "user_mentions") {
+      std::cerr << "Bad field!" << std::endl;
+      exit(1);
+    }
+
+    HTSetUserMentions(req_id, user_mentions);
+  }
   
   void FakeRedisHandler::HGetCreator(
     Creator& _return,
     const int64_t req_id,
     const std::string& field) {
+      
+      if (field != "creator") {
+        std::cerr << "Bad field!" << std::endl;
+        exit(1);
+      }
 
-      Creator creator;
-      creator.user_id = 9876543210;
-      creator.username = "sample_username";
-      _return = creator;
+      HTGetCreator(req_id, _return);
   }
   
   void FakeRedisHandler::HGetText(
     std::string& _return,
     const int64_t req_id,
     const std::string& field) {
-      _return = "This is a just sample post, nothing more, nothing less!";
+
+      if (field != "text") {
+        std::cerr << "Bad field!" << std::endl;
+        exit(1);
+      }
+      HTGetText(req_id, _return);
     }
   
   void FakeRedisHandler::HGetMedia(
     std::vector<Media> & _return,
     const int64_t req_id,
     const std::string& field) {
-
-      for (int i = 0; i < 2; i++){
-        Media media;
-        media.media_id = 12345;
-        media.media_type = "Video";
-        _return.emplace_back(media);
+      
+      if (field != "media") {
+        std::cerr << "Bad field!" << std::endl;
+        exit(1);
       }
+
+      HTGetMedia(req_id, _return);
     }
   
   int64_t FakeRedisHandler::HGetPostId(
     const int64_t req_id,
     const std::string& field) {
-      return 123456789087;
+            
+      if (field != "post_id") {
+        std::cerr << "Bad field!" << std::endl;
+        exit(1);
+      }
+
+      return HTGetPostId(req_id);
     }
   
   PostType::type FakeRedisHandler::HGetPostType(
     const int64_t req_id,
     const std::string& field) {
       return PostType::POST;
+
+      if (field != "post_type") {
+        std::cerr << "Bad field!" << std::endl;
+        exit(1);
+      }
+
+      return HTGetPostType(req_id);
     }
   
   void FakeRedisHandler::HGetUrls(
     std::vector<Url> & _return,
     const int64_t req_id,
     const std::string& field) {
-      for (int i = 0; i < 2; i++){
-        Url url;
-        url.expanded_url = "http://www.expandedURL.com/thisisthefullurlinitsexpandedformat";
-        url.shortened_url = "http://www.short.en/XCBNHJKL";
-        _return.emplace_back(url);
+            
+      if (field != "urls") {
+        std::cerr << "Bad field!" << std::endl;
+        exit(1);
       }
+
+      HTGetUrls(req_id, _return);
     }
   
   void FakeRedisHandler::HGetUserMentions(
     std::vector<UserMention> & _return,
     const int64_t req_id,
     const std::string& field) {
-      for (int i = 0; i < 3; i++){
-        UserMention user_mention;
-        user_mention.user_id = 12345689876543210;
-        user_mention.username = "my_username";
-        _return.emplace_back(user_mention);
+            
+      if (field != "user_mentions") {
+        std::cerr << "Bad field!" << std::endl;
+        exit(1);
       }
+
+      HTGetUserMentions(req_id, _return);
     }
   
   int64_t FakeRedisHandler::HIncrBy(

@@ -4,6 +4,9 @@
 #include "../../MyCommon/MyThriftClient.h"
 #include "../../MyCommon/MyLock.h"
 
+#include "../../MyCommon/stopwatch.h"
+#include "../../MyCommon/RandomGenerator.h"
+
 #ifdef __aarch64__
   #include "../../MyCommon/MagicBreakPoint.h"
 #endif
@@ -29,15 +32,23 @@ pthread_barrier_t barrier;
 #define WARM_UP_ITER  100
 
 void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClient,
-                        MyThriftClient<MyUniqueIdServiceClient> *processPhaseClient){
+                        MyThriftClient<MyUniqueIdServiceClient> *processPhaseClient,
+                        RandomGenerator *randGen){
   
   reqGenPhaseClient->Connect();
 
-  int64_t req_id = 0xFFFFFFFFFFFF; // rand!
-  PostType::type post_type = (PostType::type) 0;
+  int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
+  PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
 
   auto client = reqGenPhaseClient->GetClient();
   client->send_UploadUniqueId(req_id, post_type);
+
+  uint8_t* cltIBufPtr, *cltOBufPtr;
+  uint32_t ISz, OSz;
+  
+  reqGenPhaseClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+
+  // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
   client = processPhaseClient->GetClient();
   client->send_UploadUniqueId(req_id, post_type);
@@ -65,11 +76,12 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
       std::make_shared<MyUniqueIdServiceProcessor>(handler);
 
   FakeComposePostServiceClient::isReqGenPhase = true;
+  RandomGenerator randGen(tid);
 
   uint64_t count = 1;
 
   while (count <= num_iterations){
-    ClientSendUniqueId(reqGenPhaseClient, processPhaseClient);
+    ClientSendUniqueId(reqGenPhaseClient, processPhaseClient, &randGen);
 
     reqGenprocessor->process(srvIProt, srvOProt, nullptr);
     
@@ -95,6 +107,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
     BREAKPOINT();
     #endif
     start = true;
+    // LOG(warning) << "Process Phase Started!!";
   }
 
   while(!start);
@@ -102,6 +115,9 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
 
   count = 1;
   FakeComposePostServiceClient::isReqGenPhase = false;
+
+  Stopwatch<std::chrono::microseconds> sw;
+  // sw.start();
 
   while (count <= num_iterations){
 
@@ -116,6 +132,10 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
 
     count++;
   }
+
+  // sw.stop();
+  // sw.post_process();
+  // LOG(warning) << "[" << tid << "] AVG (us) = " <<  ((sw.mean() * 1.0) / num_iterations);
 }
 
 int main(int argc, char *argv[]) {
