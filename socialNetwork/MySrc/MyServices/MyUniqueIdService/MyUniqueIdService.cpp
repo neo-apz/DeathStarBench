@@ -22,6 +22,8 @@ MyLock thread_lock;
 std::string machine_id;
 
 cpu_set_t *cpuSet;
+double *throughputs;
+double *latencies;
 
 volatile bool start = false;
 // volatile std::atomic_int start2(0);
@@ -117,7 +119,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
   FakeComposePostServiceClient::isReqGenPhase = false;
 
   Stopwatch<std::chrono::microseconds> sw;
-  // sw.start();
+  sw.start();
 
   while (count <= num_iterations){
 
@@ -133,9 +135,12 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
     count++;
   }
 
-  // sw.stop();
-  // sw.post_process();
+  sw.stop();
+  sw.post_process();
   // LOG(warning) << "[" << tid << "] AVG (us) = " <<  ((sw.mean() * 1.0) / num_iterations);
+  throughputs[tid] = (num_iterations / (sw.mean() * 1.0));
+  latencies[tid] = (sw.mean() * 1.0) / num_iterations;
+  // LOG(warning) << "[" << tid << "] Million Reqs/s = " <<  throughputs[tid];
 }
 
 int main(int argc, char *argv[]) {
@@ -183,8 +188,12 @@ int main(int argc, char *argv[]) {
   std::thread processThreads[num_threads];
 
   cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
+  throughputs = (double*) malloc(sizeof(double) * num_threads);
+  latencies = (double*) malloc(sizeof(double) * num_threads);
 
   for (int i = 0; i < num_threads; i++) {
+    throughputs[i] = 0;
+    latencies[i] = 0;
     reqGenPhaseClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
     processPhaseClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
 
@@ -204,10 +213,18 @@ int main(int argc, char *argv[]) {
     processThreads[i].join();
   }
 
+  double total_throughput = 0;
+  double avg_latency = 0;
+
   for (int i = 0; i < num_threads; i++) {
+    total_throughput += throughputs[i];
+    avg_latency += latencies[i];
     delete reqGenPhaseClients[i];
     delete processPhaseClients[i];
   }
+
+  std::cout << "Total throughput (Million RPS): " << total_throughput << std::endl;
+  std::cout << "AVG latency (us): " << avg_latency / num_threads << std::endl;
 
   return 0;
 }
