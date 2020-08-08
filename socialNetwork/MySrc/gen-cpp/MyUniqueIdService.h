@@ -11,6 +11,16 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <thread>
+#include "../MyCommon/readerwriterqueue.h"
+#include "../MyCommon/atomicops.h"
+
+#include <iostream>
+
+// #define STAGED 1
+
+using namespace moodycamel;
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -202,8 +212,15 @@ class MyUniqueIdServiceClient : virtual public MyUniqueIdServiceIf {
   ::apache::thrift::protocol::TProtocol* oprot_;
 };
 
+typedef struct sReq {
+  ::apache::thrift::protocol::TProtocol* oprot;
+  int32_t seqid;
+  MyUniqueIdService_UploadUniqueId_result* result;
+  // void* ctx;
+} sReq;
+
 class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
- protected:
+ public:
   ::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
@@ -212,12 +229,53 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ProcessMap processMap_;
   void process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
+  void ProcessService();
+  void Serialize();
   MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface) :
     iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
   }
 
-  virtual ~MyUniqueIdServiceProcessor() {}
+#ifdef STAGED
+  MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface, int coreId) :
+    iface_(iface) {
+    processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
+    
+    fThread_ = std::thread([this] {ProcessService();});
+    cpu_set_t cpuSet;
+    CPU_ZERO(&cpuSet);
+    CPU_SET(coreId+6, &cpuSet);
+    pthread_setaffinity_np(fThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+
+    sThread_ = std::thread([this] {Serialize();});
+    CPU_ZERO(&cpuSet);
+    CPU_SET(coreId+12, &cpuSet);
+    pthread_setaffinity_np(sThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+  }
+#endif
+
+  #ifdef STAGED
+  std::thread fThread_;
+  std::atomic<bool> exit_ft_{false};
+  ReaderWriterQueue<MyUniqueIdService_UploadUniqueId_args*> fRQ_;
+  ReaderWriterQueue<int> fCQ_;
+
+  std::thread sThread_;
+  std::atomic<bool> exit_st_{false};
+  ReaderWriterQueue<sReq> sRQ_;
+  ReaderWriterQueue<int> sCQ_;
+  
+  #endif
+
+  ~MyUniqueIdServiceProcessor() {
+    #ifdef STAGED
+    // std::cout << "In dealloc" << std::endl;
+    exit_ft_ = true;
+    exit_st_ = true;
+    fThread_.join();
+    sThread_.join();
+    #endif
+  }
 };
 
 class MyUniqueIdServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

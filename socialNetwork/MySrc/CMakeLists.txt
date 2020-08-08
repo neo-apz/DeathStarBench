@@ -33,7 +33,7 @@ set(THRIFT_GEN_CPP_DIR ../../gen-cpp)
 set(COMMON_DIR ../../MyCommon)
 
 if (ASAN)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fPIE -pie -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -fPIE -pie -g")
     message("-- ASAN enabled!")
 endif()
 
@@ -42,6 +42,15 @@ if (FLEXUS)
     message("-- Flexus enabled!")
 endif()
 
+if (STAGED)
+    add_definitions(-DSTAGED)
+    message("-- Staging enabled!")
+endif()
+
+if (SW)
+    add_definitions(-DSW)
+    message("-- Stopwatch enabled!")
+endif()
 
 add_subdirectory(MyServices)
 

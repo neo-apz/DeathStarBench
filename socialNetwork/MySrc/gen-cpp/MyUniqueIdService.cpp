@@ -158,6 +158,7 @@ uint32_t MyUniqueIdService_UploadUniqueId_result::write(::apache::thrift::protoc
   xfer += oprot->writeStructBegin("MyUniqueIdService_UploadUniqueId_result");
 
   if (this->__isset.se) {
+    std::cout << "In exception!" << std::endl;
     xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
     xfer += this->se.write(oprot);
     xfer += oprot->writeFieldEnd();
@@ -312,11 +313,21 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
 
   MyUniqueIdService_UploadUniqueId_result result;
   try {
-    iface_->UploadUniqueId(args.req_id, args.post_type);
+    #ifdef STAGED
+      // std::cout << "Before thread!" << std::endl;
+      fRQ_.enqueue(&args);
+      int completion;
+      while (fCQ_.peek() == nullptr);
+      fCQ_.try_dequeue(completion);
+    #else
+      iface_->UploadUniqueId(args.req_id, args.post_type);
+    #endif
   } catch (ServiceException &se) {
+    std::cout << "In SE!" << std::endl;
     result.se = se;
     result.__isset.se = true;
   } catch (const std::exception& e) {
+    std::cout << "In Catch!" << std::endl;
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUniqueIdService.UploadUniqueId");
     }
@@ -330,6 +341,13 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     return;
   }
 
+  #ifdef STAGED
+  sReq req = {oprot, seqid, &result};
+  sRQ_.enqueue(req);
+  int completion;
+  while (sCQ_.peek() == nullptr);
+  sCQ_.try_dequeue(completion);
+  #else
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->preWrite(ctx, "MyUniqueIdService.UploadUniqueId");
   }
@@ -343,7 +361,55 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "MyUniqueIdService.UploadUniqueId", bytes);
   }
+  #endif
 }
+
+#ifdef STAGED
+void MyUniqueIdServiceProcessor::ProcessService(){
+  MyUniqueIdService_UploadUniqueId_args *newReqPointer;
+
+  while (!exit_ft_){
+    // inputQueue_.wait_dequeue(newReqPointer);
+    while (fRQ_.peek() == nullptr){
+      if (exit_ft_) return;
+    }
+    fRQ_.try_dequeue(newReqPointer);
+    iface_->UploadUniqueId(newReqPointer->req_id, newReqPointer->post_type);
+    // std::cout << "In thread!" << std::endl;
+    fCQ_.enqueue(1);
+  }
+}
+
+void MyUniqueIdServiceProcessor::Serialize() {
+
+  while (!exit_st_){
+    while (sRQ_.peek() == nullptr){
+      if (exit_st_) return;
+    }
+
+    sReq req;
+    sRQ_.try_dequeue(req);
+    // std::cout << "In thread!" << std::endl;
+
+    // if (this->eventHandler_.get() != NULL) {
+    //   this->eventHandler_->preWrite(req.ctx, "MyUniqueIdService.UploadUniqueId");
+    // }
+
+    req.oprot->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, req.seqid);
+    req.result->write(req.oprot);
+    req.oprot->writeMessageEnd();
+    uint32_t bytes = req.oprot->getTransport()->writeEnd();
+    req.oprot->getTransport()->flush();
+
+    // if (this->eventHandler_.get() != NULL) {
+    //   this->eventHandler_->postWrite(req.ctx, "MyUniqueIdService.UploadUniqueId", bytes);
+    // }
+
+    sCQ_.enqueue(1);
+  }
+}
+
+#endif
 
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > MyUniqueIdServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< MyUniqueIdServiceIfFactory > cleanup(handlerFactory_);

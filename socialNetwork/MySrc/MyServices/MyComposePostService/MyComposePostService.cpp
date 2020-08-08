@@ -17,8 +17,11 @@ using namespace std;
 uint64_t num_iterations;
 
 cpu_set_t *cpuSet;
+
+#ifdef SW
 double *throughputs;
 double *latencies;
+#endif
 
 volatile bool start = false;
 pthread_barrier_t barrier;
@@ -226,8 +229,10 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *re
   FakeRabbitmqClient::isReqGenPhase = false;
   FakeUserTimelineServiceClient::isReqGenPhase = false;
 
+  #ifdef SW
   Stopwatch<std::chrono::microseconds> sw;
   sw.start();
+  #endif
 
   iterations = iterations * MsgType::SIZE;
   while (count <= iterations){
@@ -250,12 +255,14 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *re
     count++;
   }
 
+  #ifdef SW
   sw.stop();
   sw.post_process();
   // LOG(warning) << "[" << tid << "] AVG (us) = " <<  ((sw.mean() * 1.0) / num_iterations);
   throughputs[tid] = (num_iterations / (sw.mean() * 1.0));
   latencies[tid] = (sw.mean() * 1.0) / num_iterations;
   // LOG(warning) << "[" << tid << "] Million Reqs/s = " <<  throughputs[tid];
+  #endif
 
 }
 
@@ -309,12 +316,17 @@ int main(int argc, char *argv[]) {
   int64_t req_id_begin = REQ_ID_BEGIN;
 
   cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
+
+  #ifdef SW
   throughputs = (double*) malloc(sizeof(double) * num_threads);
   latencies = (double*) malloc(sizeof(double) * num_threads);
+  #endif
 
   for (int i = 0; i < num_threads; i++) {
+    #ifdef SW
     throughputs[i] = 0;
     latencies[i] = 0;
+    #endif
     reqGenPhaseClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
     processPhaseClients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
 
@@ -336,18 +348,24 @@ int main(int argc, char *argv[]) {
     processThreads[i].join();
   }
 
+  #ifdef SW
   double total_throughput = 0;
   double avg_latency = 0;
+  #endif
 
   for (int i = 0; i < num_threads; i++) {
+    #ifdef SW
     total_throughput += throughputs[i];
     avg_latency += latencies[i];
+    #endif
     delete reqGenPhaseClients[i];
     delete processPhaseClients[i];
   }
 
+  #ifdef SW
   std::cout << "Total throughput (Million RPS): " << total_throughput << std::endl;
   std::cout << "AVG latency (us): " << avg_latency / num_threads << std::endl;
+  #endif
 
   return 0;
 }

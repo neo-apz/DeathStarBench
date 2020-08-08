@@ -73,6 +73,11 @@ MyTClient * ClientPoolMap<MyTClient>::Pop() {
 
   index = _index_map[tid];
 
+  if (index >= _pool_size){
+    LOG(error) << "Index is bigger than buffer size.";
+    exit(1);
+  }
+
   _mtx.unlock();
 
   MyTClient * client = _pool[index];
