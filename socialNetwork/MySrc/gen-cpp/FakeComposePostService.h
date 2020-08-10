@@ -11,7 +11,13 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <thread>
+#include "../MyCommon/readerwriterqueue.h"
+#include "../MyCommon/atomicops.h"
+
 #include <iostream>
+
+using namespace moodycamel;
 
 namespace my_social_network {
 
@@ -799,6 +805,16 @@ class FakeComposePostHandler : public FakeComposePostServiceIf {
 
 };
 
+typedef struct SendReq {
+  void* args;
+  ::apache::thrift::protocol::TProtocol* oprot;
+} SendReq;
+
+typedef struct RecvReq {
+  ::apache::thrift::protocol::TProtocol* iprot;
+  void* result;
+} RecvReq;
+
 class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
  public:
   FakeComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -810,6 +826,20 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     setProtocol(iprot,oprot);
     std::shared_ptr<FakeComposePostHandler> handler = std::make_shared<FakeComposePostHandler>();
     _fakeProcessor = std::make_shared<FakeComposePostServiceProcessor>(handler);
+
+    #ifdef STAGED
+    sendThread_ = std::thread([this] {Send();});
+    cpu_set_t cpuSet;
+    CPU_ZERO(&cpuSet);
+    CPU_SET(9, &cpuSet);
+    pthread_setaffinity_np(sendThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+
+    recvThread_ = std::thread([this] {Recv();});
+    CPU_ZERO(&cpuSet);
+    CPU_SET(15, &cpuSet);
+    pthread_setaffinity_np(recvThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+    #endif
+
   }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -857,6 +887,30 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
 
  public:
   static bool isReqGenPhase;
+
+  #ifdef STAGED
+  std::thread sendThread_;
+  std::atomic<bool> exit_sendT_{false};
+  ReaderWriterQueue<SendReq> sendRQ_;
+  ReaderWriterQueue<int> sendCQ_;
+
+  std::thread recvThread_;
+  std::atomic<bool> exit_recvT_{false};
+  ReaderWriterQueue<RecvReq> recvRQ_;
+  ReaderWriterQueue<int> recvCQ_;
+
+  void Send();
+  void Recv();
+
+  ~FakeComposePostServiceClient() {
+    exit_sendT_ = true;
+    exit_recvT_ = true;
+    sendThread_.join();
+    recvThread_.join();
+  }
+
+  #endif
+
 };
 
 class FakeComposePostServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

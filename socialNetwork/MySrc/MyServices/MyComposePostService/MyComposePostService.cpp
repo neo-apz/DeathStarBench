@@ -210,6 +210,7 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **r
     BREAKPOINT();
     #endif
     start = true;
+    // LOG(warning) << "Process Phase Started!!";
   }
 
   while(!start);
@@ -257,6 +258,9 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **r
   latencies[tid] = (sw.mean() * 1.0) / num_iterations;
   // LOG(warning) << "[" << tid << "] Million Reqs/s = " <<  throughputs[tid];
   #endif
+
+  // if (tid == max_tid)
+  //   LOG(warning) << "Process Phase finished!";
 
 }
 

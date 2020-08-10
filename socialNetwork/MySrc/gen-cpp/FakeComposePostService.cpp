@@ -1453,16 +1453,112 @@ void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const in
   send_UploadUniqueId(req_id, post_id, post_type);
 
   if (isReqGenPhase){
+    #ifdef STAGED
+    while (sendCQ_.peek() == nullptr);
+    int completion;
+    sendCQ_.try_dequeue(completion);
+    #endif
     _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
     return;
   }
 
   recv_UploadUniqueId();
-  // std::cout << "After recv!" << std::endl;
+  #ifdef STAGED
+  int completion;
+  while (recvCQ_.peek() == nullptr);
+  recvCQ_.try_dequeue(completion);
+  #endif
+  // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
 }
+
+#ifdef STAGED
+void FakeComposePostServiceClient::Send() {
+  SendReq req;
+  FakeComposePostService_UploadUniqueId_args* args;
+
+  int32_t cseqid = 0;
+
+  while (!exit_sendT_){
+    while (sendRQ_.peek() == nullptr){
+      if (exit_sendT_) return;
+    }
+    sendRQ_.try_dequeue(req);
+
+    req.oprot->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
+    args = (FakeComposePostService_UploadUniqueId_args*) req.args;
+    args->write(oprot_);
+    req.oprot->writeMessageEnd();
+    req.oprot->getTransport()->writeEnd();
+    req.oprot->getTransport()->flush();
+    
+    // std::cout << "End of Send, ReqGenPhase:" << isReqGenPhase << std::endl;
+    sendCQ_.enqueue(1);
+  }
+}
+
+void FakeComposePostServiceClient::Recv() {
+  int completion;
+  RecvReq req;
+  FakeComposePostService_UploadUniqueId_presult *result;
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  while (!exit_recvT_){
+    // Check for the completion of previous stage
+    while (sendCQ_.peek() == nullptr || recvRQ_.peek() == nullptr) {
+      if (exit_recvT_) return;
+    }
+    sendCQ_.try_dequeue(completion);
+    recvRQ_.try_dequeue(req);
+
+    req.iprot->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      req.iprot->readMessageEnd();
+      req.iprot->getTransport()->readEnd();
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      req.iprot->skip(::apache::thrift::protocol::T_STRUCT);
+      req.iprot->readMessageEnd();
+      req.iprot->getTransport()->readEnd();
+    }
+    if (fname.compare("UploadUniqueId") != 0) {
+      req.iprot->skip(::apache::thrift::protocol::T_STRUCT);
+      req.iprot->readMessageEnd();
+      req.iprot->getTransport()->readEnd();
+    }
+    
+    result = (FakeComposePostService_UploadUniqueId_presult*) req.result;
+    result->read(req.iprot);
+    req.iprot->readMessageEnd();
+    req.iprot->getTransport()->readEnd();
+
+    if (result->__isset.se) {
+      throw result->se;
+    }
+    
+    // std::cout << "End of Recv!" << std::endl;
+    recvCQ_.enqueue(1);
+  }
+}
+#endif
 
 void FakeComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
+  #ifdef STAGED
+  FakeComposePostService_UploadUniqueId_pargs args;
+  args.req_id = &req_id;
+  args.post_id = &post_id;
+  args.post_type = &post_type;
+  SendReq send_req = {&args, oprot_};
+  sendRQ_.enqueue(send_req);
+  
+  #else
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
 
@@ -1475,11 +1571,16 @@ void FakeComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, con
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  #endif
 }
 
 void FakeComposePostServiceClient::recv_UploadUniqueId()
 {
-
+  #ifdef STAGED
+  FakeComposePostService_UploadUniqueId_presult result;
+  RecvReq recv_req = {iprot_, &result};
+  recvRQ_.enqueue(recv_req);
+  #else
   int32_t rseqid = 0;
   std::string fname;
   ::apache::thrift::protocol::TMessageType mtype;
@@ -1511,6 +1612,7 @@ void FakeComposePostServiceClient::recv_UploadUniqueId()
     throw result.se;
   }
   return;
+  #endif
 }
 
 void FakeComposePostServiceClient::UploadCreator(const int64_t req_id, const Creator& creator)

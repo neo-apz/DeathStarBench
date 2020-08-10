@@ -11,7 +11,6 @@
   #include "../../MyCommon/MagicBreakPoint.h"
 #endif
 
-
 using namespace my_social_network;
 
 using namespace std;
@@ -36,6 +35,28 @@ pthread_barrier_t barrier;
 #define BUFFER_SIZE  50
 #define WARM_UP_ITER  100
 
+void Allocate(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
+             MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
+             uint64_t buffer_size){
+
+  // *reqGenPhaseClients = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
+  // *processPhaseClients = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
+
+  // for (int c = 0; c < num_iterations; c++) {
+  //     reqGenPhaseClients[c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
+  //     processPhaseClients[c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
+  // }
+}
+
+void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
+             MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients){
+
+  for (int c = 0; c < num_iterations; c++) {
+      delete reqGenPhaseClients[c];
+      delete processPhaseClients[c];
+    }
+}
+
 void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClient,
                         MyThriftClient<MyUniqueIdServiceClient> *processPhaseClient,
                         RandomGenerator *randGen){
@@ -48,10 +69,10 @@ void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClie
   auto client = reqGenPhaseClient->GetClient();
   client->send_UploadUniqueId(req_id, post_type);
 
-  uint8_t* cltIBufPtr, *cltOBufPtr;
-  uint32_t ISz, OSz;
+  // uint8_t* cltIBufPtr, *cltOBufPtr;
+  // uint32_t ISz, OSz;
   
-  reqGenPhaseClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+  // reqGenPhaseClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
 
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
@@ -70,9 +91,12 @@ void ClientRecvUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient)
 void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
                                MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
                                std::shared_ptr<MyUniqueIdHandler> handler,
-                               int tid, int max_tid){
+                               int tid, int max_tid,
+                               uint64_t buffer_size){
 
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
+
+  Allocate(reqGenPhaseClients, reqGenPhaseClients, buffer_size);
 
 #ifdef STAGED
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
@@ -97,6 +121,12 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     srvOProt = reqGenPhaseClients[count]->GetClient()->getInputProtocol();
 
     processor->process(srvIProt, srvOProt, nullptr);
+
+    #ifdef STAGED
+    int completion;
+    while (processor->postpCQ_.peek() == nullptr);
+    processor->postpCQ_.try_dequeue(completion);
+    #endif
     
     ClientRecvUniqueId(reqGenPhaseClients[count]);
     // std::cout << "ReqGen Thread " << tid << " count=" << count  << std::endl;
@@ -148,6 +178,16 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     #endif
   }
 
+  #ifdef STAGED
+  count = 0;
+  int completion;
+  while (count < num_iterations){
+    while (processor->postpCQ_.peek() == nullptr);
+    processor->postpCQ_.try_dequeue(completion);
+    count++;
+  }
+  #endif
+
   #ifdef SW
   sw.stop();
   sw.post_process();
@@ -165,6 +205,8 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     ClientRecvUniqueId(processPhaseClients[count]);
     count++;
   }
+
+  CleanUp(reqGenPhaseClients, processPhaseClients);
 }
 
 int main(int argc, char *argv[]) {
@@ -236,7 +278,8 @@ int main(int argc, char *argv[]) {
                                       processPhaseClients[i],
                                       handler,
                                       i,
-                                      num_threads - 1);
+                                      num_threads - 1,
+                                      buffer_size);
 
     CPU_ZERO(&cpuSet[i]);
     CPU_SET(i+1, &cpuSet[i]);
@@ -257,10 +300,6 @@ int main(int argc, char *argv[]) {
     total_throughput += throughputs[i];
     avg_latency += latencies[i];
     #endif
-    for (int c = 0; c < num_iterations; c++) {
-      delete reqGenPhaseClients[i][c];
-      delete processPhaseClients[i][c];
-    }
   }
 
   #ifdef SW

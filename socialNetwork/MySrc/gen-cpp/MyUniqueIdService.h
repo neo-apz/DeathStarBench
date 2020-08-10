@@ -212,12 +212,18 @@ class MyUniqueIdServiceClient : virtual public MyUniqueIdServiceIf {
   ::apache::thrift::protocol::TProtocol* oprot_;
 };
 
-typedef struct sReq {
+typedef struct ServReq {
+  void* args;
+  void* result;
+  void* ctx;
+} ServReq;
+
+typedef struct PostPReq {
   ::apache::thrift::protocol::TProtocol* oprot;
   int32_t seqid;
-  MyUniqueIdService_UploadUniqueId_result* result;
-  // void* ctx;
-} sReq;
+  void* result;
+  void* ctx;
+} PostPReq;
 
 class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  public:
@@ -230,7 +236,7 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   void ProcessService();
-  void Serialize();
+  void PostProcess();
   MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface) :
     iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
@@ -241,39 +247,38 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
     
-    fThread_ = std::thread([this] {ProcessService();});
+    servThread_ = std::thread([this] {ProcessService();});
     cpu_set_t cpuSet;
     CPU_ZERO(&cpuSet);
     CPU_SET(coreId+6, &cpuSet);
-    pthread_setaffinity_np(fThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+    pthread_setaffinity_np(servThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
 
-    sThread_ = std::thread([this] {Serialize();});
+    postPThread_ = std::thread([this] {PostProcess();});
     CPU_ZERO(&cpuSet);
     CPU_SET(coreId+12, &cpuSet);
-    pthread_setaffinity_np(sThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+    pthread_setaffinity_np(postPThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
   }
 #endif
 
   #ifdef STAGED
-  std::thread fThread_;
-  std::atomic<bool> exit_ft_{false};
-  ReaderWriterQueue<MyUniqueIdService_UploadUniqueId_args*> fRQ_;
-  ReaderWriterQueue<int> fCQ_;
+  std::thread servThread_;
+  std::atomic<bool> exit_servT_{false};
+  ReaderWriterQueue<ServReq> servRQ_;
+  ReaderWriterQueue<int> servCQ_;
 
-  std::thread sThread_;
-  std::atomic<bool> exit_st_{false};
-  ReaderWriterQueue<sReq> sRQ_;
-  ReaderWriterQueue<int> sCQ_;
-  
+  std::thread postPThread_;
+  std::atomic<bool> exit_postpT_{false};
+  ReaderWriterQueue<PostPReq> postpRQ_;
+  ReaderWriterQueue<int> postpCQ_;
   #endif
 
   ~MyUniqueIdServiceProcessor() {
     #ifdef STAGED
     // std::cout << "In dealloc" << std::endl;
-    exit_ft_ = true;
-    exit_st_ = true;
-    fThread_.join();
-    sThread_.join();
+    exit_servT_ = true;
+    exit_postpT_ = true;
+    servThread_.join();
+    postPThread_.join();
     #endif
   }
 };
