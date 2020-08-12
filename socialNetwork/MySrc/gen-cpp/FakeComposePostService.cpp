@@ -1450,7 +1450,15 @@ bool FakeComposePostServiceClient::isReqGenPhase{ true };
 
 void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
+  #ifdef SW
+  sendSW_.start();
+  #endif
+  
   send_UploadUniqueId(req_id, post_id, post_type);
+  
+  #ifdef SW
+  sendSW_.stop();
+  #endif
 
   if (isReqGenPhase){
     #ifdef STAGED
@@ -1463,7 +1471,16 @@ void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const in
     return;
   }
 
+  #ifdef SW
+  recvSW_.start();
+  #endif
+
   recv_UploadUniqueId();
+  
+  #ifdef SW
+  recvSW_.stop();
+  #endif
+  
   #ifdef STAGED
   int completion;
   while (recvCQ_.peek() == nullptr);

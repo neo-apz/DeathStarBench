@@ -15,6 +15,7 @@
 #include "../MyCommon/core_schedule.h"
 #include "../MyCommon/readerwriterqueue.h"
 #include "../MyCommon/atomicops.h"
+#include "../MyCommon/stopwatch.h"
 
 #include <iostream>
 
@@ -237,6 +238,7 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   void ProcessService();
+  void ProcessServiceP2();
   void PostProcess();
   MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface) :
     iface_(iface) {
@@ -266,6 +268,11 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ReaderWriterQueue<int> postpCQ_;
   #endif
 
+  #ifdef SW
+  Stopwatch<std::chrono::nanoseconds> servSW_;
+  Stopwatch<std::chrono::nanoseconds> postpSW_;
+  #endif
+
   ~MyUniqueIdServiceProcessor() {
     #ifdef STAGED
     // std::cout << "In dealloc" << std::endl;
@@ -273,6 +280,13 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     exit_postpT_ = true;
     servThread_.join();
     postPThread_.join();
+    #endif
+
+    #ifdef SW
+    servSW_.post_process();
+    postpSW_.post_process();
+    std::cout << "Serv: " << servSW_.mean() << std::endl;
+    std::cout << "PostP: " << postpSW_.mean() << std::endl;
     #endif
   }
 };

@@ -15,6 +15,7 @@
 #include "../MyCommon/readerwriterqueue.h"
 #include "../MyCommon/core_schedule.h"
 #include "../MyCommon/atomicops.h"
+#include "../MyCommon/stopwatch.h"
 
 #include <iostream>
 
@@ -887,6 +888,11 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
  public:
   static bool isReqGenPhase;
 
+  #ifdef SW
+  Stopwatch<std::chrono::nanoseconds> recvSW_;
+  Stopwatch<std::chrono::nanoseconds> sendSW_;
+  #endif
+
   #ifdef STAGED
   std::thread sendThread_;
   std::atomic<bool> exit_sendT_{false};
@@ -900,15 +906,23 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
 
   void Send();
   void Recv();
+  #endif
 
   ~FakeComposePostServiceClient() {
+    #ifdef STAGED
     exit_sendT_ = true;
     exit_recvT_ = true;
     sendThread_.join();
     recvThread_.join();
-  }
+    #endif
 
-  #endif
+    #ifdef SW
+    sendSW_.post_process();
+    recvSW_.post_process();
+    std::cout << "Send: " << sendSW_.mean() << std::endl;
+    std::cout << "Recv: " << recvSW_.mean() << std::endl;
+    #endif
+  }
 
 };
 

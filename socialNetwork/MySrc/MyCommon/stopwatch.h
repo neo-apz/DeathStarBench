@@ -12,48 +12,48 @@
 #include <algorithm>
 #include <chrono>
 
-static struct timeval tv;
+// static struct timeval tv;
 
-typedef struct stopwatch {
- uint64_t start = 0;
- uint64_t stop = 0;
- uint64_t total = 0;
- uint64_t count = 0;
-} stopwatch;
-
-
-uint64_t now();
-void sw_start(stopwatch* sw);
-void sw_stop(stopwatch* sw, bool clear=false);
-double sw_getAVG(stopwatch sw);
+// typedef struct stopwatch {
+//  uint64_t start = 0;
+//  uint64_t stop = 0;
+//  uint64_t total = 0;
+//  uint64_t count = 0;
+// } stopwatch;
 
 
-// Current time, microseconds since the epoch
-uint64_t now() {
-  gettimeofday(&tv, NULL);
-  int64_t ret;
-  ret = tv.tv_sec;
-  ret = ret * 1000 * 1000 + tv.tv_usec;
-  return ret;
-}
+// uint64_t now();
+// void sw_start(stopwatch* sw);
+// void sw_stop(stopwatch* sw, bool clear=false);
+// double sw_getAVG(stopwatch sw);
 
 
-void sw_start(stopwatch* sw) {
-  sw->start = now();
-}
+// // Current time, microseconds since the epoch
+// uint64_t now() {
+//   gettimeofday(&tv, NULL);
+//   int64_t ret;
+//   ret = tv.tv_sec;
+//   ret = ret * 1000 * 1000 + tv.tv_usec;
+//   return ret;
+// }
 
-void sw_stop(stopwatch* sw, bool clear) {
-  sw->stop = now();
 
-  if (!clear) {
-    sw->total += sw->stop - sw->start;
-    sw->count++;
-  }
-}
+// void sw_start(stopwatch* sw) {
+//   sw->start = now();
+// }
 
-double sw_getAVG(stopwatch sw){
-  return (sw.total * 1.0) / sw.count;
-}
+// void sw_stop(stopwatch* sw, bool clear) {
+//   sw->stop = now();
+
+//   if (!clear) {
+//     sw->total += sw->stop - sw->start;
+//     sw->count++;
+//   }
+// }
+
+// double sw_getAVG(stopwatch sw){
+//   return (sw.total * 1.0) / sw.count;
+// }
 
 
 template <typename TimeT = std::chrono::microseconds>

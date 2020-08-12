@@ -14,5 +14,6 @@ wrk2/deps/luajit/src/luajit
 wrk2/wrk
 
 cmake-build/
+cmake-staged/
 
 .vscode/

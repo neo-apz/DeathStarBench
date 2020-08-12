@@ -246,7 +246,7 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **r
 
     client_count++;
     #ifdef __aarch64__
-      PROCESS_END(count);
+      PROCESS_END(client_count);
     #endif
   }
 

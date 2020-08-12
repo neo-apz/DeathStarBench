@@ -54,7 +54,9 @@ void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
   for (int c = 0; c < num_iterations; c++) {
       delete reqGenPhaseClients[c];
       delete processPhaseClients[c];
-    }
+  }
+  free(reqGenPhaseClients);
+  free(processPhaseClients);
 }
 
 void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClient,
@@ -158,12 +160,17 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
   FakeComposePostServiceClient::isReqGenPhase = false;
 
   #ifdef SW
+  Stopwatch<std::chrono::nanoseconds> prepSW_;
   Stopwatch<std::chrono::microseconds> sw;
   sw.start();
   #endif
 
   while (count < num_iterations){
 
+    #ifdef SW
+    prepSW_.start();
+    #endif
+    
     srvIProt = processPhaseClients[count]->GetClient()->getOutputProtocol();
     srvOProt = processPhaseClients[count]->GetClient()->getInputProtocol();
 
@@ -176,6 +183,11 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     #ifdef __aarch64__
       PROCESS_END(count);
     #endif
+    
+    #ifdef SW
+    prepSW_.stop();
+    #endif
+    
   }
 
   #ifdef STAGED
@@ -195,6 +207,8 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
   throughputs[tid] = (num_iterations / (sw.mean() * 1.0));
   latencies[tid] = (sw.mean() * 1.0) / num_iterations;
   // LOG(warning) << "[" << tid << "] Million Reqs/s = " <<  throughputs[tid];
+  prepSW_.post_process();
+  std::cout << "PreP: " << prepSW_.mean() << std::endl;
   #endif
 
   // if (tid == max_tid)
