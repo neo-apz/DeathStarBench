@@ -13,6 +13,7 @@
 
 #include <thread>
 #include "../MyCommon/readerwriterqueue.h"
+#include "../MyCommon/core_schedule.h"
 #include "../MyCommon/atomicops.h"
 
 #include <iostream>
@@ -828,19 +829,17 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     _fakeProcessor = std::make_shared<FakeComposePostServiceProcessor>(handler);
 
     #ifdef STAGED
+    int coreId;
     sendThread_ = std::thread([this] {Send();});
-    cpu_set_t cpuSet;
-    CPU_ZERO(&cpuSet);
-    CPU_SET(9, &cpuSet);
-    pthread_setaffinity_np(sendThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+    coreId = PinToCore(&sendThread_);
+    // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
 
     recvThread_ = std::thread([this] {Recv();});
-    CPU_ZERO(&cpuSet);
-    CPU_SET(15, &cpuSet);
-    pthread_setaffinity_np(recvThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+    coreId = PinToCore(&recvThread_);
+    // std::cout << "Recv thread pinned to core " << coreId << "." << std::endl;
     #endif
-
   }
+
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);

@@ -20,7 +20,7 @@ uint64_t num_iterations;
 MyLock thread_lock;
 std::string machine_id;
 
-cpu_set_t *cpuSet;
+#include "../../MyCommon/core_schedule.h"
 
 #ifdef SW
 double *throughputs;
@@ -100,7 +100,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 
 #ifdef STAGED
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
-      std::make_shared<MyUniqueIdServiceProcessor>(handler, tid+1);
+      std::make_shared<MyUniqueIdServiceProcessor>(handler);
 #else
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
     std::make_shared<MyUniqueIdServiceProcessor>(handler);
@@ -251,7 +251,7 @@ int main(int argc, char *argv[]) {
 
   std::thread processThreads[num_threads];
 
-  cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
+  // cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
   
   #ifdef SW
   throughputs = (double*) malloc(sizeof(double) * num_threads);
@@ -259,6 +259,7 @@ int main(int argc, char *argv[]) {
   #endif
 
   buffer_size = BUFFER_SIZE;
+  int coreId = -1;
   for (int i = 0; i < num_threads; i++) {
     #ifdef SW
     throughputs[i] = 0;
@@ -281,9 +282,8 @@ int main(int argc, char *argv[]) {
                                       num_threads - 1,
                                       buffer_size);
 
-    CPU_ZERO(&cpuSet[i]);
-    CPU_SET(i+1, &cpuSet[i]);
-    pthread_setaffinity_np(processThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
+    coreId = PinToCore(&processThreads[i]);
+    // std::cout << "Processor thread pinned to core " << coreId << "." << std::endl;
   }
 
   for (int i = 0; i < num_threads; i++) {

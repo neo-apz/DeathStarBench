@@ -1493,7 +1493,15 @@ void FakeComposePostServiceClient::Send() {
     req.oprot->getTransport()->flush();
     
     // std::cout << "End of Send, ReqGenPhase:" << isReqGenPhase << std::endl;
+
+    // if (isReqGenPhase){
+    //   _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+    //   // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
+    //   continue;
+    // }
+
     sendCQ_.enqueue(1);
+
   }
 }
 
@@ -1508,8 +1516,11 @@ void FakeComposePostServiceClient::Recv() {
 
   while (!exit_recvT_){
     // Check for the completion of previous stage
-    while (sendCQ_.peek() == nullptr || recvRQ_.peek() == nullptr) {
+    while (recvRQ_.peek() == nullptr) {
       if (exit_recvT_) return;
+    }
+    while (sendCQ_.peek() == nullptr) {
+        if (exit_recvT_) return;
     }
     sendCQ_.try_dequeue(completion);
     recvRQ_.try_dequeue(req);

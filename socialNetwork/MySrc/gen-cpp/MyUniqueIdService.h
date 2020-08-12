@@ -12,6 +12,7 @@
 #include "my_social_network_types.h"
 
 #include <thread>
+#include "../MyCommon/core_schedule.h"
 #include "../MyCommon/readerwriterqueue.h"
 #include "../MyCommon/atomicops.h"
 
@@ -240,25 +241,18 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface) :
     iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
-  }
 
-#ifdef STAGED
-  MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface, int coreId) :
-    iface_(iface) {
-    processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
-    
+    #ifdef STAGED
+    int coreId;
     servThread_ = std::thread([this] {ProcessService();});
-    cpu_set_t cpuSet;
-    CPU_ZERO(&cpuSet);
-    CPU_SET(coreId+6, &cpuSet);
-    pthread_setaffinity_np(servThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+    coreId = PinToCore(&servThread_);
+    // std::cout << "Function thread pinned to core " << coreId << "." << std::endl;
 
     postPThread_ = std::thread([this] {PostProcess();});
-    CPU_ZERO(&cpuSet);
-    CPU_SET(coreId+12, &cpuSet);
-    pthread_setaffinity_np(postPThread_.native_handle(), sizeof(cpu_set_t), &cpuSet);
+    coreId = PinToCore(&postPThread_);
+    // std::cout << "PostP thread pinned to core " << coreId << "." << std::endl;
+    #endif
   }
-#endif
 
   #ifdef STAGED
   std::thread servThread_;
