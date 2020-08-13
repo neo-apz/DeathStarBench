@@ -5,6 +5,7 @@ add_executable(
     ${COMMON_DIR}/MyTMemoryBuffer.cpp
     ${COMMON_DIR}/RandomGenerator.cpp
     ${COMMON_DIR}/core_schedule.cpp
+    ${COMMON_DIR}/PostPSendStage.cpp
     ${THRIFT_GEN_CPP_DIR}/MyUniqueIdService.cpp
     ${THRIFT_GEN_CPP_DIR}/FakeComposePostService.cpp
     ${THRIFT_GEN_CPP_DIR}/my_social_network_types.cpp

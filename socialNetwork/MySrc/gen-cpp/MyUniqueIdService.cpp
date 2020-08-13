@@ -351,12 +351,11 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   }
 
   #ifdef SW
-  postpSW_.start();
+  // postpSW_.start();
   #endif
 
   #ifdef STAGED
-  PostPReq postp_req = {oprot, seqid, &result, ctx};
-  postpRQ_.enqueue(postp_req);
+  _postpSendStageHandler->EnqueuePostPReq(oprot, seqid, &result, ctx);
   // int completion;
   // while (sCQ_.peek() == nullptr);
   // sCQ_.try_dequeue(completion);
@@ -377,7 +376,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   #endif
   
   #ifdef SW
-  postpSW_.stop();
+  // postpSW_.stop();
   #endif
 }
 
@@ -422,39 +421,6 @@ void MyUniqueIdServiceProcessor::ProcessService(){
 
 void MyUniqueIdServiceProcessor::ProcessServiceP2() {
   servCQ_.enqueue(1);
-}
-
-void MyUniqueIdServiceProcessor::PostProcess() {
-
-  int completion;
-  PostPReq req;
-  MyUniqueIdService_UploadUniqueId_result *result;
-  while (!exit_postpT_){
-    // Check for the completion of function
-    while (servCQ_.peek() == nullptr || postpRQ_.peek() == nullptr) {
-      if (exit_postpT_) return;
-    }
-    servCQ_.try_dequeue(completion);
-    postpRQ_.try_dequeue(req);
-    // std::cout << "In thread!" << std::endl;
-
-    // if (this->eventHandler_.get() != NULL) {
-    //   this->eventHandler_->preWrite(req.ctx, "MyUniqueIdService.UploadUniqueId");
-    // }
-
-    req.oprot->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, req.seqid);
-    result = (MyUniqueIdService_UploadUniqueId_result* ) req.result;
-    result->write(req.oprot);
-    req.oprot->writeMessageEnd();
-    uint32_t bytes = req.oprot->getTransport()->writeEnd();
-    req.oprot->getTransport()->flush();
-
-    // if (this->eventHandler_.get() != NULL) {
-    //   this->eventHandler_->postWrite(req.ctx, "MyUniqueIdService.UploadUniqueId", bytes);
-    // }
-
-    postpCQ_.enqueue(1);
-  }
 }
 
 #endif

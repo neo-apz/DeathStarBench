@@ -16,7 +16,7 @@ namespace my_social_network {
 template<class MyTClient>
 class ClientPoolMap {
  public:
-  ClientPoolMap(const std::string &client_type, uint32_t buff_size, int pool_size);
+  ClientPoolMap(const std::string &client_type, uint32_t buff_size, int pool_size, PostPSendStage** postpSendStageHandlers);
   ~ClientPoolMap();
 
   ClientPoolMap(const ClientPoolMap&) = delete;
@@ -39,13 +39,19 @@ class ClientPoolMap {
 
 template<class MyTClient>
 ClientPoolMap<MyTClient>::ClientPoolMap(const std::string &client_type,
-                                        uint32_t buff_size, int pool_size) {
+                                        uint32_t buff_size, int pool_size,
+                                        PostPSendStage** postpSendStageHandlers) {
   _buff_size = buff_size;
   _pool_size = pool_size;
   _client_type = client_type;
 
   for (int i = 0; i < _pool_size; ++i) {
+    #ifdef STAGED
+    MyTClient *client = new MyTClient(_buff_size, postpSendStageHandlers[i]);
+    #else
     MyTClient *client = new MyTClient(_buff_size);
+    #endif
+    
     _pool.emplace_back(client);
   }
   _current_index = 0;

@@ -17,6 +17,10 @@
 #include "../MyCommon/atomicops.h"
 #include "../MyCommon/stopwatch.h"
 
+#include "MyUniqueIdService.fwd.h"
+// #include "../MyCommon/PostPSendStage.fwd.h"
+#include "../MyCommon/PostPSendStage.h"
+
 #include <iostream>
 
 // #define STAGED 1
@@ -220,13 +224,6 @@ typedef struct ServReq {
   void* ctx;
 } ServReq;
 
-typedef struct PostPReq {
-  ::apache::thrift::protocol::TProtocol* oprot;
-  int32_t seqid;
-  void* result;
-  void* ctx;
-} PostPReq;
-
 class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  public:
   ::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface_;
@@ -240,8 +237,12 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void ProcessService();
   void ProcessServiceP2();
   void PostProcess();
-  MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface) :
-    iface_(iface) {
+  MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface) : iface_(iface) {
+    processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
+  }
+  
+  MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface,
+                             PostPSendStage* postpSendStageHandler) : iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
 
     #ifdef STAGED
@@ -250,9 +251,8 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     coreId = PinToCore(&servThread_);
     // std::cout << "Function thread pinned to core " << coreId << "." << std::endl;
 
-    postPThread_ = std::thread([this] {PostProcess();});
-    coreId = PinToCore(&postPThread_);
-    // std::cout << "PostP thread pinned to core " << coreId << "." << std::endl;
+    _postpSendStageHandler = postpSendStageHandler;
+    _postpSendStageHandler->setServCQ(&servCQ_);
     #endif
   }
 
@@ -261,32 +261,23 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   std::atomic<bool> exit_servT_{false};
   ReaderWriterQueue<ServReq> servRQ_;
   ReaderWriterQueue<int> servCQ_;
-
-  std::thread postPThread_;
-  std::atomic<bool> exit_postpT_{false};
-  ReaderWriterQueue<PostPReq> postpRQ_;
-  ReaderWriterQueue<int> postpCQ_;
+  PostPSendStage* _postpSendStageHandler;
   #endif
 
   #ifdef SW
-  Stopwatch<std::chrono::nanoseconds> servSW_;
-  Stopwatch<std::chrono::nanoseconds> postpSW_;
+  Stopwatch<std::chrono::nanoseconds> servSW_;  
   #endif
 
   ~MyUniqueIdServiceProcessor() {
     #ifdef STAGED
     // std::cout << "In dealloc" << std::endl;
     exit_servT_ = true;
-    exit_postpT_ = true;
-    servThread_.join();
-    postPThread_.join();
+    servThread_.join();;
     #endif
 
     #ifdef SW
     servSW_.post_process();
-    postpSW_.post_process();
     std::cout << "Serv: " << servSW_.mean() << std::endl;
-    std::cout << "PostP: " << postpSW_.mean() << std::endl;
     #endif
   }
 };

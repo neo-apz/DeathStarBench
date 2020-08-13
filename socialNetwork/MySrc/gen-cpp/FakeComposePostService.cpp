@@ -6,6 +6,8 @@
  */
 #include "FakeComposePostService.h"
 
+#include "../MyCommon/PostPSendStage.h"
+
 #ifdef __aarch64__
   #include "../MyCommon/MagicBreakPoint.h"
 #endif
@@ -1450,21 +1452,21 @@ bool FakeComposePostServiceClient::isReqGenPhase{ true };
 
 void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
-  #ifdef SW
-  sendSW_.start();
-  #endif
+  // #ifdef SW
+  // sendSW_.start();
+  // #endif
   
   send_UploadUniqueId(req_id, post_id, post_type);
   
-  #ifdef SW
-  sendSW_.stop();
-  #endif
+  // #ifdef SW
+  // sendSW_.stop();
+  // #endif
 
   if (isReqGenPhase){
     #ifdef STAGED
-    while (sendCQ_.peek() == nullptr);
+    while (_postpSendStageHandler->PeekSend() == nullptr);
     int completion;
-    sendCQ_.try_dequeue(completion);
+    _postpSendStageHandler->SendCompetion(completion);
     #endif
     _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
     // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
@@ -1490,38 +1492,6 @@ void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const in
 }
 
 #ifdef STAGED
-void FakeComposePostServiceClient::Send() {
-  SendReq req;
-  FakeComposePostService_UploadUniqueId_args* args;
-
-  int32_t cseqid = 0;
-
-  while (!exit_sendT_){
-    while (sendRQ_.peek() == nullptr){
-      if (exit_sendT_) return;
-    }
-    sendRQ_.try_dequeue(req);
-
-    req.oprot->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
-    args = (FakeComposePostService_UploadUniqueId_args*) req.args;
-    args->write(oprot_);
-    req.oprot->writeMessageEnd();
-    req.oprot->getTransport()->writeEnd();
-    req.oprot->getTransport()->flush();
-    
-    // std::cout << "End of Send, ReqGenPhase:" << isReqGenPhase << std::endl;
-
-    // if (isReqGenPhase){
-    //   _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-    //   // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
-    //   continue;
-    // }
-
-    sendCQ_.enqueue(1);
-
-  }
-}
-
 void FakeComposePostServiceClient::Recv() {
   int completion;
   RecvReq req;
@@ -1536,10 +1506,10 @@ void FakeComposePostServiceClient::Recv() {
     while (recvRQ_.peek() == nullptr) {
       if (exit_recvT_) return;
     }
-    while (sendCQ_.peek() == nullptr) {
+    while (_postpSendStageHandler->PeekSend() == nullptr) {
         if (exit_recvT_) return;
     }
-    sendCQ_.try_dequeue(completion);
+    _postpSendStageHandler->SendCompetion(completion);
     recvRQ_.try_dequeue(req);
 
     req.iprot->readMessageBegin(fname, mtype, rseqid);
@@ -1583,8 +1553,7 @@ void FakeComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, con
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.post_type = &post_type;
-  SendReq send_req = {&args, oprot_};
-  sendRQ_.enqueue(send_req);
+  _postpSendStageHandler->EnqueueSendReq(oprot_, &args);
   
   #else
   int32_t cseqid = 0;

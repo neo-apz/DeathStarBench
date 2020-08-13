@@ -17,6 +17,10 @@
 #include "../MyCommon/atomicops.h"
 #include "../MyCommon/stopwatch.h"
 
+#include "FakeComposePostService.fwd.h"
+#include "../MyCommon/PostPSendStage.fwd.h"
+// #include "../MyCommon/PostPSendStage.h"
+
 #include <iostream>
 
 using namespace moodycamel;
@@ -807,11 +811,6 @@ class FakeComposePostHandler : public FakeComposePostServiceIf {
 
 };
 
-typedef struct SendReq {
-  void* args;
-  ::apache::thrift::protocol::TProtocol* oprot;
-} SendReq;
-
 typedef struct RecvReq {
   ::apache::thrift::protocol::TProtocol* iprot;
   void* result;
@@ -824,19 +823,17 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     std::shared_ptr<FakeComposePostHandler> handler = std::make_shared<FakeComposePostHandler>();
     _fakeProcessor = std::make_shared<FakeComposePostServiceProcessor>(handler);
   }
-  FakeComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  FakeComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot,
+                               apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,
+                               PostPSendStage* postpSendStageHandler) {
     setProtocol(iprot,oprot);
     std::shared_ptr<FakeComposePostHandler> handler = std::make_shared<FakeComposePostHandler>();
     _fakeProcessor = std::make_shared<FakeComposePostServiceProcessor>(handler);
 
     #ifdef STAGED
-    int coreId;
-    sendThread_ = std::thread([this] {Send();});
-    coreId = PinToCore(&sendThread_);
-    // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
-
     recvThread_ = std::thread([this] {Recv();});
-    coreId = PinToCore(&recvThread_);
+    int coreId = PinToCore(&recvThread_);
+    _postpSendStageHandler = postpSendStageHandler;
     // std::cout << "Recv thread pinned to core " << coreId << "." << std::endl;
     #endif
   }
@@ -890,36 +887,27 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
 
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> recvSW_;
-  Stopwatch<std::chrono::nanoseconds> sendSW_;
   #endif
 
   #ifdef STAGED
-  std::thread sendThread_;
-  std::atomic<bool> exit_sendT_{false};
-  ReaderWriterQueue<SendReq> sendRQ_;
-  ReaderWriterQueue<int> sendCQ_;
-
   std::thread recvThread_;
   std::atomic<bool> exit_recvT_{false};
   ReaderWriterQueue<RecvReq> recvRQ_;
   ReaderWriterQueue<int> recvCQ_;
 
-  void Send();
+  PostPSendStage* _postpSendStageHandler;
+
   void Recv();
   #endif
 
   ~FakeComposePostServiceClient() {
     #ifdef STAGED
-    exit_sendT_ = true;
     exit_recvT_ = true;
-    sendThread_.join();
     recvThread_.join();
     #endif
 
     #ifdef SW
-    sendSW_.post_process();
     recvSW_.post_process();
-    std::cout << "Send: " << sendSW_.mean() << std::endl;
     std::cout << "Recv: " << recvSW_.mean() << std::endl;
     #endif
   }
