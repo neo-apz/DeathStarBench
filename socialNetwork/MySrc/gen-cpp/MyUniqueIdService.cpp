@@ -325,6 +325,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
       // std::cout << "Before thread!" << std::endl;
       ServReq serv_req = {args, result, ctx};
       servRQ_.enqueue(serv_req);
+      // std::cout << "servRQ_.enqueue."<< std::endl;
       // int completion;
       // while (fCQ_.peek() == nullptr);
       // fCQ_.try_dequeue(completion);
@@ -407,6 +408,7 @@ void MyUniqueIdServiceProcessor::ProcessService(){
     // std::cout << "In thread!" << std::endl;
     servCQ_.enqueue(1);
     delete args;
+    // std::cout << "servCQ_.enqueue."<< std::endl;
   }
 }
 

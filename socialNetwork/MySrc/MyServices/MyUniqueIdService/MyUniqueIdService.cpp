@@ -8,6 +8,7 @@
 #include "../../MyCommon/RandomGenerator.h"
 
 #include "../../MyCommon/PostPSendStage.h"
+#include "../../MyCommon/PrePRecvStage.h"
 
 #ifdef __aarch64__
   #include "../../MyCommon/MagicBreakPoint.h"
@@ -97,7 +98,8 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
                                std::shared_ptr<MyUniqueIdHandler> handler,
                                int tid, int max_tid,
                                uint64_t buffer_size,
-                               PostPSendStage* postpSendStageHandler){
+                               PostPSendStage* postpSendStageHandler,
+                               PrePRecvStage* prepRecvStageHandler){
 
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
 
@@ -105,10 +107,11 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 
 #ifdef STAGED
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
-      std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler);
+      std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler, prepRecvStageHandler);
+  int completion;
 #else
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
-    std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler);
+    std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler, prepRecvStageHandler);
 #endif
 
   FakeComposePostServiceClient::isReqGenPhase = true;
@@ -134,8 +137,8 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     #endif
     
     ClientRecvUniqueId(reqGenPhaseClients[count]);
-    // std::cout << "ReqGen Thread " << tid << " count=" << count  << std::endl;
     count++;
+    // std::cout << "ReqGen Thread " << tid << " count=" << count  << std::endl;
   }
 
   // std::shared_ptr<MyUniqueIdServiceProcessor> processPhaseprocessor =
@@ -161,6 +164,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 
   count = 0;
   FakeComposePostServiceClient::isReqGenPhase = false;
+  int completion_count = 0;
 
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> prepSW_;
@@ -179,27 +183,41 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 
     processor->process(srvIProt, srvOProt, nullptr);
 
-    // ClientRecvUniqueId(uniqueIdClient);
-    
+    #ifdef STAGED
+    count++;
+    prepRecvStageHandler->Recv();
+    if (processor->_postpSendStageHandler->PeekPostP() != nullptr){ // request is done
+      processor->_postpSendStageHandler->PostPCompletion(completion);
+      completion_count++;
+      // std::cout << "After CQ Check Thread " << tid << " count=" << completion_count  << std::endl;
+      #ifdef __aarch64__
+      PROCESS_END(count);
+      #endif
+    }
+    #else
     count++;
     // std::cout << "Processing Thread " << tid << " count=" << count  << std::endl;
     #ifdef __aarch64__
       PROCESS_END(count);
     #endif
+    #endif
     
     #ifdef SW
     prepSW_.stop();
     #endif
-    
   }
 
   #ifdef STAGED
-  count = 0;
-  int completion;
-  while (count < num_iterations){
-    while (processor->_postpSendStageHandler->PeekPostP() == nullptr);
-    processor->_postpSendStageHandler->PostPCompletion(completion);
-    count++;
+  while (completion_count < num_iterations){
+    prepRecvStageHandler->Recv();
+    if (processor->_postpSendStageHandler->PeekPostP() != nullptr){ // request is done
+      processor->_postpSendStageHandler->PostPCompletion(completion);
+      completion_count++;
+      // std::cout << "After CQ Check Thread " << tid << " count=" << completion_count  << std::endl;
+      #ifdef __aarch64__
+      PROCESS_END(count);
+      #endif
+    }
   }
   #endif
 
@@ -253,16 +271,19 @@ int main(int argc, char *argv[]) {
   MyThriftClient<MyUniqueIdServiceClient>** reqGenPhaseClients[num_threads];
   MyThriftClient<MyUniqueIdServiceClient>** processPhaseClients[num_threads];
 
-  PostPSendStage* postpSendStageHandlers[num_threads];
+  PrePRecvStage* prepRecvStageHandlers[num_threads];
+  PostPSendStage* postpSendStageHandlers[num_threads]; 
 
   for (int i = 0; i < num_threads; i++) {
-    postpSendStageHandlers[i] = new PostPSendStage();
+    prepRecvStageHandlers[i] = new PrePRecvStage();
+    postpSendStageHandlers[i] = new PostPSendStage(prepRecvStageHandlers[i]);
   }
 
   uint64_t buffer_size = BUFFER_SIZE * num_iterations;
   // std::cout << "Buffer size: " << buffer_size << std::endl;
   ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
-    "compose-post", buffer_size, num_threads, postpSendStageHandlers);
+    "compose-post", buffer_size, num_threads,
+    postpSendStageHandlers, prepRecvStageHandlers);
   
   // MyClientPool<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
   //   "compose-post", buffer_size, 2, 2, 1000);
@@ -304,7 +325,8 @@ int main(int argc, char *argv[]) {
                                       i,
                                       num_threads - 1,
                                       buffer_size,
-                                      postpSendStageHandlers[i]);
+                                      postpSendStageHandlers[i],
+                                      prepRecvStageHandlers[i]);
 
     coreId = PinToCore(&processThreads[i]);
     // std::cout << "Processor thread pinned to core " << coreId << "." << std::endl;

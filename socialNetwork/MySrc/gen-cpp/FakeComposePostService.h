@@ -19,7 +19,7 @@
 
 #include "FakeComposePostService.fwd.h"
 #include "../MyCommon/PostPSendStage.fwd.h"
-// #include "../MyCommon/PostPSendStage.h"
+#include "../MyCommon/PrePRecvStage.fwd.h"
 
 #include <iostream>
 
@@ -811,11 +811,6 @@ class FakeComposePostHandler : public FakeComposePostServiceIf {
 
 };
 
-typedef struct RecvReq {
-  ::apache::thrift::protocol::TProtocol* iprot;
-  void* result;
-} RecvReq;
-
 class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
  public:
   FakeComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -825,15 +820,17 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
   }
   FakeComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot,
                                apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,
-                               PostPSendStage* postpSendStageHandler) {
+                               PostPSendStage* postpSendStageHandler,
+                               PrePRecvStage* prepRecvStageHandler) {
     setProtocol(iprot,oprot);
     std::shared_ptr<FakeComposePostHandler> handler = std::make_shared<FakeComposePostHandler>();
     _fakeProcessor = std::make_shared<FakeComposePostServiceProcessor>(handler);
 
     #ifdef STAGED
-    recvThread_ = std::thread([this] {Recv();});
-    int coreId = PinToCore(&recvThread_);
+    // recvThread_ = std::thread([this] {Recv();});
+    // int coreId = PinToCore(&recvThread_);
     _postpSendStageHandler = postpSendStageHandler;
+    _prepRecvStageHandler = prepRecvStageHandler;
     // std::cout << "Recv thread pinned to core " << coreId << "." << std::endl;
     #endif
   }
@@ -886,29 +883,23 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
   static bool isReqGenPhase;
 
   #ifdef SW
-  Stopwatch<std::chrono::nanoseconds> recvSW_;
+  // Stopwatch<std::chrono::nanoseconds> recvSW_;
   #endif
 
   #ifdef STAGED
-  std::thread recvThread_;
-  std::atomic<bool> exit_recvT_{false};
-  ReaderWriterQueue<RecvReq> recvRQ_;
-  ReaderWriterQueue<int> recvCQ_;
-
   PostPSendStage* _postpSendStageHandler;
-
-  void Recv();
+  PrePRecvStage* _prepRecvStageHandler;
   #endif
 
   ~FakeComposePostServiceClient() {
     #ifdef STAGED
-    exit_recvT_ = true;
-    recvThread_.join();
+    // exit_recvT_ = true;
+    // recvThread_.join();
     #endif
 
     #ifdef SW
-    recvSW_.post_process();
-    std::cout << "Recv: " << recvSW_.mean() << std::endl;
+    // recvSW_.post_process();
+    // std::cout << "Recv: " << recvSW_.mean() << std::endl;
     #endif
   }
 

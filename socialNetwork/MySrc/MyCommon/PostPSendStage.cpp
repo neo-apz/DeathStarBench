@@ -13,6 +13,7 @@ void PostPSendStage::EnqueuePostPReq(
 
   PostPReq req = {oprot, seqid, result, ctx};
   postpRQ_.enqueue(req);
+  // std::cout << "postpRQ_.enqueue."<< std::endl;
 }
 
 void* PostPSendStage::PeekPostP(){
@@ -27,13 +28,16 @@ void* PostPSendStage::PeekSend(){
   return sendCQ_.peek();
 }
 
-void PostPSendStage::SendCompetion(int completion){
+void PostPSendStage::SendCompletion(int completion){
   sendCQ_.try_dequeue(completion);
 }
 
-void PostPSendStage::EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot, void *args){
-  SendReq req = {args, oprot};
+void PostPSendStage::EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot,
+                                    void *args,
+                                    ::apache::thrift::protocol::TProtocol* iprot){
+  SendReq req = {args, oprot, iprot};
   sendRQ_.enqueue(req);
+  // std::cout << "sendRQ_.enqueue."<< std::endl;
 }
 
 void PostPSendStage::setServCQ(ReaderWriterQueue<int>* servCQ) {
@@ -52,8 +56,9 @@ void PostPSendStage::Run_() {
     if (sendRQ_.peek() != nullptr){
       sendRQ_.try_dequeue(sendReq);
       args = (FakeComposePostService_UploadUniqueId_args*) sendReq.args;
-      Send_(args, sendReq.oprot);
+      Send_(args, sendReq.oprot, sendReq.iprot);
       sendCQ_.enqueue(1);
+      // std::cout << "sendCQ_.enqueue."<< std::endl;
     }
 
     if (postpRQ_.peek() != nullptr && servCQ_->peek() != nullptr){ // also check for completion of the function
@@ -62,6 +67,7 @@ void PostPSendStage::Run_() {
       result = (MyUniqueIdService_UploadUniqueId_result* ) postpReq.result;
       PostProcess_(result, &(postpReq.seqid), postpReq.oprot, postpReq.ctx);
       postpCQ_.enqueue(1);
+      // std::cout << "postpCQ_.enqueue."<< std::endl;
     }
   }
 
@@ -70,7 +76,8 @@ void PostPSendStage::Run_() {
 
 void PostPSendStage::Send_(
   FakeComposePostService_UploadUniqueId_args* args,
-  ::apache::thrift::protocol::TProtocol* oprot) {
+  ::apache::thrift::protocol::TProtocol* oprot,
+  ::apache::thrift::protocol::TProtocol* iprot) {
   
   int32_t cseqid = 0;
 
@@ -89,6 +96,13 @@ void PostPSendStage::Send_(
   //   // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
   //   continue;
   // }
+
+  if (FakeComposePostServiceClient::isReqGenPhase){
+    return;
+  }
+
+  FakeComposePostService_UploadUniqueId_presult *result = new FakeComposePostService_UploadUniqueId_presult();
+  prepRecvStage_->EnqueueRecvReq(iprot, result);
 }
 
 void PostPSendStage::PostProcess_(

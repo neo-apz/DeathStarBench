@@ -9,7 +9,8 @@
 // #include <thrift/transport/TBufferTransports.h>
 #include "MyTMemoryBuffer.h"
 
-#include "PostPSendStage.h"
+#include "PostPSendStage.fwd.h"
+#include "PrePRecvStage.fwd.h"
 
 #include <thrift/protocol/TCompactProtocol.h>
 #include <thrift/transport/TTransportUtils.h>
@@ -38,7 +39,7 @@ class MyThriftClient : public MyGenericClient{
   MyThriftClient(uint32_t sz);
   
   #ifdef STAGED
-  MyThriftClient(uint32_t sz, PostPSendStage* postpSendStageHandler);
+  MyThriftClient(uint32_t sz, PostPSendStage* postpSendStageHandler, PrePRecvStage* prepRecvStageHandler);
   #endif
 
   MyThriftClient(uint8_t* cltIbuf, uint32_t ISz, uint8_t* cltObuf, uint32_t OSz);
@@ -92,14 +93,15 @@ MyThriftClient<TThriftClient>::MyThriftClient(uint32_t sz) {
 
 #ifdef STAGED
 template<class TThriftClient>
-MyThriftClient<TThriftClient>::MyThriftClient(uint32_t sz, PostPSendStage* postpSendStageHandler) {
+MyThriftClient<TThriftClient>::MyThriftClient(uint32_t sz,
+            PostPSendStage* postpSendStageHandler, PrePRecvStage* prepRecvStageHandler) {
   _cltITransport = std::make_shared<MyTMemoryBuffer>(sz);
   _cltOTransport = std::make_shared<MyTMemoryBuffer>(sz);
 
   _ctlIProt = std::make_shared<TCompactProtocol>(_cltITransport);
   _ctlOProt = std::make_shared<TCompactProtocol>(_cltOTransport);
 
-  _client = new TThriftClient(_ctlIProt, _ctlOProt, postpSendStageHandler);
+  _client = new TThriftClient(_ctlIProt, _ctlOProt, postpSendStageHandler, prepRecvStageHandler);
 }
 #endif
 

@@ -242,7 +242,8 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   }
   
   MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface,
-                             PostPSendStage* postpSendStageHandler) : iface_(iface) {
+                             PostPSendStage* postpSendStageHandler,
+                             PrePRecvStage* prepRecvStageHandler) : iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
 
     #ifdef STAGED
@@ -253,6 +254,8 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
 
     _postpSendStageHandler = postpSendStageHandler;
     _postpSendStageHandler->setServCQ(&servCQ_);
+
+    _prepRecvStageHandler = prepRecvStageHandler;
     #endif
   }
 
@@ -262,6 +265,7 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ReaderWriterQueue<ServReq> servRQ_;
   ReaderWriterQueue<int> servCQ_;
   PostPSendStage* _postpSendStageHandler;
+  PrePRecvStage* _prepRecvStageHandler;
   #endif
 
   #ifdef SW
@@ -276,8 +280,8 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     #endif
 
     #ifdef SW
-    servSW_.post_process();
-    std::cout << "Serv: " << servSW_.mean() << std::endl;
+    // servSW_.post_process();
+    // std::cout << "Serv: " << servSW_.mean() << std::endl;
     #endif
   }
 };

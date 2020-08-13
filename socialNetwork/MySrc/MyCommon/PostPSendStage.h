@@ -15,6 +15,8 @@
 #include "../gen-cpp/FakeComposePostService.fwd.h"
 #include "../gen-cpp/MyUniqueIdService.fwd.h"
 
+#include "PrePRecvStage.h"
+
 // #include "../gen-cpp/FakeComposePostService.h"
 // #include "../gen-cpp/MyUniqueIdService.h"
 
@@ -25,6 +27,7 @@ namespace my_social_network {
 typedef struct SendReq {
   void* args;
   ::apache::thrift::protocol::TProtocol* oprot;
+  ::apache::thrift::protocol::TProtocol* iprot;
 } SendReq;
 
 typedef struct PostPReq {
@@ -38,10 +41,11 @@ typedef struct PostPReq {
 class PostPSendStage {
 
  public:
-  PostPSendStage(){
+  PostPSendStage(PrePRecvStage* prepRecvStage){
     int coreId;
     thread_ = std::thread([this] {Run_();});
     coreId = PinToCore(&thread_);
+    prepRecvStage_ = prepRecvStage;
     // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
   }
 
@@ -60,13 +64,13 @@ class PostPSendStage {
   void setServCQ(ReaderWriterQueue<int>*);
 
   void EnqueuePostPReq(::apache::thrift::protocol::TProtocol* oprot, int32_t seqid, void *result, void* ctx);
-  void EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot, void *args);
+  void EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot, void *args, ::apache::thrift::protocol::TProtocol* iprot);
 
   void* PeekPostP();
   void PostPCompletion(int completion);
 
   void* PeekSend();
-  void SendCompetion(int completion);
+  void SendCompletion(int completion);
 
  private:
   std::thread thread_;
@@ -79,6 +83,8 @@ class PostPSendStage {
 
   ReaderWriterQueue<int> *servCQ_;
 
+  PrePRecvStage* prepRecvStage_;
+
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> sendSW_;
   Stopwatch<std::chrono::nanoseconds> postpSW_;
@@ -86,7 +92,9 @@ class PostPSendStage {
 
 
   void Run_();
-  void Send_(FakeComposePostService_UploadUniqueId_args* args, ::apache::thrift::protocol::TProtocol* oprot);
+  void Send_(FakeComposePostService_UploadUniqueId_args* args,
+             ::apache::thrift::protocol::TProtocol* oprot,
+             ::apache::thrift::protocol::TProtocol* iprot);
   void PostProcess_(MyUniqueIdService_UploadUniqueId_result *result, int32_t* seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
 };
 
