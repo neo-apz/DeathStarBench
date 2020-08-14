@@ -52,7 +52,9 @@ void Allocate(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
 }
 
 void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
-             MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients){
+             MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
+             PostPSendStage* postpSendStageHandler,
+             PrePRecvStage* prepRecvStageHandler){
 
   for (int c = 0; c < num_iterations; c++) {
       delete reqGenPhaseClients[c];
@@ -60,6 +62,8 @@ void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
   }
   free(reqGenPhaseClients);
   free(processPhaseClients);
+  delete postpSendStageHandler;
+  delete prepRecvStageHandler;
 }
 
 void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClient,
@@ -108,6 +112,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 #ifdef STAGED
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
       std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler, prepRecvStageHandler);
+  prepRecvStageHandler->setProcessor(processor);
   int completion;
 #else
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
@@ -128,12 +133,13 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     srvIProt = reqGenPhaseClients[count]->GetClient()->getOutputProtocol();
     srvOProt = reqGenPhaseClients[count]->GetClient()->getInputProtocol();
 
-    processor->process(srvIProt, srvOProt, nullptr);
-
     #ifdef STAGED
-    int completion;
+    prepRecvStageHandler->EnqueuePrePReq(srvIProt, srvOProt);
+
     while (processor->_postpSendStageHandler->PeekPostP() == nullptr);
     processor->_postpSendStageHandler->PostPCompletion(completion);
+    #else
+    processor->process(srvIProt, srvOProt, nullptr);
     #endif
     
     ClientRecvUniqueId(reqGenPhaseClients[count]);
@@ -164,7 +170,6 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 
   count = 0;
   FakeComposePostServiceClient::isReqGenPhase = false;
-  int completion_count = 0;
 
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> prepSW_;
@@ -174,46 +179,36 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 
   while (count < num_iterations){
 
-    #ifdef SW
-    prepSW_.start();
-    #endif
+    // #ifdef SW
+    // prepSW_.start();
+    // #endif
     
     srvIProt = processPhaseClients[count]->GetClient()->getOutputProtocol();
     srvOProt = processPhaseClients[count]->GetClient()->getInputProtocol();
 
-    processor->process(srvIProt, srvOProt, nullptr);
-
     #ifdef STAGED
-    count++;
-    prepRecvStageHandler->Recv();
-    if (processor->_postpSendStageHandler->PeekPostP() != nullptr){ // request is done
-      processor->_postpSendStageHandler->PostPCompletion(completion);
-      completion_count++;
-      // std::cout << "After CQ Check Thread " << tid << " count=" << completion_count  << std::endl;
-      #ifdef __aarch64__
-      PROCESS_END(count);
-      #endif
-    }
+    prepRecvStageHandler->EnqueuePrePReq(srvIProt, srvOProt);
     #else
-    count++;
-    // std::cout << "Processing Thread " << tid << " count=" << count  << std::endl;
+    processor->process(srvIProt, srvOProt, nullptr);
     #ifdef __aarch64__
-      PROCESS_END(count);
+    PROCESS_END(count);
     #endif
     #endif
-    
-    #ifdef SW
-    prepSW_.stop();
-    #endif
+
+    count++;
+        
+    // #ifdef SW
+    // prepSW_.stop();
+    // #endif
   }
 
   #ifdef STAGED
-  while (completion_count < num_iterations){
-    prepRecvStageHandler->Recv();
+  count = 0;
+  while (count < num_iterations){
     if (processor->_postpSendStageHandler->PeekPostP() != nullptr){ // request is done
       processor->_postpSendStageHandler->PostPCompletion(completion);
-      completion_count++;
-      // std::cout << "After CQ Check Thread " << tid << " count=" << completion_count  << std::endl;
+      count++;
+      // std::cout << "After CQ Check Thread " << tid << " count=" << count  << std::endl;
       #ifdef __aarch64__
       PROCESS_END(count);
       #endif
@@ -228,8 +223,8 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
   throughputs[tid] = (num_iterations / (sw.mean() * 1.0));
   latencies[tid] = (sw.mean() * 1.0) / num_iterations;
   // LOG(warning) << "[" << tid << "] Million Reqs/s = " <<  throughputs[tid];
-  prepSW_.post_process();
-  std::cout << "PreP: " << prepSW_.mean() << std::endl;
+  // prepSW_.post_process();
+  // std::cout << "PreP: " << prepSW_.mean() << std::endl;
   #endif
 
   // if (tid == max_tid)
@@ -241,7 +236,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     count++;
   }
 
-  CleanUp(reqGenPhaseClients, processPhaseClients);
+  CleanUp(reqGenPhaseClients, processPhaseClients, postpSendStageHandler, prepRecvStageHandler);
 }
 
 int main(int argc, char *argv[]) {

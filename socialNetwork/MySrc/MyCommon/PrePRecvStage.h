@@ -13,7 +13,7 @@
 
 #include "PrePRecvStage.fwd.h"
 #include "../gen-cpp/FakeComposePostService.fwd.h"
-// #include "../gen-cpp/MyUniqueIdService.fwd.h"
+#include "../gen-cpp/MyUniqueIdService.fwd.h"
 
 // #include "../gen-cpp/FakeComposePostService.h"
 // #include "../gen-cpp/MyUniqueIdService.h"
@@ -27,33 +27,41 @@ typedef struct RecvReq {
   void* result;
 } RecvReq;
 
+typedef struct PrePReq {
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot;
+} PrePReq;
+
 class PrePRecvStage {
 
  public:
   PrePRecvStage(){
-    // int coreId;
-    // thread_ = std::thread([this] {Run_();});
-    // coreId = PinToCore(&thread_);
+    int coreId;
+    thread_ = std::thread([this] {Run_();});
+    coreId = PinToCore(&thread_);
     // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
   }
 
   ~PrePRecvStage() {
-    // exit_flag_ = true;
-    // thread_.join();
+    exit_flag_ = true;
+    thread_.join();
 
     #ifdef SW
-    // sendSW_.post_process();
-    // std::cout << "Send: " << sendSW_.mean() << std::endl;
-    // postpSW_.post_process();
-    // std::cout << "PostP: " << postpSW_.mean() << std::endl;
+    recvSW_.post_process();
+    std::cout << "Recv: " << recvSW_.mean() << std::endl;
+    prepSW_.post_process();
+    std::cout << "PreP: " << prepSW_.mean() << std::endl;
     #endif
   }
 
-  void Recv();
+  void Run_();
+  void PreProcess_();
+  void Recv_(::apache::thrift::protocol::TProtocol* iprot, FakeComposePostService_UploadUniqueId_presult* result);
 
-//   void setSendCQ(ReaderWriterQueue<int>*);
+  void setProcessor(std::shared_ptr<MyUniqueIdServiceProcessor> processor);
 
-//   void EnqueuePostPReq(::apache::thrift::protocol::TProtocol* oprot, int32_t seqid, void *result, void* ctx);
+  void EnqueuePrePReq(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot,
+                      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot);
   void EnqueueRecvReq(::apache::thrift::protocol::TProtocol* iprot, void *result);
 
 //   void* PeekPostP();
@@ -63,27 +71,27 @@ class PrePRecvStage {
   void RecvCompletion(int completion);
 
  private:
-//   std::thread thread_;
-//   std::atomic<bool> exit_flag_{false};
+  std::thread thread_;
+  std::atomic<bool> exit_flag_{false};
   ReaderWriterQueue<RecvReq> recvRQ_;
   ReaderWriterQueue<int> recvCQ_;
 
-//   ReaderWriterQueue<int> *sendCQ_;
+  ReaderWriterQueue<PrePReq> prepRQ_;
+  ReaderWriterQueue<int> prepCQ_;
   
   int completion;
   RecvReq req;
   int32_t rseqid = 0;
   std::string fname;
   ::apache::thrift::protocol::TMessageType mtype;
-  FakeComposePostService_UploadUniqueId_presult *result;
+
+  std::shared_ptr<MyUniqueIdServiceProcessor> _processor;
 
   #ifdef SW
-//   Stopwatch<std::chrono::nanoseconds> sendSW_;
-//   Stopwatch<std::chrono::nanoseconds> postpSW_;
+  Stopwatch<std::chrono::nanoseconds> recvSW_;
+  Stopwatch<std::chrono::nanoseconds> prepSW_;
   #endif
 
-
-//   void Run_();
 };
 
 } // namespace my_social_network

@@ -402,12 +402,18 @@ void MyUniqueIdServiceProcessor::ProcessService(){
     while (servRQ_.peek() == nullptr){
       if (exit_servT_) return;
     }
+    #ifdef SW
+    servSW_.start();
+    #endif
     servRQ_.try_dequeue(req);
     args = (MyUniqueIdService_UploadUniqueId_args*) req.args;
     iface_->UploadUniqueId(args->req_id, args->post_type);
     // std::cout << "In thread!" << std::endl;
     servCQ_.enqueue(1);
     delete args;
+    #ifdef SW
+    servSW_.stop();
+    #endif
     // std::cout << "servCQ_.enqueue."<< std::endl;
   }
 }

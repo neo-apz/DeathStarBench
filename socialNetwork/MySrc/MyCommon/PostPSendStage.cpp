@@ -54,19 +54,31 @@ void PostPSendStage::Run_() {
 
   while (!exit_flag_){
     if (sendRQ_.peek() != nullptr){
+      #ifdef SW
+      sendSW_.start();
+      #endif
       sendRQ_.try_dequeue(sendReq);
       args = (FakeComposePostService_UploadUniqueId_args*) sendReq.args;
       Send_(args, sendReq.oprot, sendReq.iprot);
       sendCQ_.enqueue(1);
+      #ifdef SW
+      sendSW_.stop();
+      #endif
       // std::cout << "sendCQ_.enqueue."<< std::endl;
     }
 
     if (postpRQ_.peek() != nullptr && servCQ_->peek() != nullptr){ // also check for completion of the function
+      #ifdef SW
+      postpSW_.start();
+      #endif
       postpRQ_.try_dequeue(postpReq);
       servCQ_->try_dequeue(completion);
       result = (MyUniqueIdService_UploadUniqueId_result* ) postpReq.result;
       PostProcess_(result, &(postpReq.seqid), postpReq.oprot, postpReq.ctx);
       postpCQ_.enqueue(1);
+      #ifdef SW
+      postpSW_.stop();
+      #endif
       // std::cout << "postpCQ_.enqueue."<< std::endl;
     }
   }

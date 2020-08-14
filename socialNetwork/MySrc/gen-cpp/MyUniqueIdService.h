@@ -280,8 +280,8 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     #endif
 
     #ifdef SW
-    // servSW_.post_process();
-    // std::cout << "Serv: " << servSW_.mean() << std::endl;
+    servSW_.post_process();
+    std::cout << "Serv: " << servSW_.mean() << std::endl;
     #endif
   }
 };
