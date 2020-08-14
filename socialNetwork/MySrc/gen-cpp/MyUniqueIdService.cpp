@@ -322,13 +322,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
 
   try {
     #ifdef STAGED
-      // std::cout << "Before thread!" << std::endl;
-      ServReq serv_req = {args, result, ctx};
-      servRQ_.enqueue(serv_req);
-      // std::cout << "servRQ_.enqueue."<< std::endl;
-      // int completion;
-      // while (fCQ_.peek() == nullptr);
-      // fCQ_.try_dequeue(completion);
+      _servStageHandler->EnqueueServReq(args, result, seqid, oprot, ctx);
     #else
       #ifdef SW
       servSW_.start();
@@ -367,10 +361,6 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   #endif
 
   #ifdef STAGED
-  _postpSendStageHandler->EnqueuePostPReq(oprot, seqid, result, ctx);
-  // int completion;
-  // while (sCQ_.peek() == nullptr);
-  // sCQ_.try_dequeue(completion);
   #else
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->preWrite(ctx, "MyUniqueIdService.UploadUniqueId");
@@ -393,31 +383,6 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
 }
 
 #ifdef STAGED
-void MyUniqueIdServiceProcessor::ProcessService(){
-  ServReq req;
-  MyUniqueIdService_UploadUniqueId_args* args;
-
-  while (!exit_servT_){
-    // inputQueue_.wait_dequeue(newReqPointer);
-    while (servRQ_.peek() == nullptr){
-      if (exit_servT_) return;
-    }
-    #ifdef SW
-    servSW_.start();
-    #endif
-    servRQ_.try_dequeue(req);
-    args = (MyUniqueIdService_UploadUniqueId_args*) req.args;
-    iface_->UploadUniqueId(args->req_id, args->post_type);
-    // std::cout << "In thread!" << std::endl;
-    servCQ_.enqueue(1);
-    delete args;
-    #ifdef SW
-    servSW_.stop();
-    #endif
-    // std::cout << "servCQ_.enqueue."<< std::endl;
-  }
-}
-
 // void MyUniqueIdServiceProcessor::ProcessService(){
 //   ServReq req;
 //   int window = 3;
@@ -440,9 +405,9 @@ void MyUniqueIdServiceProcessor::ProcessService(){
 // }
 
 
-void MyUniqueIdServiceProcessor::ProcessServiceP2() {
-  servCQ_.enqueue(1);
-}
+// void MyUniqueIdServiceProcessor::ProcessServiceP2() {
+//   servCQ_.enqueue(1);
+// }
 
 #endif
 

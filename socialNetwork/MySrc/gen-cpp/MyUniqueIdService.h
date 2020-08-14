@@ -20,6 +20,7 @@
 #include "MyUniqueIdService.fwd.h"
 // #include "../MyCommon/PostPSendStage.fwd.h"
 #include "../MyCommon/PostPSendStage.h"
+#include "../MyCommon/ServStage.h"
 
 #include <iostream>
 
@@ -218,12 +219,6 @@ class MyUniqueIdServiceClient : virtual public MyUniqueIdServiceIf {
   ::apache::thrift::protocol::TProtocol* oprot_;
 };
 
-typedef struct ServReq {
-  void* args;
-  void* result;
-  void* ctx;
-} ServReq;
-
 class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  public:
   ::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface_;
@@ -247,41 +242,34 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
 
     #ifdef STAGED
-    int coreId;
-    servThread_ = std::thread([this] {ProcessService();});
-    coreId = PinToCore(&servThread_);
-    // std::cout << "Function thread pinned to core " << coreId << "." << std::endl;
-
     _postpSendStageHandler = postpSendStageHandler;
-    _postpSendStageHandler->setServCQ(&servCQ_);
-
     _prepRecvStageHandler = prepRecvStageHandler;
+    _servStageHandler = new ServStage(iface_, _postpSendStageHandler);
     #endif
   }
 
   #ifdef STAGED
-  std::thread servThread_;
-  std::atomic<bool> exit_servT_{false};
-  ReaderWriterQueue<ServReq> servRQ_;
-  ReaderWriterQueue<int> servCQ_;
   PostPSendStage* _postpSendStageHandler;
   PrePRecvStage* _prepRecvStageHandler;
-  #endif
-
+  ServStage* _servStageHandler;
+  
+  #else
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> servSW_;  
   #endif
 
+  #endif
+
   ~MyUniqueIdServiceProcessor() {
     #ifdef STAGED
-    // std::cout << "In dealloc" << std::endl;
-    exit_servT_ = true;
-    servThread_.join();;
-    #endif
-
+    delete _servStageHandler;
+    #else
+    
     #ifdef SW
     servSW_.post_process();
     std::cout << "Serv: " << servSW_.mean() << std::endl;
+    #endif
+    
     #endif
   }
 };

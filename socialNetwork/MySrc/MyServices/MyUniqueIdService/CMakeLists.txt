@@ -7,6 +7,7 @@ add_executable(
     ${COMMON_DIR}/core_schedule.cpp
     ${COMMON_DIR}/PostPSendStage.cpp
     ${COMMON_DIR}/PrePRecvStage.cpp
+    ${COMMON_DIR}/ServStage.cpp
     ${THRIFT_GEN_CPP_DIR}/MyUniqueIdService.cpp
     ${THRIFT_GEN_CPP_DIR}/FakeComposePostService.cpp
     ${THRIFT_GEN_CPP_DIR}/my_social_network_types.cpp

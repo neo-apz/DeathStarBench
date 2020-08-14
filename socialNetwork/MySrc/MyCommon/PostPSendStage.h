@@ -17,9 +17,6 @@
 
 #include "PrePRecvStage.h"
 
-// #include "../gen-cpp/FakeComposePostService.h"
-// #include "../gen-cpp/MyUniqueIdService.h"
-
 using namespace moodycamel;
 
 namespace my_social_network {
@@ -61,8 +58,6 @@ class PostPSendStage {
     #endif
   }
 
-  void setServCQ(ReaderWriterQueue<int>*);
-
   void EnqueuePostPReq(::apache::thrift::protocol::TProtocol* oprot, int32_t seqid, void *result, void* ctx);
   void EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot, void *args, ::apache::thrift::protocol::TProtocol* iprot);
 
@@ -80,8 +75,6 @@ class PostPSendStage {
 
   ReaderWriterQueue<PostPReq> postpRQ_;
   ReaderWriterQueue<int> postpCQ_;
-
-  ReaderWriterQueue<int> *servCQ_;
 
   PrePRecvStage* prepRecvStage_;
 

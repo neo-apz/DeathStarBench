@@ -40,9 +40,9 @@ void PostPSendStage::EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot
   // std::cout << "sendRQ_.enqueue."<< std::endl;
 }
 
-void PostPSendStage::setServCQ(ReaderWriterQueue<int>* servCQ) {
-  servCQ_ = servCQ;
-}
+// void PostPSendStage::setServCQ(ReaderWriterQueue<int>* servCQ) {
+//   servCQ_ = servCQ;
+// }
 
 void PostPSendStage::Run_() {
   SendReq sendReq;
@@ -67,12 +67,11 @@ void PostPSendStage::Run_() {
       // std::cout << "sendCQ_.enqueue."<< std::endl;
     }
 
-    if (postpRQ_.peek() != nullptr && servCQ_->peek() != nullptr){ // also check for completion of the function
+    if (postpRQ_.peek() != nullptr){
       #ifdef SW
       postpSW_.start();
       #endif
       postpRQ_.try_dequeue(postpReq);
-      servCQ_->try_dequeue(completion);
       result = (MyUniqueIdService_UploadUniqueId_result* ) postpReq.result;
       PostProcess_(result, &(postpReq.seqid), postpReq.oprot, postpReq.ctx);
       postpCQ_.enqueue(1);
