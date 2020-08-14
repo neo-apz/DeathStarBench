@@ -244,7 +244,7 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     #ifdef STAGED
     _postpSendStageHandler = postpSendStageHandler;
     _prepRecvStageHandler = prepRecvStageHandler;
-    _servStageHandler = new ServStage(iface_, _postpSendStageHandler);
+    _servStageHandler = new ServStage(iface_, _postpSendStageHandler, 2);
     #endif
   }
 

@@ -162,7 +162,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     BREAKPOINT();
     #endif
     start = true;
-    // LOG(warning) << "Process Phase Started!!";
+    LOG(warning) << "Process Phase Started!!";
   }
 
   while(!start);
@@ -266,19 +266,21 @@ int main(int argc, char *argv[]) {
   MyThriftClient<MyUniqueIdServiceClient>** reqGenPhaseClients[num_threads];
   MyThriftClient<MyUniqueIdServiceClient>** processPhaseClients[num_threads];
 
-  PrePRecvStage* prepRecvStageHandlers[num_threads];
-  PostPSendStage* postpSendStageHandlers[num_threads]; 
+  // PrePRecvStage* prepRecvStageHandlers[num_threads];
+  // PostPSendStage* postpSendStageHandlers[num_threads]; 
+  PrePRecvStage* prepRecvStageHandler = new PrePRecvStage();
+  PostPSendStage* postpSendStageHandler = new PostPSendStage(prepRecvStageHandler);
 
-  for (int i = 0; i < num_threads; i++) {
-    prepRecvStageHandlers[i] = new PrePRecvStage();
-    postpSendStageHandlers[i] = new PostPSendStage(prepRecvStageHandlers[i]);
-  }
+  // for (int i = 0; i < num_threads; i++) {
+  //   prepRecvStageHandlers[i] = new PrePRecvStage();
+  //   postpSendStageHandlers[i] = new PostPSendStage(prepRecvStageHandlers[i]);
+  // }
 
   uint64_t buffer_size = BUFFER_SIZE * num_iterations;
   // std::cout << "Buffer size: " << buffer_size << std::endl;
   ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
     "compose-post", buffer_size, num_threads,
-    postpSendStageHandlers, prepRecvStageHandlers);
+    postpSendStageHandler, prepRecvStageHandler);
   
   // MyClientPool<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
   //   "compose-post", buffer_size, 2, 2, 1000);
@@ -320,8 +322,8 @@ int main(int argc, char *argv[]) {
                                       i,
                                       num_threads - 1,
                                       buffer_size,
-                                      postpSendStageHandlers[i],
-                                      prepRecvStageHandlers[i]);
+                                      postpSendStageHandler,
+                                      prepRecvStageHandler);
 
     coreId = PinToCore(&processThreads[i]);
     // std::cout << "Processor thread pinned to core " << coreId << "." << std::endl;

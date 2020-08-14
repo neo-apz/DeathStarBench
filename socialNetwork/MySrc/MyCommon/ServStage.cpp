@@ -8,26 +8,26 @@ namespace my_social_network {
                                  ::apache::thrift::protocol::TProtocol* oprot, void* ctx) {
     ServReq serv_req = {args, result, seqid, oprot, ctx};
     servRQ_.enqueue(serv_req);
+    std::cout << "servRQ_.enqueue."<< std::endl;
   }
   
-  void ServStage::Run_() {
+  void ServStage::Run_(int tid) {
     ServReq req;
     MyUniqueIdService_UploadUniqueId_args* args;
 
     while (!exit_flag_) {
-      if (servRQ_.peek() != nullptr){
+      if (servRQ_.try_dequeue(req)){
         #ifdef SW
-        servSW_.start();
+        servSW_[tid].start();
         #endif
-
-        servRQ_.try_dequeue(req);
+        
         args = (MyUniqueIdService_UploadUniqueId_args*) req.args;
         Serv_(args);
         delete args;
         postpSendStage_->EnqueuePostPReq(req.oprot, req.seqid, req.result, req.ctx);
 
         #ifdef SW
-        servSW_.stop();
+        servSW_[tid].stop();
         #endif
       }
     }

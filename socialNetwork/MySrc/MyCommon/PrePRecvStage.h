@@ -8,6 +8,7 @@
 #include <thrift/protocol/TProtocol.h>
 
 #include "readerwriterqueue.h"
+#include "concurrentqueue.h"
 #include "core_schedule.h"
 #include "stopwatch.h"
 
@@ -68,13 +69,13 @@ class PrePRecvStage {
 //   void PostPCompletion(int completion);
 
   void* PeekRecv();
-  void RecvCompletion(int completion);
+  bool RecvCompletion(int& completion);
 
  private:
   std::thread thread_;
   std::atomic<bool> exit_flag_{false};
   ReaderWriterQueue<RecvReq> recvRQ_;
-  ReaderWriterQueue<int> recvCQ_;
+  ConcurrentQueue<int> recvCQ_;
 
   ReaderWriterQueue<PrePReq> prepRQ_;
   ReaderWriterQueue<int> prepCQ_;

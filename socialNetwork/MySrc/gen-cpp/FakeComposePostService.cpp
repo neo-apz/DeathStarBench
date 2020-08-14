@@ -1485,8 +1485,7 @@ void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const in
   
   #ifdef STAGED
   int completion;
-  while (_prepRecvStageHandler->PeekRecv() == nullptr);
-  _prepRecvStageHandler->RecvCompletion(completion);
+  while (!_prepRecvStageHandler->RecvCompletion(completion));
   #endif
   // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
 }

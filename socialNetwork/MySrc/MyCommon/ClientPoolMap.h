@@ -17,8 +17,8 @@ template<class MyTClient>
 class ClientPoolMap {
  public:
   ClientPoolMap(const std::string &client_type, uint32_t buff_size, int pool_size,
-                PostPSendStage** postpSendStageHandlers,
-                PrePRecvStage** prepRecvStageHandlers);
+                PostPSendStage* postpSendStageHandler,
+                PrePRecvStage* prepRecvStageHandler);
   ~ClientPoolMap();
 
   ClientPoolMap(const ClientPoolMap&) = delete;
@@ -42,15 +42,15 @@ class ClientPoolMap {
 template<class MyTClient>
 ClientPoolMap<MyTClient>::ClientPoolMap(const std::string &client_type,
                                         uint32_t buff_size, int pool_size,
-                                        PostPSendStage** postpSendStageHandlers,
-                                        PrePRecvStage** prepRecvStageHandlers) {
+                                        PostPSendStage* postpSendStageHandler,
+                                        PrePRecvStage* prepRecvStageHandler) {
   _buff_size = buff_size;
-  _pool_size = pool_size;
+  _pool_size = pool_size * 2;
   _client_type = client_type;
 
   for (int i = 0; i < _pool_size; ++i) {
     #ifdef STAGED
-    MyTClient *client = new MyTClient(_buff_size, postpSendStageHandlers[i], prepRecvStageHandlers[i]);
+    MyTClient *client = new MyTClient(_buff_size, postpSendStageHandler, prepRecvStageHandler);
     #else
     MyTClient *client = new MyTClient(_buff_size);
     #endif

@@ -8,6 +8,7 @@
 #include <thrift/protocol/TProtocol.h>
 
 #include "readerwriterqueue.h"
+#include "concurrentqueue.h"
 #include "core_schedule.h"
 #include "stopwatch.h"
 
@@ -65,15 +66,16 @@ class PostPSendStage {
   void PostPCompletion(int completion);
 
   void* PeekSend();
-  void SendCompletion(int completion);
+  void SendCompletion(int& completion);
 
  private:
   std::thread thread_;
   std::atomic<bool> exit_flag_{false};
-  ReaderWriterQueue<SendReq> sendRQ_;
+  // ReaderWriterQueue<SendReq> sendRQ_;
+  ConcurrentQueue<SendReq> sendRQ_;
   ReaderWriterQueue<int> sendCQ_;
 
-  ReaderWriterQueue<PostPReq> postpRQ_;
+  ConcurrentQueue<PostPReq> postpRQ_;
   ReaderWriterQueue<int> postpCQ_;
 
   PrePRecvStage* prepRecvStage_;

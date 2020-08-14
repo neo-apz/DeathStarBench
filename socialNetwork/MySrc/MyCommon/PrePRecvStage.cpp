@@ -10,20 +10,21 @@ void PrePRecvStage::EnqueuePrePReq(apache::thrift::stdcxx::shared_ptr<::apache::
                                    apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot){
   PrePReq req = {iprot, oprot};
   prepRQ_.enqueue(req);
+  std::cout << "prepRQ_.enqueue."<< std::endl;
 }
 
 void PrePRecvStage::EnqueueRecvReq(::apache::thrift::protocol::TProtocol* iprot, void *result){
   RecvReq req = {iprot, result};
   recvRQ_.enqueue(req);
-//   std::cout << "recvRQ_.enqueue."<< std::endl;
+  std::cout << "recvRQ_.enqueue."<< std::endl;
 }
 
-void* PrePRecvStage::PeekRecv(){
-  return recvCQ_.peek();
-}
+// void* PrePRecvStage::PeekRecv(){
+//   return recvCQ_.peek();
+// }
 
-void PrePRecvStage::RecvCompletion(int completion){
-  recvCQ_.try_dequeue(completion);
+bool PrePRecvStage::RecvCompletion(int& completion){
+  return recvCQ_.try_dequeue(completion);
 }
 
 void PrePRecvStage::setProcessor(std::shared_ptr<MyUniqueIdServiceProcessor> processor) {
@@ -104,7 +105,7 @@ void PrePRecvStage::Recv_(::apache::thrift::protocol::TProtocol* iprot,
   // std::cout << "End of Recv!" << std::endl;
   recvCQ_.enqueue(1);
   delete result;
-  // std::cout << "recvCQ_.enqueue."<< std::endl;
+  std::cout << "recvCQ_.enqueue."<< std::endl;
 }
 
 } // namespace my_social_network

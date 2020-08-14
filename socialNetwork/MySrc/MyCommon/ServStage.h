@@ -7,7 +7,8 @@
 
 #include <thrift/protocol/TProtocol.h>
 
-#include "readerwriterqueue.h"
+// #include "readerwriterqueue.h"
+#include "concurrentqueue.h"
 #include "core_schedule.h"
 #include "stopwatch.h"
 
@@ -31,24 +32,38 @@ class ServStage {
 
  public:
   ServStage(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface,
-            PostPSendStage* postpSendStage){
+            PostPSendStage* postpSendStage,
+            int num_treads){
     
     iface_ = iface;
     postpSendStage_ = postpSendStage;
+    num_treads_ = num_treads;
 
     int coreId;
-    thread_ = std::thread([this] {Run_();});
-    coreId = PinToCore(&thread_);
-    // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
+    // threads_ = (std::thread*) malloc(sizeof(std::thread) * num_treads_);
+    for (int t=0; t < num_treads_; t++){
+      threads_[t] = std::thread([this, t] {Run_(t);});
+      coreId = PinToCore(&threads_[t]);
+      // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
+    }
+
+    // #ifdef SW
+    // servSW_ = (Stopwatch<std::chrono::nanoseconds>*) malloc(sizeof(Stopwatch<std::chrono::nanoseconds>) * num_treads_);
+    // #endif
   }
 
   ~ServStage() {
     exit_flag_ = true;
-    thread_.join();
+    for (int t = 0; t < num_treads_; t++){
+      threads_[t].join();
+      #ifdef SW
+      servSW_[t].post_process();
+      std::cout << "[" << t << "] Serv: " << servSW_[t].mean() << std::endl;
+      #endif
+    }
 
     #ifdef SW
-    servSW_.post_process();
-    std::cout << "Serv: " << servSW_.mean() << std::endl;
+    // free(servSW_);
     #endif
   }
 
@@ -60,9 +75,12 @@ class ServStage {
 
 
  private:
-  std::thread thread_;
+  std::thread threads_[3];
+  int num_treads_;
   std::atomic<bool> exit_flag_{false};
-  ReaderWriterQueue<ServReq> servRQ_;
+  // ReaderWriterQueue<ServReq> servRQ_;
+  ConcurrentQueue<ServReq> servRQ_;
+  
   // ReaderWriterQueue<int> servCQ_;
 
   ::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface_;
@@ -70,11 +88,11 @@ class ServStage {
   PostPSendStage* postpSendStage_;
 
   #ifdef SW
-  Stopwatch<std::chrono::nanoseconds> servSW_;
+  Stopwatch<std::chrono::nanoseconds> servSW_[3];
   #endif
 
 
-  void Run_();
+  void Run_(int tid);
   void Serv_(MyUniqueIdService_UploadUniqueId_args* args);
 };
 
