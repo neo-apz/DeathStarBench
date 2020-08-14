@@ -1542,6 +1542,7 @@ void FakeComposePostServiceClient::Recv() {
     
     // std::cout << "End of Recv!" << std::endl;
     recvCQ_.enqueue(1);
+    delete result;
   }
 }
 #endif
@@ -1549,11 +1550,11 @@ void FakeComposePostServiceClient::Recv() {
 void FakeComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   #ifdef STAGED
-  FakeComposePostService_UploadUniqueId_pargs args;
-  args.req_id = &req_id;
-  args.post_id = &post_id;
-  args.post_type = &post_type;
-  _postpSendStageHandler->EnqueueSendReq(oprot_, &args);
+  FakeComposePostService_UploadUniqueId_pargs *args = new FakeComposePostService_UploadUniqueId_pargs();
+  args->req_id = &req_id;
+  args->post_id = &post_id;
+  args->post_type = &post_type;
+  _postpSendStageHandler->EnqueueSendReq(oprot_, args);
   
   #else
   int32_t cseqid = 0;
@@ -1574,8 +1575,8 @@ void FakeComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, con
 void FakeComposePostServiceClient::recv_UploadUniqueId()
 {
   #ifdef STAGED
-  FakeComposePostService_UploadUniqueId_presult result;
-  RecvReq recv_req = {iprot_, &result};
+  FakeComposePostService_UploadUniqueId_presult* result = new FakeComposePostService_UploadUniqueId_presult();
+  RecvReq recv_req = {iprot_, result};
   recvRQ_.enqueue(recv_req);
   #else
   int32_t rseqid = 0;

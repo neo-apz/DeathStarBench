@@ -79,6 +79,8 @@ void PostPSendStage::Send_(
   oprot->writeMessageEnd();
   oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  delete args;
   
   // std::cout << "End of Send, ReqGenPhase:" << isReqGenPhase << std::endl;
 
@@ -100,6 +102,8 @@ void PostPSendStage::PostProcess_(
   oprot->writeMessageEnd();
   uint32_t bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  delete result;
 
   // if (this->eventHandler_.get() != NULL) {
   //   this->eventHandler_->postWrite(req.ctx, "MyUniqueIdService.UploadUniqueId", bytes);

@@ -302,8 +302,17 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     this->eventHandler_->preRead(ctx, "MyUniqueIdService.UploadUniqueId");
   }
 
+  
+  #ifdef STAGED
+  MyUniqueIdService_UploadUniqueId_args *args = new MyUniqueIdService_UploadUniqueId_args();
+  args->read(iprot);
+  MyUniqueIdService_UploadUniqueId_result *result = new MyUniqueIdService_UploadUniqueId_result();
+  #else
   MyUniqueIdService_UploadUniqueId_args args;
   args.read(iprot);
+  MyUniqueIdService_UploadUniqueId_result result;
+  #endif
+  
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
@@ -311,11 +320,10 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     this->eventHandler_->postRead(ctx, "MyUniqueIdService.UploadUniqueId", bytes);
   }
 
-  MyUniqueIdService_UploadUniqueId_result result;
   try {
     #ifdef STAGED
       // std::cout << "Before thread!" << std::endl;
-      ServReq serv_req = {&args, &result, ctx};
+      ServReq serv_req = {args, result, ctx};
       servRQ_.enqueue(serv_req);
       // int completion;
       // while (fCQ_.peek() == nullptr);
@@ -333,8 +341,11 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     #endif
   } catch (ServiceException &se) {
     std::cout << "In SE!" << std::endl;
+    #ifdef STAGED
+    #else
     result.se = se;
     result.__isset.se = true;
+    #endif
   } catch (const std::exception& e) {
     std::cout << "In Catch!" << std::endl;
     if (this->eventHandler_.get() != NULL) {
@@ -355,7 +366,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   #endif
 
   #ifdef STAGED
-  _postpSendStageHandler->EnqueuePostPReq(oprot, seqid, &result, ctx);
+  _postpSendStageHandler->EnqueuePostPReq(oprot, seqid, result, ctx);
   // int completion;
   // while (sCQ_.peek() == nullptr);
   // sCQ_.try_dequeue(completion);
@@ -383,6 +394,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
 #ifdef STAGED
 void MyUniqueIdServiceProcessor::ProcessService(){
   ServReq req;
+  MyUniqueIdService_UploadUniqueId_args* args;
 
   while (!exit_servT_){
     // inputQueue_.wait_dequeue(newReqPointer);
@@ -390,10 +402,11 @@ void MyUniqueIdServiceProcessor::ProcessService(){
       if (exit_servT_) return;
     }
     servRQ_.try_dequeue(req);
-    MyUniqueIdService_UploadUniqueId_args* args = (MyUniqueIdService_UploadUniqueId_args*) req.args;
+    args = (MyUniqueIdService_UploadUniqueId_args*) req.args;
     iface_->UploadUniqueId(args->req_id, args->post_type);
     // std::cout << "In thread!" << std::endl;
     servCQ_.enqueue(1);
+    delete args;
   }
 }
 
