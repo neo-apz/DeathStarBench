@@ -13,7 +13,7 @@ void PostPSendStage::EnqueuePostPReq(
 
   PostPReq req = {oprot, seqid, result, ctx};
   postpRQ_.enqueue(req);
-  std::cout << "postpRQ_.enqueue."<< std::endl;
+  // std::cout << "postpRQ_.enqueue."<< std::endl;
 }
 
 void* PostPSendStage::PeekPostP(){
@@ -37,7 +37,7 @@ void PostPSendStage::EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot
                                     ::apache::thrift::protocol::TProtocol* iprot){
   SendReq req = {args, oprot, iprot};
   sendRQ_.enqueue(req);
-  std::cout << "sendRQ_.enqueue."<< std::endl;
+  // std::cout << "sendRQ_.enqueue."<< std::endl;
 }
 
 // void PostPSendStage::setServCQ(ReaderWriterQueue<int>* servCQ) {
@@ -71,7 +71,7 @@ void PostPSendStage::Run_() {
       result = (MyUniqueIdService_UploadUniqueId_result* ) postpReq.result;
       PostProcess_(result, &(postpReq.seqid), postpReq.oprot, postpReq.ctx);
       postpCQ_.enqueue(1);
-      std::cout << "postpCQ_.enqueue."<< std::endl;
+      // std::cout << "postpCQ_.enqueue."<< std::endl;
       #ifdef SW
       postpSW_.stop();
       #endif
@@ -106,7 +106,7 @@ void PostPSendStage::Send_(
 
   if (FakeComposePostServiceClient::isReqGenPhase){
     sendCQ_.enqueue(1);
-    std::cout << "sendCQ_.enqueue."<< std::endl;
+    // std::cout << "sendCQ_.enqueue."<< std::endl;
     return;
   }
 

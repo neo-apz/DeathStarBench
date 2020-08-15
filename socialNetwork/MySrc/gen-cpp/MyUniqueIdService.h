@@ -238,13 +238,14 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   
   MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface,
                              PostPSendStage* postpSendStageHandler,
-                             PrePRecvStage* prepRecvStageHandler) : iface_(iface) {
+                             PrePRecvStage* prepRecvStageHandler,
+                             uint64_t servWidth) : iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
 
     #ifdef STAGED
     _postpSendStageHandler = postpSendStageHandler;
     _prepRecvStageHandler = prepRecvStageHandler;
-    _servStageHandler = new ServStage(iface_, _postpSendStageHandler, 2);
+    _servStageHandler = new ServStage(iface_, _postpSendStageHandler, servWidth);
     #endif
   }
 

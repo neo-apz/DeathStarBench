@@ -33,37 +33,43 @@ class ServStage {
  public:
   ServStage(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface,
             PostPSendStage* postpSendStage,
-            int num_treads){
+            int num_threads){
     
     iface_ = iface;
     postpSendStage_ = postpSendStage;
-    num_treads_ = num_treads;
+    num_threads_ = num_threads;
+
+    
+    threads_ = new std::thread[num_threads_];
+    tokens_ = new ProducerToken*[num_threads_];
+    #ifdef SW
+    servSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
+    #endif
 
     int coreId;
-    // threads_ = (std::thread*) malloc(sizeof(std::thread) * num_treads_);
-    for (int t=0; t < num_treads_; t++){
+    for (int t=0; t < num_threads_; t++){
+      tokens_[t] = new ProducerToken(servRQ_);
       threads_[t] = std::thread([this, t] {Run_(t);});
       coreId = PinToCore(&threads_[t]);
       // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
     }
-
-    // #ifdef SW
-    // servSW_ = (Stopwatch<std::chrono::nanoseconds>*) malloc(sizeof(Stopwatch<std::chrono::nanoseconds>) * num_treads_);
-    // #endif
   }
 
   ~ServStage() {
     exit_flag_ = true;
-    for (int t = 0; t < num_treads_; t++){
+    for (int t = 0; t < num_threads_; t++){
       threads_[t].join();
+      delete tokens_[t];
       #ifdef SW
       servSW_[t].post_process();
       std::cout << "[" << t << "] Serv: " << servSW_[t].mean() << std::endl;
       #endif
     }
+    delete[] tokens_;
+    delete[] threads_;
 
     #ifdef SW
-    // free(servSW_);
+    delete[] servSW_;
     #endif
   }
 
@@ -74,9 +80,17 @@ class ServStage {
                       void* ctx);
 
 
+  static void ResetToken() {
+    current_token = 0;
+  }
+
+
  private:
-  std::thread threads_[3];
-  int num_treads_;
+  std::thread *threads_;
+  int num_threads_;
+  ProducerToken **tokens_;
+  static int current_token;
+
   std::atomic<bool> exit_flag_{false};
   // ReaderWriterQueue<ServReq> servRQ_;
   ConcurrentQueue<ServReq> servRQ_;
@@ -88,7 +102,7 @@ class ServStage {
   PostPSendStage* postpSendStage_;
 
   #ifdef SW
-  Stopwatch<std::chrono::nanoseconds> servSW_[3];
+  Stopwatch<std::chrono::nanoseconds> *servSW_;
   #endif
 
 

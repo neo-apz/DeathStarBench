@@ -18,7 +18,8 @@ class ClientPoolMap {
  public:
   ClientPoolMap(const std::string &client_type, uint32_t buff_size, int pool_size,
                 PostPSendStage* postpSendStageHandler,
-                PrePRecvStage* prepRecvStageHandler);
+                PrePRecvStage* prepRecvStageHandler,
+                uint64_t servWidth);
   ~ClientPoolMap();
 
   ClientPoolMap(const ClientPoolMap&) = delete;
@@ -43,9 +44,10 @@ template<class MyTClient>
 ClientPoolMap<MyTClient>::ClientPoolMap(const std::string &client_type,
                                         uint32_t buff_size, int pool_size,
                                         PostPSendStage* postpSendStageHandler,
-                                        PrePRecvStage* prepRecvStageHandler) {
+                                        PrePRecvStage* prepRecvStageHandler,
+                                        uint64_t servWidth) {
   _buff_size = buff_size;
-  _pool_size = pool_size * 2;
+  _pool_size = pool_size * servWidth;
   _client_type = client_type;
 
   for (int i = 0; i < _pool_size; ++i) {

@@ -19,6 +19,7 @@ using namespace my_social_network;
 using namespace std;
 
 uint64_t num_iterations;
+uint64_t servWidth;
 // std::mutex thread_lock;
 MyLock thread_lock;
 std::string machine_id;
@@ -111,12 +112,12 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 
 #ifdef STAGED
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
-      std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler, prepRecvStageHandler);
+      std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler, prepRecvStageHandler, servWidth);
   prepRecvStageHandler->setProcessor(processor);
   int completion;
 #else
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
-    std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler, prepRecvStageHandler);
+    std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler, prepRecvStageHandler, servWidth);
 #endif
 
   FakeComposePostServiceClient::isReqGenPhase = true;
@@ -161,8 +162,11 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     #ifdef FLEXUS
     BREAKPOINT();
     #endif
+    #ifdef STAGED
+    ServStage::ResetToken();
+    #endif
     start = true;
-    LOG(warning) << "Process Phase Started!!";
+    // LOG(warning) << "Process Phase Started!!";
   }
 
   while(!start);
@@ -248,7 +252,13 @@ int main(int argc, char *argv[]) {
     cout << "Invalid input! Usage: ./MyUniqueIdService <num_threads> <iterations> \n" << endl;
     exit(-1);
   } else {
+    #ifdef STAGED
+    servWidth = atoi(argv[1]);
+    num_threads = 1;
+    #else
     num_threads = atoi(argv[1]);
+    servWidth = 1;
+    #endif
     num_iterations = atoi(argv[2]);
   }
 
@@ -280,7 +290,7 @@ int main(int argc, char *argv[]) {
   // std::cout << "Buffer size: " << buffer_size << std::endl;
   ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
     "compose-post", buffer_size, num_threads,
-    postpSendStageHandler, prepRecvStageHandler);
+    postpSendStageHandler, prepRecvStageHandler, servWidth);
   
   // MyClientPool<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
   //   "compose-post", buffer_size, 2, 2, 1000);

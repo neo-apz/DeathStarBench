@@ -132,7 +132,13 @@ private:
     void compute_mean()
     {
         auto sum = std::accumulate(m_times.begin() + m_throw_away, m_times.end(), 0);
-        m_mean = sum / _count;
+        if (_count != 0){
+            m_mean = sum / _count;
+        }
+        else {
+            m_mean = 0;
+        }
+        
     }
 
     void compute_st_dev()
@@ -142,7 +148,14 @@ private:
                        [this](typename TimeT::rep t) {return t - this->m_mean;});
         
         auto sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0);
-        m_st_dev = std::sqrt(sq_sum / _count);
+        
+        if (_count != 0){
+            m_st_dev = std::sqrt(sq_sum / _count);
+        }
+        else {
+            m_st_dev = 0;
+        }
+        
     }
     
     std::chrono::steady_clock::time_point _start, _stop;
