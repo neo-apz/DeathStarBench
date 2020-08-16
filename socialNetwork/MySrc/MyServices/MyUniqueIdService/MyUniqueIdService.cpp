@@ -41,57 +41,48 @@ pthread_barrier_t barrier;
 
 #define BUFFER_SIZE  50
 #define WARM_UP_ITER  100
+#define CLIENT_LIST_SIZE  10000
 
-void Allocate(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients, uint64_t buffer_size){
+void Allocate(MyThriftClient<MyUniqueIdServiceClient> **clientsListPointer[], uint64_t buffer_size){
 
-  // *reqGenPhaseClients = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
-  // *processPhaseClients = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
+  *clientsListPointer = new MyThriftClient<MyUniqueIdServiceClient>*[CLIENT_LIST_SIZE];
 
-  // for (int c = 0; c < num_iterations; c++) {
-  //     reqGenPhaseClients[c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
-  //     processPhaseClients[c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
-  // }
+  for (int c = 0; c < CLIENT_LIST_SIZE; c++) {
+      (*clientsListPointer)[c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
+  }
 }
 
 #ifdef STAGED
-void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
+void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **clientsListPointer[],
              PostPSendStage* postpSendStageHandler,
              PrePRecvStage* prepRecvStageHandler){
 
-  for (int c = 0; c < num_iterations; c++) {
-      delete processPhaseClients[c];
+  for (int c = 0; c < CLIENT_LIST_SIZE; c++) {
+      delete (*clientsListPointer)[c];
   }
-  free(processPhaseClients);
+  delete[] *clientsListPointer;
   delete postpSendStageHandler;
   delete prepRecvStageHandler;
 }
 
 #else
-void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients){
+void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **clientsListPointer[]){
 
-  for (int c = 0; c < num_iterations; c++) {
-      delete processPhaseClients[c];
+  for (int c = 0; c < CLIENT_LIST_SIZE; c++) {
+      delete (*clientsListPointer)[c];
   }
-  free(processPhaseClients);
+  delete[] *clientsListPointer;
 }
 #endif
 
 void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *processPhaseClient,
                         RandomGenerator *randGen){
-  
-  // reqGenPhaseClient->Connect();
-
   int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
   PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
 
-  // auto client = reqGenPhaseClient->GetClient();
-  // client->send_UploadUniqueId(req_id, post_type);
-
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;
-  
   // reqGenPhaseClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
-
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
   auto client = processPhaseClient->GetClient();
@@ -106,21 +97,14 @@ void ClientRecvUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient)
   client->recv_UploadUniqueId();
 }
 
-// void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
-//                                std::shared_ptr<MyUniqueIdHandler> handler,
-//                                int tid, int max_tid,
-//                                uint64_t buffer_size,
-//                                PostPSendStage* postpSendStageHandler,
-//                                PrePRecvStage* prepRecvStageHandler){
-
-void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
+void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *processPhaseClients[],
                                std::shared_ptr<MyUniqueIdHandler> handler,
                                int tid, int max_tid,
                                uint64_t buffer_size){
 
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
 
-  Allocate(processPhaseClients, buffer_size);
+  Allocate(&processPhaseClients, buffer_size);
 
 #ifdef STAGED
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
@@ -134,12 +118,14 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **process
   RandomGenerator randGen(tid);
 
   uint64_t count = 0;
+  uint64_t clientIndex = 0;
 
   apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> srvIProt, srvOProt;
 
   while (count < num_iterations){
-    ClientSendUniqueId(processPhaseClients[count], &randGen);
+    ClientSendUniqueId(processPhaseClients[clientIndex], &randGen);
     count++;
+    clientIndex = (clientIndex + 1) % CLIENT_LIST_SIZE;
     // std::cout << "ReqGen Thread " << tid << " count=" << count  << std::endl;
   }
 
@@ -163,6 +149,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **process
   // LOG(warning) << "Process Phase Started!!";
 
   count = 0;
+  clientIndex = 0;
 
   #ifdef SW
   #if !defined(STAGED)
@@ -174,8 +161,8 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **process
   #endif
 
   while (count < num_iterations){
-    srvIProt = processPhaseClients[count]->GetClient()->getOutputProtocol();
-    srvOProt = processPhaseClients[count]->GetClient()->getInputProtocol();
+    srvIProt = processPhaseClients[clientIndex]->GetClient()->getOutputProtocol();
+    srvOProt = processPhaseClients[clientIndex]->GetClient()->getInputProtocol();
 
     #ifdef STAGED
     prepRecvStageHandler->EnqueuePrePReq(srvIProt, srvOProt);
@@ -192,6 +179,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **process
     #endif
 
     count++;
+    clientIndex = (clientIndex + 1) % CLIENT_LIST_SIZE;
   }
 
   #ifdef STAGED
@@ -223,15 +211,17 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **process
   //   LOG(warning) << "Process Phase finished!";
 
   count = 0;
+  clientIndex = 0;
   while (count < num_iterations){
-    ClientRecvUniqueId(processPhaseClients[count]);
+    ClientRecvUniqueId(processPhaseClients[clientIndex]);
     count++;
+    clientIndex = (clientIndex + 1) % CLIENT_LIST_SIZE;
   }
 
   #ifdef STAGED
-  CleanUp(processPhaseClients, postpSendStageHandler, prepRecvStageHandler);
+  CleanUp(&processPhaseClients, postpSendStageHandler, prepRecvStageHandler);
   #else
-  CleanUp(processPhaseClients);
+  CleanUp(&processPhaseClients);
   #endif
 }
 
@@ -301,12 +291,6 @@ int main(int argc, char *argv[]) {
     throughputs[i] = 0;
     latencies[i] = 0;
     #endif
-
-    processPhaseClients[i] = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
-
-    for (int c = 0; c < num_iterations; c++) {
-      processPhaseClients[i][c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
-    }
 
     processThreads[i] = std::thread(GenAndProcessUniqueIdReqs,
                                       processPhaseClients[i],
