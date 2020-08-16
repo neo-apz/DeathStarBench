@@ -6,13 +6,13 @@
 
 namespace my_social_network {
 
-int PrePRecvStage::current_token = 0;
+// int PrePRecvStage::current_token = 0;
 
 PrePRecvStage::PrePRecvStage(int num_threads){
     num_threads_ = num_threads;
     threads_ = new std::thread[num_threads_];
-    prepTokens_ = new ProducerToken*[num_threads_];
-    servTokens_ = new ProducerToken*[num_threads_];
+    // prepTokens_ = new ProducerToken*[num_threads_];
+    // servTokens_ = new ProducerToken*[num_threads_];
     localData = new LocalData*[num_threads_];
 
     #ifdef SW
@@ -20,11 +20,15 @@ PrePRecvStage::PrePRecvStage(int num_threads){
     prepSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
     #endif
 
+    for (int i=0; i < 10; i++){
+      tokens_[i] = new ProducerToken(recvCQ_);
+    }
+
     int coreId;
     for (int t=0; t < num_threads_; t++){
       localData[t] = new LocalData();
-      prepTokens_[t] = new ProducerToken(prepRQ_);
-      servTokens_[t] = _processor->_servStageHandler->GetServToken(t);
+      // prepTokens_[t] = new ProducerToken(prepRQ_);
+      // servTokens_[t] = _processor->_servStageHandler->GetServToken(t);
       
       threads_[t] = std::thread([this, t] {Run_(t);});
       coreId = PinToCore(&threads_[t]);
@@ -35,9 +39,10 @@ PrePRecvStage::PrePRecvStage(int num_threads){
 void PrePRecvStage::EnqueuePrePReq(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot,
                                    apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot){
   PrePReq req = {iprot, oprot};
-  prepRQ_.enqueue(*prepTokens_[current_token], req);
+  prepRQ_.enqueue(req);
+  // prepRQ_.enqueue(*prepTokens_[current_token], req);
   // std::cout << "prepRQ_.enqueue."<< std::endl;
-  current_token = (current_token + 1) % num_threads_;
+  // current_token = (current_token + 1) % num_threads_;
 }
 
 void PrePRecvStage::EnqueueRecvReq(::apache::thrift::protocol::TProtocol* iprot, void *result){
@@ -50,11 +55,13 @@ void PrePRecvStage::EnqueueRecvReq(::apache::thrift::protocol::TProtocol* iprot,
 //   return recvCQ_.peek();
 // }
 
-bool PrePRecvStage::RecvCompletion(int& completion){
-  return recvCQ_.try_dequeue(completion);
+void PrePRecvStage::RecvCompletion(int seqid){
+  int completion;
+  ProducerToken *token = tokens_[seqid];
+  while(!recvCQ_.try_dequeue_from_producer(*token, completion));
 }
 
-void PrePRecvStage::setProcessor(std::shared_ptr<MyUniqueIdServiceProcessor> processor) {
+void PrePRecvStage::setProcessor(MyUniqueIdServiceProcessor *processor) {
   _processor = processor;
 }
 
@@ -66,7 +73,8 @@ void PrePRecvStage::Run_(int tid){
   FakeComposePostService_UploadUniqueId_presult *result;
 
   while (!exit_flag_){
-    if (prepRQ_.try_dequeue_from_producer(*prepTokens_[tid], prepReq)){
+    // if (prepRQ_.try_dequeue_from_producer(*prepTokens_[tid], prepReq)){
+    if (prepRQ_.try_dequeue(prepReq)){
       #ifdef SW
       prepSW_[tid].start();
       #endif
@@ -129,7 +137,7 @@ void PrePRecvStage::Recv_(::apache::thrift::protocol::TProtocol* iprot,
   }
   
   // std::cout << "End of Recv!" << std::endl;
-  recvCQ_.enqueue(1);
+  recvCQ_.enqueue(*tokens_[localData[tid]->rseqid], localData[tid]->rseqid);
   delete result;
   // std::cout << "recvCQ_.enqueue."<< std::endl;
 }

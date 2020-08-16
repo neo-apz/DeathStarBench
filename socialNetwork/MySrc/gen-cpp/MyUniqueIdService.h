@@ -245,6 +245,8 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
 
     _postpSendStageHandler = postpSendStageHandler;
     _prepRecvStageHandler = prepRecvStageHandler;
+    _prepRecvStageHandler->setProcessor(this);
+
     _servStageHandler = new ServStage(iface_, _postpSendStageHandler, servWidth);
   }
   #endif
@@ -266,8 +268,8 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ~MyUniqueIdServiceProcessor() {
     #ifdef STAGED
     delete _servStageHandler;
+
     #else
-    
     #ifdef SW
     servSW_.post_process();
     std::cout << "Serv(us): " << servSW_.mean() << std::endl;

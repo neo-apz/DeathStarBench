@@ -826,6 +826,8 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     processorThread = std::thread([this] {Run_();});
     int coreID = PinToCore(&processorThread, false);
     std::cout << "FakeProcessor pined to core " << coreID << std::endl;
+
+    id_ = coreID; // My unique ID to be used as the seq id.
   }
 
   FakeComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot,
@@ -837,7 +839,10 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     _fakeProcessor = std::make_shared<FakeComposePostServiceProcessor>(handler);
 
     processorThread = std::thread([this] {Run_();});
-    PinToCore(&processorThread, false);
+    int coreID = PinToCore(&processorThread, false);
+    std::cout << "FakeProcessor pined to core " << coreID << std::endl;
+
+    id_ = coreID; // My unique ID to be used as the seq id.
 
     #ifdef STAGED
     // recvThread_ = std::thread([this] {Recv();});
@@ -895,6 +900,7 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
   ReaderWriterQueue<int> RQ_;
   BlockingReaderWriterQueue<int> CQ_;
   std::atomic<bool> exit_flag_{false};
+  int id_;
 
   void Run_();
 

@@ -48,9 +48,9 @@ class PrePRecvStage {
     exit_flag_ = true;
     for (int t = 0; t < num_threads_; t++){
       threads_[t].join();
-      delete prepTokens_[t];
+      // delete prepTokens_[t];
       delete localData[t];
-      delete servTokens_[t];
+      // delete servTokens_[t];
       #ifdef SW
       recvSW_[t].post_process();
       std::cout << "[" << t << "] Recv: " << recvSW_[t].mean() << std::endl;
@@ -58,10 +58,15 @@ class PrePRecvStage {
       std::cout << "[" << t << "] PreP: " << prepSW_[t].mean() << std::endl;
       #endif
     }
-    delete[] prepTokens_;
+
+    for (int i=0; i < 10; i++){
+      delete tokens_[i];
+    }
+
+    // delete[] prepTokens_;
     delete[] threads_;
     delete[] localData;
-    delete[] servTokens_;
+    // delete[] servTokens_;
 
     #ifdef SW
     delete[] recvSW_;
@@ -73,7 +78,7 @@ class PrePRecvStage {
   void PreProcess_();
   void Recv_(::apache::thrift::protocol::TProtocol* iprot, FakeComposePostService_UploadUniqueId_presult* result, int tid);
 
-  void setProcessor(std::shared_ptr<MyUniqueIdServiceProcessor> processor);
+  void setProcessor(MyUniqueIdServiceProcessor *processor);
 
   void EnqueuePrePReq(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot,
                       apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot);
@@ -83,18 +88,18 @@ class PrePRecvStage {
 //   void PostPCompletion(int completion);
 
   void* PeekRecv();
-  bool RecvCompletion(int& completion);
+  void RecvCompletion(int seqid);
 
-  static void ResetToken() {
-    current_token = 0;
-  }
+  // static void ResetToken() {
+  //   current_token = 0;
+  // }
 
  private:
   std::thread *threads_;
   int num_threads_;
-  ProducerToken **prepTokens_;
-  ProducerToken **servTokens_;
-  static int current_token;
+  ProducerToken *tokens_[10];
+  // ProducerToken **servTokens_;
+  // static int current_token;
 
   std::atomic<bool> exit_flag_{false};
   ConcurrentQueue<RecvReq> recvRQ_;
@@ -106,7 +111,7 @@ class PrePRecvStage {
   int completion;
   LocalData **localData;
   
-  std::shared_ptr<MyUniqueIdServiceProcessor> _processor;
+  MyUniqueIdServiceProcessor* _processor;
 
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> *recvSW_;

@@ -26,6 +26,8 @@ typedef struct SendReq {
   void* args;
   ::apache::thrift::protocol::TProtocol* oprot;
   ::apache::thrift::protocol::TProtocol* iprot;
+  ReaderWriterQueue<int> *transportRQ;
+  int seqid;
 } SendReq;
 
 typedef struct PostPReq {
@@ -61,11 +63,15 @@ class PostPSendStage {
     #endif
   }
 
-  void EnqueuePostPReq(::apache::thrift::protocol::TProtocol* oprot, int32_t seqid, void *result, void* ctx);
-  void EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot, void *args, ::apache::thrift::protocol::TProtocol* iprot);
+  void EnqueuePostPReq(::apache::thrift::protocol::TProtocol* oprot,
+                       int32_t seqid, void *result, void* ctx);
+
+  void EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot,
+                      void *args, ::apache::thrift::protocol::TProtocol* iprot,
+                      ReaderWriterQueue<int> *transportRQ, int seqid);
 
   void* PeekPostP();
-  void PostPCompletion(int completion);
+  void PostPCompletion(int &completion);
 
   void* PeekSend();
   void SendCompletion(int& completion);
@@ -78,9 +84,11 @@ class PostPSendStage {
   ReaderWriterQueue<int> sendCQ_;
 
   ConcurrentQueue<PostPReq> postpRQ_;
-  ReaderWriterQueue<int> postpCQ_;
+  BlockingReaderWriterQueue<int> postpCQ_;
 
   PrePRecvStage* prepRecvStage_;
+
+  // int32_t cseqid = 0;
 
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> sendSW_;
@@ -92,7 +100,9 @@ class PostPSendStage {
   void Run_();
   void Send_(FakeComposePostService_UploadUniqueId_args* args,
              ::apache::thrift::protocol::TProtocol* oprot,
-             ::apache::thrift::protocol::TProtocol* iprot);
+             ::apache::thrift::protocol::TProtocol* iprot,
+             int seqid);
+
   void PostProcess_(MyUniqueIdService_UploadUniqueId_result *result, int32_t* seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
 };
 

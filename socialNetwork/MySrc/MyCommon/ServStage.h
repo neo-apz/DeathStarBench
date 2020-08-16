@@ -43,7 +43,7 @@ class ServStage {
     threads_ = new std::thread[num_threads_];
     tokens_ = new ProducerToken*[num_threads_];
     #ifdef SW
-    servSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
+    servSW_ = new Stopwatch<std::chrono::microseconds>[num_threads_];
     #endif
 
     int coreId;
@@ -77,8 +77,7 @@ class ServStage {
                       void *result,
                       int32_t seqid,
                       ::apache::thrift::protocol::TProtocol* oprot,
-                      void* ctx,
-                      ProducerToken &token);
+                      void* ctx);
 
 
   static void ResetToken() {
@@ -104,7 +103,7 @@ class ServStage {
   PostPSendStage* postpSendStage_;
 
   #ifdef SW
-  Stopwatch<std::chrono::nanoseconds> *servSW_;
+  Stopwatch<std::chrono::microseconds> *servSW_;
   #endif
 
 

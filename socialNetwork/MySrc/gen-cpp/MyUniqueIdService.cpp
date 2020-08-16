@@ -302,11 +302,10 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     this->eventHandler_->preRead(ctx, "MyUniqueIdService.UploadUniqueId");
   }
 
-  
   #ifdef STAGED
   MyUniqueIdService_UploadUniqueId_args *args = new MyUniqueIdService_UploadUniqueId_args();
-  args->read(iprot);
   MyUniqueIdService_UploadUniqueId_result *result = new MyUniqueIdService_UploadUniqueId_result();
+  args->read(iprot);
   #else
   MyUniqueIdService_UploadUniqueId_args args;
   args.read(iprot);
@@ -357,12 +356,13 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     return;
   }
 
-  #if defined(SW) && !defined(STAGED)
+  #ifdef STAGED
+
+  #else
+  #if defined(SW)
   postpSW_.start();
   #endif
 
-  #ifdef STAGED
-  #else
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->preWrite(ctx, "MyUniqueIdService.UploadUniqueId");
   }
@@ -376,10 +376,11 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "MyUniqueIdService.UploadUniqueId", bytes);
   }
-  #endif
   
-  #if defined(SW) && !defined(STAGED)
+  #if defined(SW)
   postpSW_.stop();
+  #endif
+
   #endif
 }
 
