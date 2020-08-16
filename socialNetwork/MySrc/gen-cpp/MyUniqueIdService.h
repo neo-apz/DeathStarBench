@@ -243,6 +243,15 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
                              uint64_t servWidth) : iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
 
+
+    args_ = new MyUniqueIdService_UploadUniqueId_args*[argsSize];
+    result_ = new MyUniqueIdService_UploadUniqueId_result*[argsSize];
+
+    for (int i = 0; i < argsSize; i++){
+      args_[i] = new MyUniqueIdService_UploadUniqueId_args();
+      result_[i] = new MyUniqueIdService_UploadUniqueId_result();
+    }
+
     _postpSendStageHandler = postpSendStageHandler;
     _prepRecvStageHandler = prepRecvStageHandler;
     _prepRecvStageHandler->setProcessor(this);
@@ -255,9 +264,14 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   PostPSendStage* _postpSendStageHandler;
   PrePRecvStage* _prepRecvStageHandler;
   ServStage* _servStageHandler;
+
+  MyUniqueIdService_UploadUniqueId_args **args_;
+  MyUniqueIdService_UploadUniqueId_result **result_;
+  int argsCounter = 0;
+  int argsSize = 10;
   
   #else
-  #ifdef SW
+  #ifdef SWD
   Stopwatch<std::chrono::microseconds> servSW_;  
   Stopwatch<std::chrono::nanoseconds> postpSW_;
   Stopwatch<std::chrono::nanoseconds> prepSW_;  
@@ -269,8 +283,17 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     #ifdef STAGED
     delete _servStageHandler;
 
+    for (int i = 0; i < argsSize; i++){
+      delete args_[i];
+      delete result_[i];
+    }
+    
+    delete[] args_;
+    delete[] result_;
+
+
     #else
-    #ifdef SW
+    #ifdef SWD
     servSW_.post_process();
     std::cout << "Serv(us): " << servSW_.mean() << std::endl;
 

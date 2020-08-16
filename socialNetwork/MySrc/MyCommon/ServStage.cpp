@@ -29,16 +29,16 @@ void ServStage::Run_(int tid) {
   while (!exit_flag_) {
     // std::cout << "servRQ_ size: " << servRQ_.size_approx() << std::endl;
     if (servRQ_.try_dequeue(req)){
-      #ifdef SW
+      #ifdef SWD
       servSW_[tid].start();
       #endif
       
       args = (MyUniqueIdService_UploadUniqueId_args*) req.args;
       Serv_(args);
-      delete args;
       postpSendStage_->EnqueuePostPReq(req.oprot, req.seqid, req.result, req.ctx);
+      // delete args;
 
-      #ifdef SW
+      #ifdef SWD
       servSW_[tid].stop();
       #endif
     }

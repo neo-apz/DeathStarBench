@@ -845,6 +845,15 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     id_ = coreID; // My unique ID to be used as the seq id.
 
     #ifdef STAGED
+
+    args_ = new FakeComposePostService_UploadUniqueId_pargs*[argsSize];
+    result_ = new FakeComposePostService_UploadUniqueId_presult*[argsSize];
+
+    for (int i = 0; i < argsSize; i++){
+      args_[i] = new FakeComposePostService_UploadUniqueId_pargs();
+      result_[i] = new FakeComposePostService_UploadUniqueId_presult();
+    }
+
     // recvThread_ = std::thread([this] {Recv();});
     // int coreId = PinToCore(&recvThread_);
     _postpSendStageHandler = postpSendStageHandler;
@@ -907,12 +916,16 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
 
  public:
 
-  #if defined(SW) && !defined(STAGED)
+  #if defined(SWD) && !defined(STAGED)
   Stopwatch<std::chrono::nanoseconds> recvSW_;
   Stopwatch<std::chrono::nanoseconds> sendSW_;
   #endif
 
   #ifdef STAGED
+  FakeComposePostService_UploadUniqueId_pargs **args_;
+  FakeComposePostService_UploadUniqueId_presult **result_;
+  int argsCounter = 0;
+  int argsSize = 10;
   PostPSendStage* _postpSendStageHandler;
   PrePRecvStage* _prepRecvStageHandler;
   #endif
@@ -922,11 +935,19 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     processorThread.join();
 
     #ifdef STAGED
+    for (int i = 0; i < argsSize; i++){
+      delete args_[i];
+      delete result_[i];
+    }
+    
+    delete[] args_;
+    delete[] result_;
+
     // exit_recvT_ = true;
     // recvThread_.join();
     #endif
 
-    #if defined(SW) && !defined(STAGED)
+    #if defined(SWD) && !defined(STAGED)
     recvSW_.post_process();
     std::cout << "Recv(ns): " << recvSW_.mean() << std::endl;
 

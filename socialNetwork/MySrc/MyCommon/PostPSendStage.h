@@ -53,7 +53,7 @@ class PostPSendStage {
     exit_flag_ = true;
     thread_.join();
 
-    #ifdef SW
+    #ifdef SWD
     sendSW_.post_process();
     std::cout << "Send: " << sendSW_.mean() << std::endl;
     postpSW_.post_process();
@@ -90,7 +90,7 @@ class PostPSendStage {
 
   // int32_t cseqid = 0;
 
-  #ifdef SW
+  #ifdef SWD
   Stopwatch<std::chrono::nanoseconds> sendSW_;
   Stopwatch<std::chrono::nanoseconds> postpSW_;
   // Stopwatch<std::chrono::nanoseconds> combinedSW_;
@@ -103,7 +103,10 @@ class PostPSendStage {
              ::apache::thrift::protocol::TProtocol* iprot,
              int seqid);
 
-  void PostProcess_(MyUniqueIdService_UploadUniqueId_result *result, int32_t* seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void PostProcess_(MyUniqueIdService_UploadUniqueId_result *result,
+                    int32_t seqid,
+                    ::apache::thrift::protocol::TProtocol* oprot,
+                    void* ctx);
 };
 
 } // namespace my_social_network

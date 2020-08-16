@@ -181,7 +181,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **process
     prepRecvStageHandler->EnqueuePrePReq(srvIProt, srvOProt);
     #else
 
-    #ifdef SW
+    #ifdef SWD
     processor->prepSW_.start();
     #endif
 

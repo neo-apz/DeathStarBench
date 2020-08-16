@@ -56,26 +56,26 @@ void PostPSendStage::Run_() {
 
   while (!exit_flag_){
     if (sendRQ_.try_dequeue(sendReq)){
-      #ifdef SW
+      #ifdef SWD
       sendSW_.start();
       #endif
       args = (FakeComposePostService_UploadUniqueId_args*) sendReq.args;
       Send_(args, sendReq.oprot, sendReq.iprot, sendReq.seqid);
       sendReq.transportRQ->enqueue(sendReq.seqid);
-      #ifdef SW
+      #ifdef SWD
       sendSW_.stop();
       #endif
     }
 
     if (postpRQ_.try_dequeue(postpReq)){
-      #ifdef SW
+      #ifdef SWD
       postpSW_.start();
       #endif
       result = (MyUniqueIdService_UploadUniqueId_result* ) postpReq.result;
-      PostProcess_(result, &(postpReq.seqid), postpReq.oprot, postpReq.ctx);
+      PostProcess_(result, postpReq.seqid, postpReq.oprot, postpReq.ctx);
       postpCQ_.enqueue(1);
       // std::cout << "postpCQ_.enqueue."<< std::endl;
-      #ifdef SW
+      #ifdef SWD
       postpSW_.stop();
       #endif
     }
@@ -96,7 +96,7 @@ void PostPSendStage::Send_(
   oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
-  delete args;
+  // delete args;
   
   // std::cout << "End of Send, ReqGenPhase:" << isReqGenPhase << std::endl;
 
@@ -118,17 +118,17 @@ void PostPSendStage::Send_(
 
 void PostPSendStage::PostProcess_(
   MyUniqueIdService_UploadUniqueId_result *result,
-  int32_t* seqid,
+  int32_t seqid,
   ::apache::thrift::protocol::TProtocol* oprot,
   void* ctx) {
   
-  oprot->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, *seqid);
+  oprot->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, seqid);
   result->write(oprot);
   oprot->writeMessageEnd();
   uint32_t bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
 
-  delete result;
+  // delete result;
 
   // if (this->eventHandler_.get() != NULL) {
   //   this->eventHandler_->postWrite(req.ctx, "MyUniqueIdService.UploadUniqueId", bytes);

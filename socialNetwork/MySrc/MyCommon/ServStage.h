@@ -42,7 +42,7 @@ class ServStage {
     
     threads_ = new std::thread[num_threads_];
     tokens_ = new ProducerToken*[num_threads_];
-    #ifdef SW
+    #ifdef SWD
     servSW_ = new Stopwatch<std::chrono::microseconds>[num_threads_];
     #endif
 
@@ -60,7 +60,7 @@ class ServStage {
     for (int t = 0; t < num_threads_; t++){
       threads_[t].join();
       delete tokens_[t];
-      #ifdef SW
+      #ifdef SWD
       servSW_[t].post_process();
       std::cout << "[" << t << "] Serv: " << servSW_[t].mean() << std::endl;
       #endif
@@ -68,7 +68,7 @@ class ServStage {
     delete[] tokens_;
     delete[] threads_;
 
-    #ifdef SW
+    #ifdef SWD
     delete[] servSW_;
     #endif
   }
@@ -102,7 +102,7 @@ class ServStage {
 
   PostPSendStage* postpSendStage_;
 
-  #ifdef SW
+  #ifdef SWD
   Stopwatch<std::chrono::microseconds> *servSW_;
   #endif
 

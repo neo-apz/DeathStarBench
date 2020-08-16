@@ -1460,8 +1460,9 @@ void FakeComposePostServiceClient::Run_(){
       _fakeProcessor->process(oprot, iprot, nullptr);
 
       #ifdef STAGED
-      FakeComposePostService_UploadUniqueId_presult *result = new FakeComposePostService_UploadUniqueId_presult();
+      FakeComposePostService_UploadUniqueId_presult *result = result_[argsCounter];
       _prepRecvStageHandler->EnqueueRecvReq(iprot.get(), result);
+      argsCounter = (argsCounter + 1) % argsSize;
       #else
       CQ_.enqueue(1);
       #endif
@@ -1471,12 +1472,12 @@ void FakeComposePostServiceClient::Run_(){
 
 void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
-  #if defined(SW) && !defined(STAGED)
+  #if defined(SWD) && !defined(STAGED)
   sendSW_.start();
   #endif
   
   send_UploadUniqueId(req_id, post_id, post_type);
-  #if defined(SW) && !defined(STAGED)
+  #if defined(SWD) && !defined(STAGED)
   sendSW_.stop();
   #endif
   
@@ -1497,13 +1498,13 @@ void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const in
   //   return;
   // }
 
-  #if defined(SW) && !defined(STAGED)
+  #if defined(SWD) && !defined(STAGED)
   recvSW_.start();
   #endif
 
   recv_UploadUniqueId();
   
-  #if defined(SW) && !defined(STAGED)
+  #if defined(SWD) && !defined(STAGED)
   recvSW_.stop();
   #endif
   
@@ -1516,11 +1517,12 @@ void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const in
 void FakeComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   #ifdef STAGED
-  FakeComposePostService_UploadUniqueId_pargs *args = new FakeComposePostService_UploadUniqueId_pargs();
+  FakeComposePostService_UploadUniqueId_pargs *args = args_[argsCounter];
   args->req_id = &req_id;
   args->post_id = &post_id;
   args->post_type = &post_type;
   _postpSendStageHandler->EnqueueSendReq(oprot_, args, iprot_, &RQ_, id_);
+  argsCounter = (argsCounter + 1) % argsSize;
   
   #else
   int32_t cseqid = 0;

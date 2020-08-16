@@ -51,7 +51,7 @@ class PrePRecvStage {
       // delete prepTokens_[t];
       delete localData[t];
       // delete servTokens_[t];
-      #ifdef SW
+      #ifdef SWD
       recvSW_[t].post_process();
       std::cout << "[" << t << "] Recv: " << recvSW_[t].mean() << std::endl;
       prepSW_[t].post_process();
@@ -59,7 +59,7 @@ class PrePRecvStage {
       #endif
     }
 
-    for (int i=0; i < 10; i++){
+    for (int i=0; i < 24; i++){
       delete tokens_[i];
     }
 
@@ -68,7 +68,7 @@ class PrePRecvStage {
     delete[] localData;
     // delete[] servTokens_;
 
-    #ifdef SW
+    #ifdef SWD
     delete[] recvSW_;
     delete[] prepSW_;
     #endif
@@ -97,7 +97,7 @@ class PrePRecvStage {
  private:
   std::thread *threads_;
   int num_threads_;
-  ProducerToken *tokens_[10];
+  ProducerToken *tokens_[24];
   // ProducerToken **servTokens_;
   // static int current_token;
 
@@ -113,7 +113,7 @@ class PrePRecvStage {
   
   MyUniqueIdServiceProcessor* _processor;
 
-  #ifdef SW
+  #ifdef SWD
   Stopwatch<std::chrono::nanoseconds> *recvSW_;
   Stopwatch<std::chrono::nanoseconds> *prepSW_;
   #endif

@@ -52,6 +52,11 @@ if (SW)
     message("-- Stopwatch enabled!")
 endif()
 
+if (SWD)
+    add_definitions(-DSWD)
+    message("-- Detailed Stopwatch enabled!")
+endif()
+
 add_subdirectory(MyServices)
 
 string( REPLACE "-DNDEBUG" "" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")

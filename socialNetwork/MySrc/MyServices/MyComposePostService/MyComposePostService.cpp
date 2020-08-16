@@ -223,7 +223,7 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **r
 
   iterations = iterations * MsgType::SIZE;
 
-  #ifdef SW
+  #ifdef SWD
   Stopwatch<std::chrono::microseconds> sw;
   sw.start();
   #endif
@@ -250,7 +250,7 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **r
     #endif
   }
 
-  #ifdef SW
+  #ifdef SWD
   sw.stop();
   sw.post_process();
   // LOG(warning) << "[" << tid << "] AVG (us) = " <<  ((sw.mean() * 1.0) / num_iterations);

@@ -15,12 +15,12 @@ PrePRecvStage::PrePRecvStage(int num_threads){
     // servTokens_ = new ProducerToken*[num_threads_];
     localData = new LocalData*[num_threads_];
 
-    #ifdef SW
+    #ifdef SWD
     recvSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
     prepSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
     #endif
 
-    for (int i=0; i < 10; i++){
+    for (int i=0; i < 24; i++){
       tokens_[i] = new ProducerToken(recvCQ_);
     }
 
@@ -75,24 +75,24 @@ void PrePRecvStage::Run_(int tid){
   while (!exit_flag_){
     // if (prepRQ_.try_dequeue_from_producer(*prepTokens_[tid], prepReq)){
     if (prepRQ_.try_dequeue(prepReq)){
-      #ifdef SW
+      #ifdef SWD
       prepSW_[tid].start();
       #endif
       _processor->process(prepReq.iprot, prepReq.oprot, nullptr);
       // prepCQ_.enqueue(1);
-      #ifdef SW
+      #ifdef SWD
       prepSW_[tid].stop();
       #endif
     }
 
     if (recvRQ_.try_dequeue(recvReq)){
-      #ifdef SW
+      #ifdef SWD
       recvSW_[tid].start();
       #endif
 
       result = (FakeComposePostService_UploadUniqueId_presult* ) recvReq.result;
       Recv_(recvReq.iprot, result, tid);
-      #ifdef SW
+      #ifdef SWD
       recvSW_[tid].stop();
       #endif
     }
@@ -138,7 +138,7 @@ void PrePRecvStage::Recv_(::apache::thrift::protocol::TProtocol* iprot,
   
   // std::cout << "End of Recv!" << std::endl;
   recvCQ_.enqueue(*tokens_[localData[tid]->rseqid], localData[tid]->rseqid);
-  delete result;
+  // delete result;
   // std::cout << "recvCQ_.enqueue."<< std::endl;
 }
 

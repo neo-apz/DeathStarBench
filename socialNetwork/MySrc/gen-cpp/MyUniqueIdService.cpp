@@ -303,8 +303,9 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   }
 
   #ifdef STAGED
-  MyUniqueIdService_UploadUniqueId_args *args = new MyUniqueIdService_UploadUniqueId_args();
-  MyUniqueIdService_UploadUniqueId_result *result = new MyUniqueIdService_UploadUniqueId_result();
+  MyUniqueIdService_UploadUniqueId_args *args = args_[argsCounter];
+  MyUniqueIdService_UploadUniqueId_result *result = result_[argsCounter];
+  argsCounter = (argsCounter + 1) % argsSize;
   args->read(iprot);
   #else
   MyUniqueIdService_UploadUniqueId_args args;
@@ -323,14 +324,14 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     #ifdef STAGED
       _servStageHandler->EnqueueServReq(args, result, seqid, oprot, ctx);
     #else
-      #ifdef SW
+      #ifdef SWD
       prepSW_.stop();
       servSW_.start();
       #endif
 
       iface_->UploadUniqueId(args.req_id, args.post_type);
       
-      #ifdef SW
+      #ifdef SWD
       servSW_.stop();
       #endif
     #endif
@@ -359,7 +360,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   #ifdef STAGED
 
   #else
-  #if defined(SW)
+  #if defined(SWD)
   postpSW_.start();
   #endif
 
@@ -377,7 +378,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     this->eventHandler_->postWrite(ctx, "MyUniqueIdService.UploadUniqueId", bytes);
   }
   
-  #if defined(SW)
+  #if defined(SWD)
   postpSW_.stop();
   #endif
 
