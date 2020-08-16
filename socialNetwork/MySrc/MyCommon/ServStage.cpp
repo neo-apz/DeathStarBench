@@ -7,11 +7,16 @@ namespace my_social_network {
 int ServStage::current_token = 0;
 
 void ServStage::EnqueueServReq(void *args, void *result, int32_t seqid,
-                                ::apache::thrift::protocol::TProtocol* oprot, void* ctx) {
+                               ::apache::thrift::protocol::TProtocol* oprot, void* ctx,
+                               ProducerToken &token) {
   ServReq serv_req = {args, result, seqid, oprot, ctx};
-  servRQ_.enqueue(*tokens_[current_token], serv_req);
-  current_token = (current_token + 1) % num_threads_;
+  servRQ_.enqueue(token, serv_req);
+  // current_token = (current_token + 1) % num_threads_;
   // std::cout << "servRQ_.enqueue."<< std::endl;
+}
+
+ProducerToken* ServStage::GetServToken(int tid) {
+    return tokens_[tid];
 }
 
 // static void ServStage::ResetToken(){
@@ -23,6 +28,7 @@ void ServStage::Run_(int tid) {
   MyUniqueIdService_UploadUniqueId_args* args;
 
   while (!exit_flag_) {
+    // std::cout << "servRQ_ size: " << servRQ_.size_approx() << std::endl;
     if (servRQ_.try_dequeue_from_producer(*tokens_[tid], req)){
       #ifdef SW
       servSW_[tid].start();

@@ -58,7 +58,7 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
 
   void UploadUniqueId(int64_t, PostType::type) override;
 
-  void setReqGenPhase(bool phase);
+  // void setReqGenPhase(bool phase);
 
  private:
   // std::mutex *_thread_lock;

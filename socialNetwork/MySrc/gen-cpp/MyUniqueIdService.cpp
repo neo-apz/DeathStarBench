@@ -325,6 +325,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
       _servStageHandler->EnqueueServReq(args, result, seqid, oprot, ctx);
     #else
       #ifdef SW
+      prepSW_.stop();
       servSW_.start();
       #endif
 
@@ -356,8 +357,8 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
     return;
   }
 
-  #ifdef SW
-  // postpSW_.start();
+  #if defined(SW) && !defined(STAGED)
+  postpSW_.start();
   #endif
 
   #ifdef STAGED
@@ -377,8 +378,8 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   }
   #endif
   
-  #ifdef SW
-  // postpSW_.stop();
+  #if defined(SW) && !defined(STAGED)
+  postpSW_.stop();
   #endif
 }
 

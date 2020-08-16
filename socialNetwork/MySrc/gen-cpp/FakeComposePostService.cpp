@@ -1448,44 +1448,60 @@ void FakeComposePostServiceClient::recv_UploadMedia()
   return;
 }
 
-bool FakeComposePostServiceClient::isReqGenPhase{ true };
+void FakeComposePostServiceClient::Run_(){
+  int req;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot, oprot;
+  iprot = this->getInputProtocol();
+  oprot = this->getOutputProtocol();
+
+  while(!exit_flag_) {
+    if(RQ_.peek() != nullptr){
+      RQ_.try_dequeue(req);
+      _fakeProcessor->process(oprot, iprot, nullptr);
+      CQ_.enqueue(1);
+    }
+  }
+}
 
 void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
-  // #ifdef SW
-  // sendSW_.start();
-  // #endif
+  #if defined(SW) && !defined(STAGED)
+  sendSW_.start();
+  #endif
   
   send_UploadUniqueId(req_id, post_id, post_type);
-  
-  // #ifdef SW
-  // sendSW_.stop();
-  // #endif
+  #if defined(SW) && !defined(STAGED)
+  sendSW_.stop();
+  #endif
 
-  if (isReqGenPhase){
-    #ifdef STAGED
-    while (_postpSendStageHandler->PeekSend() == nullptr);
-    int completion;
-    _postpSendStageHandler->SendCompletion(completion);
-    #endif
-    _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
-    // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
-    return;
-  }
+  RQ_.enqueue(1);
+  int completion;
+  CQ_.wait_dequeue(completion);
 
-  // #ifdef SW
-  // recvSW_.start();
-  // #endif
+  // if (isReqGenPhase){
+  //   #ifdef STAGED
+  //   while (_postpSendStageHandler->PeekSend() == nullptr);
+  //   int completion;
+  //   _postpSendStageHandler->SendCompletion(completion);
+  //   #endif
+  //   _fakeProcessor->process(this->getOutputProtocol(), this->getInputProtocol(), nullptr);
+  //   // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
+  //   return;
+  // }
+
+  #if defined(SW) && !defined(STAGED)
+  recvSW_.start();
+  #endif
 
   recv_UploadUniqueId();
   
-  // #ifdef SW
-  // recvSW_.stop();
-  // #endif
+  #if defined(SW) && !defined(STAGED)
+  recvSW_.stop();
+  #endif
   
   #ifdef STAGED
-  int completion;
-  while (!_prepRecvStageHandler->RecvCompletion(completion));
+  // int completion;
+  // while (!_prepRecvStageHandler->RecvCompletion(completion));
   #endif
   // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
 }

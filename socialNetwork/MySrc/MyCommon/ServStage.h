@@ -77,13 +77,15 @@ class ServStage {
                       void *result,
                       int32_t seqid,
                       ::apache::thrift::protocol::TProtocol* oprot,
-                      void* ctx);
+                      void* ctx,
+                      ProducerToken &token);
 
 
   static void ResetToken() {
     current_token = 0;
   }
 
+  ProducerToken* GetServToken(int tid);
 
  private:
   std::thread *threads_;

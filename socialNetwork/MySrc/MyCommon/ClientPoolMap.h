@@ -16,10 +16,13 @@ namespace my_social_network {
 template<class MyTClient>
 class ClientPoolMap {
  public:
+  #ifdef STAGED
   ClientPoolMap(const std::string &client_type, uint32_t buff_size, int pool_size,
                 PostPSendStage* postpSendStageHandler,
                 PrePRecvStage* prepRecvStageHandler,
                 uint64_t servWidth);
+  #endif
+  ClientPoolMap(const std::string &client_type, uint32_t buff_size, int pool_size);
   ~ClientPoolMap();
 
   ClientPoolMap(const ClientPoolMap&) = delete;
@@ -40,6 +43,7 @@ class ClientPoolMap {
   std::mutex _mtx;
 };
 
+#ifdef STAGED
 template<class MyTClient>
 ClientPoolMap<MyTClient>::ClientPoolMap(const std::string &client_type,
                                         uint32_t buff_size, int pool_size,
@@ -57,6 +61,21 @@ ClientPoolMap<MyTClient>::ClientPoolMap(const std::string &client_type,
     MyTClient *client = new MyTClient(_buff_size);
     #endif
     
+    _pool.emplace_back(client);
+  }
+  _current_index = 0;
+}
+#endif
+
+template<class MyTClient>
+ClientPoolMap<MyTClient>::ClientPoolMap(const std::string &client_type,
+                                        uint32_t buff_size, int pool_size) {
+  _buff_size = buff_size;
+  _pool_size = pool_size;
+  _client_type = client_type;
+
+  for (int i = 0; i < _pool_size; ++i) {
+    MyTClient *client = new MyTClient(_buff_size);
     _pool.emplace_back(client);
   }
   _current_index = 0;

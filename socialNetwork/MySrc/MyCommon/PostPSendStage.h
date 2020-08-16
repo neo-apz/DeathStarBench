@@ -56,6 +56,8 @@ class PostPSendStage {
     std::cout << "Send: " << sendSW_.mean() << std::endl;
     postpSW_.post_process();
     std::cout << "PostP: " << postpSW_.mean() << std::endl;
+    // combinedSW_.post_process();
+    // std::cout << "PostPSend Combined: " << combinedSW_.mean() << std::endl;
     #endif
   }
 
@@ -83,6 +85,7 @@ class PostPSendStage {
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> sendSW_;
   Stopwatch<std::chrono::nanoseconds> postpSW_;
+  // Stopwatch<std::chrono::nanoseconds> combinedSW_;
   #endif
 
 

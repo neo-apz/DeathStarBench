@@ -1,17 +1,23 @@
 
-add_executable(
-    MyUniqueIdService
+set(SOURCES
     MyUniqueIdService.cpp
     ${COMMON_DIR}/MyTMemoryBuffer.cpp
     ${COMMON_DIR}/RandomGenerator.cpp
     ${COMMON_DIR}/core_schedule.cpp
-    ${COMMON_DIR}/PostPSendStage.cpp
-    ${COMMON_DIR}/PrePRecvStage.cpp
-    ${COMMON_DIR}/ServStage.cpp
     ${THRIFT_GEN_CPP_DIR}/MyUniqueIdService.cpp
     ${THRIFT_GEN_CPP_DIR}/FakeComposePostService.cpp
     ${THRIFT_GEN_CPP_DIR}/my_social_network_types.cpp
 )
+
+if (STAGED)
+    list(APPEND SOURCES 
+        ${COMMON_DIR}/PostPSendStage.cpp
+        ${COMMON_DIR}/PrePRecvStage.cpp
+        ${COMMON_DIR}/ServStage.cpp
+    )
+endif()
+
+add_executable(MyUniqueIdService ${SOURCES})
 
 target_include_directories(
     MyUniqueIdService PRIVATE

@@ -20,7 +20,6 @@ using namespace std;
 
 uint64_t num_iterations;
 uint64_t servWidth;
-// std::mutex thread_lock;
 MyLock thread_lock;
 std::string machine_id;
 
@@ -32,16 +31,13 @@ double *latencies;
 #endif
 
 volatile bool start = false;
-// volatile std::atomic_int start2(0);
 pthread_barrier_t barrier;
 
 
 #define BUFFER_SIZE  50
 #define WARM_UP_ITER  100
 
-void Allocate(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
-             MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
-             uint64_t buffer_size){
+void Allocate(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients, uint64_t buffer_size){
 
   // *reqGenPhaseClients = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
   // *processPhaseClients = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
@@ -52,32 +48,39 @@ void Allocate(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
   // }
 }
 
-void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
-             MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
+#ifdef STAGED
+void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
              PostPSendStage* postpSendStageHandler,
              PrePRecvStage* prepRecvStageHandler){
 
   for (int c = 0; c < num_iterations; c++) {
-      delete reqGenPhaseClients[c];
       delete processPhaseClients[c];
   }
-  free(reqGenPhaseClients);
   free(processPhaseClients);
   delete postpSendStageHandler;
   delete prepRecvStageHandler;
 }
 
-void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClient,
-                        MyThriftClient<MyUniqueIdServiceClient> *processPhaseClient,
+#else
+void CleanUp(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients){
+
+  for (int c = 0; c < num_iterations; c++) {
+      delete processPhaseClients[c];
+  }
+  free(processPhaseClients);
+}
+#endif
+
+void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *processPhaseClient,
                         RandomGenerator *randGen){
   
-  reqGenPhaseClient->Connect();
+  // reqGenPhaseClient->Connect();
 
   int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
   PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
 
-  auto client = reqGenPhaseClient->GetClient();
-  client->send_UploadUniqueId(req_id, post_type);
+  // auto client = reqGenPhaseClient->GetClient();
+  // client->send_UploadUniqueId(req_id, post_type);
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;
@@ -86,7 +89,7 @@ void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClie
 
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
-  client = processPhaseClient->GetClient();
+  auto client = processPhaseClient->GetClient();
   client->send_UploadUniqueId(req_id, post_type);
 }
 
@@ -98,17 +101,21 @@ void ClientRecvUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient)
   client->recv_UploadUniqueId();
 }
 
-void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenPhaseClients,
-                               MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
+// void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
+//                                std::shared_ptr<MyUniqueIdHandler> handler,
+//                                int tid, int max_tid,
+//                                uint64_t buffer_size,
+//                                PostPSendStage* postpSendStageHandler,
+//                                PrePRecvStage* prepRecvStageHandler){
+
+void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **processPhaseClients,
                                std::shared_ptr<MyUniqueIdHandler> handler,
                                int tid, int max_tid,
-                               uint64_t buffer_size,
-                               PostPSendStage* postpSendStageHandler,
-                               PrePRecvStage* prepRecvStageHandler){
+                               uint64_t buffer_size){
 
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
 
-  Allocate(reqGenPhaseClients, reqGenPhaseClients, buffer_size);
+  Allocate(processPhaseClients, buffer_size);
 
 #ifdef STAGED
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
@@ -117,10 +124,10 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
   int completion;
 #else
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
-    std::make_shared<MyUniqueIdServiceProcessor>(handler, postpSendStageHandler, prepRecvStageHandler, servWidth);
+    std::make_shared<MyUniqueIdServiceProcessor>(handler);
 #endif
 
-  FakeComposePostServiceClient::isReqGenPhase = true;
+  // FakeComposePostServiceClient::isReqGenPhase = true;
   RandomGenerator randGen(tid);
 
   uint64_t count = 0;
@@ -129,21 +136,21 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
 
   while (count < num_iterations){
     
-    ClientSendUniqueId(reqGenPhaseClients[count], processPhaseClients[count], &randGen);
+    ClientSendUniqueId(processPhaseClients[count], &randGen);
 
-    srvIProt = reqGenPhaseClients[count]->GetClient()->getOutputProtocol();
-    srvOProt = reqGenPhaseClients[count]->GetClient()->getInputProtocol();
+    // srvIProt = reqGenPhaseClients[count]->GetClient()->getOutputProtocol();
+    // srvOProt = reqGenPhaseClients[count]->GetClient()->getInputProtocol();
 
-    #ifdef STAGED
-    prepRecvStageHandler->EnqueuePrePReq(srvIProt, srvOProt);
+    // #ifdef STAGED
+    // prepRecvStageHandler->EnqueuePrePReq(srvIProt, srvOProt);
 
-    while (processor->_postpSendStageHandler->PeekPostP() == nullptr);
-    processor->_postpSendStageHandler->PostPCompletion(completion);
-    #else
-    processor->process(srvIProt, srvOProt, nullptr);
-    #endif
+    // while (processor->_postpSendStageHandler->PeekPostP() == nullptr);
+    // processor->_postpSendStageHandler->PostPCompletion(completion);
+    // #else
+    // processor->process(srvIProt, srvOProt, nullptr);
+    // #endif
     
-    ClientRecvUniqueId(reqGenPhaseClients[count]);
+    // ClientRecvUniqueId(reqGenPhaseClients[count]);
     count++;
     // std::cout << "ReqGen Thread " << tid << " count=" << count  << std::endl;
   }
@@ -163,7 +170,8 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     BREAKPOINT();
     #endif
     #ifdef STAGED
-    ServStage::ResetToken();
+    // ServStage::ResetToken();
+    // PrePRecvStage::ResetToken();
     #endif
     start = true;
     // LOG(warning) << "Process Phase Started!!";
@@ -173,7 +181,6 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
   // LOG(warning) << "Process Phase Started!!";
 
   count = 0;
-  FakeComposePostServiceClient::isReqGenPhase = false;
 
   #ifdef SW
   Stopwatch<std::chrono::nanoseconds> prepSW_;
@@ -182,17 +189,13 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
   #endif
 
   while (count < num_iterations){
-
-    // #ifdef SW
-    // prepSW_.start();
-    // #endif
-    
     srvIProt = processPhaseClients[count]->GetClient()->getOutputProtocol();
     srvOProt = processPhaseClients[count]->GetClient()->getInputProtocol();
 
     #ifdef STAGED
     prepRecvStageHandler->EnqueuePrePReq(srvIProt, srvOProt);
     #else
+    processor->prepSW_.start();
     processor->process(srvIProt, srvOProt, nullptr);
     #ifdef __aarch64__
     PROCESS_END(count);
@@ -200,10 +203,6 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     #endif
 
     count++;
-        
-    // #ifdef SW
-    // prepSW_.stop();
-    // #endif
   }
 
   #ifdef STAGED
@@ -240,7 +239,11 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> **reqGenP
     count++;
   }
 
-  CleanUp(reqGenPhaseClients, processPhaseClients, postpSendStageHandler, prepRecvStageHandler);
+  #ifdef STAGED
+  CleanUp(processPhaseClients, postpSendStageHandler, prepRecvStageHandler);
+  #else
+  CleanUp(processPhaseClients);
+  #endif
 }
 
 int main(int argc, char *argv[]) {
@@ -262,10 +265,12 @@ int main(int argc, char *argv[]) {
     num_iterations = atoi(argv[2]);
   }
 
-  cpu_set_t  mask;
-  CPU_ZERO(&mask);
-  CPU_SET(0, &mask);
-  sched_setaffinity(0, sizeof(mask), &mask);
+  // cpu_set_t  mask;
+  // CPU_ZERO(&mask);
+  // CPU_SET(0, &mask);
+  // sched_setaffinity(0, sizeof(mask), &mask);
+  int coreID = PinToCore(0, false);
+  std::cout << "Master thread pined to core " << coreID << std::endl;
 
   if (GetMachineId(&machine_id) != 0) {
     exit(EXIT_FAILURE);
@@ -273,27 +278,25 @@ int main(int argc, char *argv[]) {
 
   pthread_barrier_init(&barrier, NULL, num_threads);
 
-  MyThriftClient<MyUniqueIdServiceClient>** reqGenPhaseClients[num_threads];
+  // MyThriftClient<MyUniqueIdServiceClient>** reqGenPhaseClients[num_threads];
   MyThriftClient<MyUniqueIdServiceClient>** processPhaseClients[num_threads];
 
-  // PrePRecvStage* prepRecvStageHandlers[num_threads];
-  // PostPSendStage* postpSendStageHandlers[num_threads]; 
-  PrePRecvStage* prepRecvStageHandler = new PrePRecvStage();
+  #ifdef STAGED
+  PrePRecvStage* prepRecvStageHandler = new PrePRecvStage(2);
   PostPSendStage* postpSendStageHandler = new PostPSendStage(prepRecvStageHandler);
-
-  // for (int i = 0; i < num_threads; i++) {
-  //   prepRecvStageHandlers[i] = new PrePRecvStage();
-  //   postpSendStageHandlers[i] = new PostPSendStage(prepRecvStageHandlers[i]);
-  // }
+  #endif
 
   uint64_t buffer_size = BUFFER_SIZE * num_iterations;
   // std::cout << "Buffer size: " << buffer_size << std::endl;
-  ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
-    "compose-post", buffer_size, num_threads,
-    postpSendStageHandler, prepRecvStageHandler, servWidth);
-  
-  // MyClientPool<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
-  //   "compose-post", buffer_size, 2, 2, 1000);
+
+  #ifdef STAGED
+    ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
+      "compose-post", buffer_size, num_threads,
+      postpSendStageHandler, prepRecvStageHandler, servWidth);
+  #else
+    ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
+      "compose-post", buffer_size, num_threads);
+  #endif
 
 
   std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
@@ -310,23 +313,23 @@ int main(int argc, char *argv[]) {
   #endif
 
   buffer_size = BUFFER_SIZE;
-  int coreId = -1;
+  // int coreId = -1;
   for (int i = 0; i < num_threads; i++) {
     #ifdef SW
     throughputs[i] = 0;
     latencies[i] = 0;
     #endif
 
-    reqGenPhaseClients[i] = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
+    // reqGenPhaseClients[i] = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
     processPhaseClients[i] = (MyThriftClient<MyUniqueIdServiceClient>**) malloc(sizeof(MyThriftClient<MyUniqueIdServiceClient>**) * num_iterations);
 
     for (int c = 0; c < num_iterations; c++) {
-      reqGenPhaseClients[i][c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
+      // reqGenPhaseClients[i][c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
       processPhaseClients[i][c] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
     }
 
+    #ifdef STAGED
     processThreads[i] = std::thread(GenAndProcessUniqueIdReqs,
-                                      reqGenPhaseClients[i],
                                       processPhaseClients[i],
                                       handler,
                                       i,
@@ -334,9 +337,17 @@ int main(int argc, char *argv[]) {
                                       buffer_size,
                                       postpSendStageHandler,
                                       prepRecvStageHandler);
+    #else
+    processThreads[i] = std::thread(GenAndProcessUniqueIdReqs,
+                                      processPhaseClients[i],
+                                      handler,
+                                      i,
+                                      num_threads - 1,
+                                      buffer_size);
+    #endif                             
 
-    coreId = PinToCore(&processThreads[i]);
-    // std::cout << "Processor thread pinned to core " << coreId << "." << std::endl;
+    coreID = PinToCore(&processThreads[i]);
+    std::cout << "Processor thread pinned to core " << coreID << "." << std::endl;
   }
 
   for (int i = 0; i < num_threads; i++) {

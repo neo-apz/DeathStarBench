@@ -6,11 +6,38 @@
 
 namespace my_social_network {
 
+int PrePRecvStage::current_token = 0;
+
+PrePRecvStage::PrePRecvStage(int num_threads){
+    num_threads_ = num_threads;
+    threads_ = new std::thread[num_threads_];
+    prepTokens_ = new ProducerToken*[num_threads_];
+    servTokens_ = new ProducerToken*[num_threads_];
+    localData = new LocalData*[num_threads_];
+
+    #ifdef SW
+    recvSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
+    prepSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
+    #endif
+
+    int coreId;
+    for (int t=0; t < num_threads_; t++){
+      localData[t] = new LocalData();
+      prepTokens_[t] = new ProducerToken(prepRQ_);
+      servTokens_[t] = _processor->_servStageHandler->GetServToken(t);
+      
+      threads_[t] = std::thread([this, t] {Run_(t);});
+      coreId = PinToCore(&threads_[t]);
+      // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
+    }
+}
+
 void PrePRecvStage::EnqueuePrePReq(apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> iprot,
                                    apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> oprot){
   PrePReq req = {iprot, oprot};
-  prepRQ_.enqueue(req);
+  prepRQ_.enqueue(*prepTokens_[current_token], req);
   // std::cout << "prepRQ_.enqueue."<< std::endl;
+  current_token = (current_token + 1) % num_threads_;
 }
 
 void PrePRecvStage::EnqueueRecvReq(::apache::thrift::protocol::TProtocol* iprot, void *result){
@@ -31,7 +58,7 @@ void PrePRecvStage::setProcessor(std::shared_ptr<MyUniqueIdServiceProcessor> pro
   _processor = processor;
 }
 
-void PrePRecvStage::Run_(){
+void PrePRecvStage::Run_(int tid){
   int completion;
   RecvReq recvReq;
   PrePReq prepReq;
@@ -39,28 +66,26 @@ void PrePRecvStage::Run_(){
   FakeComposePostService_UploadUniqueId_presult *result;
 
   while (!exit_flag_){
-    if (prepRQ_.peek() != nullptr){
+    if (prepRQ_.try_dequeue_from_producer(*prepTokens_[tid], prepReq)){
       #ifdef SW
-      prepSW_.start();
+      prepSW_[tid].start();
       #endif
-      prepRQ_.try_dequeue(prepReq);
       _processor->process(prepReq.iprot, prepReq.oprot, nullptr);
       // prepCQ_.enqueue(1);
       #ifdef SW
-      prepSW_.stop();
+      prepSW_[tid].stop();
       #endif
     }
 
-    if (recvRQ_.peek() != nullptr){
+    if (recvRQ_.try_dequeue(recvReq)){
       #ifdef SW
-      recvSW_.start();
+      recvSW_[tid].start();
       #endif
-      recvRQ_.try_dequeue(recvReq);
 
       result = (FakeComposePostService_UploadUniqueId_presult* ) recvReq.result;
-      Recv_(recvReq.iprot, result);
+      Recv_(recvReq.iprot, result, tid);
       #ifdef SW
-      recvSW_.stop();
+      recvSW_[tid].stop();
       #endif
     }
   }
@@ -74,21 +99,22 @@ void PrePRecvStage::PreProcess_() {
 }
 
 void PrePRecvStage::Recv_(::apache::thrift::protocol::TProtocol* iprot,
-                          FakeComposePostService_UploadUniqueId_presult* result) {
-  iprot->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+                          FakeComposePostService_UploadUniqueId_presult* result,
+                          int tid) {
+  iprot->readMessageBegin(localData[tid]->fname, localData[tid]->mtype, localData[tid]->rseqid);
+  if (localData[tid]->mtype == ::apache::thrift::protocol::T_EXCEPTION) {
       ::apache::thrift::TApplicationException x;
       x.read(iprot);
       iprot->readMessageEnd();
       iprot->getTransport()->readEnd();
       throw x;
   }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+  if (localData[tid]->mtype != ::apache::thrift::protocol::T_REPLY) {
       iprot->skip(::apache::thrift::protocol::T_STRUCT);
       iprot->readMessageEnd();
       iprot->getTransport()->readEnd();
   }
-  if (fname.compare("UploadUniqueId") != 0) {
+  if (localData[tid]->fname.compare("UploadUniqueId") != 0) {
       iprot->skip(::apache::thrift::protocol::T_STRUCT);
       iprot->readMessageEnd();
       iprot->getTransport()->readEnd();
