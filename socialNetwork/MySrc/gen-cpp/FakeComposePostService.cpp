@@ -1472,12 +1472,12 @@ void FakeComposePostServiceClient::Run_(){
 
 void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
-  #if defined(SWD) && !defined(STAGED)
+  #ifdef SWD
   sendSW_.start();
   #endif
   
   send_UploadUniqueId(req_id, post_id, post_type);
-  #if defined(SWD) && !defined(STAGED)
+  #ifdef SWD
   sendSW_.stop();
   #endif
   
@@ -1498,19 +1498,20 @@ void FakeComposePostServiceClient::UploadUniqueId(const int64_t req_id, const in
   //   return;
   // }
 
-  #if defined(SWD) && !defined(STAGED)
+  #ifdef SWD
   recvSW_.start();
   #endif
 
   recv_UploadUniqueId();
-  
-  #if defined(SWD) && !defined(STAGED)
-  recvSW_.stop();
-  #endif
-  
+
   #ifdef STAGED
   _prepRecvStageHandler->RecvCompletion(id_);
   #endif
+  
+  #ifdef SWD
+  recvSW_.stop();
+  #endif
+  
   // std::cout << "End of UploadUniqueId, ReqGenPhase:" << isReqGenPhase << std::endl;
 }
 

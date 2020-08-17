@@ -35,12 +35,12 @@ void ServStage::Run_(int tid) {
       
       args = (MyUniqueIdService_UploadUniqueId_args*) req.args;
       Serv_(args);
-      postpSendStage_->EnqueuePostPReq(req.oprot, req.seqid, req.result, req.ctx);
-      // delete args;
 
       #ifdef SWD
       servSW_[tid].stop();
       #endif
+      postpSendStage_->EnqueuePostPReq(req.oprot, req.seqid, req.result, req.ctx);
+      // delete args;
     }
   }
 }

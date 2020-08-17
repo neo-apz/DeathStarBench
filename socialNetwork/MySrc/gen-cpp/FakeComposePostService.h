@@ -916,9 +916,9 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
 
  public:
 
-  #if defined(SWD) && !defined(STAGED)
-  Stopwatch<std::chrono::nanoseconds> recvSW_;
+  #ifdef SWD
   Stopwatch<std::chrono::nanoseconds> sendSW_;
+  Stopwatch<std::chrono::microseconds> recvSW_;
   #endif
 
   #ifdef STAGED
@@ -947,12 +947,18 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     // recvThread_.join();
     #endif
 
-    #if defined(SWD) && !defined(STAGED)
-    recvSW_.post_process();
-    std::cout << "Recv(ns): " << recvSW_.mean() << std::endl;
-
+    #ifdef SWD
     sendSW_.post_process();
+    recvSW_.post_process();
+
+    #ifdef STAGED
+    std::cout << "Pre Send(ns): " << sendSW_.mean() << std::endl;
+    std::cout << "Pre Recv(us): " << recvSW_.mean() << std::endl;
+    #else
     std::cout << "Send(ns): " << sendSW_.mean() << std::endl;
+    std::cout << "Recv(us): " << recvSW_.mean() << std::endl;
+    #endif
+
     #endif
   }
 

@@ -228,20 +228,21 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *processP
 int main(int argc, char *argv[]) {
   init_logger();
 
-  uint64_t num_threads;
+  uint64_t num_threads, prepRecvWidth;
 
-  if (argc != 3) {
-    cout << "Invalid input! Usage: ./MyUniqueIdService <num_threads> <iterations> \n" << endl;
+  if (argc != 4) {
+    cout << "Invalid input! Usage: ./MyUniqueIdService <iterations> <num_threads|servWidth> <prepRecvWidth> \n" << endl;
     exit(-1);
   } else {
     #ifdef STAGED
-    servWidth = atoi(argv[1]);
+    servWidth = atoi(argv[2]);
     num_threads = 1;
     #else
-    num_threads = atoi(argv[1]);
+    num_threads = atoi(argv[2]);
     servWidth = 1;
     #endif
-    num_iterations = atoi(argv[2]);
+    num_iterations = atoi(argv[1]);
+    prepRecvWidth = atoi(argv[3]);
   }
 
   int coreID = PinToCore(0, false);
@@ -256,7 +257,7 @@ int main(int argc, char *argv[]) {
   MyThriftClient<MyUniqueIdServiceClient>** processPhaseClients[num_threads];
 
   #ifdef STAGED
-  prepRecvStageHandler = new PrePRecvStage(1);
+  prepRecvStageHandler = new PrePRecvStage(prepRecvWidth);
   postpSendStageHandler = new PostPSendStage(prepRecvStageHandler);
   #endif
 

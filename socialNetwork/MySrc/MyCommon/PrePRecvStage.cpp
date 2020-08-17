@@ -21,7 +21,9 @@ PrePRecvStage::PrePRecvStage(int num_threads){
     #endif
 
     for (int i=0; i < 24; i++){
-      tokens_[i] = new ProducerToken(recvCQ_);
+      // tokens_[i] = new ProducerToken(recvCQ_);
+      recvCQ_[i] = new ReaderWriterQueue<int>();
+      // recvCQ_[i] = new BlockingReaderWriterQueue<int>();
     }
 
     int coreId;
@@ -57,8 +59,10 @@ void PrePRecvStage::EnqueueRecvReq(::apache::thrift::protocol::TProtocol* iprot,
 
 void PrePRecvStage::RecvCompletion(int seqid){
   int completion;
-  ProducerToken *token = tokens_[seqid];
-  while(!recvCQ_.try_dequeue_from_producer(*token, completion));
+  // ProducerToken *token = tokens_[seqid];
+  // while(!recvCQ_.try_dequeue_from_producer(*token, completion));
+  while(!recvCQ_[seqid]->try_dequeue(completion));
+  // recvCQ_[seqid]->wait_dequeue(completion);
 }
 
 void PrePRecvStage::setProcessor(MyUniqueIdServiceProcessor *processor) {
@@ -137,7 +141,8 @@ void PrePRecvStage::Recv_(::apache::thrift::protocol::TProtocol* iprot,
   }
   
   // std::cout << "End of Recv!" << std::endl;
-  recvCQ_.enqueue(*tokens_[localData[tid]->rseqid], localData[tid]->rseqid);
+  // recvCQ_.enqueue(*tokens_[localData[tid]->rseqid], localData[tid]->rseqid);
+  recvCQ_[localData[tid]->rseqid]->enqueue(localData[tid]->rseqid);
   // delete result;
   // std::cout << "recvCQ_.enqueue."<< std::endl;
 }

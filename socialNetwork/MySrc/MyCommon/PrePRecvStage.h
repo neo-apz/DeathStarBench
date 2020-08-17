@@ -7,7 +7,7 @@
 
 #include <thrift/protocol/TProtocol.h>
 
-// #include "readerwriterqueue.h"
+#include "readerwriterqueue.h"
 #include "concurrentqueue.h"
 #include "core_schedule.h"
 #include "stopwatch.h"
@@ -60,7 +60,8 @@ class PrePRecvStage {
     }
 
     for (int i=0; i < 24; i++){
-      delete tokens_[i];
+      // delete tokens_[i];
+      delete recvCQ_[i];
     }
 
     // delete[] prepTokens_;
@@ -97,13 +98,14 @@ class PrePRecvStage {
  private:
   std::thread *threads_;
   int num_threads_;
-  ProducerToken *tokens_[24];
+  // ProducerToken *tokens_[24];
   // ProducerToken **servTokens_;
   // static int current_token;
 
   std::atomic<bool> exit_flag_{false};
   ConcurrentQueue<RecvReq> recvRQ_;
-  ConcurrentQueue<int> recvCQ_;
+  ReaderWriterQueue<int> *recvCQ_[24];
+  // BlockingReaderWriterQueue<int> *recvCQ_[24];
 
   ConcurrentQueue<PrePReq> prepRQ_;
   // ReaderWriterQueue<int> prepCQ_;
