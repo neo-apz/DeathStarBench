@@ -21,7 +21,12 @@ void* PostPSendStage::PeekPostP(){
 }
 
 void PostPSendStage::PostPCompletion(int &completion){
-  postpCQ_.wait_dequeue(completion);
+  // postpCQ_.wait_dequeue(completion);
+
+  // int completion;
+  // ProducerToken *token = tokens_[seqid];
+  // while(!recvCQ_.try_dequeue_from_producer(*token, completion));
+  while(!postpCQ_.try_dequeue(completion));
 }
 
 void* PostPSendStage::PeekSend(){
@@ -38,7 +43,7 @@ void PostPSendStage::EnqueueSendReq(::apache::thrift::protocol::TProtocol* oprot
                                     ReaderWriterQueue<int> *transportRQ,
                                     int seqid){
   SendReq req = {args, oprot, iprot, transportRQ, seqid};
-  sendRQ_.enqueue(req);
+  sendRQ_.enqueue(*sendTokens[seqid], req);
   // std::cout << "sendRQ_.enqueue."<< std::endl;
 }
 
@@ -54,15 +59,22 @@ void PostPSendStage::Run_() {
   FakeComposePostService_UploadUniqueId_args* args;
   MyUniqueIdService_UploadUniqueId_result *result;
 
+  uint64_t turn = 0;
+
   while (!exit_flag_){
-    if (sendRQ_.try_dequeue(sendReq)){
+    if (sendRQ_.try_dequeue_from_producer(*sendTokens[turn], sendReq)){
       #ifdef SWD
       sendSW_.start();
       #endif
       args = (FakeComposePostService_UploadUniqueId_args*) sendReq.args;
       Send_(args, sendReq.oprot, sendReq.iprot, sendReq.seqid);
+
+      // #ifdef SWD
+      // sendToCSW_.start();
+      // #endif
       sendReq.transportRQ->enqueue(sendReq.seqid);
       #ifdef SWD
+      // sendToCSW_.stop();
       sendSW_.stop();
       #endif
     }
@@ -79,6 +91,9 @@ void PostPSendStage::Run_() {
       postpSW_.stop();
       #endif
     }
+
+    // turn = (turn + 1) % TOKEN_SIZE;
+    turn = (turn + 1) & TOKEN_SIZE_MASK;
   }
 
   return; // exit!

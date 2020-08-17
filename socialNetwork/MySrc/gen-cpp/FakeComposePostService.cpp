@@ -1456,12 +1456,22 @@ void FakeComposePostServiceClient::Run_(){
 
   while(!exit_flag_) {
     if(RQ_.peek() != nullptr){
+      // #ifdef SWD
+      // cSW_.start();
+      // #endif
       RQ_.try_dequeue(req);
       _fakeProcessor->process(oprot, iprot, nullptr);
 
       #ifdef STAGED
       FakeComposePostService_UploadUniqueId_presult *result = result_[argsCounter];
+      // #ifdef SWD
+      // cSW_.stop();
+      // cToRecvSW_.start();
+      // #endif
       _prepRecvStageHandler->EnqueueRecvReq(iprot.get(), result);
+      // #ifdef SWD
+      // cToRecvSW_.stop();
+      // #endif
       argsCounter = (argsCounter + 1) % argsSize;
       #else
       CQ_.enqueue(1);
@@ -1523,7 +1533,7 @@ void FakeComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, con
   args->post_id = &post_id;
   args->post_type = &post_type;
   _postpSendStageHandler->EnqueueSendReq(oprot_, args, iprot_, &RQ_, id_);
-  argsCounter = (argsCounter + 1) % argsSize;
+  argsCounter = (argsCounter + 1) & argSizeMask;
   
   #else
   int32_t cseqid = 0;

@@ -18,11 +18,15 @@ PrePRecvStage::PrePRecvStage(int num_threads){
     #ifdef SWD
     recvSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
     prepSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
+
+    // recvToSSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
+    // deqSW_ = new Stopwatch<std::chrono::nanoseconds>[num_threads_];
     #endif
 
     for (int i=0; i < 24; i++){
       // tokens_[i] = new ProducerToken(recvCQ_);
       recvCQ_[i] = new ReaderWriterQueue<int>();
+      // recvCQ_[i] = new ConcurrentQueue<int>();
       // recvCQ_[i] = new BlockingReaderWriterQueue<int>();
     }
 
@@ -34,7 +38,7 @@ PrePRecvStage::PrePRecvStage(int num_threads){
       
       threads_[t] = std::thread([this, t] {Run_(t);});
       coreId = PinToCore(&threads_[t]);
-      // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
+      std::cout << "Prep/Recv thread pinned to core " << coreId << "." << std::endl;
     }
 }
 
@@ -62,6 +66,15 @@ void PrePRecvStage::RecvCompletion(int seqid){
   // ProducerToken *token = tokens_[seqid];
   // while(!recvCQ_.try_dequeue_from_producer(*token, completion));
   while(!recvCQ_[seqid]->try_dequeue(completion));
+
+  // bool success = false;
+  // do {
+  //   deqSW_[seqid].start();
+  //   success = recvCQ_[seqid]->try_dequeue(completion);
+  //   deqSW_[seqid].stop();
+  // } while(!success);
+  // recvCQ_[seqid]->try_dequeue(completion);
+
   // recvCQ_[seqid]->wait_dequeue(completion);
 }
 
@@ -98,7 +111,12 @@ void PrePRecvStage::Run_(int tid){
       Recv_(recvReq.iprot, result, tid);
       #ifdef SWD
       recvSW_[tid].stop();
+      // recvToSSW_[tid].start();
       #endif
+      recvCQ_[localData[tid]->rseqid]->enqueue(localData[tid]->rseqid);
+      // #ifdef SWD
+      // recvToSSW_[tid].stop();
+      // #endif
     }
   }
 
@@ -142,7 +160,6 @@ void PrePRecvStage::Recv_(::apache::thrift::protocol::TProtocol* iprot,
   
   // std::cout << "End of Recv!" << std::endl;
   // recvCQ_.enqueue(*tokens_[localData[tid]->rseqid], localData[tid]->rseqid);
-  recvCQ_[localData[tid]->rseqid]->enqueue(localData[tid]->rseqid);
   // delete result;
   // std::cout << "recvCQ_.enqueue."<< std::endl;
 }

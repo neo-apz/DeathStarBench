@@ -18,6 +18,9 @@
 
 #include "PrePRecvStage.h"
 
+#define TOKEN_SIZE 16
+#define TOKEN_SIZE_MASK 0xF
+
 using namespace moodycamel;
 
 namespace my_social_network {
@@ -42,22 +45,38 @@ class PostPSendStage {
 
  public:
   PostPSendStage(PrePRecvStage* prepRecvStage){
+    sendTokens = new ProducerToken*[TOKEN_SIZE];
+
+    for (int i = 0; i < TOKEN_SIZE; i++){
+      sendTokens[i] = new ProducerToken(sendRQ_);
+    }
+
     int coreId;
     thread_ = std::thread([this] {Run_();});
     coreId = PinToCore(&thread_);
     prepRecvStage_ = prepRecvStage;
-    // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
+    std::cout << "PostP/Send thread pinned to core " << coreId << "." << std::endl;
   }
 
   ~PostPSendStage() {
     exit_flag_ = true;
     thread_.join();
 
+    for (int i = 0; i < TOKEN_SIZE; i++){
+      delete sendTokens[i];
+    }
+
+    delete[] sendTokens;
+
     #ifdef SWD
     sendSW_.post_process();
-    std::cout << "Send: " << sendSW_.mean() << std::endl;
+    std::cout << "Send(ns): " << sendSW_.mean() << std::endl;
     postpSW_.post_process();
-    std::cout << "PostP: " << postpSW_.mean() << std::endl;
+    std::cout << "PostP(ns): " << postpSW_.mean() << std::endl;
+
+    // sendToCSW_.post_process();
+    // std::cout << "SendToC(ns): " << sendToCSW_.mean() << std::endl;
+
     // combinedSW_.post_process();
     // std::cout << "PostPSend Combined: " << combinedSW_.mean() << std::endl;
     #endif
@@ -84,9 +103,11 @@ class PostPSendStage {
   ReaderWriterQueue<int> sendCQ_;
 
   ConcurrentQueue<PostPReq> postpRQ_;
-  BlockingReaderWriterQueue<int> postpCQ_;
+  ReaderWriterQueue<int> postpCQ_;
 
   PrePRecvStage* prepRecvStage_;
+
+  ProducerToken **sendTokens;
 
   // int32_t cseqid = 0;
 
@@ -94,6 +115,8 @@ class PostPSendStage {
   Stopwatch<std::chrono::nanoseconds> sendSW_;
   Stopwatch<std::chrono::nanoseconds> postpSW_;
   // Stopwatch<std::chrono::nanoseconds> combinedSW_;
+
+  // Stopwatch<std::chrono::nanoseconds> sendToCSW_;
   #endif
 
 

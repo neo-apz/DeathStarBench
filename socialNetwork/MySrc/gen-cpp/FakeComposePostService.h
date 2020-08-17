@@ -919,13 +919,17 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
   #ifdef SWD
   Stopwatch<std::chrono::nanoseconds> sendSW_;
   Stopwatch<std::chrono::microseconds> recvSW_;
+
+  // Stopwatch<std::chrono::nanoseconds> cSW_;
+  // Stopwatch<std::chrono::nanoseconds> cToRecvSW_;
   #endif
 
   #ifdef STAGED
   FakeComposePostService_UploadUniqueId_pargs **args_;
   FakeComposePostService_UploadUniqueId_presult **result_;
-  int argsCounter = 0;
-  int argsSize = 10;
+  uint64_t argsCounter = 0;
+  int argsSize = 16;
+  int argSizeMask = 0xF;
   PostPSendStage* _postpSendStageHandler;
   PrePRecvStage* _prepRecvStageHandler;
   #endif
@@ -951,9 +955,14 @@ class FakeComposePostServiceClient : virtual public FakeComposePostServiceIf {
     sendSW_.post_process();
     recvSW_.post_process();
 
+    // cSW_.post_process();
+    // cToRecvSW_.post_process();
+
     #ifdef STAGED
-    std::cout << "Pre Send(ns): " << sendSW_.mean() << std::endl;
-    std::cout << "Pre Recv(us): " << recvSW_.mean() << std::endl;
+    std::cout << "[" << id_ << "] Pre Send(ns): " << sendSW_.mean() << std::endl;
+    std::cout << "[" << id_ << "] Pre Recv(us): " << recvSW_.mean() << std::endl;
+    // std::cout << "[" << id_ << "] C(ns): " << cSW_.mean() << std::endl;
+    // std::cout << "[" << id_ << "] cToRecv(ns): " << cToRecvSW_.mean() << std::endl;
     #else
     std::cout << "Send(ns): " << sendSW_.mean() << std::endl;
     std::cout << "Recv(us): " << recvSW_.mean() << std::endl;

@@ -51,7 +51,7 @@ class ServStage {
       tokens_[t] = new ProducerToken(servRQ_);
       threads_[t] = std::thread([this, t] {Run_(t);});
       coreId = PinToCore(&threads_[t]);
-      // std::cout << "Send thread pinned to core " << coreId << "." << std::endl;
+      std::cout << "Serv thread pinned to core " << coreId << "." << std::endl;
     }
   }
 
@@ -62,7 +62,7 @@ class ServStage {
       delete tokens_[t];
       #ifdef SWD
       servSW_[t].post_process();
-      std::cout << "[" << t << "] Serv: " << servSW_[t].mean() << std::endl;
+      std::cout << "[" << t << "] Serv(us): " << servSW_[t].mean() << std::endl;
       #endif
     }
     delete[] tokens_;

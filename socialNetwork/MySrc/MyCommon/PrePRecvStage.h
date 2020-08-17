@@ -53,15 +53,23 @@ class PrePRecvStage {
       // delete servTokens_[t];
       #ifdef SWD
       recvSW_[t].post_process();
-      std::cout << "[" << t << "] Recv: " << recvSW_[t].mean() << std::endl;
+      std::cout << "[" << t << "] Recv(ns): " << recvSW_[t].mean() << std::endl;
       prepSW_[t].post_process();
-      std::cout << "[" << t << "] PreP: " << prepSW_[t].mean() << std::endl;
+      std::cout << "[" << t << "] PreP(ns): " << prepSW_[t].mean() << std::endl;
+
+      // recvToSSW_[t].post_process();
+      // std::cout << "[" << t << "] RecvToS(ns): " << recvToSSW_[t].mean() << std::endl;
+
       #endif
     }
 
     for (int i=0; i < 24; i++){
       // delete tokens_[i];
       delete recvCQ_[i];
+      // #ifdef SWD
+      // deqSW_[i].post_process();
+      // std::cout << "[" << i << "] Deq(ns): " << deqSW_[i].mean() << std::endl;
+      // #endif
     }
 
     // delete[] prepTokens_;
@@ -72,6 +80,9 @@ class PrePRecvStage {
     #ifdef SWD
     delete[] recvSW_;
     delete[] prepSW_;
+
+    // delete[] recvToSSW_;
+    // delete[] deqSW_;
     #endif
   }
 
@@ -105,6 +116,7 @@ class PrePRecvStage {
   std::atomic<bool> exit_flag_{false};
   ConcurrentQueue<RecvReq> recvRQ_;
   ReaderWriterQueue<int> *recvCQ_[24];
+  // ConcurrentQueue<int> *recvCQ_[24];
   // BlockingReaderWriterQueue<int> *recvCQ_[24];
 
   ConcurrentQueue<PrePReq> prepRQ_;
@@ -118,6 +130,9 @@ class PrePRecvStage {
   #ifdef SWD
   Stopwatch<std::chrono::nanoseconds> *recvSW_;
   Stopwatch<std::chrono::nanoseconds> *prepSW_;
+
+  // Stopwatch<std::chrono::nanoseconds> *recvToSSW_;
+  // Stopwatch<std::chrono::nanoseconds> deqSW_[24];
   #endif
 
 };
