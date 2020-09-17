@@ -42,6 +42,10 @@ if (FLEXUS)
     message("-- Flexus enabled!")
 endif()
 
+if (SW)
+    add_definitions(-DSW)
+    message("-- Stopwatch enabled!")
+endif()
 
 add_subdirectory(MyServices)
 

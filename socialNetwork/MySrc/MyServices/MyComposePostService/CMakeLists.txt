@@ -4,6 +4,7 @@ add_executable(
     MyComposePostService.cpp
     ${COMMON_DIR}/MyTMemoryBuffer.cpp
     ${COMMON_DIR}/RandomGenerator.cpp
+    ${COMMON_DIR}/core_schedule.cpp
     ${THRIFT_GEN_CPP_DIR}/MyComposePostService.cpp
     ${THRIFT_GEN_CPP_DIR}/FakeRedis.cpp
     ${THRIFT_GEN_CPP_DIR}/FakePostStorageService.cpp
