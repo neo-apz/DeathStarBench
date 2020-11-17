@@ -109,7 +109,7 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
     BREAKPOINT();
     #endif
     start = true;
-    // LOG(warning) << "Process Phase Started!!";
+    LOG(warning) << "Process Phase Started!!";
   }
 
   while(!start);
@@ -134,6 +134,9 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
 
     count++;
   }
+
+  if (tid == max_tid)
+    LOG(warning) << "Process Phase finished!";
 
   sw.stop();
   sw.post_process();
