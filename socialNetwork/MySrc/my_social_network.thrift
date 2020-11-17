@@ -111,33 +111,33 @@ service MyUserService {
 }
 
 service MyComposePostService {
-  void UploadText(
+  i64 UploadText(
       1: i64 req_id,
       2: string text
   ) 
 
-  void UploadMedia(
+  i64 UploadMedia(
       1: i64 req_id,
       2: list<Media> media
   ) 
 
-  void UploadUniqueId(
+  i64 UploadUniqueId(
       1: i64 req_id,
       2: i64 post_id,
       3: PostType post_type
   ) 
 
-  void UploadCreator(
+  i64 UploadCreator(
       1: i64 req_id,
       2: Creator creator
   ) 
 
-  void UploadUrls(
+  i64 UploadUrls(
       1: i64 req_id,
       2: list<Url> urls
   ) 
 
-  void UploadUserMentions(
+  i64 UploadUserMentions(
       1: i64 req_id,
       2: list<UserMention> user_mentions
   ) 

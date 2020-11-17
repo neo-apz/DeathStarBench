@@ -20,32 +20,32 @@ class MyComposePostServiceHandler : virtual public MyComposePostServiceIf {
     // Your initialization goes here
   }
 
-  void UploadText(const int64_t req_id, const std::string& text) {
+  int64_t UploadText(const int64_t req_id, const std::string& text) {
     // Your implementation goes here
     printf("UploadText\n");
   }
 
-  void UploadMedia(const int64_t req_id, const std::vector<Media> & media) {
+  int64_t UploadMedia(const int64_t req_id, const std::vector<Media> & media) {
     // Your implementation goes here
     printf("UploadMedia\n");
   }
 
-  void UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type) {
+  int64_t UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type) {
     // Your implementation goes here
     printf("UploadUniqueId\n");
   }
 
-  void UploadCreator(const int64_t req_id, const Creator& creator) {
+  int64_t UploadCreator(const int64_t req_id, const Creator& creator) {
     // Your implementation goes here
     printf("UploadCreator\n");
   }
 
-  void UploadUrls(const int64_t req_id, const std::vector<Url> & urls) {
+  int64_t UploadUrls(const int64_t req_id, const std::vector<Url> & urls) {
     // Your implementation goes here
     printf("UploadUrls\n");
   }
 
-  void UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions) {
+  int64_t UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions) {
     // Your implementation goes here
     printf("UploadUserMentions\n");
   }

@@ -11,6 +11,15 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#ifdef SW
+  #include "../MyCommon/stopwatch.h"
+#endif
+
+#if defined(__aarch64__) || defined(FLEXUS)
+    #include "../MyCommon/MagicBreakPoint.h"
+#endif
+
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -21,12 +30,12 @@ namespace my_social_network {
 class MyComposePostServiceIf {
  public:
   virtual ~MyComposePostServiceIf() {}
-  virtual void UploadText(const int64_t req_id, const std::string& text) = 0;
-  virtual void UploadMedia(const int64_t req_id, const std::vector<Media> & media) = 0;
-  virtual void UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type) = 0;
-  virtual void UploadCreator(const int64_t req_id, const Creator& creator) = 0;
-  virtual void UploadUrls(const int64_t req_id, const std::vector<Url> & urls) = 0;
-  virtual void UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions) = 0;
+  virtual int64_t UploadText(const int64_t req_id, const std::string& text) = 0;
+  virtual int64_t UploadMedia(const int64_t req_id, const std::vector<Media> & media) = 0;
+  virtual int64_t UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type) = 0;
+  virtual int64_t UploadCreator(const int64_t req_id, const Creator& creator) = 0;
+  virtual int64_t UploadUrls(const int64_t req_id, const std::vector<Url> & urls) = 0;
+  virtual int64_t UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions) = 0;
 };
 
 class MyComposePostServiceIfFactory {
@@ -56,23 +65,29 @@ class MyComposePostServiceIfSingletonFactory : virtual public MyComposePostServi
 class MyComposePostServiceNull : virtual public MyComposePostServiceIf {
  public:
   virtual ~MyComposePostServiceNull() {}
-  void UploadText(const int64_t /* req_id */, const std::string& /* text */) {
-    return;
+  int64_t UploadText(const int64_t /* req_id */, const std::string& /* text */) {
+    int64_t _return = 0;
+    return _return;
   }
-  void UploadMedia(const int64_t /* req_id */, const std::vector<Media> & /* media */) {
-    return;
+  int64_t UploadMedia(const int64_t /* req_id */, const std::vector<Media> & /* media */) {
+    int64_t _return = 0;
+    return _return;
   }
-  void UploadUniqueId(const int64_t /* req_id */, const int64_t /* post_id */, const PostType::type /* post_type */) {
-    return;
+  int64_t UploadUniqueId(const int64_t /* req_id */, const int64_t /* post_id */, const PostType::type /* post_type */) {
+    int64_t _return = 0;
+    return _return;
   }
-  void UploadCreator(const int64_t /* req_id */, const Creator& /* creator */) {
-    return;
+  int64_t UploadCreator(const int64_t /* req_id */, const Creator& /* creator */) {
+    int64_t _return = 0;
+    return _return;
   }
-  void UploadUrls(const int64_t /* req_id */, const std::vector<Url> & /* urls */) {
-    return;
+  int64_t UploadUrls(const int64_t /* req_id */, const std::vector<Url> & /* urls */) {
+    int64_t _return = 0;
+    return _return;
   }
-  void UploadUserMentions(const int64_t /* req_id */, const std::vector<UserMention> & /* user_mentions */) {
-    return;
+  int64_t UploadUserMentions(const int64_t /* req_id */, const std::vector<UserMention> & /* user_mentions */) {
+    int64_t _return = 0;
+    return _return;
   }
 };
 
@@ -132,19 +147,30 @@ class MyComposePostService_UploadText_pargs {
 
 };
 
+typedef struct _MyComposePostService_UploadText_result__isset {
+  _MyComposePostService_UploadText_result__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadText_result__isset;
 
 class MyComposePostService_UploadText_result {
  public:
 
   MyComposePostService_UploadText_result(const MyComposePostService_UploadText_result&);
   MyComposePostService_UploadText_result& operator=(const MyComposePostService_UploadText_result&);
-  MyComposePostService_UploadText_result() {
+  MyComposePostService_UploadText_result() : success(0) {
   }
 
   virtual ~MyComposePostService_UploadText_result() throw();
+  int64_t success;
 
-  bool operator == (const MyComposePostService_UploadText_result & /* rhs */) const
+  _MyComposePostService_UploadText_result__isset __isset;
+
+  void __set_success(const int64_t val);
+
+  bool operator == (const MyComposePostService_UploadText_result & rhs) const
   {
+    if (!(success == rhs.success))
+      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadText_result &rhs) const {
@@ -158,12 +184,19 @@ class MyComposePostService_UploadText_result {
 
 };
 
+typedef struct _MyComposePostService_UploadText_presult__isset {
+  _MyComposePostService_UploadText_presult__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadText_presult__isset;
 
 class MyComposePostService_UploadText_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadText_presult() throw();
+  int64_t* success;
+
+  _MyComposePostService_UploadText_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -225,19 +258,30 @@ class MyComposePostService_UploadMedia_pargs {
 
 };
 
+typedef struct _MyComposePostService_UploadMedia_result__isset {
+  _MyComposePostService_UploadMedia_result__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadMedia_result__isset;
 
 class MyComposePostService_UploadMedia_result {
  public:
 
   MyComposePostService_UploadMedia_result(const MyComposePostService_UploadMedia_result&);
   MyComposePostService_UploadMedia_result& operator=(const MyComposePostService_UploadMedia_result&);
-  MyComposePostService_UploadMedia_result() {
+  MyComposePostService_UploadMedia_result() : success(0) {
   }
 
   virtual ~MyComposePostService_UploadMedia_result() throw();
+  int64_t success;
 
-  bool operator == (const MyComposePostService_UploadMedia_result & /* rhs */) const
+  _MyComposePostService_UploadMedia_result__isset __isset;
+
+  void __set_success(const int64_t val);
+
+  bool operator == (const MyComposePostService_UploadMedia_result & rhs) const
   {
+    if (!(success == rhs.success))
+      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadMedia_result &rhs) const {
@@ -251,12 +295,19 @@ class MyComposePostService_UploadMedia_result {
 
 };
 
+typedef struct _MyComposePostService_UploadMedia_presult__isset {
+  _MyComposePostService_UploadMedia_presult__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadMedia_presult__isset;
 
 class MyComposePostService_UploadMedia_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadMedia_presult() throw();
+  int64_t* success;
+
+  _MyComposePostService_UploadMedia_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -325,19 +376,30 @@ class MyComposePostService_UploadUniqueId_pargs {
 
 };
 
+typedef struct _MyComposePostService_UploadUniqueId_result__isset {
+  _MyComposePostService_UploadUniqueId_result__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadUniqueId_result__isset;
 
 class MyComposePostService_UploadUniqueId_result {
  public:
 
   MyComposePostService_UploadUniqueId_result(const MyComposePostService_UploadUniqueId_result&);
   MyComposePostService_UploadUniqueId_result& operator=(const MyComposePostService_UploadUniqueId_result&);
-  MyComposePostService_UploadUniqueId_result() {
+  MyComposePostService_UploadUniqueId_result() : success(0) {
   }
 
   virtual ~MyComposePostService_UploadUniqueId_result() throw();
+  int64_t success;
 
-  bool operator == (const MyComposePostService_UploadUniqueId_result & /* rhs */) const
+  _MyComposePostService_UploadUniqueId_result__isset __isset;
+
+  void __set_success(const int64_t val);
+
+  bool operator == (const MyComposePostService_UploadUniqueId_result & rhs) const
   {
+    if (!(success == rhs.success))
+      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadUniqueId_result &rhs) const {
@@ -351,12 +413,19 @@ class MyComposePostService_UploadUniqueId_result {
 
 };
 
+typedef struct _MyComposePostService_UploadUniqueId_presult__isset {
+  _MyComposePostService_UploadUniqueId_presult__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadUniqueId_presult__isset;
 
 class MyComposePostService_UploadUniqueId_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadUniqueId_presult() throw();
+  int64_t* success;
+
+  _MyComposePostService_UploadUniqueId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -418,19 +487,30 @@ class MyComposePostService_UploadCreator_pargs {
 
 };
 
+typedef struct _MyComposePostService_UploadCreator_result__isset {
+  _MyComposePostService_UploadCreator_result__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadCreator_result__isset;
 
 class MyComposePostService_UploadCreator_result {
  public:
 
   MyComposePostService_UploadCreator_result(const MyComposePostService_UploadCreator_result&);
   MyComposePostService_UploadCreator_result& operator=(const MyComposePostService_UploadCreator_result&);
-  MyComposePostService_UploadCreator_result() {
+  MyComposePostService_UploadCreator_result() : success(0) {
   }
 
   virtual ~MyComposePostService_UploadCreator_result() throw();
+  int64_t success;
 
-  bool operator == (const MyComposePostService_UploadCreator_result & /* rhs */) const
+  _MyComposePostService_UploadCreator_result__isset __isset;
+
+  void __set_success(const int64_t val);
+
+  bool operator == (const MyComposePostService_UploadCreator_result & rhs) const
   {
+    if (!(success == rhs.success))
+      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadCreator_result &rhs) const {
@@ -444,12 +524,19 @@ class MyComposePostService_UploadCreator_result {
 
 };
 
+typedef struct _MyComposePostService_UploadCreator_presult__isset {
+  _MyComposePostService_UploadCreator_presult__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadCreator_presult__isset;
 
 class MyComposePostService_UploadCreator_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadCreator_presult() throw();
+  int64_t* success;
+
+  _MyComposePostService_UploadCreator_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -511,19 +598,30 @@ class MyComposePostService_UploadUrls_pargs {
 
 };
 
+typedef struct _MyComposePostService_UploadUrls_result__isset {
+  _MyComposePostService_UploadUrls_result__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadUrls_result__isset;
 
 class MyComposePostService_UploadUrls_result {
  public:
 
   MyComposePostService_UploadUrls_result(const MyComposePostService_UploadUrls_result&);
   MyComposePostService_UploadUrls_result& operator=(const MyComposePostService_UploadUrls_result&);
-  MyComposePostService_UploadUrls_result() {
+  MyComposePostService_UploadUrls_result() : success(0) {
   }
 
   virtual ~MyComposePostService_UploadUrls_result() throw();
+  int64_t success;
 
-  bool operator == (const MyComposePostService_UploadUrls_result & /* rhs */) const
+  _MyComposePostService_UploadUrls_result__isset __isset;
+
+  void __set_success(const int64_t val);
+
+  bool operator == (const MyComposePostService_UploadUrls_result & rhs) const
   {
+    if (!(success == rhs.success))
+      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadUrls_result &rhs) const {
@@ -537,12 +635,19 @@ class MyComposePostService_UploadUrls_result {
 
 };
 
+typedef struct _MyComposePostService_UploadUrls_presult__isset {
+  _MyComposePostService_UploadUrls_presult__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadUrls_presult__isset;
 
 class MyComposePostService_UploadUrls_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadUrls_presult() throw();
+  int64_t* success;
+
+  _MyComposePostService_UploadUrls_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -604,19 +709,30 @@ class MyComposePostService_UploadUserMentions_pargs {
 
 };
 
+typedef struct _MyComposePostService_UploadUserMentions_result__isset {
+  _MyComposePostService_UploadUserMentions_result__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadUserMentions_result__isset;
 
 class MyComposePostService_UploadUserMentions_result {
  public:
 
   MyComposePostService_UploadUserMentions_result(const MyComposePostService_UploadUserMentions_result&);
   MyComposePostService_UploadUserMentions_result& operator=(const MyComposePostService_UploadUserMentions_result&);
-  MyComposePostService_UploadUserMentions_result() {
+  MyComposePostService_UploadUserMentions_result() : success(0) {
   }
 
   virtual ~MyComposePostService_UploadUserMentions_result() throw();
+  int64_t success;
 
-  bool operator == (const MyComposePostService_UploadUserMentions_result & /* rhs */) const
+  _MyComposePostService_UploadUserMentions_result__isset __isset;
+
+  void __set_success(const int64_t val);
+
+  bool operator == (const MyComposePostService_UploadUserMentions_result & rhs) const
   {
+    if (!(success == rhs.success))
+      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadUserMentions_result &rhs) const {
@@ -630,12 +746,19 @@ class MyComposePostService_UploadUserMentions_result {
 
 };
 
+typedef struct _MyComposePostService_UploadUserMentions_presult__isset {
+  _MyComposePostService_UploadUserMentions_presult__isset() : success(false) {}
+  bool success :1;
+} _MyComposePostService_UploadUserMentions_presult__isset;
 
 class MyComposePostService_UploadUserMentions_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadUserMentions_presult() throw();
+  int64_t* success;
+
+  _MyComposePostService_UploadUserMentions_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -666,24 +789,24 @@ class MyComposePostServiceClient : virtual public MyComposePostServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadText(const int64_t req_id, const std::string& text);
+  int64_t UploadText(const int64_t req_id, const std::string& text);
   void send_UploadText(const int64_t req_id, const std::string& text);
-  void recv_UploadText();
-  void UploadMedia(const int64_t req_id, const std::vector<Media> & media);
+  int64_t recv_UploadText();
+  int64_t UploadMedia(const int64_t req_id, const std::vector<Media> & media);
   void send_UploadMedia(const int64_t req_id, const std::vector<Media> & media);
-  void recv_UploadMedia();
-  void UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type);
+  int64_t recv_UploadMedia();
+  int64_t UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type);
   void send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type);
-  void recv_UploadUniqueId();
-  void UploadCreator(const int64_t req_id, const Creator& creator);
+  int64_t recv_UploadUniqueId();
+  int64_t UploadCreator(const int64_t req_id, const Creator& creator);
   void send_UploadCreator(const int64_t req_id, const Creator& creator);
-  void recv_UploadCreator();
-  void UploadUrls(const int64_t req_id, const std::vector<Url> & urls);
+  int64_t recv_UploadCreator();
+  int64_t UploadUrls(const int64_t req_id, const std::vector<Url> & urls);
   void send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls);
-  void recv_UploadUrls();
-  void UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
+  int64_t recv_UploadUrls();
+  int64_t UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
   void send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
-  void recv_UploadUserMentions();
+  int64_t recv_UploadUserMentions();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -717,6 +840,13 @@ class MyComposePostServiceProcessor : public ::apache::thrift::TDispatchProcesso
   }
 
   virtual ~MyComposePostServiceProcessor() {}
+
+  #ifdef SW
+    Stopwatch<std::chrono::nanoseconds> headerSW;
+    Stopwatch<std::chrono::nanoseconds> disSW;
+  #endif
+
+  bool process(::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> in, ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> out, void* connectionContext) override;
 };
 
 class MyComposePostServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
@@ -742,58 +872,58 @@ class MyComposePostServiceMultiface : virtual public MyComposePostServiceIf {
     ifaces_.push_back(iface);
   }
  public:
-  void UploadText(const int64_t req_id, const std::string& text) {
+  int64_t UploadText(const int64_t req_id, const std::string& text) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->UploadText(req_id, text);
     }
-    ifaces_[i]->UploadText(req_id, text);
+    return ifaces_[i]->UploadText(req_id, text);
   }
 
-  void UploadMedia(const int64_t req_id, const std::vector<Media> & media) {
+  int64_t UploadMedia(const int64_t req_id, const std::vector<Media> & media) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->UploadMedia(req_id, media);
     }
-    ifaces_[i]->UploadMedia(req_id, media);
+    return ifaces_[i]->UploadMedia(req_id, media);
   }
 
-  void UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type) {
+  int64_t UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->UploadUniqueId(req_id, post_id, post_type);
     }
-    ifaces_[i]->UploadUniqueId(req_id, post_id, post_type);
+    return ifaces_[i]->UploadUniqueId(req_id, post_id, post_type);
   }
 
-  void UploadCreator(const int64_t req_id, const Creator& creator) {
+  int64_t UploadCreator(const int64_t req_id, const Creator& creator) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->UploadCreator(req_id, creator);
     }
-    ifaces_[i]->UploadCreator(req_id, creator);
+    return ifaces_[i]->UploadCreator(req_id, creator);
   }
 
-  void UploadUrls(const int64_t req_id, const std::vector<Url> & urls) {
+  int64_t UploadUrls(const int64_t req_id, const std::vector<Url> & urls) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->UploadUrls(req_id, urls);
     }
-    ifaces_[i]->UploadUrls(req_id, urls);
+    return ifaces_[i]->UploadUrls(req_id, urls);
   }
 
-  void UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions) {
+  int64_t UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->UploadUserMentions(req_id, user_mentions);
     }
-    ifaces_[i]->UploadUserMentions(req_id, user_mentions);
+    return ifaces_[i]->UploadUserMentions(req_id, user_mentions);
   }
 
 };
@@ -826,24 +956,24 @@ class MyComposePostServiceConcurrentClient : virtual public MyComposePostService
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadText(const int64_t req_id, const std::string& text);
+  int64_t UploadText(const int64_t req_id, const std::string& text);
   int32_t send_UploadText(const int64_t req_id, const std::string& text);
-  void recv_UploadText(const int32_t seqid);
-  void UploadMedia(const int64_t req_id, const std::vector<Media> & media);
+  int64_t recv_UploadText(const int32_t seqid);
+  int64_t UploadMedia(const int64_t req_id, const std::vector<Media> & media);
   int32_t send_UploadMedia(const int64_t req_id, const std::vector<Media> & media);
-  void recv_UploadMedia(const int32_t seqid);
-  void UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type);
+  int64_t recv_UploadMedia(const int32_t seqid);
+  int64_t UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type);
   int32_t send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type);
-  void recv_UploadUniqueId(const int32_t seqid);
-  void UploadCreator(const int64_t req_id, const Creator& creator);
+  int64_t recv_UploadUniqueId(const int32_t seqid);
+  int64_t UploadCreator(const int64_t req_id, const Creator& creator);
   int32_t send_UploadCreator(const int64_t req_id, const Creator& creator);
-  void recv_UploadCreator(const int32_t seqid);
-  void UploadUrls(const int64_t req_id, const std::vector<Url> & urls);
+  int64_t recv_UploadCreator(const int32_t seqid);
+  int64_t UploadUrls(const int64_t req_id, const std::vector<Url> & urls);
   int32_t send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls);
-  void recv_UploadUrls(const int32_t seqid);
-  void UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
+  int64_t recv_UploadUrls(const int32_t seqid);
+  int64_t UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
   int32_t send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
-  void recv_UploadUserMentions(const int32_t seqid);
+  int64_t recv_UploadUserMentions(const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
