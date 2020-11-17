@@ -16,7 +16,5 @@
 add_subdirectory(MyUniqueIdService)
 add_subdirectory(MyComposePostService)
 
-add_subdirectory(SimpleUniqueIdService)
-
 # Fake Services
 # add_subdirectory(FakeComposePostService)

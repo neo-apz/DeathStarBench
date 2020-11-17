@@ -2,7 +2,7 @@
 #include "MyUniqueIdHandler.h"
 
 #include "../../MyCommon/MyThriftClient.h"
-#include "../../MyCommon/MyLock.h"
+// #include "../../MyCommon/MyLock.h"
 
 #include "../../MyCommon/stopwatch.h"
 #include "../../MyCommon/RandomGenerator.h"
@@ -17,8 +17,8 @@ using namespace my_social_network;
 using namespace std;
 
 uint64_t num_iterations;
-// std::mutex thread_lock;
-MyLock thread_lock;
+std::mutex thread_lock;
+// MyLock thread_lock;
 std::string machine_id;
 
 cpu_set_t *cpuSet;
@@ -33,26 +33,20 @@ pthread_barrier_t barrier;
 #define BUFFER_SIZE  50
 #define WARM_UP_ITER  100
 
-void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClient,
-                        MyThriftClient<MyUniqueIdServiceClient> *processPhaseClient,
+void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *clientPtr,
                         RandomGenerator *randGen){
-  
-  reqGenPhaseClient->Connect();
 
   int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
   PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
 
-  auto client = reqGenPhaseClient->GetClient();
-  client->send_UploadUniqueId(req_id, post_type);
-
-  uint8_t* cltIBufPtr, *cltOBufPtr;
-  uint32_t ISz, OSz;
+  // uint8_t* cltIBufPtr, *cltOBufPtr;
+  // uint32_t ISz, OSz;
   
-  reqGenPhaseClient->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+  // clientPtr->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
 
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
-  client = processPhaseClient->GetClient();
+  auto client = clientPtr->GetClient();
   client->send_UploadUniqueId(req_id, post_type);
 }
 
@@ -64,38 +58,25 @@ void ClientRecvUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient)
   client->recv_UploadUniqueId();
 }
 
-void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPhaseClient,
-                               MyThriftClient<MyUniqueIdServiceClient> *processPhaseClient,
+void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPtr,
                                std::shared_ptr<MyUniqueIdHandler> handler,
                                int tid, int max_tid){
 
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
-  
-  auto srvIProt = reqGenPhaseClient->GetClient()->getOutputProtocol();
-  auto srvOProt = reqGenPhaseClient->GetClient()->getInputProtocol();
-
-  std::shared_ptr<MyUniqueIdServiceProcessor> reqGenprocessor =
-      std::make_shared<MyUniqueIdServiceProcessor>(handler);
-
-  FakeComposePostServiceClient::isReqGenPhase = true;
   RandomGenerator randGen(tid);
 
   uint64_t count = 1;
 
   while (count <= num_iterations){
-    ClientSendUniqueId(reqGenPhaseClient, processPhaseClient, &randGen);
-
-    reqGenprocessor->process(srvIProt, srvOProt, nullptr);
-    
-    ClientRecvUniqueId(reqGenPhaseClient);
+    ClientSendUniqueId(clientPtr, &randGen);
     count++;
   }
 
-  std::shared_ptr<MyUniqueIdServiceProcessor> processPhaseprocessor =
+  std::shared_ptr<MyUniqueIdServiceProcessor> processor =
       std::make_shared<MyUniqueIdServiceProcessor>(handler);
 
-  srvIProt = processPhaseClient->GetClient()->getOutputProtocol();
-  srvOProt = processPhaseClient->GetClient()->getInputProtocol();
+  auto srvIProt = clientPtr->GetClient()->getOutputProtocol();
+  auto srvOProt = clientPtr->GetClient()->getInputProtocol();
 
   // LOG(warning) << "ReqGen Phase finished!";
 
@@ -109,21 +90,20 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
     BREAKPOINT();
     #endif
     start = true;
-    LOG(warning) << "Process Phase Started!!";
+    // LOG(warning) << "Process Phase Started!!";
   }
 
   while(!start);
   // LOG(warning) << "Process Phase Started!!";
 
   count = 1;
-  FakeComposePostServiceClient::isReqGenPhase = false;
 
-  Stopwatch<std::chrono::microseconds> sw;
-  sw.start();
+  // Stopwatch<std::chrono::microseconds> sw;
+  // sw.start();
 
   while (count <= num_iterations){
 
-    processPhaseprocessor->process(srvIProt, srvOProt, nullptr);
+    processor->process(srvIProt, srvOProt, nullptr);
 
     #ifdef __aarch64__
       PROCESS_END(count);
@@ -135,14 +115,14 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *reqGenPh
     count++;
   }
 
-  if (tid == max_tid)
-    LOG(warning) << "Process Phase finished!";
+  // if (tid == max_tid)
+  //   LOG(warning) << "Process Phase finished!";
 
-  sw.stop();
-  sw.post_process();
+  // sw.stop();
+  // sw.post_process();
   // LOG(warning) << "[" << tid << "] AVG (us) = " <<  ((sw.mean() * 1.0) / num_iterations);
-  throughputs[tid] = (num_iterations / (sw.mean() * 1.0));
-  latencies[tid] = (sw.mean() * 1.0) / num_iterations;
+  // throughputs[tid] = (num_iterations / (sw.mean() * 1.0));
+  // latencies[tid] = (sw.mean() * 1.0) / num_iterations;
   // LOG(warning) << "[" << tid << "] Million Reqs/s = " <<  throughputs[tid];
 }
 
@@ -173,36 +153,24 @@ int main(int argc, char *argv[]) {
 
   pthread_barrier_init(&barrier, NULL, num_threads);
 
-
-  MyThriftClient<MyUniqueIdServiceClient>* reqGenPhaseClients[num_threads];
-  MyThriftClient<MyUniqueIdServiceClient>* processPhaseClients[num_threads];
-
-  ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
-    "compose-post", buffer_size, num_threads);
-  
-  // MyClientPool<MyThriftClient<FakeComposePostServiceClient>> fakeComposeClientPool (
-  //   "compose-post", buffer_size, 2, 2, 1000);
-
+  MyThriftClient<MyUniqueIdServiceClient>* clients[num_threads];
 
   std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
-                                              &thread_lock, machine_id,
-                                              &fakeComposeClientPool);
+                                              &thread_lock, machine_id);
 
   std::thread processThreads[num_threads];
 
   cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
-  throughputs = (double*) malloc(sizeof(double) * num_threads);
-  latencies = (double*) malloc(sizeof(double) * num_threads);
+  // throughputs = (double*) malloc(sizeof(double) * num_threads);
+  // latencies = (double*) malloc(sizeof(double) * num_threads);
 
   for (int i = 0; i < num_threads; i++) {
-    throughputs[i] = 0;
-    latencies[i] = 0;
-    reqGenPhaseClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
-    processPhaseClients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
+    // throughputs[i] = 0;
+    // latencies[i] = 0;
+    clients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
 
     processThreads[i] = std::thread(GenAndProcessUniqueIdReqs,
-                                      reqGenPhaseClients[i],
-                                      processPhaseClients[i],
+                                      clients[i],
                                       handler,
                                       i,
                                       num_threads - 1);
@@ -216,18 +184,17 @@ int main(int argc, char *argv[]) {
     processThreads[i].join();
   }
 
-  double total_throughput = 0;
-  double avg_latency = 0;
+  // double total_throughput = 0;
+  // double avg_latency = 0;
 
   for (int i = 0; i < num_threads; i++) {
-    total_throughput += throughputs[i];
-    avg_latency += latencies[i];
-    delete reqGenPhaseClients[i];
-    delete processPhaseClients[i];
+    // total_throughput += throughputs[i];
+    // avg_latency += latencies[i];
+    delete clients[i];
   }
 
-  std::cout << "Total throughput (Million RPS): " << total_throughput << std::endl;
-  std::cout << "AVG latency (us): " << avg_latency / num_threads << std::endl;
+  // std::cout << "Total throughput (Million RPS): " << total_throughput << std::endl;
+  // std::cout << "AVG latency (us): " << avg_latency / num_threads << std::endl;
 
   return 0;
 }

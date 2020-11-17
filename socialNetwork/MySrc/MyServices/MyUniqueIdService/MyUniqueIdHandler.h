@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <chrono>
-// #include <mutex>
+#include <mutex>
 #include <sstream>
 #include <iomanip>
 #include <arpa/inet.h>
@@ -14,11 +14,9 @@
 
 
 #include "../../gen-cpp/MyUniqueIdService.h"
-#include "../../gen-cpp/FakeComposePostService.h"
 #include "../../gen-cpp/my_social_network_types.h"
 
-#include "../../MyCommon/ClientPoolMap.h"
-#include "../../MyCommon/MyLock.h"
+// #include "../../MyCommon/MyLock.h"
 
 #include "../../MyCommon/logger.h"
 
@@ -52,32 +50,25 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
  public:
   ~MyUniqueIdHandler() override = default;
   MyUniqueIdHandler(
-      MyLock *,
-      const std::string &,
-      ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> *);
+      std::mutex *,
+      const std::string &);
 
-  void UploadUniqueId(int64_t, PostType::type) override;
-
-  void setReqGenPhase(bool phase);
+  int64_t UploadUniqueId(int64_t, PostType::type) override;
 
  private:
-  // std::mutex *_thread_lock;
-  MyLock *_thread_lock;
+  std::mutex *_thread_lock;
+  // MyLock *_thread_lock;
   std::string _machine_id;
-  // MyClientPool<MyThriftClient<FakeComposePostServiceClient>> *_compose_client_pool;
-  ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> *_compose_client_pool;
 };
 
 MyUniqueIdHandler::MyUniqueIdHandler(
-    MyLock *thread_lock,
-    const std::string &machine_id,
-    ClientPoolMap<MyThriftClient<FakeComposePostServiceClient>> *compose_client_pool){
+    std::mutex *thread_lock,
+    const std::string &machine_id){
   _thread_lock = thread_lock;
   _machine_id = machine_id;
-  _compose_client_pool = compose_client_pool;
 }
 
-void MyUniqueIdHandler::UploadUniqueId(
+int64_t MyUniqueIdHandler::UploadUniqueId(
     int64_t req_id,
     PostType::type post_type) {
 
@@ -111,28 +102,8 @@ void MyUniqueIdHandler::UploadUniqueId(
   }
   std::string post_id_str = _machine_id + timestamp_hex + counter_hex;
   int64_t post_id = stoul(post_id_str, nullptr, 16) & 0x7FFFFFFFFFFFFFFF;
-  // LOG(debug) << "The post_id of the request "
-  //     << req_id << " is " << post_id;
 
-  // Upload to compose post service
-  auto compose_post_client_wrapper = _compose_client_pool->Pop();
-  if (!compose_post_client_wrapper) {
-    ServiceException se;
-    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
-    se.message = "Failed to connect to compose-post-service";
-    throw se;
-  }
-  auto compose_post_client = compose_post_client_wrapper->GetClient();
-  try {
-    compose_post_client->UploadUniqueId(req_id, post_id, post_type);    
-  } catch (const std::exception &e) {
-    _compose_client_pool->Push(compose_post_client_wrapper);
-    LOG(error) << "Failed to upload unique-id to compose-post-service";
-    std::cerr << e.what() << std::endl;
-    throw;
-  }
-
-  _compose_client_pool->Push(compose_post_client_wrapper);
+  return post_id;
 }
 
 /*
