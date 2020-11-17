@@ -11,6 +11,8 @@
   #include "../../MyCommon/MagicBreakPoint.h"
 #endif
 
+#include "../../MyCommon/MyProcessorEventHandler.h"
+
 
 using namespace my_social_network;
 
@@ -75,6 +77,16 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPt
   std::shared_ptr<MyUniqueIdServiceProcessor> processor =
       std::make_shared<MyUniqueIdServiceProcessor>(handler);
 
+  std::shared_ptr<MyProcessorEventHandler> eventHandler;
+
+  #ifdef SW
+    eventHandler = std::make_shared<MyProcessorEventHandler>(&(processor->disSW));
+  #else
+    eventHandler = std::make_shared<MyProcessorEventHandler>();
+  #endif
+
+  processor->setEventHandler(eventHandler);
+
   auto srvIProt = clientPtr->GetClient()->getOutputProtocol();
   auto srvOProt = clientPtr->GetClient()->getInputProtocol();
 
@@ -101,7 +113,11 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPt
   // Stopwatch<std::chrono::microseconds> sw;
   // sw.start();
 
-  while (count <= num_iterations){
+  while (count <= num_iterations) {
+
+    #ifdef __aarch64__
+      PROCESS_BEGIN(count);
+    #endif
 
     processor->process(srvIProt, srvOProt, nullptr);
 
@@ -114,6 +130,18 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPt
 
     count++;
   }
+
+  #ifdef SW
+    eventHandler->printResults();
+    processor->headerSW.post_process();
+    processor->disSW.post_process();
+
+    double headerTime = (processor->headerSW.mean() * 1.0);
+    cout << "AVG HeaderParsing Latency (us): " << headerTime / 1000 << endl;
+
+    double disTime = (processor->disSW.mean() * 1.0);
+    cout << "AVG Dispatch Latency (us): " << disTime / 1000 << endl;
+  #endif
 
   // if (tid == max_tid)
   //   LOG(warning) << "Process Phase finished!";
