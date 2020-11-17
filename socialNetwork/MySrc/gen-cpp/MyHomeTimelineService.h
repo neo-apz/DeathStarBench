@@ -127,9 +127,8 @@ class MyHomeTimelineService_ReadHomeTimeline_pargs {
 };
 
 typedef struct _MyHomeTimelineService_ReadHomeTimeline_result__isset {
-  _MyHomeTimelineService_ReadHomeTimeline_result__isset() : success(false), se(false) {}
+  _MyHomeTimelineService_ReadHomeTimeline_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyHomeTimelineService_ReadHomeTimeline_result__isset;
 
 class MyHomeTimelineService_ReadHomeTimeline_result {
@@ -142,19 +141,14 @@ class MyHomeTimelineService_ReadHomeTimeline_result {
 
   virtual ~MyHomeTimelineService_ReadHomeTimeline_result() throw();
   std::vector<Post>  success;
-  ServiceException se;
 
   _MyHomeTimelineService_ReadHomeTimeline_result__isset __isset;
 
   void __set_success(const std::vector<Post> & val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MyHomeTimelineService_ReadHomeTimeline_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -170,9 +164,8 @@ class MyHomeTimelineService_ReadHomeTimeline_result {
 };
 
 typedef struct _MyHomeTimelineService_ReadHomeTimeline_presult__isset {
-  _MyHomeTimelineService_ReadHomeTimeline_presult__isset() : success(false), se(false) {}
+  _MyHomeTimelineService_ReadHomeTimeline_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyHomeTimelineService_ReadHomeTimeline_presult__isset;
 
 class MyHomeTimelineService_ReadHomeTimeline_presult {
@@ -181,7 +174,6 @@ class MyHomeTimelineService_ReadHomeTimeline_presult {
 
   virtual ~MyHomeTimelineService_ReadHomeTimeline_presult() throw();
   std::vector<Post> * success;
-  ServiceException se;
 
   _MyHomeTimelineService_ReadHomeTimeline_presult__isset __isset;
 

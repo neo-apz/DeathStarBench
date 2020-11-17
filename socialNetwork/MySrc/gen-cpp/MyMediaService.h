@@ -119,10 +119,6 @@ class MyMediaService_UploadMedia_pargs {
 
 };
 
-typedef struct _MyMediaService_UploadMedia_result__isset {
-  _MyMediaService_UploadMedia_result__isset() : se(false) {}
-  bool se :1;
-} _MyMediaService_UploadMedia_result__isset;
 
 class MyMediaService_UploadMedia_result {
  public:
@@ -133,16 +129,9 @@ class MyMediaService_UploadMedia_result {
   }
 
   virtual ~MyMediaService_UploadMedia_result() throw();
-  ServiceException se;
 
-  _MyMediaService_UploadMedia_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyMediaService_UploadMedia_result & rhs) const
+  bool operator == (const MyMediaService_UploadMedia_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyMediaService_UploadMedia_result &rhs) const {
@@ -156,19 +145,12 @@ class MyMediaService_UploadMedia_result {
 
 };
 
-typedef struct _MyMediaService_UploadMedia_presult__isset {
-  _MyMediaService_UploadMedia_presult__isset() : se(false) {}
-  bool se :1;
-} _MyMediaService_UploadMedia_presult__isset;
 
 class MyMediaService_UploadMedia_presult {
  public:
 
 
   virtual ~MyMediaService_UploadMedia_presult() throw();
-  ServiceException se;
-
-  _MyMediaService_UploadMedia_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 

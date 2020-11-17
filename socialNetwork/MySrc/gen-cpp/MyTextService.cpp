@@ -127,20 +127,7 @@ uint32_t MyTextService_UploadText_result::read(::apache::thrift::protocol::TProt
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -155,11 +142,6 @@ uint32_t MyTextService_UploadText_result::write(::apache::thrift::protocol::TPro
 
   xfer += oprot->writeStructBegin("MyTextService_UploadText_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -189,20 +171,7 @@ uint32_t MyTextService_UploadText_presult::read(::apache::thrift::protocol::TPro
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -262,9 +231,6 @@ void MyTextServiceClient::recv_UploadText()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -311,9 +277,6 @@ void MyTextServiceProcessor::process_UploadText(int32_t seqid, ::apache::thrift:
   MyTextService_UploadText_result result;
   try {
     iface_->UploadText(args.req_id, args.text);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyTextService.UploadText");
@@ -418,10 +381,6 @@ void MyTextServiceConcurrentClient::recv_UploadText(const int32_t seqid)
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }

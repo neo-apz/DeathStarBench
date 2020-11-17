@@ -21,7 +21,7 @@ namespace my_social_network {
 class MyUniqueIdServiceIf {
  public:
   virtual ~MyUniqueIdServiceIf() {}
-  virtual void UploadUniqueId(const int64_t req_id, const PostType::type post_type) = 0;
+  virtual int64_t UploadUniqueId(const int64_t req_id, const PostType::type post_type) = 0;
 };
 
 class MyUniqueIdServiceIfFactory {
@@ -51,8 +51,9 @@ class MyUniqueIdServiceIfSingletonFactory : virtual public MyUniqueIdServiceIfFa
 class MyUniqueIdServiceNull : virtual public MyUniqueIdServiceIf {
  public:
   virtual ~MyUniqueIdServiceNull() {}
-  void UploadUniqueId(const int64_t /* req_id */, const PostType::type /* post_type */) {
-    return;
+  int64_t UploadUniqueId(const int64_t /* req_id */, const PostType::type /* post_type */) {
+    int64_t _return = 0;
+    return _return;
   }
 };
 
@@ -113,8 +114,8 @@ class MyUniqueIdService_UploadUniqueId_pargs {
 };
 
 typedef struct _MyUniqueIdService_UploadUniqueId_result__isset {
-  _MyUniqueIdService_UploadUniqueId_result__isset() : se(false) {}
-  bool se :1;
+  _MyUniqueIdService_UploadUniqueId_result__isset() : success(false) {}
+  bool success :1;
 } _MyUniqueIdService_UploadUniqueId_result__isset;
 
 class MyUniqueIdService_UploadUniqueId_result {
@@ -122,19 +123,19 @@ class MyUniqueIdService_UploadUniqueId_result {
 
   MyUniqueIdService_UploadUniqueId_result(const MyUniqueIdService_UploadUniqueId_result&);
   MyUniqueIdService_UploadUniqueId_result& operator=(const MyUniqueIdService_UploadUniqueId_result&);
-  MyUniqueIdService_UploadUniqueId_result() {
+  MyUniqueIdService_UploadUniqueId_result() : success(0) {
   }
 
   virtual ~MyUniqueIdService_UploadUniqueId_result() throw();
-  ServiceException se;
+  int64_t success;
 
   _MyUniqueIdService_UploadUniqueId_result__isset __isset;
 
-  void __set_se(const ServiceException& val);
+  void __set_success(const int64_t val);
 
   bool operator == (const MyUniqueIdService_UploadUniqueId_result & rhs) const
   {
-    if (!(se == rhs.se))
+    if (!(success == rhs.success))
       return false;
     return true;
   }
@@ -150,8 +151,8 @@ class MyUniqueIdService_UploadUniqueId_result {
 };
 
 typedef struct _MyUniqueIdService_UploadUniqueId_presult__isset {
-  _MyUniqueIdService_UploadUniqueId_presult__isset() : se(false) {}
-  bool se :1;
+  _MyUniqueIdService_UploadUniqueId_presult__isset() : success(false) {}
+  bool success :1;
 } _MyUniqueIdService_UploadUniqueId_presult__isset;
 
 class MyUniqueIdService_UploadUniqueId_presult {
@@ -159,7 +160,7 @@ class MyUniqueIdService_UploadUniqueId_presult {
 
 
   virtual ~MyUniqueIdService_UploadUniqueId_presult() throw();
-  ServiceException se;
+  int64_t* success;
 
   _MyUniqueIdService_UploadUniqueId_presult__isset __isset;
 
@@ -192,9 +193,9 @@ class MyUniqueIdServiceClient : virtual public MyUniqueIdServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadUniqueId(const int64_t req_id, const PostType::type post_type);
+  int64_t UploadUniqueId(const int64_t req_id, const PostType::type post_type);
   void send_UploadUniqueId(const int64_t req_id, const PostType::type post_type);
-  void recv_UploadUniqueId();
+  int64_t recv_UploadUniqueId();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -243,13 +244,13 @@ class MyUniqueIdServiceMultiface : virtual public MyUniqueIdServiceIf {
     ifaces_.push_back(iface);
   }
  public:
-  void UploadUniqueId(const int64_t req_id, const PostType::type post_type) {
+  int64_t UploadUniqueId(const int64_t req_id, const PostType::type post_type) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->UploadUniqueId(req_id, post_type);
     }
-    ifaces_[i]->UploadUniqueId(req_id, post_type);
+    return ifaces_[i]->UploadUniqueId(req_id, post_type);
   }
 
 };
@@ -282,9 +283,9 @@ class MyUniqueIdServiceConcurrentClient : virtual public MyUniqueIdServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  void UploadUniqueId(const int64_t req_id, const PostType::type post_type);
+  int64_t UploadUniqueId(const int64_t req_id, const PostType::type post_type);
   int32_t send_UploadUniqueId(const int64_t req_id, const PostType::type post_type);
-  void recv_UploadUniqueId(const int32_t seqid);
+  int64_t recv_UploadUniqueId(const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

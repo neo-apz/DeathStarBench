@@ -46,14 +46,14 @@ uint32_t MyUserMentionService_UploadUserMentions_args::read(::apache::thrift::pr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->usernames.clear();
-            uint32_t _size204;
-            ::apache::thrift::protocol::TType _etype207;
-            xfer += iprot->readListBegin(_etype207, _size204);
-            this->usernames.resize(_size204);
-            uint32_t _i208;
-            for (_i208 = 0; _i208 < _size204; ++_i208)
+            uint32_t _size116;
+            ::apache::thrift::protocol::TType _etype119;
+            xfer += iprot->readListBegin(_etype119, _size116);
+            this->usernames.resize(_size116);
+            uint32_t _i120;
+            for (_i120 = 0; _i120 < _size116; ++_i120)
             {
-              xfer += iprot->readString(this->usernames[_i208]);
+              xfer += iprot->readString(this->usernames[_i120]);
             }
             xfer += iprot->readListEnd();
           }
@@ -86,10 +86,10 @@ uint32_t MyUserMentionService_UploadUserMentions_args::write(::apache::thrift::p
   xfer += oprot->writeFieldBegin("usernames", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->usernames.size()));
-    std::vector<std::string> ::const_iterator _iter209;
-    for (_iter209 = this->usernames.begin(); _iter209 != this->usernames.end(); ++_iter209)
+    std::vector<std::string> ::const_iterator _iter121;
+    for (_iter121 = this->usernames.begin(); _iter121 != this->usernames.end(); ++_iter121)
     {
-      xfer += oprot->writeString((*_iter209));
+      xfer += oprot->writeString((*_iter121));
     }
     xfer += oprot->writeListEnd();
   }
@@ -117,10 +117,10 @@ uint32_t MyUserMentionService_UploadUserMentions_pargs::write(::apache::thrift::
   xfer += oprot->writeFieldBegin("usernames", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->usernames)).size()));
-    std::vector<std::string> ::const_iterator _iter210;
-    for (_iter210 = (*(this->usernames)).begin(); _iter210 != (*(this->usernames)).end(); ++_iter210)
+    std::vector<std::string> ::const_iterator _iter122;
+    for (_iter122 = (*(this->usernames)).begin(); _iter122 != (*(this->usernames)).end(); ++_iter122)
     {
-      xfer += oprot->writeString((*_iter210));
+      xfer += oprot->writeString((*_iter122));
     }
     xfer += oprot->writeListEnd();
   }
@@ -155,20 +155,7 @@ uint32_t MyUserMentionService_UploadUserMentions_result::read(::apache::thrift::
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -183,11 +170,6 @@ uint32_t MyUserMentionService_UploadUserMentions_result::write(::apache::thrift:
 
   xfer += oprot->writeStructBegin("MyUserMentionService_UploadUserMentions_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -217,20 +199,7 @@ uint32_t MyUserMentionService_UploadUserMentions_presult::read(::apache::thrift:
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -290,9 +259,6 @@ void MyUserMentionServiceClient::recv_UploadUserMentions()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -339,9 +305,6 @@ void MyUserMentionServiceProcessor::process_UploadUserMentions(int32_t seqid, ::
   MyUserMentionService_UploadUserMentions_result result;
   try {
     iface_->UploadUserMentions(args.req_id, args.usernames);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserMentionService.UploadUserMentions");
@@ -446,10 +409,6 @@ void MyUserMentionServiceConcurrentClient::recv_UploadUserMentions(const int32_t
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }

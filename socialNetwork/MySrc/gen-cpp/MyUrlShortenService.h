@@ -117,9 +117,8 @@ class MyUrlShortenService_UploadUrls_pargs {
 };
 
 typedef struct _MyUrlShortenService_UploadUrls_result__isset {
-  _MyUrlShortenService_UploadUrls_result__isset() : success(false), se(false) {}
+  _MyUrlShortenService_UploadUrls_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUrlShortenService_UploadUrls_result__isset;
 
 class MyUrlShortenService_UploadUrls_result {
@@ -132,19 +131,14 @@ class MyUrlShortenService_UploadUrls_result {
 
   virtual ~MyUrlShortenService_UploadUrls_result() throw();
   std::vector<std::string>  success;
-  ServiceException se;
 
   _MyUrlShortenService_UploadUrls_result__isset __isset;
 
   void __set_success(const std::vector<std::string> & val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MyUrlShortenService_UploadUrls_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -160,9 +154,8 @@ class MyUrlShortenService_UploadUrls_result {
 };
 
 typedef struct _MyUrlShortenService_UploadUrls_presult__isset {
-  _MyUrlShortenService_UploadUrls_presult__isset() : success(false), se(false) {}
+  _MyUrlShortenService_UploadUrls_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUrlShortenService_UploadUrls_presult__isset;
 
 class MyUrlShortenService_UploadUrls_presult {
@@ -171,7 +164,6 @@ class MyUrlShortenService_UploadUrls_presult {
 
   virtual ~MyUrlShortenService_UploadUrls_presult() throw();
   std::vector<std::string> * success;
-  ServiceException se;
 
   _MyUrlShortenService_UploadUrls_presult__isset __isset;
 
@@ -236,9 +228,8 @@ class MyUrlShortenService_GetExtendedUrls_pargs {
 };
 
 typedef struct _MyUrlShortenService_GetExtendedUrls_result__isset {
-  _MyUrlShortenService_GetExtendedUrls_result__isset() : success(false), se(false) {}
+  _MyUrlShortenService_GetExtendedUrls_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUrlShortenService_GetExtendedUrls_result__isset;
 
 class MyUrlShortenService_GetExtendedUrls_result {
@@ -251,19 +242,14 @@ class MyUrlShortenService_GetExtendedUrls_result {
 
   virtual ~MyUrlShortenService_GetExtendedUrls_result() throw();
   std::vector<std::string>  success;
-  ServiceException se;
 
   _MyUrlShortenService_GetExtendedUrls_result__isset __isset;
 
   void __set_success(const std::vector<std::string> & val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MyUrlShortenService_GetExtendedUrls_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -279,9 +265,8 @@ class MyUrlShortenService_GetExtendedUrls_result {
 };
 
 typedef struct _MyUrlShortenService_GetExtendedUrls_presult__isset {
-  _MyUrlShortenService_GetExtendedUrls_presult__isset() : success(false), se(false) {}
+  _MyUrlShortenService_GetExtendedUrls_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUrlShortenService_GetExtendedUrls_presult__isset;
 
 class MyUrlShortenService_GetExtendedUrls_presult {
@@ -290,7 +275,6 @@ class MyUrlShortenService_GetExtendedUrls_presult {
 
   virtual ~MyUrlShortenService_GetExtendedUrls_presult() throw();
   std::vector<std::string> * success;
-  ServiceException se;
 
   _MyUrlShortenService_GetExtendedUrls_presult__isset __isset;
 

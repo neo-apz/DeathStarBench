@@ -127,20 +127,7 @@ uint32_t MyComposePostService_UploadText_result::read(::apache::thrift::protocol
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -155,11 +142,6 @@ uint32_t MyComposePostService_UploadText_result::write(::apache::thrift::protoco
 
   xfer += oprot->writeStructBegin("MyComposePostService_UploadText_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -189,20 +171,7 @@ uint32_t MyComposePostService_UploadText_presult::read(::apache::thrift::protoco
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -249,14 +218,14 @@ uint32_t MyComposePostService_UploadMedia_args::read(::apache::thrift::protocol:
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->media.clear();
-            uint32_t _size58;
-            ::apache::thrift::protocol::TType _etype61;
-            xfer += iprot->readListBegin(_etype61, _size58);
-            this->media.resize(_size58);
-            uint32_t _i62;
-            for (_i62 = 0; _i62 < _size58; ++_i62)
+            uint32_t _size32;
+            ::apache::thrift::protocol::TType _etype35;
+            xfer += iprot->readListBegin(_etype35, _size32);
+            this->media.resize(_size32);
+            uint32_t _i36;
+            for (_i36 = 0; _i36 < _size32; ++_i36)
             {
-              xfer += this->media[_i62].read(iprot);
+              xfer += this->media[_i36].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -289,10 +258,10 @@ uint32_t MyComposePostService_UploadMedia_args::write(::apache::thrift::protocol
   xfer += oprot->writeFieldBegin("media", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->media.size()));
-    std::vector<Media> ::const_iterator _iter63;
-    for (_iter63 = this->media.begin(); _iter63 != this->media.end(); ++_iter63)
+    std::vector<Media> ::const_iterator _iter37;
+    for (_iter37 = this->media.begin(); _iter37 != this->media.end(); ++_iter37)
     {
-      xfer += (*_iter63).write(oprot);
+      xfer += (*_iter37).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -320,10 +289,10 @@ uint32_t MyComposePostService_UploadMedia_pargs::write(::apache::thrift::protoco
   xfer += oprot->writeFieldBegin("media", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->media)).size()));
-    std::vector<Media> ::const_iterator _iter64;
-    for (_iter64 = (*(this->media)).begin(); _iter64 != (*(this->media)).end(); ++_iter64)
+    std::vector<Media> ::const_iterator _iter38;
+    for (_iter38 = (*(this->media)).begin(); _iter38 != (*(this->media)).end(); ++_iter38)
     {
-      xfer += (*_iter64).write(oprot);
+      xfer += (*_iter38).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -358,20 +327,7 @@ uint32_t MyComposePostService_UploadMedia_result::read(::apache::thrift::protoco
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -386,11 +342,6 @@ uint32_t MyComposePostService_UploadMedia_result::write(::apache::thrift::protoc
 
   xfer += oprot->writeStructBegin("MyComposePostService_UploadMedia_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -420,20 +371,7 @@ uint32_t MyComposePostService_UploadMedia_presult::read(::apache::thrift::protoc
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -486,9 +424,9 @@ uint32_t MyComposePostService_UploadUniqueId_args::read(::apache::thrift::protoc
         break;
       case 3:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast65;
-          xfer += iprot->readI32(ecast65);
-          this->post_type = (PostType::type)ecast65;
+          int32_t ecast39;
+          xfer += iprot->readI32(ecast39);
+          this->post_type = (PostType::type)ecast39;
           this->__isset.post_type = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -579,20 +517,7 @@ uint32_t MyComposePostService_UploadUniqueId_result::read(::apache::thrift::prot
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -607,11 +532,6 @@ uint32_t MyComposePostService_UploadUniqueId_result::write(::apache::thrift::pro
 
   xfer += oprot->writeStructBegin("MyComposePostService_UploadUniqueId_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -641,20 +561,7 @@ uint32_t MyComposePostService_UploadUniqueId_presult::read(::apache::thrift::pro
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -782,20 +689,7 @@ uint32_t MyComposePostService_UploadCreator_result::read(::apache::thrift::proto
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -810,11 +704,6 @@ uint32_t MyComposePostService_UploadCreator_result::write(::apache::thrift::prot
 
   xfer += oprot->writeStructBegin("MyComposePostService_UploadCreator_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -844,20 +733,7 @@ uint32_t MyComposePostService_UploadCreator_presult::read(::apache::thrift::prot
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -904,14 +780,14 @@ uint32_t MyComposePostService_UploadUrls_args::read(::apache::thrift::protocol::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->urls.clear();
-            uint32_t _size66;
-            ::apache::thrift::protocol::TType _etype69;
-            xfer += iprot->readListBegin(_etype69, _size66);
-            this->urls.resize(_size66);
-            uint32_t _i70;
-            for (_i70 = 0; _i70 < _size66; ++_i70)
+            uint32_t _size40;
+            ::apache::thrift::protocol::TType _etype43;
+            xfer += iprot->readListBegin(_etype43, _size40);
+            this->urls.resize(_size40);
+            uint32_t _i44;
+            for (_i44 = 0; _i44 < _size40; ++_i44)
             {
-              xfer += this->urls[_i70].read(iprot);
+              xfer += this->urls[_i44].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -944,10 +820,10 @@ uint32_t MyComposePostService_UploadUrls_args::write(::apache::thrift::protocol:
   xfer += oprot->writeFieldBegin("urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->urls.size()));
-    std::vector<Url> ::const_iterator _iter71;
-    for (_iter71 = this->urls.begin(); _iter71 != this->urls.end(); ++_iter71)
+    std::vector<Url> ::const_iterator _iter45;
+    for (_iter45 = this->urls.begin(); _iter45 != this->urls.end(); ++_iter45)
     {
-      xfer += (*_iter71).write(oprot);
+      xfer += (*_iter45).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -975,10 +851,10 @@ uint32_t MyComposePostService_UploadUrls_pargs::write(::apache::thrift::protocol
   xfer += oprot->writeFieldBegin("urls", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->urls)).size()));
-    std::vector<Url> ::const_iterator _iter72;
-    for (_iter72 = (*(this->urls)).begin(); _iter72 != (*(this->urls)).end(); ++_iter72)
+    std::vector<Url> ::const_iterator _iter46;
+    for (_iter46 = (*(this->urls)).begin(); _iter46 != (*(this->urls)).end(); ++_iter46)
     {
-      xfer += (*_iter72).write(oprot);
+      xfer += (*_iter46).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -1013,20 +889,7 @@ uint32_t MyComposePostService_UploadUrls_result::read(::apache::thrift::protocol
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1041,11 +904,6 @@ uint32_t MyComposePostService_UploadUrls_result::write(::apache::thrift::protoco
 
   xfer += oprot->writeStructBegin("MyComposePostService_UploadUrls_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1075,20 +933,7 @@ uint32_t MyComposePostService_UploadUrls_presult::read(::apache::thrift::protoco
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1135,14 +980,14 @@ uint32_t MyComposePostService_UploadUserMentions_args::read(::apache::thrift::pr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->user_mentions.clear();
-            uint32_t _size73;
-            ::apache::thrift::protocol::TType _etype76;
-            xfer += iprot->readListBegin(_etype76, _size73);
-            this->user_mentions.resize(_size73);
-            uint32_t _i77;
-            for (_i77 = 0; _i77 < _size73; ++_i77)
+            uint32_t _size47;
+            ::apache::thrift::protocol::TType _etype50;
+            xfer += iprot->readListBegin(_etype50, _size47);
+            this->user_mentions.resize(_size47);
+            uint32_t _i51;
+            for (_i51 = 0; _i51 < _size47; ++_i51)
             {
-              xfer += this->user_mentions[_i77].read(iprot);
+              xfer += this->user_mentions[_i51].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -1175,10 +1020,10 @@ uint32_t MyComposePostService_UploadUserMentions_args::write(::apache::thrift::p
   xfer += oprot->writeFieldBegin("user_mentions", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->user_mentions.size()));
-    std::vector<UserMention> ::const_iterator _iter78;
-    for (_iter78 = this->user_mentions.begin(); _iter78 != this->user_mentions.end(); ++_iter78)
+    std::vector<UserMention> ::const_iterator _iter52;
+    for (_iter52 = this->user_mentions.begin(); _iter52 != this->user_mentions.end(); ++_iter52)
     {
-      xfer += (*_iter78).write(oprot);
+      xfer += (*_iter52).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -1206,10 +1051,10 @@ uint32_t MyComposePostService_UploadUserMentions_pargs::write(::apache::thrift::
   xfer += oprot->writeFieldBegin("user_mentions", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->user_mentions)).size()));
-    std::vector<UserMention> ::const_iterator _iter79;
-    for (_iter79 = (*(this->user_mentions)).begin(); _iter79 != (*(this->user_mentions)).end(); ++_iter79)
+    std::vector<UserMention> ::const_iterator _iter53;
+    for (_iter53 = (*(this->user_mentions)).begin(); _iter53 != (*(this->user_mentions)).end(); ++_iter53)
     {
-      xfer += (*_iter79).write(oprot);
+      xfer += (*_iter53).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -1244,20 +1089,7 @@ uint32_t MyComposePostService_UploadUserMentions_result::read(::apache::thrift::
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1272,11 +1104,6 @@ uint32_t MyComposePostService_UploadUserMentions_result::write(::apache::thrift:
 
   xfer += oprot->writeStructBegin("MyComposePostService_UploadUserMentions_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1306,20 +1133,7 @@ uint32_t MyComposePostService_UploadUserMentions_presult::read(::apache::thrift:
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1379,9 +1193,6 @@ void MyComposePostServiceClient::recv_UploadText()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1436,9 +1247,6 @@ void MyComposePostServiceClient::recv_UploadMedia()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1494,9 +1302,6 @@ void MyComposePostServiceClient::recv_UploadUniqueId()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1551,9 +1356,6 @@ void MyComposePostServiceClient::recv_UploadCreator()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1608,9 +1410,6 @@ void MyComposePostServiceClient::recv_UploadUrls()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1665,9 +1464,6 @@ void MyComposePostServiceClient::recv_UploadUserMentions()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1714,9 +1510,6 @@ void MyComposePostServiceProcessor::process_UploadText(int32_t seqid, ::apache::
   MyComposePostService_UploadText_result result;
   try {
     iface_->UploadText(args.req_id, args.text);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadText");
@@ -1770,9 +1563,6 @@ void MyComposePostServiceProcessor::process_UploadMedia(int32_t seqid, ::apache:
   MyComposePostService_UploadMedia_result result;
   try {
     iface_->UploadMedia(args.req_id, args.media);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadMedia");
@@ -1826,9 +1616,6 @@ void MyComposePostServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apac
   MyComposePostService_UploadUniqueId_result result;
   try {
     iface_->UploadUniqueId(args.req_id, args.post_id, args.post_type);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadUniqueId");
@@ -1882,9 +1669,6 @@ void MyComposePostServiceProcessor::process_UploadCreator(int32_t seqid, ::apach
   MyComposePostService_UploadCreator_result result;
   try {
     iface_->UploadCreator(args.req_id, args.creator);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadCreator");
@@ -1938,9 +1722,6 @@ void MyComposePostServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::
   MyComposePostService_UploadUrls_result result;
   try {
     iface_->UploadUrls(args.req_id, args.urls);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadUrls");
@@ -1994,9 +1775,6 @@ void MyComposePostServiceProcessor::process_UploadUserMentions(int32_t seqid, ::
   MyComposePostService_UploadUserMentions_result result;
   try {
     iface_->UploadUserMentions(args.req_id, args.user_mentions);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadUserMentions");
@@ -2101,10 +1879,6 @@ void MyComposePostServiceConcurrentClient::recv_UploadText(const int32_t seqid)
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2184,10 +1958,6 @@ void MyComposePostServiceConcurrentClient::recv_UploadMedia(const int32_t seqid)
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2268,10 +2038,6 @@ void MyComposePostServiceConcurrentClient::recv_UploadUniqueId(const int32_t seq
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2351,10 +2117,6 @@ void MyComposePostServiceConcurrentClient::recv_UploadCreator(const int32_t seqi
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2434,10 +2196,6 @@ void MyComposePostServiceConcurrentClient::recv_UploadUrls(const int32_t seqid)
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2517,10 +2275,6 @@ void MyComposePostServiceConcurrentClient::recv_UploadUserMentions(const int32_t
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }

@@ -127,20 +127,7 @@ uint32_t MyPostStorageService_StorePost_result::read(::apache::thrift::protocol:
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -155,11 +142,6 @@ uint32_t MyPostStorageService_StorePost_result::write(::apache::thrift::protocol
 
   xfer += oprot->writeStructBegin("MyPostStorageService_StorePost_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -189,20 +171,7 @@ uint32_t MyPostStorageService_StorePost_presult::read(::apache::thrift::protocol
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -340,14 +309,6 @@ uint32_t MyPostStorageService_ReadPost_result::read(::apache::thrift::protocol::
           xfer += iprot->skip(ftype);
         }
         break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -369,10 +330,6 @@ uint32_t MyPostStorageService_ReadPost_result::write(::apache::thrift::protocol:
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRUCT, 0);
     xfer += this->success.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -410,14 +367,6 @@ uint32_t MyPostStorageService_ReadPost_presult::read(::apache::thrift::protocol:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += (*(this->success)).read(iprot);
           this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -472,14 +421,14 @@ uint32_t MyPostStorageService_ReadPosts_args::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->post_ids.clear();
-            uint32_t _size80;
-            ::apache::thrift::protocol::TType _etype83;
-            xfer += iprot->readListBegin(_etype83, _size80);
-            this->post_ids.resize(_size80);
-            uint32_t _i84;
-            for (_i84 = 0; _i84 < _size80; ++_i84)
+            uint32_t _size54;
+            ::apache::thrift::protocol::TType _etype57;
+            xfer += iprot->readListBegin(_etype57, _size54);
+            this->post_ids.resize(_size54);
+            uint32_t _i58;
+            for (_i58 = 0; _i58 < _size54; ++_i58)
             {
-              xfer += iprot->readI64(this->post_ids[_i84]);
+              xfer += iprot->readI64(this->post_ids[_i58]);
             }
             xfer += iprot->readListEnd();
           }
@@ -512,10 +461,10 @@ uint32_t MyPostStorageService_ReadPosts_args::write(::apache::thrift::protocol::
   xfer += oprot->writeFieldBegin("post_ids", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->post_ids.size()));
-    std::vector<int64_t> ::const_iterator _iter85;
-    for (_iter85 = this->post_ids.begin(); _iter85 != this->post_ids.end(); ++_iter85)
+    std::vector<int64_t> ::const_iterator _iter59;
+    for (_iter59 = this->post_ids.begin(); _iter59 != this->post_ids.end(); ++_iter59)
     {
-      xfer += oprot->writeI64((*_iter85));
+      xfer += oprot->writeI64((*_iter59));
     }
     xfer += oprot->writeListEnd();
   }
@@ -543,10 +492,10 @@ uint32_t MyPostStorageService_ReadPosts_pargs::write(::apache::thrift::protocol:
   xfer += oprot->writeFieldBegin("post_ids", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>((*(this->post_ids)).size()));
-    std::vector<int64_t> ::const_iterator _iter86;
-    for (_iter86 = (*(this->post_ids)).begin(); _iter86 != (*(this->post_ids)).end(); ++_iter86)
+    std::vector<int64_t> ::const_iterator _iter60;
+    for (_iter60 = (*(this->post_ids)).begin(); _iter60 != (*(this->post_ids)).end(); ++_iter60)
     {
-      xfer += oprot->writeI64((*_iter86));
+      xfer += oprot->writeI64((*_iter60));
     }
     xfer += oprot->writeListEnd();
   }
@@ -587,26 +536,18 @@ uint32_t MyPostStorageService_ReadPosts_result::read(::apache::thrift::protocol:
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size87;
-            ::apache::thrift::protocol::TType _etype90;
-            xfer += iprot->readListBegin(_etype90, _size87);
-            this->success.resize(_size87);
-            uint32_t _i91;
-            for (_i91 = 0; _i91 < _size87; ++_i91)
+            uint32_t _size61;
+            ::apache::thrift::protocol::TType _etype64;
+            xfer += iprot->readListBegin(_etype64, _size61);
+            this->success.resize(_size61);
+            uint32_t _i65;
+            for (_i65 = 0; _i65 < _size61; ++_i65)
             {
-              xfer += this->success[_i91].read(iprot);
+              xfer += this->success[_i65].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -633,17 +574,13 @@ uint32_t MyPostStorageService_ReadPosts_result::write(::apache::thrift::protocol
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Post> ::const_iterator _iter92;
-      for (_iter92 = this->success.begin(); _iter92 != this->success.end(); ++_iter92)
+      std::vector<Post> ::const_iterator _iter66;
+      for (_iter66 = this->success.begin(); _iter66 != this->success.end(); ++_iter66)
       {
-        xfer += (*_iter92).write(oprot);
+        xfer += (*_iter66).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -681,26 +618,18 @@ uint32_t MyPostStorageService_ReadPosts_presult::read(::apache::thrift::protocol
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size93;
-            ::apache::thrift::protocol::TType _etype96;
-            xfer += iprot->readListBegin(_etype96, _size93);
-            (*(this->success)).resize(_size93);
-            uint32_t _i97;
-            for (_i97 = 0; _i97 < _size93; ++_i97)
+            uint32_t _size67;
+            ::apache::thrift::protocol::TType _etype70;
+            xfer += iprot->readListBegin(_etype70, _size67);
+            (*(this->success)).resize(_size67);
+            uint32_t _i71;
+            for (_i71 = 0; _i71 < _size67; ++_i71)
             {
-              xfer += (*(this->success))[_i97].read(iprot);
+              xfer += (*(this->success))[_i71].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -768,9 +697,6 @@ void MyPostStorageServiceClient::recv_StorePost()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -829,9 +755,6 @@ void MyPostStorageServiceClient::recv_ReadPost(Post& _return)
   if (result.__isset.success) {
     // _return pointer has now been filled
     return;
-  }
-  if (result.__isset.se) {
-    throw result.se;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPost failed: unknown result");
 }
@@ -892,9 +815,6 @@ void MyPostStorageServiceClient::recv_ReadPosts(std::vector<Post> & _return)
     // _return pointer has now been filled
     return;
   }
-  if (result.__isset.se) {
-    throw result.se;
-  }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPosts failed: unknown result");
 }
 
@@ -941,9 +861,6 @@ void MyPostStorageServiceProcessor::process_StorePost(int32_t seqid, ::apache::t
   MyPostStorageService_StorePost_result result;
   try {
     iface_->StorePost(args.req_id, args.post);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyPostStorageService.StorePost");
@@ -998,9 +915,6 @@ void MyPostStorageServiceProcessor::process_ReadPost(int32_t seqid, ::apache::th
   try {
     iface_->ReadPost(result.success, args.req_id, args.post_id);
     result.__isset.success = true;
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyPostStorageService.ReadPost");
@@ -1055,9 +969,6 @@ void MyPostStorageServiceProcessor::process_ReadPosts(int32_t seqid, ::apache::t
   try {
     iface_->ReadPosts(result.success, args.req_id, args.post_ids);
     result.__isset.success = true;
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyPostStorageService.ReadPosts");
@@ -1162,10 +1073,6 @@ void MyPostStorageServiceConcurrentClient::recv_StorePost(const int32_t seqid)
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -1251,10 +1158,6 @@ void MyPostStorageServiceConcurrentClient::recv_ReadPost(Post& _return, const in
         sentry.commit();
         return;
       }
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       // in a bad state, don't commit
       throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPost failed: unknown result");
     }
@@ -1339,10 +1242,6 @@ void MyPostStorageServiceConcurrentClient::recv_ReadPosts(std::vector<Post> & _r
         // _return pointer has now been filled
         sentry.commit();
         return;
-      }
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
       }
       // in a bad state, don't commit
       throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPosts failed: unknown result");

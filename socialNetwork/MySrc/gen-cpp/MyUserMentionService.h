@@ -112,10 +112,6 @@ class MyUserMentionService_UploadUserMentions_pargs {
 
 };
 
-typedef struct _MyUserMentionService_UploadUserMentions_result__isset {
-  _MyUserMentionService_UploadUserMentions_result__isset() : se(false) {}
-  bool se :1;
-} _MyUserMentionService_UploadUserMentions_result__isset;
 
 class MyUserMentionService_UploadUserMentions_result {
  public:
@@ -126,16 +122,9 @@ class MyUserMentionService_UploadUserMentions_result {
   }
 
   virtual ~MyUserMentionService_UploadUserMentions_result() throw();
-  ServiceException se;
 
-  _MyUserMentionService_UploadUserMentions_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyUserMentionService_UploadUserMentions_result & rhs) const
+  bool operator == (const MyUserMentionService_UploadUserMentions_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyUserMentionService_UploadUserMentions_result &rhs) const {
@@ -149,19 +138,12 @@ class MyUserMentionService_UploadUserMentions_result {
 
 };
 
-typedef struct _MyUserMentionService_UploadUserMentions_presult__isset {
-  _MyUserMentionService_UploadUserMentions_presult__isset() : se(false) {}
-  bool se :1;
-} _MyUserMentionService_UploadUserMentions_presult__isset;
 
 class MyUserMentionService_UploadUserMentions_presult {
  public:
 
 
   virtual ~MyUserMentionService_UploadUserMentions_presult() throw();
-  ServiceException se;
-
-  _MyUserMentionService_UploadUserMentions_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 

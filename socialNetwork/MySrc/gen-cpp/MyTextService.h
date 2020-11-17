@@ -112,10 +112,6 @@ class MyTextService_UploadText_pargs {
 
 };
 
-typedef struct _MyTextService_UploadText_result__isset {
-  _MyTextService_UploadText_result__isset() : se(false) {}
-  bool se :1;
-} _MyTextService_UploadText_result__isset;
 
 class MyTextService_UploadText_result {
  public:
@@ -126,16 +122,9 @@ class MyTextService_UploadText_result {
   }
 
   virtual ~MyTextService_UploadText_result() throw();
-  ServiceException se;
 
-  _MyTextService_UploadText_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyTextService_UploadText_result & rhs) const
+  bool operator == (const MyTextService_UploadText_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyTextService_UploadText_result &rhs) const {
@@ -149,19 +138,12 @@ class MyTextService_UploadText_result {
 
 };
 
-typedef struct _MyTextService_UploadText_presult__isset {
-  _MyTextService_UploadText_presult__isset() : se(false) {}
-  bool se :1;
-} _MyTextService_UploadText_presult__isset;
 
 class MyTextService_UploadText_presult {
  public:
 
 
   virtual ~MyTextService_UploadText_presult() throw();
-  ServiceException se;
-
-  _MyTextService_UploadText_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 

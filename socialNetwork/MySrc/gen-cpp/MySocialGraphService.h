@@ -137,9 +137,8 @@ class MySocialGraphService_GetFollowers_pargs {
 };
 
 typedef struct _MySocialGraphService_GetFollowers_result__isset {
-  _MySocialGraphService_GetFollowers_result__isset() : success(false), se(false) {}
+  _MySocialGraphService_GetFollowers_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MySocialGraphService_GetFollowers_result__isset;
 
 class MySocialGraphService_GetFollowers_result {
@@ -152,19 +151,14 @@ class MySocialGraphService_GetFollowers_result {
 
   virtual ~MySocialGraphService_GetFollowers_result() throw();
   std::vector<int64_t>  success;
-  ServiceException se;
 
   _MySocialGraphService_GetFollowers_result__isset __isset;
 
   void __set_success(const std::vector<int64_t> & val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MySocialGraphService_GetFollowers_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -180,9 +174,8 @@ class MySocialGraphService_GetFollowers_result {
 };
 
 typedef struct _MySocialGraphService_GetFollowers_presult__isset {
-  _MySocialGraphService_GetFollowers_presult__isset() : success(false), se(false) {}
+  _MySocialGraphService_GetFollowers_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MySocialGraphService_GetFollowers_presult__isset;
 
 class MySocialGraphService_GetFollowers_presult {
@@ -191,7 +184,6 @@ class MySocialGraphService_GetFollowers_presult {
 
   virtual ~MySocialGraphService_GetFollowers_presult() throw();
   std::vector<int64_t> * success;
-  ServiceException se;
 
   _MySocialGraphService_GetFollowers_presult__isset __isset;
 
@@ -256,9 +248,8 @@ class MySocialGraphService_GetFollowees_pargs {
 };
 
 typedef struct _MySocialGraphService_GetFollowees_result__isset {
-  _MySocialGraphService_GetFollowees_result__isset() : success(false), se(false) {}
+  _MySocialGraphService_GetFollowees_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MySocialGraphService_GetFollowees_result__isset;
 
 class MySocialGraphService_GetFollowees_result {
@@ -271,19 +262,14 @@ class MySocialGraphService_GetFollowees_result {
 
   virtual ~MySocialGraphService_GetFollowees_result() throw();
   std::vector<int64_t>  success;
-  ServiceException se;
 
   _MySocialGraphService_GetFollowees_result__isset __isset;
 
   void __set_success(const std::vector<int64_t> & val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MySocialGraphService_GetFollowees_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -299,9 +285,8 @@ class MySocialGraphService_GetFollowees_result {
 };
 
 typedef struct _MySocialGraphService_GetFollowees_presult__isset {
-  _MySocialGraphService_GetFollowees_presult__isset() : success(false), se(false) {}
+  _MySocialGraphService_GetFollowees_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MySocialGraphService_GetFollowees_presult__isset;
 
 class MySocialGraphService_GetFollowees_presult {
@@ -310,7 +295,6 @@ class MySocialGraphService_GetFollowees_presult {
 
   virtual ~MySocialGraphService_GetFollowees_presult() throw();
   std::vector<int64_t> * success;
-  ServiceException se;
 
   _MySocialGraphService_GetFollowees_presult__isset __isset;
 
@@ -381,10 +365,6 @@ class MySocialGraphService_Follow_pargs {
 
 };
 
-typedef struct _MySocialGraphService_Follow_result__isset {
-  _MySocialGraphService_Follow_result__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_Follow_result__isset;
 
 class MySocialGraphService_Follow_result {
  public:
@@ -395,16 +375,9 @@ class MySocialGraphService_Follow_result {
   }
 
   virtual ~MySocialGraphService_Follow_result() throw();
-  ServiceException se;
 
-  _MySocialGraphService_Follow_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MySocialGraphService_Follow_result & rhs) const
+  bool operator == (const MySocialGraphService_Follow_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_Follow_result &rhs) const {
@@ -418,19 +391,12 @@ class MySocialGraphService_Follow_result {
 
 };
 
-typedef struct _MySocialGraphService_Follow_presult__isset {
-  _MySocialGraphService_Follow_presult__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_Follow_presult__isset;
 
 class MySocialGraphService_Follow_presult {
  public:
 
 
   virtual ~MySocialGraphService_Follow_presult() throw();
-  ServiceException se;
-
-  _MySocialGraphService_Follow_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -499,10 +465,6 @@ class MySocialGraphService_Unfollow_pargs {
 
 };
 
-typedef struct _MySocialGraphService_Unfollow_result__isset {
-  _MySocialGraphService_Unfollow_result__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_Unfollow_result__isset;
 
 class MySocialGraphService_Unfollow_result {
  public:
@@ -513,16 +475,9 @@ class MySocialGraphService_Unfollow_result {
   }
 
   virtual ~MySocialGraphService_Unfollow_result() throw();
-  ServiceException se;
 
-  _MySocialGraphService_Unfollow_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MySocialGraphService_Unfollow_result & rhs) const
+  bool operator == (const MySocialGraphService_Unfollow_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_Unfollow_result &rhs) const {
@@ -536,19 +491,12 @@ class MySocialGraphService_Unfollow_result {
 
 };
 
-typedef struct _MySocialGraphService_Unfollow_presult__isset {
-  _MySocialGraphService_Unfollow_presult__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_Unfollow_presult__isset;
 
 class MySocialGraphService_Unfollow_presult {
  public:
 
 
   virtual ~MySocialGraphService_Unfollow_presult() throw();
-  ServiceException se;
-
-  _MySocialGraphService_Unfollow_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -617,10 +565,6 @@ class MySocialGraphService_FollowWithUsername_pargs {
 
 };
 
-typedef struct _MySocialGraphService_FollowWithUsername_result__isset {
-  _MySocialGraphService_FollowWithUsername_result__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_FollowWithUsername_result__isset;
 
 class MySocialGraphService_FollowWithUsername_result {
  public:
@@ -631,16 +575,9 @@ class MySocialGraphService_FollowWithUsername_result {
   }
 
   virtual ~MySocialGraphService_FollowWithUsername_result() throw();
-  ServiceException se;
 
-  _MySocialGraphService_FollowWithUsername_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MySocialGraphService_FollowWithUsername_result & rhs) const
+  bool operator == (const MySocialGraphService_FollowWithUsername_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_FollowWithUsername_result &rhs) const {
@@ -654,19 +591,12 @@ class MySocialGraphService_FollowWithUsername_result {
 
 };
 
-typedef struct _MySocialGraphService_FollowWithUsername_presult__isset {
-  _MySocialGraphService_FollowWithUsername_presult__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_FollowWithUsername_presult__isset;
 
 class MySocialGraphService_FollowWithUsername_presult {
  public:
 
 
   virtual ~MySocialGraphService_FollowWithUsername_presult() throw();
-  ServiceException se;
-
-  _MySocialGraphService_FollowWithUsername_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -735,10 +665,6 @@ class MySocialGraphService_UnfollowWithUsername_pargs {
 
 };
 
-typedef struct _MySocialGraphService_UnfollowWithUsername_result__isset {
-  _MySocialGraphService_UnfollowWithUsername_result__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_UnfollowWithUsername_result__isset;
 
 class MySocialGraphService_UnfollowWithUsername_result {
  public:
@@ -749,16 +675,9 @@ class MySocialGraphService_UnfollowWithUsername_result {
   }
 
   virtual ~MySocialGraphService_UnfollowWithUsername_result() throw();
-  ServiceException se;
 
-  _MySocialGraphService_UnfollowWithUsername_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MySocialGraphService_UnfollowWithUsername_result & rhs) const
+  bool operator == (const MySocialGraphService_UnfollowWithUsername_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_UnfollowWithUsername_result &rhs) const {
@@ -772,19 +691,12 @@ class MySocialGraphService_UnfollowWithUsername_result {
 
 };
 
-typedef struct _MySocialGraphService_UnfollowWithUsername_presult__isset {
-  _MySocialGraphService_UnfollowWithUsername_presult__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_UnfollowWithUsername_presult__isset;
 
 class MySocialGraphService_UnfollowWithUsername_presult {
  public:
 
 
   virtual ~MySocialGraphService_UnfollowWithUsername_presult() throw();
-  ServiceException se;
-
-  _MySocialGraphService_UnfollowWithUsername_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -846,10 +758,6 @@ class MySocialGraphService_InsertUser_pargs {
 
 };
 
-typedef struct _MySocialGraphService_InsertUser_result__isset {
-  _MySocialGraphService_InsertUser_result__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_InsertUser_result__isset;
 
 class MySocialGraphService_InsertUser_result {
  public:
@@ -860,16 +768,9 @@ class MySocialGraphService_InsertUser_result {
   }
 
   virtual ~MySocialGraphService_InsertUser_result() throw();
-  ServiceException se;
 
-  _MySocialGraphService_InsertUser_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MySocialGraphService_InsertUser_result & rhs) const
+  bool operator == (const MySocialGraphService_InsertUser_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_InsertUser_result &rhs) const {
@@ -883,19 +784,12 @@ class MySocialGraphService_InsertUser_result {
 
 };
 
-typedef struct _MySocialGraphService_InsertUser_presult__isset {
-  _MySocialGraphService_InsertUser_presult__isset() : se(false) {}
-  bool se :1;
-} _MySocialGraphService_InsertUser_presult__isset;
 
 class MySocialGraphService_InsertUser_presult {
  public:
 
 
   virtual ~MySocialGraphService_InsertUser_presult() throw();
-  ServiceException se;
-
-  _MySocialGraphService_InsertUser_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 

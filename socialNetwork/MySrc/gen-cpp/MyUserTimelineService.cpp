@@ -159,20 +159,7 @@ uint32_t MyUserTimelineService_WriteUserTimeline_result::read(::apache::thrift::
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -187,11 +174,6 @@ uint32_t MyUserTimelineService_WriteUserTimeline_result::write(::apache::thrift:
 
   xfer += oprot->writeStructBegin("MyUserTimelineService_WriteUserTimeline_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -221,20 +203,7 @@ uint32_t MyUserTimelineService_WriteUserTimeline_presult::read(::apache::thrift:
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -400,26 +369,18 @@ uint32_t MyUserTimelineService_ReadUserTimeline_result::read(::apache::thrift::p
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size138;
-            ::apache::thrift::protocol::TType _etype141;
-            xfer += iprot->readListBegin(_etype141, _size138);
-            this->success.resize(_size138);
-            uint32_t _i142;
-            for (_i142 = 0; _i142 < _size138; ++_i142)
+            uint32_t _size83;
+            ::apache::thrift::protocol::TType _etype86;
+            xfer += iprot->readListBegin(_etype86, _size83);
+            this->success.resize(_size83);
+            uint32_t _i87;
+            for (_i87 = 0; _i87 < _size83; ++_i87)
             {
-              xfer += this->success[_i142].read(iprot);
+              xfer += this->success[_i87].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -446,17 +407,13 @@ uint32_t MyUserTimelineService_ReadUserTimeline_result::write(::apache::thrift::
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Post> ::const_iterator _iter143;
-      for (_iter143 = this->success.begin(); _iter143 != this->success.end(); ++_iter143)
+      std::vector<Post> ::const_iterator _iter88;
+      for (_iter88 = this->success.begin(); _iter88 != this->success.end(); ++_iter88)
       {
-        xfer += (*_iter143).write(oprot);
+        xfer += (*_iter88).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -494,26 +451,18 @@ uint32_t MyUserTimelineService_ReadUserTimeline_presult::read(::apache::thrift::
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size144;
-            ::apache::thrift::protocol::TType _etype147;
-            xfer += iprot->readListBegin(_etype147, _size144);
-            (*(this->success)).resize(_size144);
-            uint32_t _i148;
-            for (_i148 = 0; _i148 < _size144; ++_i148)
+            uint32_t _size89;
+            ::apache::thrift::protocol::TType _etype92;
+            xfer += iprot->readListBegin(_etype92, _size89);
+            (*(this->success)).resize(_size89);
+            uint32_t _i93;
+            for (_i93 = 0; _i93 < _size89; ++_i93)
             {
-              xfer += (*(this->success))[_i148].read(iprot);
+              xfer += (*(this->success))[_i93].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
           this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -583,9 +532,6 @@ void MyUserTimelineServiceClient::recv_WriteUserTimeline()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -647,9 +593,6 @@ void MyUserTimelineServiceClient::recv_ReadUserTimeline(std::vector<Post> & _ret
     // _return pointer has now been filled
     return;
   }
-  if (result.__isset.se) {
-    throw result.se;
-  }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadUserTimeline failed: unknown result");
 }
 
@@ -696,9 +639,6 @@ void MyUserTimelineServiceProcessor::process_WriteUserTimeline(int32_t seqid, ::
   MyUserTimelineService_WriteUserTimeline_result result;
   try {
     iface_->WriteUserTimeline(args.req_id, args.post_id, args.user_id, args.timestamp);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserTimelineService.WriteUserTimeline");
@@ -753,9 +693,6 @@ void MyUserTimelineServiceProcessor::process_ReadUserTimeline(int32_t seqid, ::a
   try {
     iface_->ReadUserTimeline(result.success, args.req_id, args.user_id, args.start, args.stop);
     result.__isset.success = true;
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserTimelineService.ReadUserTimeline");
@@ -862,10 +799,6 @@ void MyUserTimelineServiceConcurrentClient::recv_WriteUserTimeline(const int32_t
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -952,10 +885,6 @@ void MyUserTimelineServiceConcurrentClient::recv_ReadUserTimeline(std::vector<Po
         // _return pointer has now been filled
         sentry.commit();
         return;
-      }
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
       }
       // in a bad state, don't commit
       throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadUserTimeline failed: unknown result");

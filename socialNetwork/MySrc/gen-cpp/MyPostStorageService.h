@@ -120,10 +120,6 @@ class MyPostStorageService_StorePost_pargs {
 
 };
 
-typedef struct _MyPostStorageService_StorePost_result__isset {
-  _MyPostStorageService_StorePost_result__isset() : se(false) {}
-  bool se :1;
-} _MyPostStorageService_StorePost_result__isset;
 
 class MyPostStorageService_StorePost_result {
  public:
@@ -134,16 +130,9 @@ class MyPostStorageService_StorePost_result {
   }
 
   virtual ~MyPostStorageService_StorePost_result() throw();
-  ServiceException se;
 
-  _MyPostStorageService_StorePost_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyPostStorageService_StorePost_result & rhs) const
+  bool operator == (const MyPostStorageService_StorePost_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyPostStorageService_StorePost_result &rhs) const {
@@ -157,19 +146,12 @@ class MyPostStorageService_StorePost_result {
 
 };
 
-typedef struct _MyPostStorageService_StorePost_presult__isset {
-  _MyPostStorageService_StorePost_presult__isset() : se(false) {}
-  bool se :1;
-} _MyPostStorageService_StorePost_presult__isset;
 
 class MyPostStorageService_StorePost_presult {
  public:
 
 
   virtual ~MyPostStorageService_StorePost_presult() throw();
-  ServiceException se;
-
-  _MyPostStorageService_StorePost_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -232,9 +214,8 @@ class MyPostStorageService_ReadPost_pargs {
 };
 
 typedef struct _MyPostStorageService_ReadPost_result__isset {
-  _MyPostStorageService_ReadPost_result__isset() : success(false), se(false) {}
+  _MyPostStorageService_ReadPost_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyPostStorageService_ReadPost_result__isset;
 
 class MyPostStorageService_ReadPost_result {
@@ -247,19 +228,14 @@ class MyPostStorageService_ReadPost_result {
 
   virtual ~MyPostStorageService_ReadPost_result() throw();
   Post success;
-  ServiceException se;
 
   _MyPostStorageService_ReadPost_result__isset __isset;
 
   void __set_success(const Post& val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MyPostStorageService_ReadPost_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -275,9 +251,8 @@ class MyPostStorageService_ReadPost_result {
 };
 
 typedef struct _MyPostStorageService_ReadPost_presult__isset {
-  _MyPostStorageService_ReadPost_presult__isset() : success(false), se(false) {}
+  _MyPostStorageService_ReadPost_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyPostStorageService_ReadPost_presult__isset;
 
 class MyPostStorageService_ReadPost_presult {
@@ -286,7 +261,6 @@ class MyPostStorageService_ReadPost_presult {
 
   virtual ~MyPostStorageService_ReadPost_presult() throw();
   Post* success;
-  ServiceException se;
 
   _MyPostStorageService_ReadPost_presult__isset __isset;
 
@@ -351,9 +325,8 @@ class MyPostStorageService_ReadPosts_pargs {
 };
 
 typedef struct _MyPostStorageService_ReadPosts_result__isset {
-  _MyPostStorageService_ReadPosts_result__isset() : success(false), se(false) {}
+  _MyPostStorageService_ReadPosts_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyPostStorageService_ReadPosts_result__isset;
 
 class MyPostStorageService_ReadPosts_result {
@@ -366,19 +339,14 @@ class MyPostStorageService_ReadPosts_result {
 
   virtual ~MyPostStorageService_ReadPosts_result() throw();
   std::vector<Post>  success;
-  ServiceException se;
 
   _MyPostStorageService_ReadPosts_result__isset __isset;
 
   void __set_success(const std::vector<Post> & val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MyPostStorageService_ReadPosts_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -394,9 +362,8 @@ class MyPostStorageService_ReadPosts_result {
 };
 
 typedef struct _MyPostStorageService_ReadPosts_presult__isset {
-  _MyPostStorageService_ReadPosts_presult__isset() : success(false), se(false) {}
+  _MyPostStorageService_ReadPosts_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyPostStorageService_ReadPosts_presult__isset;
 
 class MyPostStorageService_ReadPosts_presult {
@@ -405,7 +372,6 @@ class MyPostStorageService_ReadPosts_presult {
 
   virtual ~MyPostStorageService_ReadPosts_presult() throw();
   std::vector<Post> * success;
-  ServiceException se;
 
   _MyPostStorageService_ReadPosts_presult__isset __isset;
 

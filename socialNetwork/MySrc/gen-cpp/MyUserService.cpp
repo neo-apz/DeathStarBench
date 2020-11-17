@@ -175,20 +175,7 @@ uint32_t MyUserService_RegisterUser_result::read(::apache::thrift::protocol::TPr
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -203,11 +190,6 @@ uint32_t MyUserService_RegisterUser_result::write(::apache::thrift::protocol::TP
 
   xfer += oprot->writeStructBegin("MyUserService_RegisterUser_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -237,20 +219,7 @@ uint32_t MyUserService_RegisterUser_presult::read(::apache::thrift::protocol::TP
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -442,20 +411,7 @@ uint32_t MyUserService_RegisterUserWithId_result::read(::apache::thrift::protoco
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -470,11 +426,6 @@ uint32_t MyUserService_RegisterUserWithId_result::write(::apache::thrift::protoc
 
   xfer += oprot->writeStructBegin("MyUserService_RegisterUserWithId_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -504,20 +455,7 @@ uint32_t MyUserService_RegisterUserWithId_presult::read(::apache::thrift::protoc
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -671,14 +609,6 @@ uint32_t MyUserService_Login_result::read(::apache::thrift::protocol::TProtocol*
           xfer += iprot->skip(ftype);
         }
         break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -700,10 +630,6 @@ uint32_t MyUserService_Login_result::write(::apache::thrift::protocol::TProtocol
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
     xfer += oprot->writeString(this->success);
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -741,14 +667,6 @@ uint32_t MyUserService_Login_presult::read(::apache::thrift::protocol::TProtocol
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString((*(this->success)));
           this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -900,20 +818,7 @@ uint32_t MyUserService_UploadCreatorWithUserId_result::read(::apache::thrift::pr
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -928,11 +833,6 @@ uint32_t MyUserService_UploadCreatorWithUserId_result::write(::apache::thrift::p
 
   xfer += oprot->writeStructBegin("MyUserService_UploadCreatorWithUserId_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -962,20 +862,7 @@ uint32_t MyUserService_UploadCreatorWithUserId_presult::read(::apache::thrift::p
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1103,20 +990,7 @@ uint32_t MyUserService_UploadCreatorWithUsername_result::read(::apache::thrift::
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1131,11 +1005,6 @@ uint32_t MyUserService_UploadCreatorWithUsername_result::write(::apache::thrift:
 
   xfer += oprot->writeStructBegin("MyUserService_UploadCreatorWithUsername_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1165,20 +1034,7 @@ uint32_t MyUserService_UploadCreatorWithUsername_presult::read(::apache::thrift:
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1316,14 +1172,6 @@ uint32_t MyUserService_GetUserId_result::read(::apache::thrift::protocol::TProto
           xfer += iprot->skip(ftype);
         }
         break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -1345,10 +1193,6 @@ uint32_t MyUserService_GetUserId_result::write(::apache::thrift::protocol::TProt
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
     xfer += oprot->writeI64(this->success);
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -1386,14 +1230,6 @@ uint32_t MyUserService_GetUserId_presult::read(::apache::thrift::protocol::TProt
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64((*(this->success)));
           this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1464,9 +1300,6 @@ void MyUserServiceClient::recv_RegisterUser()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1525,9 +1358,6 @@ void MyUserServiceClient::recv_RegisterUserWithId()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1588,9 +1418,6 @@ void MyUserServiceClient::recv_Login(std::string& _return)
     // _return pointer has now been filled
     return;
   }
-  if (result.__isset.se) {
-    throw result.se;
-  }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "Login failed: unknown result");
 }
 
@@ -1646,9 +1473,6 @@ void MyUserServiceClient::recv_UploadCreatorWithUserId()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1703,9 +1527,6 @@ void MyUserServiceClient::recv_UploadCreatorWithUsername()
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
-  }
   return;
 }
 
@@ -1765,9 +1586,6 @@ int64_t MyUserServiceClient::recv_GetUserId()
   if (result.__isset.success) {
     return _return;
   }
-  if (result.__isset.se) {
-    throw result.se;
-  }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetUserId failed: unknown result");
 }
 
@@ -1814,9 +1632,6 @@ void MyUserServiceProcessor::process_RegisterUser(int32_t seqid, ::apache::thrif
   MyUserService_RegisterUser_result result;
   try {
     iface_->RegisterUser(args.req_id, args.first_name, args.last_name, args.username, args.password);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserService.RegisterUser");
@@ -1870,9 +1685,6 @@ void MyUserServiceProcessor::process_RegisterUserWithId(int32_t seqid, ::apache:
   MyUserService_RegisterUserWithId_result result;
   try {
     iface_->RegisterUserWithId(args.req_id, args.first_name, args.last_name, args.username, args.password, args.user_id);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserService.RegisterUserWithId");
@@ -1927,9 +1739,6 @@ void MyUserServiceProcessor::process_Login(int32_t seqid, ::apache::thrift::prot
   try {
     iface_->Login(result.success, args.req_id, args.username, args.password);
     result.__isset.success = true;
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserService.Login");
@@ -1983,9 +1792,6 @@ void MyUserServiceProcessor::process_UploadCreatorWithUserId(int32_t seqid, ::ap
   MyUserService_UploadCreatorWithUserId_result result;
   try {
     iface_->UploadCreatorWithUserId(args.req_id, args.user_id, args.username);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserService.UploadCreatorWithUserId");
@@ -2039,9 +1845,6 @@ void MyUserServiceProcessor::process_UploadCreatorWithUsername(int32_t seqid, ::
   MyUserService_UploadCreatorWithUsername_result result;
   try {
     iface_->UploadCreatorWithUsername(args.req_id, args.username);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserService.UploadCreatorWithUsername");
@@ -2096,9 +1899,6 @@ void MyUserServiceProcessor::process_GetUserId(int32_t seqid, ::apache::thrift::
   try {
     result.success = iface_->GetUserId(args.req_id, args.username);
     result.__isset.success = true;
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUserService.GetUserId");
@@ -2206,10 +2006,6 @@ void MyUserServiceConcurrentClient::recv_RegisterUser(const int32_t seqid)
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2293,10 +2089,6 @@ void MyUserServiceConcurrentClient::recv_RegisterUserWithId(const int32_t seqid)
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2383,10 +2175,6 @@ void MyUserServiceConcurrentClient::recv_Login(std::string& _return, const int32
         sentry.commit();
         return;
       }
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       // in a bad state, don't commit
       throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "Login failed: unknown result");
     }
@@ -2467,10 +2255,6 @@ void MyUserServiceConcurrentClient::recv_UploadCreatorWithUserId(const int32_t s
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2550,10 +2334,6 @@ void MyUserServiceConcurrentClient::recv_UploadCreatorWithUsername(const int32_t
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
-      }
       sentry.commit();
       return;
     }
@@ -2638,10 +2418,6 @@ int64_t MyUserServiceConcurrentClient::recv_GetUserId(const int32_t seqid)
       if (result.__isset.success) {
         sentry.commit();
         return _return;
-      }
-      if (result.__isset.se) {
-        sentry.commit();
-        throw result.se;
       }
       // in a bad state, don't commit
       throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetUserId failed: unknown result");

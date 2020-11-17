@@ -154,10 +154,6 @@ class MyUserService_RegisterUser_pargs {
 
 };
 
-typedef struct _MyUserService_RegisterUser_result__isset {
-  _MyUserService_RegisterUser_result__isset() : se(false) {}
-  bool se :1;
-} _MyUserService_RegisterUser_result__isset;
 
 class MyUserService_RegisterUser_result {
  public:
@@ -168,16 +164,9 @@ class MyUserService_RegisterUser_result {
   }
 
   virtual ~MyUserService_RegisterUser_result() throw();
-  ServiceException se;
 
-  _MyUserService_RegisterUser_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyUserService_RegisterUser_result & rhs) const
+  bool operator == (const MyUserService_RegisterUser_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyUserService_RegisterUser_result &rhs) const {
@@ -191,19 +180,12 @@ class MyUserService_RegisterUser_result {
 
 };
 
-typedef struct _MyUserService_RegisterUser_presult__isset {
-  _MyUserService_RegisterUser_presult__isset() : se(false) {}
-  bool se :1;
-} _MyUserService_RegisterUser_presult__isset;
 
 class MyUserService_RegisterUser_presult {
  public:
 
 
   virtual ~MyUserService_RegisterUser_presult() throw();
-  ServiceException se;
-
-  _MyUserService_RegisterUser_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -293,10 +275,6 @@ class MyUserService_RegisterUserWithId_pargs {
 
 };
 
-typedef struct _MyUserService_RegisterUserWithId_result__isset {
-  _MyUserService_RegisterUserWithId_result__isset() : se(false) {}
-  bool se :1;
-} _MyUserService_RegisterUserWithId_result__isset;
 
 class MyUserService_RegisterUserWithId_result {
  public:
@@ -307,16 +285,9 @@ class MyUserService_RegisterUserWithId_result {
   }
 
   virtual ~MyUserService_RegisterUserWithId_result() throw();
-  ServiceException se;
 
-  _MyUserService_RegisterUserWithId_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyUserService_RegisterUserWithId_result & rhs) const
+  bool operator == (const MyUserService_RegisterUserWithId_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyUserService_RegisterUserWithId_result &rhs) const {
@@ -330,19 +301,12 @@ class MyUserService_RegisterUserWithId_result {
 
 };
 
-typedef struct _MyUserService_RegisterUserWithId_presult__isset {
-  _MyUserService_RegisterUserWithId_presult__isset() : se(false) {}
-  bool se :1;
-} _MyUserService_RegisterUserWithId_presult__isset;
 
 class MyUserService_RegisterUserWithId_presult {
  public:
 
 
   virtual ~MyUserService_RegisterUserWithId_presult() throw();
-  ServiceException se;
-
-  _MyUserService_RegisterUserWithId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -412,9 +376,8 @@ class MyUserService_Login_pargs {
 };
 
 typedef struct _MyUserService_Login_result__isset {
-  _MyUserService_Login_result__isset() : success(false), se(false) {}
+  _MyUserService_Login_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUserService_Login_result__isset;
 
 class MyUserService_Login_result {
@@ -427,19 +390,14 @@ class MyUserService_Login_result {
 
   virtual ~MyUserService_Login_result() throw();
   std::string success;
-  ServiceException se;
 
   _MyUserService_Login_result__isset __isset;
 
   void __set_success(const std::string& val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MyUserService_Login_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -455,9 +413,8 @@ class MyUserService_Login_result {
 };
 
 typedef struct _MyUserService_Login_presult__isset {
-  _MyUserService_Login_presult__isset() : success(false), se(false) {}
+  _MyUserService_Login_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUserService_Login_presult__isset;
 
 class MyUserService_Login_presult {
@@ -466,7 +423,6 @@ class MyUserService_Login_presult {
 
   virtual ~MyUserService_Login_presult() throw();
   std::string* success;
-  ServiceException se;
 
   _MyUserService_Login_presult__isset __isset;
 
@@ -537,10 +493,6 @@ class MyUserService_UploadCreatorWithUserId_pargs {
 
 };
 
-typedef struct _MyUserService_UploadCreatorWithUserId_result__isset {
-  _MyUserService_UploadCreatorWithUserId_result__isset() : se(false) {}
-  bool se :1;
-} _MyUserService_UploadCreatorWithUserId_result__isset;
 
 class MyUserService_UploadCreatorWithUserId_result {
  public:
@@ -551,16 +503,9 @@ class MyUserService_UploadCreatorWithUserId_result {
   }
 
   virtual ~MyUserService_UploadCreatorWithUserId_result() throw();
-  ServiceException se;
 
-  _MyUserService_UploadCreatorWithUserId_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyUserService_UploadCreatorWithUserId_result & rhs) const
+  bool operator == (const MyUserService_UploadCreatorWithUserId_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyUserService_UploadCreatorWithUserId_result &rhs) const {
@@ -574,19 +519,12 @@ class MyUserService_UploadCreatorWithUserId_result {
 
 };
 
-typedef struct _MyUserService_UploadCreatorWithUserId_presult__isset {
-  _MyUserService_UploadCreatorWithUserId_presult__isset() : se(false) {}
-  bool se :1;
-} _MyUserService_UploadCreatorWithUserId_presult__isset;
 
 class MyUserService_UploadCreatorWithUserId_presult {
  public:
 
 
   virtual ~MyUserService_UploadCreatorWithUserId_presult() throw();
-  ServiceException se;
-
-  _MyUserService_UploadCreatorWithUserId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -648,10 +586,6 @@ class MyUserService_UploadCreatorWithUsername_pargs {
 
 };
 
-typedef struct _MyUserService_UploadCreatorWithUsername_result__isset {
-  _MyUserService_UploadCreatorWithUsername_result__isset() : se(false) {}
-  bool se :1;
-} _MyUserService_UploadCreatorWithUsername_result__isset;
 
 class MyUserService_UploadCreatorWithUsername_result {
  public:
@@ -662,16 +596,9 @@ class MyUserService_UploadCreatorWithUsername_result {
   }
 
   virtual ~MyUserService_UploadCreatorWithUsername_result() throw();
-  ServiceException se;
 
-  _MyUserService_UploadCreatorWithUsername_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyUserService_UploadCreatorWithUsername_result & rhs) const
+  bool operator == (const MyUserService_UploadCreatorWithUsername_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyUserService_UploadCreatorWithUsername_result &rhs) const {
@@ -685,19 +612,12 @@ class MyUserService_UploadCreatorWithUsername_result {
 
 };
 
-typedef struct _MyUserService_UploadCreatorWithUsername_presult__isset {
-  _MyUserService_UploadCreatorWithUsername_presult__isset() : se(false) {}
-  bool se :1;
-} _MyUserService_UploadCreatorWithUsername_presult__isset;
 
 class MyUserService_UploadCreatorWithUsername_presult {
  public:
 
 
   virtual ~MyUserService_UploadCreatorWithUsername_presult() throw();
-  ServiceException se;
-
-  _MyUserService_UploadCreatorWithUsername_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -760,9 +680,8 @@ class MyUserService_GetUserId_pargs {
 };
 
 typedef struct _MyUserService_GetUserId_result__isset {
-  _MyUserService_GetUserId_result__isset() : success(false), se(false) {}
+  _MyUserService_GetUserId_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUserService_GetUserId_result__isset;
 
 class MyUserService_GetUserId_result {
@@ -775,19 +694,14 @@ class MyUserService_GetUserId_result {
 
   virtual ~MyUserService_GetUserId_result() throw();
   int64_t success;
-  ServiceException se;
 
   _MyUserService_GetUserId_result__isset __isset;
 
   void __set_success(const int64_t val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MyUserService_GetUserId_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -803,9 +717,8 @@ class MyUserService_GetUserId_result {
 };
 
 typedef struct _MyUserService_GetUserId_presult__isset {
-  _MyUserService_GetUserId_presult__isset() : success(false), se(false) {}
+  _MyUserService_GetUserId_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUserService_GetUserId_presult__isset;
 
 class MyUserService_GetUserId_presult {
@@ -814,7 +727,6 @@ class MyUserService_GetUserId_presult {
 
   virtual ~MyUserService_GetUserId_presult() throw();
   int64_t* success;
-  ServiceException se;
 
   _MyUserService_GetUserId_presult__isset __isset;
 

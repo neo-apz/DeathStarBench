@@ -20,7 +20,7 @@ class MyUniqueIdServiceHandler : virtual public MyUniqueIdServiceIf {
     // Your initialization goes here
   }
 
-  void UploadUniqueId(const int64_t req_id, const PostType::type post_type) {
+  int64_t UploadUniqueId(const int64_t req_id, const PostType::type post_type) {
     // Your implementation goes here
     printf("UploadUniqueId\n");
   }

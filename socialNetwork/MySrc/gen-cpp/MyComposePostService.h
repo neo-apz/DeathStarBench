@@ -132,10 +132,6 @@ class MyComposePostService_UploadText_pargs {
 
 };
 
-typedef struct _MyComposePostService_UploadText_result__isset {
-  _MyComposePostService_UploadText_result__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadText_result__isset;
 
 class MyComposePostService_UploadText_result {
  public:
@@ -146,16 +142,9 @@ class MyComposePostService_UploadText_result {
   }
 
   virtual ~MyComposePostService_UploadText_result() throw();
-  ServiceException se;
 
-  _MyComposePostService_UploadText_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyComposePostService_UploadText_result & rhs) const
+  bool operator == (const MyComposePostService_UploadText_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadText_result &rhs) const {
@@ -169,19 +158,12 @@ class MyComposePostService_UploadText_result {
 
 };
 
-typedef struct _MyComposePostService_UploadText_presult__isset {
-  _MyComposePostService_UploadText_presult__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadText_presult__isset;
 
 class MyComposePostService_UploadText_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadText_presult() throw();
-  ServiceException se;
-
-  _MyComposePostService_UploadText_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -243,10 +225,6 @@ class MyComposePostService_UploadMedia_pargs {
 
 };
 
-typedef struct _MyComposePostService_UploadMedia_result__isset {
-  _MyComposePostService_UploadMedia_result__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadMedia_result__isset;
 
 class MyComposePostService_UploadMedia_result {
  public:
@@ -257,16 +235,9 @@ class MyComposePostService_UploadMedia_result {
   }
 
   virtual ~MyComposePostService_UploadMedia_result() throw();
-  ServiceException se;
 
-  _MyComposePostService_UploadMedia_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyComposePostService_UploadMedia_result & rhs) const
+  bool operator == (const MyComposePostService_UploadMedia_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadMedia_result &rhs) const {
@@ -280,19 +251,12 @@ class MyComposePostService_UploadMedia_result {
 
 };
 
-typedef struct _MyComposePostService_UploadMedia_presult__isset {
-  _MyComposePostService_UploadMedia_presult__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadMedia_presult__isset;
 
 class MyComposePostService_UploadMedia_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadMedia_presult() throw();
-  ServiceException se;
-
-  _MyComposePostService_UploadMedia_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -361,10 +325,6 @@ class MyComposePostService_UploadUniqueId_pargs {
 
 };
 
-typedef struct _MyComposePostService_UploadUniqueId_result__isset {
-  _MyComposePostService_UploadUniqueId_result__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadUniqueId_result__isset;
 
 class MyComposePostService_UploadUniqueId_result {
  public:
@@ -375,16 +335,9 @@ class MyComposePostService_UploadUniqueId_result {
   }
 
   virtual ~MyComposePostService_UploadUniqueId_result() throw();
-  ServiceException se;
 
-  _MyComposePostService_UploadUniqueId_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyComposePostService_UploadUniqueId_result & rhs) const
+  bool operator == (const MyComposePostService_UploadUniqueId_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadUniqueId_result &rhs) const {
@@ -398,19 +351,12 @@ class MyComposePostService_UploadUniqueId_result {
 
 };
 
-typedef struct _MyComposePostService_UploadUniqueId_presult__isset {
-  _MyComposePostService_UploadUniqueId_presult__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadUniqueId_presult__isset;
 
 class MyComposePostService_UploadUniqueId_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadUniqueId_presult() throw();
-  ServiceException se;
-
-  _MyComposePostService_UploadUniqueId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -472,10 +418,6 @@ class MyComposePostService_UploadCreator_pargs {
 
 };
 
-typedef struct _MyComposePostService_UploadCreator_result__isset {
-  _MyComposePostService_UploadCreator_result__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadCreator_result__isset;
 
 class MyComposePostService_UploadCreator_result {
  public:
@@ -486,16 +428,9 @@ class MyComposePostService_UploadCreator_result {
   }
 
   virtual ~MyComposePostService_UploadCreator_result() throw();
-  ServiceException se;
 
-  _MyComposePostService_UploadCreator_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyComposePostService_UploadCreator_result & rhs) const
+  bool operator == (const MyComposePostService_UploadCreator_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadCreator_result &rhs) const {
@@ -509,19 +444,12 @@ class MyComposePostService_UploadCreator_result {
 
 };
 
-typedef struct _MyComposePostService_UploadCreator_presult__isset {
-  _MyComposePostService_UploadCreator_presult__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadCreator_presult__isset;
 
 class MyComposePostService_UploadCreator_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadCreator_presult() throw();
-  ServiceException se;
-
-  _MyComposePostService_UploadCreator_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -583,10 +511,6 @@ class MyComposePostService_UploadUrls_pargs {
 
 };
 
-typedef struct _MyComposePostService_UploadUrls_result__isset {
-  _MyComposePostService_UploadUrls_result__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadUrls_result__isset;
 
 class MyComposePostService_UploadUrls_result {
  public:
@@ -597,16 +521,9 @@ class MyComposePostService_UploadUrls_result {
   }
 
   virtual ~MyComposePostService_UploadUrls_result() throw();
-  ServiceException se;
 
-  _MyComposePostService_UploadUrls_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyComposePostService_UploadUrls_result & rhs) const
+  bool operator == (const MyComposePostService_UploadUrls_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadUrls_result &rhs) const {
@@ -620,19 +537,12 @@ class MyComposePostService_UploadUrls_result {
 
 };
 
-typedef struct _MyComposePostService_UploadUrls_presult__isset {
-  _MyComposePostService_UploadUrls_presult__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadUrls_presult__isset;
 
 class MyComposePostService_UploadUrls_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadUrls_presult() throw();
-  ServiceException se;
-
-  _MyComposePostService_UploadUrls_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -694,10 +604,6 @@ class MyComposePostService_UploadUserMentions_pargs {
 
 };
 
-typedef struct _MyComposePostService_UploadUserMentions_result__isset {
-  _MyComposePostService_UploadUserMentions_result__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadUserMentions_result__isset;
 
 class MyComposePostService_UploadUserMentions_result {
  public:
@@ -708,16 +614,9 @@ class MyComposePostService_UploadUserMentions_result {
   }
 
   virtual ~MyComposePostService_UploadUserMentions_result() throw();
-  ServiceException se;
 
-  _MyComposePostService_UploadUserMentions_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyComposePostService_UploadUserMentions_result & rhs) const
+  bool operator == (const MyComposePostService_UploadUserMentions_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyComposePostService_UploadUserMentions_result &rhs) const {
@@ -731,19 +630,12 @@ class MyComposePostService_UploadUserMentions_result {
 
 };
 
-typedef struct _MyComposePostService_UploadUserMentions_presult__isset {
-  _MyComposePostService_UploadUserMentions_presult__isset() : se(false) {}
-  bool se :1;
-} _MyComposePostService_UploadUserMentions_presult__isset;
 
 class MyComposePostService_UploadUserMentions_presult {
  public:
 
 
   virtual ~MyComposePostService_UploadUserMentions_presult() throw();
-  ServiceException se;
-
-  _MyComposePostService_UploadUserMentions_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 

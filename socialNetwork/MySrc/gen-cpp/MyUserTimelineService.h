@@ -130,10 +130,6 @@ class MyUserTimelineService_WriteUserTimeline_pargs {
 
 };
 
-typedef struct _MyUserTimelineService_WriteUserTimeline_result__isset {
-  _MyUserTimelineService_WriteUserTimeline_result__isset() : se(false) {}
-  bool se :1;
-} _MyUserTimelineService_WriteUserTimeline_result__isset;
 
 class MyUserTimelineService_WriteUserTimeline_result {
  public:
@@ -144,16 +140,9 @@ class MyUserTimelineService_WriteUserTimeline_result {
   }
 
   virtual ~MyUserTimelineService_WriteUserTimeline_result() throw();
-  ServiceException se;
 
-  _MyUserTimelineService_WriteUserTimeline_result__isset __isset;
-
-  void __set_se(const ServiceException& val);
-
-  bool operator == (const MyUserTimelineService_WriteUserTimeline_result & rhs) const
+  bool operator == (const MyUserTimelineService_WriteUserTimeline_result & /* rhs */) const
   {
-    if (!(se == rhs.se))
-      return false;
     return true;
   }
   bool operator != (const MyUserTimelineService_WriteUserTimeline_result &rhs) const {
@@ -167,19 +156,12 @@ class MyUserTimelineService_WriteUserTimeline_result {
 
 };
 
-typedef struct _MyUserTimelineService_WriteUserTimeline_presult__isset {
-  _MyUserTimelineService_WriteUserTimeline_presult__isset() : se(false) {}
-  bool se :1;
-} _MyUserTimelineService_WriteUserTimeline_presult__isset;
 
 class MyUserTimelineService_WriteUserTimeline_presult {
  public:
 
 
   virtual ~MyUserTimelineService_WriteUserTimeline_presult() throw();
-  ServiceException se;
-
-  _MyUserTimelineService_WriteUserTimeline_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -256,9 +238,8 @@ class MyUserTimelineService_ReadUserTimeline_pargs {
 };
 
 typedef struct _MyUserTimelineService_ReadUserTimeline_result__isset {
-  _MyUserTimelineService_ReadUserTimeline_result__isset() : success(false), se(false) {}
+  _MyUserTimelineService_ReadUserTimeline_result__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUserTimelineService_ReadUserTimeline_result__isset;
 
 class MyUserTimelineService_ReadUserTimeline_result {
@@ -271,19 +252,14 @@ class MyUserTimelineService_ReadUserTimeline_result {
 
   virtual ~MyUserTimelineService_ReadUserTimeline_result() throw();
   std::vector<Post>  success;
-  ServiceException se;
 
   _MyUserTimelineService_ReadUserTimeline_result__isset __isset;
 
   void __set_success(const std::vector<Post> & val);
 
-  void __set_se(const ServiceException& val);
-
   bool operator == (const MyUserTimelineService_ReadUserTimeline_result & rhs) const
   {
     if (!(success == rhs.success))
-      return false;
-    if (!(se == rhs.se))
       return false;
     return true;
   }
@@ -299,9 +275,8 @@ class MyUserTimelineService_ReadUserTimeline_result {
 };
 
 typedef struct _MyUserTimelineService_ReadUserTimeline_presult__isset {
-  _MyUserTimelineService_ReadUserTimeline_presult__isset() : success(false), se(false) {}
+  _MyUserTimelineService_ReadUserTimeline_presult__isset() : success(false) {}
   bool success :1;
-  bool se :1;
 } _MyUserTimelineService_ReadUserTimeline_presult__isset;
 
 class MyUserTimelineService_ReadUserTimeline_presult {
@@ -310,7 +285,6 @@ class MyUserTimelineService_ReadUserTimeline_presult {
 
   virtual ~MyUserTimelineService_ReadUserTimeline_presult() throw();
   std::vector<Post> * success;
-  ServiceException se;
 
   _MyUserTimelineService_ReadUserTimeline_presult__isset __isset;
 

@@ -44,9 +44,9 @@ uint32_t MyUniqueIdService_UploadUniqueId_args::read(::apache::thrift::protocol:
         break;
       case 2:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast35;
-          xfer += iprot->readI32(ecast35);
-          this->post_type = (PostType::type)ecast35;
+          int32_t ecast31;
+          xfer += iprot->readI32(ecast31);
+          this->post_type = (PostType::type)ecast31;
           this->__isset.post_type = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -131,10 +131,10 @@ uint32_t MyUniqueIdService_UploadUniqueId_result::read(::apache::thrift::protoco
     }
     switch (fid)
     {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->success);
+          this->__isset.success = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -157,9 +157,9 @@ uint32_t MyUniqueIdService_UploadUniqueId_result::write(::apache::thrift::protoc
 
   xfer += oprot->writeStructBegin("MyUniqueIdService_UploadUniqueId_result");
 
-  if (this->__isset.se) {
-    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->se.write(oprot);
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
+    xfer += oprot->writeI64(this->success);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -193,10 +193,10 @@ uint32_t MyUniqueIdService_UploadUniqueId_presult::read(::apache::thrift::protoc
     }
     switch (fid)
     {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->se.read(iprot);
-          this->__isset.se = true;
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64((*(this->success)));
+          this->__isset.success = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -213,10 +213,10 @@ uint32_t MyUniqueIdService_UploadUniqueId_presult::read(::apache::thrift::protoc
   return xfer;
 }
 
-void MyUniqueIdServiceClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
+int64_t MyUniqueIdServiceClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_type);
-  recv_UploadUniqueId();
+  return recv_UploadUniqueId();
 }
 
 void MyUniqueIdServiceClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type)
@@ -234,7 +234,7 @@ void MyUniqueIdServiceClient::send_UploadUniqueId(const int64_t req_id, const Po
   oprot_->getTransport()->flush();
 }
 
-void MyUniqueIdServiceClient::recv_UploadUniqueId()
+int64_t MyUniqueIdServiceClient::recv_UploadUniqueId()
 {
 
   int32_t rseqid = 0;
@@ -259,15 +259,17 @@ void MyUniqueIdServiceClient::recv_UploadUniqueId()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  int64_t _return;
   MyUniqueIdService_UploadUniqueId_presult result;
+  result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.se) {
-    throw result.se;
+  if (result.__isset.success) {
+    return _return;
   }
-  return;
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadUniqueId failed: unknown result");
 }
 
 bool MyUniqueIdServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
@@ -312,10 +314,8 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
 
   MyUniqueIdService_UploadUniqueId_result result;
   try {
-    iface_->UploadUniqueId(args.req_id, args.post_type);
-  } catch (ServiceException &se) {
-    result.se = se;
-    result.__isset.se = true;
+    result.success = iface_->UploadUniqueId(args.req_id, args.post_type);
+    result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MyUniqueIdService.UploadUniqueId");
@@ -352,10 +352,10 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   return processor;
 }
 
-void MyUniqueIdServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
+int64_t MyUniqueIdServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   int32_t seqid = send_UploadUniqueId(req_id, post_type);
-  recv_UploadUniqueId(seqid);
+  return recv_UploadUniqueId(seqid);
 }
 
 int32_t MyUniqueIdServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type)
@@ -377,7 +377,7 @@ int32_t MyUniqueIdServiceConcurrentClient::send_UploadUniqueId(const int64_t req
   return cseqid;
 }
 
-void MyUniqueIdServiceConcurrentClient::recv_UploadUniqueId(const int32_t seqid)
+int64_t MyUniqueIdServiceConcurrentClient::recv_UploadUniqueId(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -415,17 +415,19 @@ void MyUniqueIdServiceConcurrentClient::recv_UploadUniqueId(const int32_t seqid)
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
+      int64_t _return;
       MyUniqueIdService_UploadUniqueId_presult result;
+      result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.se) {
+      if (result.__isset.success) {
         sentry.commit();
-        throw result.se;
+        return _return;
       }
-      sentry.commit();
-      return;
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadUniqueId failed: unknown result");
     }
     // seqid != rseqid
     this->sync_.updatePending(fname, mtype, rseqid);
