@@ -146,7 +146,7 @@ void ClientRecvComposePost(
 
 }
 
-void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **clientPtrs,
+void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *clientPtr,
                                   std::shared_ptr<MyComposePostHandler> handler,
                                   int64_t req_id,
                                   int tid, int max_tid) {
@@ -162,14 +162,15 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **c
   uint64_t iterations = num_iterations / MsgType::SIZE;
   
   uint32_t msg_types[MsgType::SIZE];
-  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> srvIProt, srvOProt;
+  // apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> srvIProt, srvOProt;
   while (iter_count < iterations){
     randGen.getUInt32Set(msg_types, MsgType::SIZE);
 
     for (int i = 0; i < MsgType::SIZE; i++){
       MsgType::type msg_type = (MsgType::type) msg_types[i];
 
-      ClientSendComposePost(clientPtrs[client_count], req_id, msg_type, &randGen);
+      // ClientSendComposePost(clientPtrs[client_count], req_id, msg_type, &randGen);
+      ClientSendComposePost(clientPtr, req_id, msg_type, &randGen);
       
       client_count++;
     }
@@ -188,6 +189,9 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **c
 
   processor->setEventHandler(eventHandler);
 
+  auto srvIProt = clientPtr->GetClient()->getOutputProtocol();
+  auto srvOProt = clientPtr->GetClient()->getInputProtocol();
+
   pthread_barrier_wait(&barrier);
   if (tid == max_tid) {
     #ifdef FLEXUS
@@ -204,8 +208,8 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **c
   iterations = iterations * MsgType::SIZE;
 
   while (client_count < iterations){
-    srvIProt = clientPtrs[client_count]->GetClient()->getOutputProtocol();
-    srvOProt = clientPtrs[client_count]->GetClient()->getInputProtocol();
+    // srvIProt = clientPtrs[client_count]->GetClient()->getOutputProtocol();
+    // srvOProt = clientPtrs[client_count]->GetClient()->getInputProtocol();
 
     // msg_type = (MsgType::type) (count % MsgType::SIZE);
 
@@ -213,13 +217,13 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> **c
     // cout << "Process " << count << " finished!" << endl;
     
     #ifdef __aarch64__
-      PROCESS_BEGIN(count);
+      PROCESS_BEGIN(client_count+1);
     #endif
 
     processor->process(srvIProt, srvOProt, nullptr);
 
     #ifdef __aarch64__
-      PROCESS_END(client_count);
+      PROCESS_END(client_count+1);
     #endif
 
     client_count++;
@@ -263,7 +267,8 @@ int main(int argc, char *argv[]) {
 
   pthread_barrier_init(&barrier, NULL, num_threads);
 
-  MyThriftClient<MyComposePostServiceClient>** clients[num_threads];
+  // MyThriftClient<MyComposePostServiceClient>** clients[num_threads];
+  MyThriftClient<MyComposePostServiceClient>* clients[num_threads];
   
   std::shared_ptr<MyComposePostHandler> handler = std::make_shared<MyComposePostHandler>();
 
@@ -273,13 +278,14 @@ int main(int argc, char *argv[]) {
 
   cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
 
-  buffer_size = BUFFER_SIZE;
+  // buffer_size = BUFFER_SIZE;
   for (int i = 0; i < num_threads; i++) {
-    clients[i] = (MyThriftClient<MyComposePostServiceClient>**) malloc(sizeof(MyThriftClient<MyComposePostServiceClient>**) * num_iterations);
+    // clients[i] = (MyThriftClient<MyComposePostServiceClient>**) malloc(sizeof(MyThriftClient<MyComposePostServiceClient>**) * num_iterations);
+    clients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
 
-    for (int c = 0; c < num_iterations; c++) {
-      clients[i][c] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
-    }
+    // for (int c = 0; c < num_iterations; c++) {
+    //   clients[i][c] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
+    // }
 
     processThreads[i] = std::thread(GenAndProcessComposePostReqs,
                                       clients[i],
@@ -299,9 +305,10 @@ int main(int argc, char *argv[]) {
   }
 
   for (int i = 0; i < num_threads; i++) {
-    for (int c = 0; c < num_iterations; c++) {
-      delete clients[i][c];
-    }
+    delete clients[i];
+    // for (int c = 0; c < num_iterations; c++) {
+    //   delete clients[i][c];
+    // }
   }
 
   return 0;
