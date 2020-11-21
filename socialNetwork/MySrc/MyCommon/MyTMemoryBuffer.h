@@ -7,6 +7,8 @@
 #include <limits>
 #include <boost/scoped_array.hpp>
 
+#include <sys/mman.h>
+
 #include <thrift/transport/TTransport.h>
 #include <thrift/transport/TVirtualTransport.h>
 
@@ -441,6 +443,10 @@ private:
     if (buf == NULL && size != 0) {
       assert(owner);
       buf = (uint8_t*)std::malloc(size);
+      int retcode = mlock((void*) buf, size);
+      if (retcode != 0) {
+          throw std::bad_alloc();
+      }
       // read_pagemap( (unsigned long) buf);
       if (buf == NULL) {
 	throw std::bad_alloc();
