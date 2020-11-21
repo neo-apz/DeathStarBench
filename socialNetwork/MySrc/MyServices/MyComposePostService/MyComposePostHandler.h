@@ -6,6 +6,8 @@
 #include <vector>
 #include <chrono>
 
+#include <mutex>
+
 #include "../../gen-cpp/MyComposePostService.h"
 
 #include "../../MyCommon/logger.h"
@@ -26,6 +28,9 @@ class MyComposePostHandler : public MyComposePostServiceIf {
  public:
   MyComposePostHandler();
   ~MyComposePostHandler() override = default;
+
+  // uint64_t counter = 0;
+  // std::mutex _counter_lock;
 
   int64_t UploadText(int64_t req_id, const std::string& text) override;
 
@@ -111,7 +116,7 @@ int64_t MyComposePostHandler::UploadCreator(
 
   std::string field = "creator";
   std::string incr_field = "num_components";
-  int64_t num_components = (req_id + creator.user_id) % 6;
+  int64_t num_components = req_id % 6;
 
   if (num_components == 0) {
     return _ComposeAndUpload(req_id);
@@ -141,7 +146,7 @@ int64_t MyComposePostHandler::UploadMedia(
 
   std::string field = "media";
   std::string incr_field = "num_components";
-  int64_t num_components = (req_id + media.size()) % 6;
+  int64_t num_components = req_id  % 6;
 
   if (num_components == 0) {
     return _ComposeAndUpload(req_id);
@@ -158,7 +163,7 @@ int64_t MyComposePostHandler::UploadUniqueId(
   std::string field1 = "post_id";
   std::string field2 = "post_type";
   std::string incr_field = "num_components";
-  int64_t num_components = (req_id + post_id) % 6;
+  int64_t num_components = req_id % 6;
 
   if (num_components == 0) {
     return _ComposeAndUpload(req_id);
@@ -173,7 +178,7 @@ int64_t MyComposePostHandler::UploadUrls(
 
   std::string field = "urls";
   std::string incr_field = "num_components";
-  int64_t num_components = (req_id + urls.size()) % 6;
+  int64_t num_components = req_id % 6;
 
   if (num_components == 0) {
     return _ComposeAndUpload(req_id);
@@ -188,7 +193,7 @@ int64_t MyComposePostHandler::UploadUserMentions(
 
   std::string field = "user_mentions";
   std::string incr_field = "num_components";
-  int64_t num_components = (req_id + user_mentions.size()) % 6;
+  int64_t num_components = req_id % 6;
 
   if (num_components == 0) {
     return _ComposeAndUpload(req_id);
@@ -199,6 +204,10 @@ int64_t MyComposePostHandler::UploadUserMentions(
 
 int64_t MyComposePostHandler::_ComposeAndUpload(
     int64_t req_id) {
+
+  // _counter_lock.lock();
+  // this->counter++;
+  // _counter_lock.unlock();
 
   std::string field1 = "text";
   std::string field2 = "creator";
