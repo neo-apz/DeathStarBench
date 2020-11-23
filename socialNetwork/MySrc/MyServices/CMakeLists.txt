@@ -15,6 +15,7 @@
 # My Services
 add_subdirectory(MyUniqueIdService)
 add_subdirectory(MyComposePostService)
+add_subdirectory(MySocialGraphService)
 
 # Fake Services
 # add_subdirectory(FakeComposePostService)

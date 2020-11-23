@@ -30,27 +30,27 @@ class MySocialGraphServiceHandler : virtual public MySocialGraphServiceIf {
     printf("GetFollowees\n");
   }
 
-  void Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
+  int64_t Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
     // Your implementation goes here
     printf("Follow\n");
   }
 
-  void Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
+  int64_t Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
     // Your implementation goes here
     printf("Unfollow\n");
   }
 
-  void FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
+  int64_t FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
     // Your implementation goes here
     printf("FollowWithUsername\n");
   }
 
-  void UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
+  int64_t UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
     // Your implementation goes here
     printf("UnfollowWithUsername\n");
   }
 
-  void InsertUser(const int64_t req_id, const int64_t user_id) {
+  int64_t InsertUser(const int64_t req_id, const int64_t user_id) {
     // Your implementation goes here
     printf("InsertUser\n");
   }

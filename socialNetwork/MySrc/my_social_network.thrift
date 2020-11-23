@@ -195,47 +195,40 @@ service MySocialGraphService{
   list<i64> GetFollowers(
       1: i64 req_id,
       2: i64 user_id
-      // 3: map<string, string> carrier
   ) 
 
   list<i64> GetFollowees(
       1: i64 req_id,
       2: i64 user_id
-      // 3: map<string, string> carrier
   ) 
 
-  void Follow(
+  i64 Follow(
       1: i64 req_id,
       2: i64 user_id,
       3: i64 followee_id
-      // 4: map<string, string> carrier
   ) 
 
-  void Unfollow(
+  i64 Unfollow(
       1: i64 req_id,
       2: i64 user_id,
       3: i64 followee_id
-      // 4: map<string, string> carrier
    ) 
 
-  void FollowWithUsername(
+  i64 FollowWithUsername(
       1: i64 req_id,
       2: string user_usernmae,
       3: string followee_username
-      // 4: map<string, string> carrier
   ) 
 
-  void UnfollowWithUsername(
+  i64 UnfollowWithUsername(
       1: i64 req_id,
       2: string user_usernmae,
       3: string followee_username
-      // 4: map<string, string> carrier
   ) 
 
-  void InsertUser(
+  i64 InsertUser(
      1: i64 req_id,
      2: i64 user_id
-    //  3: map<string, string> carrier
   ) 
 }
 

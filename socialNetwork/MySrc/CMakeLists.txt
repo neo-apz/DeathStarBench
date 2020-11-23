@@ -17,6 +17,7 @@ set(Boost_USE_STATIC_LIBS ON)
 
 if (ARM)
   message("-- Configuring for ARM.")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=cortex-a57+nosimd+nocrypto")
   find_package(Boost 1.58.0 EXACT REQUIRED COMPONENTS log log_setup)
 else()
   message("-- Configuring for x86.")
