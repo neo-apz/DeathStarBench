@@ -87,6 +87,13 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPt
 
   processor->setEventHandler(eventHandler);
 
+  // uint8_t* cltIBufPtr, *cltOBufPtr;
+  // uint32_t ISz, OSz;
+  
+  // clientPtr->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+
+  // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
+
   auto srvIProt = clientPtr->GetClient()->getOutputProtocol();
   auto srvOProt = clientPtr->GetClient()->getInputProtocol();
 
@@ -142,6 +149,13 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPt
     double disTime = (processor->disSW.mean() * 1.0);
     cout << "AVG Dispatch Latency (us): " << disTime / 1000 << endl;
   #endif
+
+  // uint8_t* cltIBufPtr, *cltOBufPtr;
+  // uint32_t ISz, OSz;
+  
+  // clientPtr->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+
+  // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
   // if (tid == max_tid)
   //   LOG(warning) << "Process Phase finished!";

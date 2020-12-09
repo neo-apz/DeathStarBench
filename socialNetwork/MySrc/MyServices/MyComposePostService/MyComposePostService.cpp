@@ -179,6 +179,13 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *cl
     req_id++;
   }
 
+  // uint8_t* cltIBufPtr, *cltOBufPtr;
+  // uint32_t ISz, OSz;
+  
+  // clientPtr->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+
+  // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
+
   std::shared_ptr<MyProcessorEventHandler> eventHandler;
 
   #ifdef SW
@@ -231,6 +238,13 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *cl
 
   // if (tid == max_tid)
   //   LOG(warning) << "Process Phase finished!";
+
+  // uint8_t* cltIBufPtr, *cltOBufPtr;
+  // uint32_t ISz, OSz;
+  
+  // clientPtr->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+
+  // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
   #ifdef SW
     eventHandler->printResults();
@@ -310,6 +324,8 @@ int main(int argc, char *argv[]) {
     //   delete clients[i][c];
     // }
   }
+
+  // std::cout << "Percentage: " << (handler->counter * 100.0) / (num_iterations*num_threads) << std::endl;
 
   return 0;
 }
