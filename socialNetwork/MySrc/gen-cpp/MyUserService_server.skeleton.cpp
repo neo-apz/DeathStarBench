@@ -20,12 +20,12 @@ class MyUserServiceHandler : virtual public MyUserServiceIf {
     // Your initialization goes here
   }
 
-  void RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password) {
+  int64_t RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password) {
     // Your implementation goes here
     printf("RegisterUser\n");
   }
 
-  void RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id) {
+  int64_t RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id) {
     // Your implementation goes here
     printf("RegisterUserWithId\n");
   }
@@ -35,12 +35,12 @@ class MyUserServiceHandler : virtual public MyUserServiceIf {
     printf("Login\n");
   }
 
-  void UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username) {
+  int64_t UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username) {
     // Your implementation goes here
     printf("UploadCreatorWithUserId\n");
   }
 
-  void UploadCreatorWithUsername(const int64_t req_id, const std::string& username) {
+  int64_t UploadCreatorWithUsername(const int64_t req_id, const std::string& username) {
     // Your implementation goes here
     printf("UploadCreatorWithUsername\n");
   }

@@ -64,49 +64,43 @@ service MyTextService {
 }
 
 service MyUserService {
-  void RegisterUser (
+  i64 RegisterUser (
       1: i64 req_id,
       2: string first_name,
       3: string last_name,
       4: string username,
       5: string password
-      // 6: map<string, string> carrier
   ) 
 
-    void RegisterUserWithId (
+    i64 RegisterUserWithId (
         1: i64 req_id,
         2: string first_name,
         3: string last_name,
         4: string username,
         5: string password,
         6: i64 user_id
-        // 7: map<string, string> carrier
     ) 
 
   string Login(
       1: i64 req_id,
       2: string username,
       3: string password
-      // 4: map<string, string> carrier
   ) 
 
-  void UploadCreatorWithUserId(
+  i64 UploadCreatorWithUserId(
       1: i64 req_id,
       2: i64 user_id,
       3: string username
-      // 4: map<string, string> carrier
   ) 
 
-  void UploadCreatorWithUsername(
+  i64 UploadCreatorWithUsername(
       1: i64 req_id,
       2: string username
-      // 3: map<string, string> carrier
   ) 
 
   i64 GetUserId(
       1: i64 req_id,
       2: string username
-      // 3: map<string, string> carrier
   ) 
 }
 
