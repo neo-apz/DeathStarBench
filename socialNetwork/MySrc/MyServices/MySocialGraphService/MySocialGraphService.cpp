@@ -41,6 +41,15 @@ struct MsgType {
   };
 };
 
+int chances[] = {0, 0, 0, 0,
+                 1, 1, 1, 1,
+                 2, 2,
+                 3, 3,
+                 4, 4,
+                 5, 5};
+                //  6};
+int chances_size = 16;
+
 void ClientSendReq(
   MyThriftClient<MySocialGraphServiceClient> *clientPtr,
   int64_t req_id, RandomGenerator* randGen){
@@ -48,7 +57,7 @@ void ClientSendReq(
   clientPtr->Connect();
   auto client = clientPtr->GetClient();
 
-  MsgType::type msg_type = (MsgType::type) randGen->getUInt32(MsgType::SIZE - 1);
+  MsgType::type msg_type = (MsgType::type) chances[randGen->getUInt32(chances_size)];
 
   switch (msg_type) {
     case MsgType::GET_FOLLOWERS:

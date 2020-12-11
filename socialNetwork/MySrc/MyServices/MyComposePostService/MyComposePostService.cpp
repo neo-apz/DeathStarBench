@@ -35,6 +35,7 @@ struct MsgType {
     UNIQUE_ID = 3,
     CREATOR = 4,
     URLS = 5,
+    
     SIZE = 6
   };
 };
