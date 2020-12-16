@@ -61,7 +61,7 @@ void MySocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 
   int i = user_id % NUM_USERS;
 
-  int count = req_id % NUM_USERS;
+  int count = req_id % (NUM_USERS - 1) + 1;
 
   for (int j = 0; j < count; j++) {
       _return.push_back(_users[i][j]);
@@ -77,7 +77,7 @@ void MySocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 
   int i = user_id % NUM_USERS;
 
-  int count = req_id % NUM_USERS;
+  int count = req_id % (NUM_USERS - 1) + 1;
 
   for (int j = 0; j < count; j++) {
       _return.push_back(_users[j][i]);
