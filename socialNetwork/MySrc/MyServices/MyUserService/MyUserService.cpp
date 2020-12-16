@@ -36,8 +36,8 @@ struct MsgType {
     REG_USER_ID = 1,
     UP_CRT_ID = 2,
     UP_CRT_UNAME = 3,
-    LOGIN = 4,
-    GET_UID = 5,
+    GET_UID = 4,
+    LOGIN = 5,
 
     SIZE = 6
   };
@@ -47,9 +47,9 @@ int chances[] = {0,
                  1,
                  2, 2, 2, 2, 2, 2, 2, 2,
                  3, 3, 3, 3, 3, 3, 3, 3,
-                 4, 4, 4, 4,
-                 5, 5, 5, 5, 5};
-int chances_size = 27;
+                 4, 4, 4, 4, 4};
+                //  5, 5};
+int chances_size = 23;
 
 void ClientSendReq(
   MyThriftClient<MyUserServiceClient> *clientPtr,
@@ -93,17 +93,19 @@ void ClientSendReq(
         client->send_UploadCreatorWithUsername(req_id, username);
       }
       break;
-    case MsgType::LOGIN:
-      {
-        string username = randGen->getAlphaNumericString(12);
-        string password = randGen->getAlphaNumericString(12);
-        client->send_Login(req_id, username, password);
-      }
-      break;
     case MsgType::GET_UID:
       {
         string username = randGen->getAlphaNumericString(12);
         client->send_GetUserId(req_id, username);
+      }
+      break;
+    case MsgType::LOGIN:
+      {
+        cout << "This is an error, NOT IMPLEMENTED!" << endl;
+        exit(1);
+        // string username = randGen->getAlphaNumericString(12);
+        // string password = randGen->getAlphaNumericString(12);
+        // client->send_Login(req_id, username, password);
       }
       break;
     default:
