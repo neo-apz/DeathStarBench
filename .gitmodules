@@ -1,0 +1,4 @@
+[submodule "socialNetwork/MySrc/MyCommon/son-common"]
+	path = socialNetwork/MySrc/MyCommon/son-common
+	url = git@github.com:gatech-comparch/son-common.git
+	branch = rpc-proc
