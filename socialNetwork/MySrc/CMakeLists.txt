@@ -3,12 +3,11 @@ project(my_social_network_microservices)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_INSTALL_PREFIX /usr/local/bin)
 
 
-include("../cmake/Findthrift.cmake")
-include("../cmake/FindLibevent.cmake")
+include("cmake/Findthrift.cmake")
+include("cmake/FindLibevent.cmake")
 
 find_package(Threads)
 find_package(OpenSSL REQUIRED)
@@ -30,8 +29,8 @@ if(Boost_FOUND)
 endif()
 
 
-set(THRIFT_GEN_CPP_DIR ../../gen-cpp)
-set(COMMON_DIR ../../MyCommon)
+set(THRIFT_GEN_CPP_DIR "${PROJECT_SOURCE_DIR}/gen-cpp")
+set(COMMON_DIR "${PROJECT_SOURCE_DIR}/MyCommon")
 
 if (ASAN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fPIE -pie -g")

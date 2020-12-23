@@ -1,16 +1,17 @@
+add_library(
+    mycommon STATIC
 
+    ${COMMON_DIR}/MyTMemoryBuffer.cpp
+    ${COMMON_DIR}/RandomGenerator.cpp
+    ${COMMON_DIR}/core_schedule.cpp
+    ${COMMON_DIR}/MyProcessorEventHandler.cpp
+)
 
-# add_subdirectory(TextService)
-# add_subdirectory(UserService)
-# add_subdirectory(SocialGraphService)
-# add_subdirectory(WriteHomeTimelineService)
-# add_subdirectory(PostStorageSerivce)
-# add_subdirectory(UserTimelineService)
-# add_subdirectory(ComposePostService)
-# add_subdirectory(UserMentionService)
-# add_subdirectory(UrlShortenService)
-# add_subdirectory(MediaService)
-# add_subdirectory(HomeTimelineService)
+add_library(
+    mysocialnet_types STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/my_social_network_types.cpp
+)
 
 # My Services
 add_subdirectory(MyUniqueIdService)
