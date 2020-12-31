@@ -291,41 +291,6 @@ bool MyUniqueIdServiceProcessor::dispatchCall(::apache::thrift::protocol::TProto
   return true;
 }
 
-bool MyUniqueIdServiceProcessor::process(::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> in,
-                       ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> out,
-                       void* connectionContext) {
-    
-    #ifdef FLEXUS
-      HEADER_BEGIN();
-    #endif
-
-    #ifdef SW
-      this->headerSW.start();
-    #endif
-
-    std::string fname;
-    ::apache::thrift::protocol::TMessageType mtype;
-    int32_t seqid;
-    in->readMessageBegin(fname, mtype, seqid);
-    
-    #ifdef FLEXUS
-      HEADER_END();
-      DISPATCH_BEGIN();
-    #endif
-
-    #ifdef SW
-      this->headerSW.stop();
-      this->disSW.start();
-    #endif
-
-    if (mtype != ::apache::thrift::protocol::T_CALL && mtype != ::apache::thrift::protocol::T_ONEWAY) {
-      ::apache::thrift::GlobalOutput.printf("received invalid message type %d from client", mtype);
-      return false;
-    }
-
-    return dispatchCall(in.get(), out.get(), fname, seqid, connectionContext);
-  }
-
 void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;

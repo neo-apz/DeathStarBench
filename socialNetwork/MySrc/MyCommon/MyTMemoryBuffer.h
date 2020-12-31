@@ -335,6 +335,15 @@ public:
     }
   }
 
+	void resetBuffer(bool keepWrittenData) {
+		rBase_ = buffer_;
+
+		if (!keepWrittenData) {
+			rBound_ = buffer_;
+    	wBase_ = buffer_;
+		}
+	}
+
   /// See constructor documentation.
   void resetBuffer(uint8_t* buf, uint32_t sz, MemoryPolicy policy = OBSERVE) {
     // Use a variant of the copy-and-swap trick for assignment operators.

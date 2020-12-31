@@ -11,14 +11,6 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
-#ifdef SW
-  #include "../MyCommon/stopwatch.h"
-#endif
-
-#if defined(__aarch64__) || defined(FLEXUS)
-    #include "../MyCommon/MagicBreakPoint.h"
-#endif
-
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -227,13 +219,6 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   }
 
   virtual ~MyUniqueIdServiceProcessor() {}
-
-  #ifdef SW
-    Stopwatch<std::chrono::nanoseconds> headerSW;
-    Stopwatch<std::chrono::nanoseconds> disSW;
-  #endif
-
-  bool process(::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> in, ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> out, void* connectionContext) override;
 };
 
 class MyUniqueIdServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

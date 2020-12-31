@@ -51,13 +51,15 @@ class MyThriftClient : public MyGenericClient{
   void WroteBytes(uint32_t len, bool input);
   void ReadBytes(uint32_t len, bool input);
 
+	void ResetBuffers();
+
   void Connect() override;
   void Disconnect() override;
   void KeepAlive() override;
   void KeepAlive(int timeout_ms) override;
   bool IsConnected() override;
 
- private:
+ protected:
   TThriftClient *_client;
 
   std::shared_ptr<MyTMemoryBuffer> _cltITransport;
@@ -97,6 +99,13 @@ void MyThriftClient<TThriftClient>::GetBuffer(uint8_t** cltIBufPtr, uint32_t* IS
                                               uint8_t** cltOBufPtr, uint32_t* OSz){
   _cltITransport->getBuffer(cltIBufPtr, ISz);
   _cltOTransport->getBuffer(cltOBufPtr, OSz);
+}
+
+// Reset the buffer cursers!
+template<class TThriftClient>
+void MyThriftClient<TThriftClient>::ResetBuffers() {
+	_cltITransport->resetBuffer(false);
+	_cltOTransport->resetBuffer(true);
 }
 
 template<class TThriftClient>

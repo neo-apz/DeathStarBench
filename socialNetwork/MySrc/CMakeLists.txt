@@ -16,7 +16,8 @@ set(Boost_USE_STATIC_LIBS ON)
 
 if (ARM)
   message("-- Configuring for ARM.")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=cortex-a57+nosimd+nocrypto")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=cortex-a57+nosimd+nocrypto -DQFLEX")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-a57+nosimd+nocrypto -DQFLEX")
   find_package(Boost 1.58.0 EXACT REQUIRED COMPONENTS log log_setup)
 else()
   message("-- Configuring for x86.")
@@ -28,12 +29,9 @@ if(Boost_FOUND)
   link_directories(${Boost_LIBRARY_DIRS})
 endif()
 
-
-set(THRIFT_GEN_CPP_DIR "${PROJECT_SOURCE_DIR}/gen-cpp")
-set(COMMON_DIR "${PROJECT_SOURCE_DIR}/MyCommon")
-
 if (ASAN)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fPIE -pie -g")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fPIE -pie -g")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fPIE -pie -g")
     message("-- ASAN enabled!")
 endif()
 
@@ -47,6 +45,7 @@ if (SW)
     message("-- Stopwatch enabled!")
 endif()
 
+include(MyCommon/CMakeLists.txt)
 add_subdirectory(MyServices)
 
 string( REPLACE "-DNDEBUG" "" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")

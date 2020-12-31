@@ -1,18 +1,9 @@
 #include "../../MyCommon/utils.h"
 #include "MyUniqueIdHandler.h"
 
-#include "../../MyCommon/MyThriftClient.h"
-// #include "../../MyCommon/MyLock.h"
+#include "../../MyCommon/NebulaThriftProcessor.h"
 
-#include "../../MyCommon/stopwatch.h"
 #include "../../MyCommon/RandomGenerator.h"
-
-#ifdef __aarch64__
-  #include "../../MyCommon/MagicBreakPoint.h"
-#endif
-
-#include "../../MyCommon/MyProcessorEventHandler.h"
-
 
 using namespace my_social_network;
 
@@ -24,33 +15,14 @@ std::mutex thread_lock;
 std::string machine_id;
 
 cpu_set_t *cpuSet;
-double *throughputs;
-double *latencies;
 
 volatile bool start = false;
-// volatile std::atomic_int start2(0);
 pthread_barrier_t barrier;
 
 
-#define BUFFER_SIZE  50
-#define WARM_UP_ITER  100
-
-void ClientSendUniqueId(MyThriftClient<MyUniqueIdServiceClient> *clientPtr,
-                        RandomGenerator *randGen){
-
-  int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
-  PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
-
-  // uint8_t* cltIBufPtr, *cltOBufPtr;
-  // uint32_t ISz, OSz;
-  
-  // clientPtr->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
-
-  // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
-
-  auto client = clientPtr->GetClient();
-  client->send_UploadUniqueId(req_id, post_type);
-}
+#define BASE_BUFFER_SIZE         50
+#define NUM_TEMPLATE_CLIENTS     20
+#define NUM_MSGS_PER_CLIENT      1
 
 void ClientRecvUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient){
   
@@ -60,32 +32,42 @@ void ClientRecvUniqueId(MyThriftClient<MyUniqueIdServiceClient> *uniqueIdClient)
   client->recv_UploadUniqueId();
 }
 
-void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPtr,
-                               std::shared_ptr<MyUniqueIdHandler> handler,
-                               int tid, int max_tid){
+void GenRequests(MyThriftClient<MyUniqueIdServiceClient> *clientPtr,
+								 RandomGenerator *randGen){
+
+	auto client = clientPtr->GetClient();
+	for (int i = 0; i < NUM_MSGS_PER_CLIENT; i++) {
+		int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
+	  PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
+
+  	client->send_UploadUniqueId(req_id, post_type);
+	}
+
+  // uint8_t* cltIBufPtr, *cltOBufPtr;
+  // uint32_t ISz, OSz;
+  
+  // clientPtr->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
+
+  // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;  
+}
+
+void GenAndProcessReqs(rpcNUMAContext* ctx, int tid, std::shared_ptr<MyUniqueIdHandler> handler) {
 
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
   RandomGenerator randGen(tid);
 
-  uint64_t count = 1;
+  uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
+  
+  MyThriftClient<MyUniqueIdServiceClient>* clients[NUM_TEMPLATE_CLIENTS];
 
-  while (count <= num_iterations){
-    ClientSendUniqueId(clientPtr, &randGen);
-    count++;
-  }
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		GenRequests(clients[i], &randGen);
+	}
 
-  std::shared_ptr<MyUniqueIdServiceProcessor> processor =
-      std::make_shared<MyUniqueIdServiceProcessor>(handler);
+  std::shared_ptr<MyUniqueIdServiceProcessor> proc = 
+		std::make_shared<MyUniqueIdServiceProcessor>(handler);
 
-  std::shared_ptr<MyProcessorEventHandler> eventHandler;
-
-  #ifdef SW
-    eventHandler = std::make_shared<MyProcessorEventHandler>(&(processor->disSW));
-  #else
-    eventHandler = std::make_shared<MyProcessorEventHandler>();
-  #endif
-
-  processor->setEventHandler(eventHandler);
+	auto processor = new NebulaThriftProcessor<MyUniqueIdServiceProcessor, MyUniqueIdServiceClient>(ctx, tid, proc);
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;
@@ -94,60 +76,31 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPt
 
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
-  auto srvIProt = clientPtr->GetClient()->getOutputProtocol();
-  auto srvOProt = clientPtr->GetClient()->getInputProtocol();
-
-  // LOG(warning) << "ReqGen Phase finished!";
-
   pthread_barrier_wait(&barrier);
-  // start2++;
 
-  // while (start2 < max_tid+1);
+  if (tid == 0) {
+		fprintf(stdout,"Init done! Ready to start execution!\n");
+    ctx->readyForTiming();
 
-  if (tid == max_tid) {
-    #ifdef FLEXUS
-    BREAKPOINT();
-    #endif
     start = true;
     // LOG(warning) << "Process Phase Started!!";
   }
 
   while(!start);
-  // LOG(warning) << "Process Phase Started!!";
 
-  count = 1;
-
-  // Stopwatch<std::chrono::microseconds> sw;
-  // sw.start();
+  uint64_t count = 1;
 
   while (count <= num_iterations) {
+    processor->process(count);
 
-    #ifdef __aarch64__
-      PROCESS_BEGIN(count);
-    #endif
-
-    processor->process(srvIProt, srvOProt, nullptr);
-
-    #ifdef __aarch64__
-      PROCESS_END(count);
-    #endif
     // std::cout << "Processing Thread " << tid << " count=" << count  << std::endl;
-
     // ClientRecvUniqueId(uniqueIdClient);
 
     count++;
   }
 
   #ifdef SW
-    eventHandler->printResults();
-    processor->headerSW.post_process();
-    processor->disSW.post_process();
-
-    double headerTime = (processor->headerSW.mean() * 1.0);
-    cout << "AVG HeaderParsing Latency (us): " << headerTime / 1000 << endl;
-
-    double disTime = (processor->disSW.mean() * 1.0);
-    cout << "AVG Dispatch Latency (us): " << disTime / 1000 << endl;
+    processor->printSWResults();
   #endif
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
@@ -159,84 +112,75 @@ void GenAndProcessUniqueIdReqs(MyThriftClient<MyUniqueIdServiceClient> *clientPt
 
   // if (tid == max_tid)
   //   LOG(warning) << "Process Phase finished!";
-
-  // sw.stop();
-  // sw.post_process();
-  // LOG(warning) << "[" << tid << "] AVG (us) = " <<  ((sw.mean() * 1.0) / num_iterations);
-  // throughputs[tid] = (num_iterations / (sw.mean() * 1.0));
-  // latencies[tid] = (sw.mean() * 1.0) / num_iterations;
-  // LOG(warning) << "[" << tid << "] Million Reqs/s = " <<  throughputs[tid];
 }
 
 int main(int argc, char *argv[]) {
   init_logger();
 
-  uint64_t num_threads;
+  uint64_t num_threads, num_nodes;
 
-  if (argc != 3) {
-    cout << "Invalid input! Usage: ./MyUniqueIdService <num_threads> <iterations> \n" << endl;
+  if (argc != 4) {
+    cout << "Invalid input! Usage: " << argv[0] << " <total # nodes> <num_threads> <iterations> \n" << endl;
     exit(-1);
   } else {
-    num_threads = atoi(argv[1]);
-    num_iterations = atoi(argv[2]);
+    num_nodes = atoi(argv[1]);
+    num_threads = atoi(argv[2]);
+    num_iterations = atoi(argv[3]);
   }
 
   cpu_set_t  mask;
   CPU_ZERO(&mask);
-  CPU_SET(0, &mask);
+  CPU_SET(1, &mask); // pin the main thread to core #1
   sched_setaffinity(0, sizeof(mask), &mask);
 
-  uint64_t buffer_size = num_iterations * BUFFER_SIZE;
-  // std::cout << "Buffer size: " << buffer_size << std::endl;
+  pthread_barrier_init(&barrier, NULL, num_threads);
+
+  int node_id = 1;
+
+  // Create the RPC NUMA Context!
+  rpcNUMAContext* rpcContext = new rpcNUMAContext(node_id, num_nodes, num_threads+1);
 
   if (GetMachineId(&machine_id) != 0) {
     exit(EXIT_FAILURE);
   }
-
-  pthread_barrier_init(&barrier, NULL, num_threads);
-
-  MyThriftClient<MyUniqueIdServiceClient>* clients[num_threads];
-
   std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
                                               &thread_lock, machine_id);
+  
+  std::thread processThreads[num_threads+1];
 
-  std::thread processThreads[num_threads];
+  int coreID = 0;
+  while (coreID <= num_threads) {
 
-  cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
-  // throughputs = (double*) malloc(sizeof(double) * num_threads);
-  // latencies = (double*) malloc(sizeof(double) * num_threads);
+    if (coreID == 1) { //skip this core, this will only run the main thread
+      coreID++;
+      continue;
+    }
 
-  for (int i = 0; i < num_threads; i++) {
-    // throughputs[i] = 0;
-    // latencies[i] = 0;
-    clients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
+    processThreads[coreID] = std::thread(GenAndProcessReqs,
+                                          rpcContext,
+                                          coreID,
+                                          handler);
 
-    processThreads[i] = std::thread(GenAndProcessUniqueIdReqs,
-                                      clients[i],
-                                      handler,
-                                      i,
-                                      num_threads - 1);
-
-    CPU_ZERO(&cpuSet[i]);
-    CPU_SET(i+1, &cpuSet[i]);
-    pthread_setaffinity_np(processThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
+    CPU_ZERO(&mask);
+    CPU_SET(coreID, &mask);
+    int error = pthread_setaffinity_np(processThreads[coreID].native_handle(), sizeof(cpu_set_t), &mask);
+    if (error) {
+      printf("Could not bind thread %d to core %d! (error %d)\n", coreID, coreID, error);
+    }
+    coreID++;
   }
 
-  for (int i = 0; i < num_threads; i++) {
-    processThreads[i].join();
+  coreID = 0;
+  while (coreID <= num_threads) {
+    if (coreID == 1) { //skip this core, this will only run the main thread
+      coreID++;
+      continue;
+    }
+
+    processThreads[coreID].join();
+
+    coreID++;
   }
-
-  // double total_throughput = 0;
-  // double avg_latency = 0;
-
-  for (int i = 0; i < num_threads; i++) {
-    // total_throughput += throughputs[i];
-    // avg_latency += latencies[i];
-    delete clients[i];
-  }
-
-  // std::cout << "Total throughput (Million RPS): " << total_throughput << std::endl;
-  // std::cout << "AVG latency (us): " << avg_latency / num_threads << std::endl;
 
   return 0;
 }
