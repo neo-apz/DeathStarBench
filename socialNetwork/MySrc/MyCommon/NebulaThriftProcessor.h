@@ -15,8 +15,6 @@
     #include "MagicBreakPoint.h"
 #endif
 
-namespace my_social_network {
-
 using namespace ::apache::thrift;
 
 template<class TThriftProcessor, class TThriftClient>
@@ -72,9 +70,5 @@ class NebulaThriftProcessor {
 	bool _internalProcess();
 	void _respond();	
 };
-
-
-} // namespace social_network
-
 
 #endif //SOCIAL_NETWORK_MICROSERVICES_NEBULATHRIFTPROCESSOR_H

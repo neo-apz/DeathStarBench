@@ -2,8 +2,6 @@
 
 #include "NebulaThriftProcessor.h"
 
-namespace my_social_network {
-
 using namespace ::apache::thrift;
 
 template<class TThriftProcessor, class TThriftClient>
@@ -129,5 +127,3 @@ void NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_respond(){
 	// Reset the client msg buffer
 	_lastClientPtr->ResetBuffers();
 }
-
-} // namespace social_network
