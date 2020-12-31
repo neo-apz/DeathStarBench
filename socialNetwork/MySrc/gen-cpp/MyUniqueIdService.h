@@ -206,7 +206,6 @@ class MyUniqueIdServiceClient : virtual public MyUniqueIdServiceIf {
 class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  protected:
   ::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
   typedef  void (MyUniqueIdServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
@@ -217,6 +216,7 @@ class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     iface_(iface) {
     processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
   }
+	virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
 
   virtual ~MyUniqueIdServiceProcessor() {}
 };
