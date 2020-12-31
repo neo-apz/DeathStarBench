@@ -2,8 +2,6 @@
 
 #include "NebulaThriftProcessor.h"
 
-using namespace ::apache::thrift;
-
 template<class TThriftProcessor, class TThriftClient>
 NebulaThriftProcessor<TThriftProcessor, TThriftClient>::NebulaThriftProcessor(
 	rpcNUMAContext* ctx, int id, std::shared_ptr<TThriftProcessor> processor) : _ctx(ctx), _processor(processor) {

@@ -1,6 +1,8 @@
 #ifndef SOCIAL_NETWORK_MICROSERVICES_NEBULATHRIFTPROCESSOR_H
 #define SOCIAL_NETWORK_MICROSERVICES_NEBULATHRIFTPROCESSOR_H
 
+#include <iostream>
+
 #include <thrift/TDispatchProcessor.h>
 
 #include "son-common/libsonuma/cer_rpc.h"
@@ -16,6 +18,7 @@
 #endif
 
 using namespace ::apache::thrift;
+using namespace my_social_network;
 
 template<class TThriftProcessor, class TThriftClient>
 class NebulaThriftProcessor {
@@ -44,7 +47,7 @@ class NebulaThriftProcessor {
 	std::shared_ptr<TThriftProcessor> _processor;
 	stdcxx::shared_ptr<protocol::TProtocol> _srvInProt;
 	stdcxx::shared_ptr<protocol::TProtocol> _srvOutProt;
-	MyThriftClient<TThriftClient>* _clients;
+	MyThriftClient<TThriftClient>** _clients;
 
 	int _last_clientId = -1;
 	MyThriftClient<TThriftClient>* _lastClientPtr = nullptr;
@@ -70,5 +73,131 @@ class NebulaThriftProcessor {
 	bool _internalProcess();
 	void _respond();	
 };
+
+
+template<class TThriftProcessor, class TThriftClient>
+NebulaThriftProcessor<TThriftProcessor, TThriftClient>::NebulaThriftProcessor(
+	rpcNUMAContext* ctx, int id, std::shared_ptr<TThriftProcessor> processor) : _ctx(ctx), _processor(processor) {
+  
+	_ctx->registerNewLocalBuffer(&_local_buf, id);
+  _ctx->registerNewSONUMAQP(id);
+
+  _my_qp = _ctx->getQP(id);
+
+  _resp.ctx_id = _ctx->getCtxId();
+  _resp.from = _ctx->getNodeId();
+
+	#ifdef SW
+		_eventHandler = std::make_shared<MyProcessorEventHandler>(&_disSW);
+		_processor->setEventHandler(_eventHandler);
+	#endif
+	
+}
+
+
+template<class TThriftProcessor, class TThriftClient>
+NebulaThriftProcessor<TThriftProcessor, TThriftClient>::~NebulaThriftProcessor() {
+  // TODO: free allocated space
+}
+
+template<class TThriftProcessor, class TThriftClient>
+bool NebulaThriftProcessor<TThriftProcessor, TThriftClient>::process(uint64_t count){
+
+	_getRequest();
+
+	#ifdef __aarch64__
+		PROCESS_BEGIN(count);
+	#endif
+	
+	bool retVal = _internalProcess();
+
+	#ifdef __aarch64__
+		PROCESS_END(count);
+	#endif
+
+	_respond();
+
+	return retVal;
+}
+
+	#ifdef SW
+	template<class TThriftProcessor, class TThriftClient>
+	void NebulaThriftProcessor<TThriftProcessor, TThriftClient>:: printSWResults(){
+		_eventHandler->printResults();
+    _headerSW.post_process();
+    _disSW.post_process();
+
+    double headerTime = (_headerSW.mean() * 1.0);
+    std::cout << "AVG HeaderParsing Latency (us): " << headerTime / 1000 << std::endl;
+
+    double disTime = (_disSW.mean() * 1.0);
+    std::cout << "AVG Dispatch Latency (us): " << disTime / 1000 << std::endl;
+	}
+	#endif
+
+template<class TThriftProcessor, class TThriftClient>
+void NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_getRequest(){
+	
+	// Get a new request!
+	_ctx->cerRecvRPC(_my_qp->wq, _my_qp->cq, &_rpc_req);
+	_resp.to = _rpc_req.from;
+	
+	_last_clientId = _rpc_req.req->param_ptr;
+	_lastClientPtr = _clients[_last_clientId];
+	TThriftClient* client = _lastClientPtr->GetClient();
+
+	_srvInProt = client->getOutputProtocol();
+	_srvOutProt = client->getInputProtocol();
+}
+
+template<class TThriftProcessor, class TThriftClient>
+bool NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_internalProcess(){
+	#ifdef FLEXUS
+		HEADER_BEGIN();
+	#endif
+
+	#ifdef SW
+		_headerSW.start();
+	#endif
+
+
+	std::string fname;
+	protocol::TMessageType mtype;
+	int32_t seqid;
+	_srvInProt->readMessageBegin(fname, mtype, seqid);
+	
+	#ifdef FLEXUS
+		HEADER_END();
+		DISPATCH_BEGIN();
+	#endif
+
+	#ifdef SW
+		_headerSW.stop();
+		_disSW.start();
+	#endif
+
+	if (mtype != protocol::T_CALL && mtype != protocol::T_ONEWAY) {
+		GlobalOutput.printf("received invalid message type %d from client", mtype);
+		return false;
+	}
+
+	return _processor->dispatchCall(_srvInProt.get(), _srvOutProt.get(), fname, seqid, nullptr);
+}
+
+template<class TThriftProcessor, class TThriftClient>
+void NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_respond(){
+	
+	// This should actually refer to the buffer pointer!
+	_resp.param_ptr = (uint64_t) _lastClientPtr->GetClient()->getInputProtocol().get();
+	
+	// Send out the response
+	_ctx->cerSendRPC(_my_qp->wq, _resp);
+
+	// Free up the resources!
+	_ctx->cerFreeBuff(_my_qp->wq, (uint8_t*) _rpc_req.req, freeSizeBytes);
+
+	// Reset the client msg buffer
+	_lastClientPtr->ResetBuffers();
+}
 
 #endif //SOCIAL_NETWORK_MICROSERVICES_NEBULATHRIFTPROCESSOR_H
