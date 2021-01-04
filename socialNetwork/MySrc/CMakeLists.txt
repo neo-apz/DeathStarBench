@@ -35,6 +35,21 @@ if (ASAN)
     message("-- ASAN enabled!")
 endif()
 
+option(DEBUG_SONUMA "Enable all DLog prints in libsonuma")
+option(DEBUG_MAGIC "Enable all magic instruction debug breakpoints.")
+
+if(DEBUG_SONUMA)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG -DDEBUG_PERF")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG -DDEBUG_PERF")
+	message("SoNUMA Debug is enabled!")
+endif()
+
+if(DEBUG_MAGIC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DAPP_DEBUG")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DAPP_DEBUG")
+  message("APP_DEBUG is enabled!")
+endif()
+
 if (FLEXUS)
     add_definitions(-DFLEXUS)
     message("-- Flexus enabled!")
