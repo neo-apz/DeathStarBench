@@ -61,6 +61,7 @@ void GenAndProcessReqs(rpcNUMAContext* ctx, int tid, std::shared_ptr<MyUniqueIdH
   MyThriftClient<MyUniqueIdServiceClient>* clients[NUM_TEMPLATE_CLIENTS];
 
 	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<MyUniqueIdServiceClient>(buffer_size);
 		GenRequests(clients[i], &randGen);
 	}
 
