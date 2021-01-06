@@ -386,9 +386,9 @@ public:
   uint32_t readEnd() {
     // This cast should be safe, because buffer_'s size is a uint32_t
     uint32_t bytes = static_cast<uint32_t>(rBase_ - buffer_);
-    if (rBase_ == wBase_) {
-      resetBuffer();
-    }
+    // if (rBase_ == wBase_) {	// DO NOT RESET THE BUFFER AS WE NEED THE DATA WRITTEN IN IT!
+    //   resetBuffer();
+    // }
     return bytes;
   }
 
