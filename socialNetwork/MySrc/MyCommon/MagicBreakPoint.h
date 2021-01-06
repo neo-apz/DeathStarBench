@@ -2,11 +2,11 @@
 #define MagicBreakPoint_H
 
 #ifdef __aarch64__
+		#include <magic_iface.h>
+
     #define MAGIC_PROCESS_BEGIN         1201
     #define MAGIC_PROCESS_END           1200
-#endif
 
-#ifdef FLEXUS
     #define MAGIC_SKIP_BEGIN            998
     #define MAGIC_SKIP_END              998
 
@@ -69,7 +69,7 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
 #endif
 }
 
-#ifdef FLEXUS
+#ifdef __aarch64__
 #define BREAKPOINT() do { \
                         call_magic_2_64(MAGIC_BREAKPOINT, 0, 0); \
                     } while (0)

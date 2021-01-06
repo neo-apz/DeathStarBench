@@ -9,7 +9,7 @@ namespace apache {
 namespace thrift {
 
 void MyProcessorEventHandler::preRead(void* ctx, const char* fn_name) {
-    #ifdef FLEXUS
+    #ifdef __aarch64__
       DISPATCH_END();
       READ_BEGIN();
     #endif
@@ -22,7 +22,7 @@ void MyProcessorEventHandler::preRead(void* ctx, const char* fn_name) {
 
 void MyProcessorEventHandler::postRead(void* ctx, const char* fn_name, uint32_t bytes) {
 
-    #ifdef FLEXUS
+    #ifdef __aarch64__
       READ_END();
       SERVICE_BEGIN();
     #endif
@@ -35,7 +35,7 @@ void MyProcessorEventHandler::postRead(void* ctx, const char* fn_name, uint32_t 
 
 void MyProcessorEventHandler::preWrite(void* ctx, const char* fn_name) {
 
-    #ifdef FLEXUS
+    #ifdef __aarch64__
       SERVICE_END();
       WRITE_BEGIN();
     #endif
@@ -48,7 +48,7 @@ void MyProcessorEventHandler::preWrite(void* ctx, const char* fn_name) {
 
 void MyProcessorEventHandler::postWrite(void* ctx, const char* fn_name, uint32_t bytes) {
     
-    #ifdef FLEXUS
+    #ifdef __aarch64__
       WRITE_END();
     #endif
 
