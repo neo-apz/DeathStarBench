@@ -68,7 +68,7 @@ void GenAndProcessReqs(rpcNUMAContext* ctx, int tid, std::shared_ptr<MyUniqueIdH
   std::shared_ptr<MyUniqueIdServiceProcessor> proc = 
 		std::make_shared<MyUniqueIdServiceProcessor>(handler);
 
-	auto processor = new NebulaThriftProcessor<MyUniqueIdServiceProcessor, MyUniqueIdServiceClient>(ctx, tid, proc);
+	auto processor = new NebulaThriftProcessor<MyUniqueIdServiceProcessor, MyUniqueIdServiceClient>(ctx, tid, proc, clients);
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;

@@ -28,7 +28,8 @@ class NebulaThriftProcessor {
 
 	NebulaThriftProcessor(rpcNUMAContext* ctx,
 												int id,
-												std::shared_ptr<TThriftProcessor> processor);
+												std::shared_ptr<TThriftProcessor> processor,
+												MyThriftClient<TThriftClient>** clients);
 
 //   CerThriftClient(const CerThriftClient &) = delete;
 //   CerThriftClient &operator=(const CerThriftClient &) = delete;
@@ -77,7 +78,11 @@ class NebulaThriftProcessor {
 
 template<class TThriftProcessor, class TThriftClient>
 NebulaThriftProcessor<TThriftProcessor, TThriftClient>::NebulaThriftProcessor(
-	rpcNUMAContext* ctx, int id, std::shared_ptr<TThriftProcessor> processor) : _ctx(ctx), _processor(processor) {
+											rpcNUMAContext* ctx,
+											int id,
+											std::shared_ptr<TThriftProcessor> processor,
+											MyThriftClient<TThriftClient>** clients)
+												: _ctx(ctx), _processor(processor), _clients(clients) {
   
 	_ctx->registerNewLocalBuffer(&_local_buf, id);
   _ctx->registerNewSONUMAQP(id);
