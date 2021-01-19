@@ -19,6 +19,7 @@
     #include "../MyCommon/MagicBreakPoint.h"
 #endif
 
+#include <RandomGenerator.h>
 
 namespace my_social_network {
 
@@ -807,6 +808,8 @@ class MyComposePostServiceClient : virtual public MyComposePostServiceIf {
   int64_t UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
   void send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
   int64_t recv_UploadUserMentions();
+
+	int64_t FakeUploadUniqueId(RandomGenerator *randGen);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

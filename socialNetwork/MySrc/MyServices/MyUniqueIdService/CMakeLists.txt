@@ -3,11 +3,12 @@ add_executable(
     MyUniqueIdService
     
     MyUniqueIdService.cpp
-    ${THRIFT_GEN_CPP_DIR}/MyUniqueIdService.cpp
+		${THRIFT_GEN_CPP_DIR}/MyUniqueIdService.cpp
+		${THRIFT_GEN_CPP_DIR}/MyComposePostService.cpp
 )
 
 target_include_directories(
-    MyUniqueIdService PRIVATE
+		MyUniqueIdService PRIVATE ${COMMON_DIR}
 )
 
 target_link_libraries(

@@ -1,9 +1,9 @@
-#include "../../MyCommon/utils.h"
+#include <utils.h>
+#include <NebulaThriftProcessor.h>
+#include <RandomGenerator.h>
+#include <NebulaClientPool.h>
+
 #include "MyUniqueIdHandler.h"
-
-#include "../../MyCommon/NebulaThriftProcessor.h"
-
-#include "../../MyCommon/RandomGenerator.h"
 
 using namespace my_social_network;
 
@@ -51,10 +51,30 @@ void GenRequests(MyThriftClient<MyUniqueIdServiceClient> *clientPtr,
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;  
 }
 
-void GenAndProcessReqs(rpcNUMAContext* ctx, int tid, std::shared_ptr<MyUniqueIdHandler> handler) {
+void InitializeFunctionMap(FunctionClientMap<MyComposePostServiceClient> *f2cmap, RandomGenerator *randGen) {
+	MyThriftClient<MyComposePostServiceClient>** clients = new MyThriftClient<MyComposePostServiceClient>*[NUM_TEMPLATE_CLIENTS];
+
+	// Fill up the clients
+	uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
+		clients[i]->GetClient()->FakeUploadUniqueId(randGen);
+	}
+
+	f2cmap->RegisterFunction(0, clients);
+}
+
+void GenAndProcessReqs(rpcNUMAContext* ctx,
+											 int tid,
+											 std::shared_ptr<MyUniqueIdHandler> handler,
+											 NebulaClientPool<MyComposePostServiceClient> *clientPool) {
 
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
   RandomGenerator randGen(tid);
+
+	auto f2cMap = clientPool->AddToPool();
+
+	InitializeFunctionMap(f2cMap, &randGen);
 
   uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
   
@@ -144,8 +164,10 @@ int main(int argc, char *argv[]) {
   if (GetMachineId(&machine_id) != 0) {
     exit(EXIT_FAILURE);
   }
+
+	NebulaClientPool<MyComposePostServiceClient> compose_post_pool("compose-post", BUFFER_SIZE);
   std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
-                                              &thread_lock, machine_id);
+                                              &thread_lock, machine_id, &compose_post_pool);
   
   std::thread processThreads[num_threads+1];
 
@@ -160,7 +182,8 @@ int main(int argc, char *argv[]) {
     processThreads[coreID] = std::thread(GenAndProcessReqs,
                                           rpcContext,
                                           coreID,
-                                          handler);
+                                          handler,
+																					&compose_post_pool);
 
     CPU_ZERO(&mask);
     CPU_SET(coreID, &mask);

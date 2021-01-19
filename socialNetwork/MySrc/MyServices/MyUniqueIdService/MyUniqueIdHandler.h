@@ -16,9 +16,11 @@
 #include "../../gen-cpp/MyUniqueIdService.h"
 #include "../../gen-cpp/my_social_network_types.h"
 
-// #include "../../MyCommon/MyLock.h"
+#include "../../gen-cpp/MyComposePostService.h"
 
-#include "../../MyCommon/logger.h"
+#include <logger.h>
+#include <NebulaClientPool.h>
+#include <MyThriftClient.h>
 
 // Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
 #define CUSTOM_EPOCH 1514764800000
@@ -51,7 +53,8 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
   ~MyUniqueIdHandler() override = default;
   MyUniqueIdHandler(
       std::mutex *,
-      const std::string &);
+      const std::string &,
+			NebulaClientPool<MyComposePostServiceClient> *);
 
   int64_t UploadUniqueId(int64_t, PostType::type) override;
 
@@ -59,13 +62,16 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
   std::mutex *_thread_lock;
   // MyLock *_thread_lock;
   std::string _machine_id;
+	NebulaClientPool<MyComposePostServiceClient> *_compose_client_pool;
 };
 
 MyUniqueIdHandler::MyUniqueIdHandler(
     std::mutex *thread_lock,
-    const std::string &machine_id){
+    const std::string &machine_id,
+		NebulaClientPool<MyComposePostServiceClient> * compose_client_pool){
   _thread_lock = thread_lock;
   _machine_id = machine_id;
+	_compose_client_pool = compose_client_pool;
 }
 
 int64_t MyUniqueIdHandler::UploadUniqueId(
@@ -102,6 +108,12 @@ int64_t MyUniqueIdHandler::UploadUniqueId(
   }
   std::string post_id_str = _machine_id + timestamp_hex + counter_hex;
   int64_t post_id = stoul(post_id_str, nullptr, 16) & 0x7FFFFFFFFFFFFFFF;
+
+	// Upload to compose post service
+	auto compose_post_client_wrapper = _compose_client_pool->Get(0);
+	auto compose_post_client = compose_post_client_wrapper->GetClient();
+	compose_post_client->UploadUniqueId(req_id, post_id, post_type);
+	compose_post_client_wrapper->ResetBuffers();
 
   return post_id;
 }
