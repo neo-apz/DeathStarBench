@@ -79,9 +79,7 @@ void NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_getRequest(){
 
 template<class TThriftProcessor, class TThriftClient>
 bool NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_internalProcess(){
-	#ifdef FLEXUS
-		HEADER_BEGIN();
-	#endif
+	HEADER_BEGIN();
 
 	#ifdef SW
 		_headerSW.start();
@@ -93,10 +91,8 @@ bool NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_internalProcess(){
 	int32_t seqid;
 	_srvInProt->readMessageBegin(fname, mtype, seqid);
 	
-	#ifdef FLEXUS
-		HEADER_END();
-		DISPATCH_BEGIN();
-	#endif
+	HEADER_END();
+	DISPATCH_BEGIN();
 
 	#ifdef SW
 		_headerSW.stop();

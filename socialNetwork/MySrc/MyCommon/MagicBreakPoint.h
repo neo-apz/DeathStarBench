@@ -1,29 +1,27 @@
 #ifndef MagicBreakPoint_H
 #define MagicBreakPoint_H
 
-#ifdef __aarch64__
-		#include <magic_iface.h>
+#include <magic_iface.h>
 
-    #define MAGIC_PROCESS_BEGIN         1201
-    #define MAGIC_PROCESS_END           1200
+#define MAGIC_PROCESS_BEGIN         1201
+#define MAGIC_PROCESS_END           1200
 
-    #define MAGIC_SKIP_BEGIN            998
-    #define MAGIC_SKIP_END              998
+#define MAGIC_SKIP_BEGIN            998
+#define MAGIC_SKIP_END              998
 
-    #define MAGIC_BREAKPOINT            999
+#define MAGIC_BREAKPOINT            999
 
-    #define MAGIC_HEADER_BEGIN          1301
-    #define MAGIC_DISPATCH_BEGIN        1401
-    #define MAGIC_READ_BEGIN            1501
-    #define MAGIC_WRITE_BEGIN           1601
-    #define MAGIC_SERVICE_BEGIN         1701
+#define MAGIC_HEADER_BEGIN          1301
+#define MAGIC_DISPATCH_BEGIN        1401
+#define MAGIC_READ_BEGIN            1501
+#define MAGIC_WRITE_BEGIN           1601
+#define MAGIC_SERVICE_BEGIN         1701
 
-    #define MAGIC_HEADER_END            1300
-    #define MAGIC_DISPATCH_END          1400
-    #define MAGIC_READ_END              1500
-    #define MAGIC_WRITE_END             1600
-    #define MAGIC_SERVICE_END           1700
-#endif
+#define MAGIC_HEADER_END            1300
+#define MAGIC_DISPATCH_END          1400
+#define MAGIC_READ_END              1500
+#define MAGIC_WRITE_END             1600
+#define MAGIC_SERVICE_END           1700
 
 // static inline __attribute__ ((always_inline))
 //     uint64_t  call_magic_2_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2){
@@ -69,7 +67,6 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
 #endif
 }
 
-#ifdef __aarch64__
 #define BREAKPOINT() do { \
                         call_magic_2_64(MAGIC_BREAKPOINT, 0, 0); \
                     } while (0)
@@ -124,34 +121,14 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
                         call_magic_2_64(42, MAGIC_SERVICE_END, 0); \
                     } while (0)   
 
-#endif
-
-#ifdef FLEXUS
 
 #define PROCESS_END(PROCESS_COUNT) do { \
-                        call_magic_2_64(42, MAGIC_PROCESS_END, 0); \
+                        call_magic_2_64(42, MAGIC_PROCESS_END, PROCESS_COUNT); \
                     } while (0)
 
 #define PROCESS_BEGIN(PROCESS_COUNT) do { \
-                        call_magic_2_64(42, MAGIC_PROCESS_BEGIN, 0); \
+                        call_magic_2_64(42, MAGIC_PROCESS_BEGIN, PROCESS_COUNT); \
                     } while (0)                    
-
-
-#else
-
-    #ifdef __aarch64__
-    #define PROCESS_END(PROCESS_COUNT) do { \
-                            call_magic_2_64(MAGIC_PROCESS_END, PROCESS_COUNT, 0); \
-                        } while (0)
-
-    #define PROCESS_BEGIN(PROCESS_COUNT) do { \
-                            call_magic_2_64(MAGIC_PROCESS_BEGIN, PROCESS_COUNT, 0); \
-                        } while (0)                    
-    #endif
-
-#endif
-
-
 
 
 #endif // MagicBreakPoint_H

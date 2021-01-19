@@ -50,11 +50,6 @@ if(DEBUG_MAGIC)
   message("APP_DEBUG is enabled!")
 endif()
 
-if (FLEXUS)
-    add_definitions(-DFLEXUS)
-    message("-- Flexus enabled!")
-endif()
-
 if (SW)
     add_definitions(-DSW)
     message("-- Stopwatch enabled!")
