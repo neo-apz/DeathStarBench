@@ -14,10 +14,8 @@ NebulaThriftProcessor<TThriftProcessor, TThriftClient>::NebulaThriftProcessor(
   _resp.ctx_id = _ctx->getCtxId();
   _resp.from = _ctx->getNodeId();
 
-	#ifdef SW
-		_eventHandler = std::make_shared<MyProcessorEventHandler>(&_disSW);
-		_processor->setEventHandler(_eventHandler);
-	#endif
+	_eventHandler = std::make_shared<MyProcessorEventHandler>(&_disSW);
+	_processor->setEventHandler(_eventHandler);
 	
 }
 
@@ -47,20 +45,18 @@ bool NebulaThriftProcessor<TThriftProcessor, TThriftClient>::process(uint64_t co
 	return retVal;
 }
 
-	#ifdef SW
-	template<class TThriftProcessor, class TThriftClient>
-	void NebulaThriftProcessor<TThriftProcessor, TThriftClient>:: printSWResults(){
-		_eventHandler->printResults();
-    _headerSW.post_process();
-    _disSW.post_process();
+template<class TThriftProcessor, class TThriftClient>
+void NebulaThriftProcessor<TThriftProcessor, TThriftClient>:: printSWResults(){
+	_eventHandler->printResults();
+	_headerSW.post_process();
+	_disSW.post_process();
 
-    double headerTime = (_headerSW.mean() * 1.0);
-    std::cout << "AVG HeaderParsing Latency (us): " << headerTime / 1000 << std::endl;
+	double headerTime = (_headerSW.mean() * 1.0);
+	std::cout << "AVG HeaderParsing Latency (us): " << headerTime / 1000 << std::endl;
 
-    double disTime = (_disSW.mean() * 1.0);
-    std::cout << "AVG Dispatch Latency (us): " << disTime / 1000 << std::endl;
-	}
-	#endif
+	double disTime = (_disSW.mean() * 1.0);
+	std::cout << "AVG Dispatch Latency (us): " << disTime / 1000 << std::endl;
+}
 
 template<class TThriftProcessor, class TThriftClient>
 void NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_getRequest(){

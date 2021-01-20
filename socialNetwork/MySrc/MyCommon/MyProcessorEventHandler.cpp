@@ -57,7 +57,6 @@ void MyProcessorEventHandler::postWrite(void* ctx, const char* fn_name, uint32_t
     #endif
 }
 
-#ifdef SW
 void MyProcessorEventHandler::printResults() {
     this->readSW_.post_process();
     double meanReadTime = this->readSW_.mean() * 1.0;
@@ -71,7 +70,6 @@ void MyProcessorEventHandler::printResults() {
     double meanServTime = this->servSW_.mean() * 1.0;
     cout << "Serv. Latency (us): " << meanServTime / 1000 << endl;
 }
-#endif
 
 }
 }

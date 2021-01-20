@@ -2,8 +2,8 @@
 
 #include "stopwatch.h"
 
-#if defined(__aarch64__) || defined(FLEXUS)
-    #include "MagicBreakPoint.h"
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
 #endif
 
 namespace apache {
@@ -19,17 +19,15 @@ public:
 
     MyProcessorEventHandler () {}
 
-    #ifdef SW
-        MyProcessorEventHandler (Stopwatch<std::chrono::nanoseconds> *disSW) : disSW_(disSW) {}
-        void printResults();
+		MyProcessorEventHandler (Stopwatch<std::chrono::nanoseconds> *disSW) : disSW_(disSW) {}
+		void printResults();
 
-        Stopwatch<std::chrono::nanoseconds> readSW_;
-        Stopwatch<std::chrono::nanoseconds> writeSW_;
+		Stopwatch<std::chrono::nanoseconds> readSW_;
+		Stopwatch<std::chrono::nanoseconds> writeSW_;
 
-        Stopwatch<std::chrono::nanoseconds> servSW_;
+		Stopwatch<std::chrono::nanoseconds> servSW_;
 
-        Stopwatch<std::chrono::nanoseconds> *disSW_;
-    #endif
+		Stopwatch<std::chrono::nanoseconds> *disSW_;
 };
 
 }
