@@ -110,10 +110,16 @@ int64_t MyUniqueIdHandler::UploadUniqueId(
   int64_t post_id = stoul(post_id_str, nullptr, 16) & 0x7FFFFFFFFFFFFFFF;
 
 	// Upload to compose post service
-	auto compose_post_client_wrapper = _compose_client_pool->Get(0);
-	auto compose_post_client = compose_post_client_wrapper->GetClient();
-	compose_post_client->UploadUniqueId(req_id, post_id, post_type);
-	compose_post_client_wrapper->ResetBuffers();
+	try {
+		auto compose_post_client_wrapper = _compose_client_pool->Get(0);
+		auto compose_post_client = compose_post_client_wrapper->GetClient();
+		compose_post_client->UploadUniqueId(req_id, post_id, post_type);
+		compose_post_client_wrapper->ResetBuffers();
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to upload unique-id to compose-post-service"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 
   return post_id;
 }
