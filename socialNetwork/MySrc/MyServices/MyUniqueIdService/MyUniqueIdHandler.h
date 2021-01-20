@@ -114,9 +114,9 @@ int64_t MyUniqueIdHandler::UploadUniqueId(
 		auto compose_post_client_wrapper = _compose_client_pool->Get(0);
 		auto compose_post_client = compose_post_client_wrapper->GetClient();
 		compose_post_client->UploadUniqueId(req_id, post_id, post_type);
-		compose_post_client_wrapper->ResetBuffers();
+		compose_post_client_wrapper->ResetBuffers(true, false);
 	} catch(const std::exception& e) {
-		LOG(error) << "Failed to upload unique-id to compose-post-service"
+		LOG(error) << "Failed to upload unique-id to compose-post-service:\n"
 							 << e.what() << '\n' ;
 		exit(EXIT_FAILURE);
 	}

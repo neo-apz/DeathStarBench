@@ -157,7 +157,6 @@ int main(int argc, char *argv[]) {
   pthread_barrier_init(&barrier, NULL, num_threads);
 
   int node_id = 1;
-
   // Create the RPC NUMA Context!
   rpcNUMAContext* rpcContext = new rpcNUMAContext(node_id, num_nodes, num_threads+1);
 

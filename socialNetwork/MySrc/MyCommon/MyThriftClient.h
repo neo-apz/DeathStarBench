@@ -51,7 +51,7 @@ class MyThriftClient : public MyGenericClient{
   void WroteBytes(uint32_t len, bool input);
   void ReadBytes(uint32_t len, bool input);
 
-	void ResetBuffers();
+	void ResetBuffers(bool keepInData, bool keepOutData);
 
   void Connect() override;
   void Disconnect() override;
@@ -103,9 +103,9 @@ void MyThriftClient<TThriftClient>::GetBuffer(uint8_t** cltIBufPtr, uint32_t* IS
 
 // Reset the buffer cursers!
 template<class TThriftClient>
-void MyThriftClient<TThriftClient>::ResetBuffers() {
-	_cltITransport->resetBuffer(false);
-	_cltOTransport->resetBuffer(true);
+void MyThriftClient<TThriftClient>::ResetBuffers(bool keepInData, bool keepOutData) {
+	_cltITransport->resetBuffer(keepInData);
+	_cltOTransport->resetBuffer(keepOutData);
 }
 
 template<class TThriftClient>

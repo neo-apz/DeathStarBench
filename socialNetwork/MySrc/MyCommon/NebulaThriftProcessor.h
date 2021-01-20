@@ -192,7 +192,7 @@ void NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_respond(){
 	_ctx->cerFreeBuff(_my_qp->wq, (uint8_t*) _rpc_req.req, freeSizeBytes);
 
 	// Reset the client msg buffer
-	_lastClientPtr->ResetBuffers();
+	_lastClientPtr->ResetBuffers(false, true);
 }
 
 #endif //SOCIAL_NETWORK_MICROSERVICES_NEBULATHRIFTPROCESSOR_H

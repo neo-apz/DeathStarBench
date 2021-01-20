@@ -1451,6 +1451,7 @@ int64_t MyComposePostServiceClient::FakeUploadUniqueId(RandomGenerator *randGen)
 	MyComposePostService_UploadUniqueId_result result;
 
 	result.success = randGen->getInt64(0xFFFFFFFFFFFFFF);
+	result.__isset.success = true;
 
 	iprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, 0);
   result.write(iprot_);
