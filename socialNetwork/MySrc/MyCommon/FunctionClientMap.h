@@ -18,7 +18,7 @@ class FunctionClientMap {
 
 
   void RegisterFunction(int fid, MyThriftClient<TThriftClient> **clients);
-	MyThriftClient<TThriftClient>* GetClient(int fid);
+	MyThriftClient<TThriftClient>* GetClient(int fid, int cid);
 
  private:
   map<int, MyThriftClient<TThriftClient> **> _client_map;
@@ -37,9 +37,7 @@ void FunctionClientMap<TThriftClient>::RegisterFunction(int fid, MyThriftClient<
 
 
 template<class TThriftClient>
-MyThriftClient<TThriftClient>* FunctionClientMap<TThriftClient>::GetClient(int fid) {
-	int cid = 0; // TODO gen this from the NI
-
+MyThriftClient<TThriftClient>* FunctionClientMap<TThriftClient>::GetClient(int fid, int cid) {
 	return _client_map[fid][cid];
 }
 

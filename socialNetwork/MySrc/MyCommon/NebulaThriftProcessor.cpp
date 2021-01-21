@@ -109,7 +109,7 @@ void NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_respond(){
 	_resp.param_ptr = _lastClientPtr->GetClient()->getInputProtocol();
 	
 	// Send out the response
-	_ctx->cerSendRPC(_my_qp->wq, _resp);
+	_ctx->cerSendRPC(_my_qp->wq, _resp, 0);
 
 	// Free up the resources!
 	_ctx->cerFreeBuff(_my_qp->wq, (uint8_t*) _rpc_req.req, freeSizeBytes);

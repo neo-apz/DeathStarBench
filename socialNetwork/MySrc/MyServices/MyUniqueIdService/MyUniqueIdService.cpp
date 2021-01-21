@@ -72,10 +72,6 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
   RandomGenerator randGen(tid);
 
-	auto f2cMap = clientPool->AddToPool();
-
-	InitializeFunctionMap(f2cMap, &randGen);
-
   uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
   
   MyThriftClient<MyUniqueIdServiceClient>* clients[NUM_TEMPLATE_CLIENTS];
@@ -89,6 +85,9 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
 		std::make_shared<MyUniqueIdServiceProcessor>(handler);
 
 	auto processor = new NebulaThriftProcessor<MyUniqueIdServiceProcessor, MyUniqueIdServiceClient>(ctx, tid, proc, clients);
+
+	auto f2cMap = clientPool->AddToPool(ctx->getQP(tid));
+	InitializeFunctionMap(f2cMap, &randGen);
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;
@@ -164,7 +163,7 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-	NebulaClientPool<MyComposePostServiceClient> compose_post_pool("compose-post", BUFFER_SIZE);
+	NebulaClientPool<MyComposePostServiceClient> compose_post_pool("compose-post", BUFFER_SIZE, rpcContext);
   std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
                                               &thread_lock, machine_id, &compose_post_pool);
   
