@@ -62,7 +62,7 @@ template<class TThriftProcessor, class TThriftClient>
 void NebulaThriftProcessor<TThriftProcessor, TThriftClient>::_getRequest(){
 	
 	// Get a new request!
-	_ctx->cerRecvRPC(_my_qp->wq, _my_qp->cq, &_rpc_req);
+	_ctx->cerRecvRPC(_my_qp->qp_id, _my_qp->wq, _my_qp->cq, &_rpc_req);
 	_resp.to = _rpc_req.from;
 	
 	_last_clientId = _rpc_req.req->param_ptr;

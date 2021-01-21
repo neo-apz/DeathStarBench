@@ -86,7 +86,7 @@ MyThriftClient<TThriftClient>* NebulaClientPool<TThriftClient>::Get(int fid) {
 		_ctx->cerSendRPC(qp->wq, req, 1);
 		
 		// Get a response
-		_ctx->cerRecvRPC(qp->wq, qp->cq, &resp, false);
+		_ctx->cerRecvRPC(qp->qp_id, qp->wq, qp->cq, &resp, false);
 		cid = resp.req->param_ptr;
 		auto client = clientMap->GetClient(fid, cid);
 
