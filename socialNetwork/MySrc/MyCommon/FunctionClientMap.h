@@ -22,7 +22,6 @@ class FunctionClientMap {
 
  private:
   map<int, MyThriftClient<TThriftClient> **> _client_map;
-	size_t _buff_size;
 };
 
 // template<class TThriftClient>

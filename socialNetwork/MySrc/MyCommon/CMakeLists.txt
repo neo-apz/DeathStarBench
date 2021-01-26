@@ -31,7 +31,6 @@ add_library(
     ${COMMON_DIR}/RandomGenerator.cpp
     ${COMMON_DIR}/core_schedule.cpp
 		${COMMON_DIR}/MyProcessorEventHandler.cpp
-		# ${COMMON_DIR}/NebulaThriftProcessor.cpp
 )
 
 target_link_libraries(mycommon sonuma)

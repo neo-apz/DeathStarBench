@@ -21,18 +21,11 @@ using namespace my_social_network;
 template<class TThriftProcessor, class TThriftClient>
 class NebulaThriftProcessor {
  public:
-//   CerThriftClient(uint32_t sz);
-//   CerThriftClient(uint8_t* cltIbuf, uint32_t ISz, uint8_t* cltObuf, uint32_t OSz);
 
 	NebulaThriftProcessor(rpcNUMAContext* ctx,
 												int id,
 												std::shared_ptr<TThriftProcessor> processor,
 												MyThriftClient<TThriftClient>** clients);
-
-//   CerThriftClient(const CerThriftClient &) = delete;
-//   CerThriftClient &operator=(const CerThriftClient &) = delete;
-//   CerThriftClient(CerThriftClient<TThriftClient> &&) = default;
-//   CerThriftClient &operator=(CerThriftClient &&) = default;
 
   ~NebulaThriftProcessor();
 
@@ -55,7 +48,7 @@ class NebulaThriftProcessor {
 	soNUMAQP_T* _my_qp = nullptr;
 	RPCInReq _rpc_req;
 	RPCOutReq _resp;
-	// TODO: figure out how to set these two!
+	
 	size_t freeSizeBytes = 64;
 	uint8_t* rbufSlotPtr = nullptr;
 
