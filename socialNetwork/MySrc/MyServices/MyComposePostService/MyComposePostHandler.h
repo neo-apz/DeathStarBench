@@ -1,14 +1,18 @@
-#ifndef SOCIAL_NETWORK_MICROSERVICES_MYCOMPOSEPOSTHANDLER_H_
-#define SOCIAL_NETWORK_MICROSERVICES_MYCOMPOSEPOSTHANDLER_H_
+#ifndef SOCIAL_NETWORK_MICROSERVICES_COMPOSEPOSTHANDLER_H_
+#define SOCIAL_NETWORK_MICROSERVICES_COMPOSEPOSTHANDLER_H_
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <chrono>
 
-#include <mutex>
 
-#include "../../gen-cpp/MyComposePostService.h"
+#include "../../gen-cpp/ComposePostService.h"
+
+#include "../../gen-cpp/FakeRedis.h"
+#include "../../gen-cpp/FakeRabbitmq.h"
+#include "../../gen-cpp/PostStorageService.h"
+#include "../../gen-cpp/UserTimelineService.h"
 
 #include "../../MyCommon/logger.h"
 
@@ -16,18 +20,20 @@
 
 #define NUM_COMPONENTS 6
 
-#define RAND_NUM_LIMIT 0xFFFFFFFFFFFFFF
-
 #define NUM_ELEMENTS 10
 namespace my_social_network {
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
 using std::chrono::system_clock;
 
-class MyComposePostHandler : public MyComposePostServiceIf {
+class ComposePostHandler : public ComposePostServiceIf {
  public:
-  MyComposePostHandler();
-  ~MyComposePostHandler() override = default;
+  ComposePostHandler(
+		NebulaClientPool<FakeRedisClient> *redis_pool,
+		NebulaClientPool<PostStorageServiceClient> *post_storage_pool,
+		NebulaClientPool<UserTimelineServiceClient> *user_timeline_pool,
+		NebulaClientPool<FakeRabbitmqClient> *rabbitmq_pool);
+	~ComposePostHandler() override = default;
 
   // uint64_t counter = 0;
   // std::mutex _counter_lock;
@@ -46,6 +52,11 @@ class MyComposePostHandler : public MyComposePostServiceIf {
   int64_t UploadUserMentions(const int64_t req_id,
       const std::vector<UserMention> & user_mentions) override;
 
+	NebulaClientPool<FakeRedisClient> *_redis_pool;
+	NebulaClientPool<PostStorageServiceClient> *_post_storage_pool;
+	NebulaClientPool<UserTimelineServiceClient> *_user_timeline_pool;
+	NebulaClientPool<FakeRabbitmqClient> *_rabbitmq_pool;
+ 
  private:
 
   std::string texts[NUM_ELEMENTS];
@@ -56,7 +67,7 @@ class MyComposePostHandler : public MyComposePostServiceIf {
   std::vector<UserMention> user_mentions[NUM_ELEMENTS];
   PostType::type post_types[NUM_ELEMENTS];
 
-  int64_t _ComposeAndUpload(int64_t req_id);
+  void _ComposeAndUpload(int64_t req_id);
 
   int64_t _UploadUserTimelineHelper(int64_t req_id, int64_t post_id,
       int64_t user_id, int64_t timestamp);
@@ -69,164 +80,346 @@ class MyComposePostHandler : public MyComposePostServiceIf {
 
 };
 
-MyComposePostHandler::MyComposePostHandler() {
+ComposePostHandler::ComposePostHandler(
+		NebulaClientPool<FakeRedisClient> *redis_pool,
+		NebulaClientPool<PostStorageServiceClient> *post_storage_pool,
+		NebulaClientPool<UserTimelineServiceClient> *user_timeline_pool,
+		NebulaClientPool<FakeRabbitmqClient> *rabbitmq_pool) {
 
-  RandomGenerator randGen(1);
+	_redis_pool = redis_pool;
+	_post_storage_pool = post_storage_pool;
+	_user_timeline_pool = user_timeline_pool;
+	_rabbitmq_pool = rabbitmq_pool;
 
-  for (int i = 0; i < NUM_ELEMENTS; i++) {
-    this->texts[i] = randGen.getAlphaNumericString(80);
+  // RandomGenerator randGen(1);
+
+  // for (int i = 0; i < NUM_ELEMENTS; i++) {
+  //   this->texts[i] = randGen.getAlphaNumericString(80);
     
     
-    this->creators[i].user_id = randGen.getInt64(RAND_NUM_LIMIT);
-    this->creators[i].username = randGen.getAlphaNumericString(12);
+  //   this->creators[i].user_id = randGen.getInt64(RAND_NUM_LIMIT);
+  //   this->creators[i].username = randGen.getAlphaNumericString(12);
 
-    uint32_t iters = randGen.getUInt32(1, 2);
-    for(int i=0; i < iters; i++){
-      Media *media = new Media();
-      media->media_id = randGen.getInt64(RAND_NUM_LIMIT);
-      media->media_type = randGen.getAlphaString(10);
-      this->media_vectors[i].emplace_back(*media);
-    }
+  //   uint32_t iters = randGen.getUInt32(1, 2);
+  //   for(int i=0; i < iters; i++){
+  //     Media *media = new Media();
+  //     media->media_id = randGen.getInt64(RAND_NUM_LIMIT);
+  //     media->media_type = randGen.getAlphaString(10);
+  //     this->media_vectors[i].emplace_back(*media);
+  //   }
 
-    post_ids[i] = randGen.getInt64(RAND_NUM_LIMIT);
+  //   post_ids[i] = randGen.getInt64(RAND_NUM_LIMIT);
 
-    iters = randGen.getUInt32(1, 2);
-    for (int i = 0; i < iters; i++){
-      Url *url = new Url();
-      url->expanded_url = randGen.getAlphaNumericString(60);
-      url->shortened_url = randGen.getAlphaNumericString(25);
-      this->urls[i].emplace_back(*url);
-    }
+  //   iters = randGen.getUInt32(1, 2);
+  //   for (int i = 0; i < iters; i++){
+  //     Url *url = new Url();
+  //     url->expanded_url = randGen.getAlphaNumericString(60);
+  //     url->shortened_url = randGen.getAlphaNumericString(25);
+  //     this->urls[i].emplace_back(*url);
+  //   }
 
-    iters = randGen.getUInt32(1, 2);
-    for (int i = 0; i < iters; i++){
-      UserMention *user_mention = new UserMention();
-      user_mention->user_id = randGen.getInt64(RAND_NUM_LIMIT);
-      user_mention->username = randGen.getAlphaNumericString(12);
-      this->user_mentions[i].emplace_back(*user_mention);
-    }
+  //   iters = randGen.getUInt32(1, 2);
+  //   for (int i = 0; i < iters; i++){
+  //     UserMention *user_mention = new UserMention();
+  //     user_mention->user_id = randGen.getInt64(RAND_NUM_LIMIT);
+  //     user_mention->username = randGen.getAlphaNumericString(12);
+  //     this->user_mentions[i].emplace_back(*user_mention);
+  //   }
 
-    this->post_types[i] = (PostType::type) randGen.getInt64(0, 3);
-  }
+  //   this->post_types[i] = (PostType::type) randGen.getInt64(0, 3);
+  // }
 }
 
-int64_t MyComposePostHandler::UploadCreator(
+int64_t ComposePostHandler::UploadCreator(
     int64_t req_id,
     const Creator &creator) {
 
-  std::string field = "creator";
-  std::string incr_field = "num_components";
-  int64_t num_components = req_id % 6;
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HS_CREATOR);
+		auto redis_client = redis_client_wrapper->GetClient();
+		redis_client->HSetCreator(req_id, "creator", creator);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Cannot connect to Redis server:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 
-  if (num_components == 0) {
-    return _ComposeAndUpload(req_id);
+	int64_t num_components;
+
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::H_INC);
+		auto redis_client = redis_client_wrapper->GetClient();
+		num_components = redis_client->HIncrBy(req_id, "num_components", 1);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to retrieve message from Redis:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
+
+  if (num_components == NUM_COMPONENTS) {
+    _ComposeAndUpload(req_id);
   }
 
   return req_id;
 }
 
-int64_t MyComposePostHandler::UploadText(
+int64_t ComposePostHandler::UploadText(
     int64_t req_id,
     const std::string &text) {
 
-  std::string field = "text";
-  std::string incr_field = "num_components";
-  int64_t num_components = req_id % 6;
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HS_TEXT);
+		auto redis_client = redis_client_wrapper->GetClient();
+		redis_client->HSetText(req_id, "text", text);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Cannot connect to Redis server:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 
-  if (num_components == 0) {
-    return _ComposeAndUpload(req_id);
+	int64_t num_components;
+
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::H_INC);
+		auto redis_client = redis_client_wrapper->GetClient();
+		num_components = redis_client->HIncrBy(req_id, "num_components", 1);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to retrieve message from Redis:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
+
+  if (num_components == NUM_COMPONENTS) {
+    _ComposeAndUpload(req_id);
   }
 
   return req_id;
 }
 
-int64_t MyComposePostHandler::UploadMedia(
+int64_t ComposePostHandler::UploadMedia(
     int64_t req_id,
     const std::vector<Media> &media) {
 
-  std::string field = "media";
-  std::string incr_field = "num_components";
-  int64_t num_components = req_id  % 6;
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HS_MEDIA);
+		auto redis_client = redis_client_wrapper->GetClient();
+		redis_client->HSetMedia(req_id, "media", media);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Cannot connect to Redis server:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 
-  if (num_components == 0) {
-    return _ComposeAndUpload(req_id);
+	int64_t num_components;
+
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::H_INC);
+		auto redis_client = redis_client_wrapper->GetClient();
+		num_components = redis_client->HIncrBy(req_id, "num_components", 1);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to retrieve message from Redis:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
+
+  if (num_components == NUM_COMPONENTS) {
+    _ComposeAndUpload(req_id);
   }
 
   return req_id;
 }
 
-int64_t MyComposePostHandler::UploadUniqueId(
+int64_t ComposePostHandler::UploadUniqueId(
     int64_t req_id,
     const int64_t post_id,
     const PostType::type post_type) {
 
-  std::string field1 = "post_id";
-  std::string field2 = "post_type";
-  std::string incr_field = "num_components";
-  int64_t num_components = req_id % 6;
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HS_POST_ID);
+		auto redis_client = redis_client_wrapper->GetClient();
+		redis_client->HSetPostId(req_id, "post_id", post_id);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Cannot connect to Redis server:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 
-  if (num_components == 0) {
-    return _ComposeAndUpload(req_id);
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HS_POST_TYPE);
+		auto redis_client = redis_client_wrapper->GetClient();
+		redis_client->HSetPostType(req_id, "post_type", post_type);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Cannot connect to Redis server:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
+
+	int64_t num_components;
+
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::H_INC);
+		auto redis_client = redis_client_wrapper->GetClient();
+		num_components = redis_client->HIncrBy(req_id, "num_components", 1);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to retrieve message from Redis:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
+
+  if (num_components == NUM_COMPONENTS) {
+    _ComposeAndUpload(req_id);
   }
 
   return req_id;
 }
 
-int64_t MyComposePostHandler::UploadUrls(
+int64_t ComposePostHandler::UploadUrls(
     int64_t req_id,
     const std::vector<Url> &urls) {
 
-  std::string field = "urls";
-  std::string incr_field = "num_components";
-  int64_t num_components = req_id % 6;
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HS_URLS);
+		auto redis_client = redis_client_wrapper->GetClient();
+		redis_client->HSetUrls(req_id, "urls", urls);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Cannot connect to Redis server:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 
-  if (num_components == 0) {
-    return _ComposeAndUpload(req_id);
+	int64_t num_components;
+
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::H_INC);
+		auto redis_client = redis_client_wrapper->GetClient();
+		num_components = redis_client->HIncrBy(req_id, "num_components", 1);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to retrieve message from Redis:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
+
+  if (num_components == NUM_COMPONENTS) {
+    _ComposeAndUpload(req_id);
   }
 
   return req_id;
 }
 
-int64_t MyComposePostHandler::UploadUserMentions(
+int64_t ComposePostHandler::UploadUserMentions(
     const int64_t req_id,
     const std::vector<UserMention> &user_mentions) {
 
-  std::string field = "user_mentions";
-  std::string incr_field = "num_components";
-  int64_t num_components = req_id % 6;
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HS_USER_MENTIONS);
+		auto redis_client = redis_client_wrapper->GetClient();
+		redis_client->HSetUserMentions(req_id, "user_mentions", user_mentions);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Cannot connect to Redis server:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 
-  if (num_components == 0) {
-    return _ComposeAndUpload(req_id);
+	int64_t num_components;
+
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::H_INC);
+		auto redis_client = redis_client_wrapper->GetClient();
+		num_components = redis_client->HIncrBy(req_id, "num_components", 1);
+		redis_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to retrieve message from Redis:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
+
+  if (num_components == NUM_COMPONENTS) {
+    _ComposeAndUpload(req_id);
   }
 
   return req_id;
 }
 
-int64_t MyComposePostHandler::_ComposeAndUpload(
+void ComposePostHandler::_ComposeAndUpload(
     int64_t req_id) {
 
-  // _counter_lock.lock();
-  // this->counter++;
-  // _counter_lock.unlock();
+	std::string text;
+  Creator creator;
+  std::vector<Media> media;
+  int64_t post_id;
+  std::vector<Url> urls;
+  std::vector<UserMention> user_mentions;
+  PostType::type post_type;
 
-  std::string field1 = "text";
-  std::string field2 = "creator";
-  std::string field3 = "media";
-  std::string field4 = "post_id";
-  std::string field5 = "urls";
-  std::string field6 = "user_mentions";
-  std::string field7 = "post_type";
 
-  int index = req_id % NUM_ELEMENTS;
+	// Connect to FakeRedis
+	try {
+		auto redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HG_TEXT);
+		auto redis_client = redis_client_wrapper->GetClient();
+		redis_client->HGetText(text, req_id, "text");
+		redis_client_wrapper->ResetBuffers(true, false);
 
-  std::string text = this->texts[index];
-  Creator creator = this->creators[index];
-  std::vector<Media> media = this->media_vectors[index];
-  int64_t post_id = this->post_ids[index];
-  std::vector<Url> urls = this->urls[index];
-  std::vector<UserMention> user_mentions = this->user_mentions[index];
-  PostType::type post_type = this->post_types[index];
+		redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HG_CREATOR);
+		redis_client = redis_client_wrapper->GetClient();
+		redis_client->HGetCreator(creator, req_id, "creator");
+		redis_client_wrapper->ResetBuffers(true, false);
 
+		redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HG_MEDIA);
+		redis_client = redis_client_wrapper->GetClient();
+		redis_client->HGetMedia(media, req_id, "media");
+		redis_client_wrapper->ResetBuffers(true, false);
+
+		redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HG_POST_ID);
+		redis_client = redis_client_wrapper->GetClient();
+		post_id = redis_client->HGetPostId(req_id, "post_id");
+		redis_client_wrapper->ResetBuffers(true, false);
+
+		redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HG_URLS);
+		redis_client = redis_client_wrapper->GetClient();
+		redis_client->HGetUrls(urls, req_id, "urls");
+		redis_client_wrapper->ResetBuffers(true, false);
+
+		redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HG_USER_MENTIONS);
+		redis_client = redis_client_wrapper->GetClient();
+		redis_client->HGetUserMentions(user_mentions, req_id, "user_mentions");
+		redis_client_wrapper->ResetBuffers(true, false);
+
+		redis_client_wrapper = _redis_pool->Get(FakeRedisClient::FuncType::HG_POST_TYPE);
+		redis_client = redis_client_wrapper->GetClient();
+		post_type = redis_client->HGetPostType(req_id, "post_type");
+		redis_client_wrapper->ResetBuffers(true, false);
+
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to retrieve message from Redis:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
+  
   // Compose the post
   Post post;
   post.req_id = req_id;
@@ -246,24 +439,22 @@ int64_t MyComposePostHandler::_ComposeAndUpload(
   post.urls = urls;
 
   // Upload the post
-  int64_t ret = _UploadPostHelper(req_id, post);
+  _UploadPostHelper(req_id, post);
 
-  ret += _UploadUserTimelineHelper(req_id, post.post_id, post.creator.user_id, post.timestamp);
+  _UploadUserTimelineHelper(req_id, post.post_id, post.creator.user_id, post.timestamp);
 
-  ret += _UploadHomeTimelineHelper(req_id, post.post_id, post.creator.user_id, post.timestamp,
+  _UploadHomeTimelineHelper(req_id, post.post_id, post.creator.user_id, post.timestamp,
                             user_mentions_id);
-
-  return ret;
 }
 
-int64_t MyComposePostHandler::_UploadPostHelper(
+int64_t ComposePostHandler::_UploadPostHelper(
     int64_t req_id,
     const Post &post) {
   
   return req_id;
 }
 
-int64_t MyComposePostHandler::_UploadUserTimelineHelper(
+int64_t ComposePostHandler::_UploadUserTimelineHelper(
     int64_t req_id,
     int64_t post_id,
     int64_t user_id,
@@ -272,7 +463,7 @@ int64_t MyComposePostHandler::_UploadUserTimelineHelper(
   return req_id + user_id - post_id + timestamp;
 }
 
-int64_t MyComposePostHandler::_UploadHomeTimelineHelper(
+int64_t ComposePostHandler::_UploadHomeTimelineHelper(
     int64_t req_id,
     int64_t post_id,
     int64_t user_id,
@@ -284,4 +475,4 @@ int64_t MyComposePostHandler::_UploadHomeTimelineHelper(
 
 } // namespace my_social_network
 
-#endif //SOCIAL_NETWORK_MICROSERVICES_MYCOMPOSEPOSTHANDLER_H_
+#endif //SOCIAL_NETWORK_MICROSERVICES_COMPOSEPOSTHANDLER_H_

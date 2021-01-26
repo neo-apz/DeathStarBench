@@ -4,7 +4,7 @@ add_executable(
     
     SimpleService.cpp
 		${THRIFT_GEN_CPP_DIR}/MyUniqueIdService.cpp
-		${THRIFT_GEN_CPP_DIR}/MyComposePostService.cpp
+		${THRIFT_GEN_CPP_DIR}/ComposePostService.cpp
 )
 
 target_include_directories(

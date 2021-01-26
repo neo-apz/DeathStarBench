@@ -16,7 +16,7 @@
 #include "../../gen-cpp/MyUniqueIdService.h"
 #include "../../gen-cpp/my_social_network_types.h"
 
-#include "../../gen-cpp/MyComposePostService.h"
+#include "../../gen-cpp/ComposePostService.h"
 
 #include <logger.h>
 #include <NebulaClientPool.h>

@@ -327,6 +327,10 @@ Media::Media(const Media& other2) {
   media_type = other2.media_type;
   __isset = other2.__isset;
 }
+Media::Media(RandomGenerator* randGen){
+	media_id = randGen->getInt64(RAND_NUM_LIMIT);
+	media_type = randGen->getAlphaString(10);
+}
 Media& Media::operator=(const Media& other3) {
   media_id = other3.media_id;
   media_type = other3.media_type;
@@ -438,6 +442,10 @@ Url::Url(const Url& other4) {
   shortened_url = other4.shortened_url;
   expanded_url = other4.expanded_url;
   __isset = other4.__isset;
+}
+Url::Url(RandomGenerator* randGen) {
+	expanded_url = randGen->getAlphaNumericString(60);
+	shortened_url = randGen->getAlphaNumericString(25);
 }
 Url& Url::operator=(const Url& other5) {
   shortened_url = other5.shortened_url;
@@ -551,6 +559,10 @@ UserMention::UserMention(const UserMention& other6) {
   username = other6.username;
   __isset = other6.__isset;
 }
+UserMention::UserMention(RandomGenerator* randGen) {
+	user_id = randGen->getInt64(RAND_NUM_LIMIT);
+	username = randGen->getAlphaNumericString(12);
+}
 UserMention& UserMention::operator=(const UserMention& other7) {
   user_id = other7.user_id;
   username = other7.username;
@@ -662,6 +674,10 @@ Creator::Creator(const Creator& other8) {
   user_id = other8.user_id;
   username = other8.username;
   __isset = other8.__isset;
+}
+Creator::Creator(RandomGenerator *randGen) {
+	user_id = randGen->getInt64(RAND_NUM_LIMIT);
+	username = randGen->getAlphaNumericString(12);
 }
 Creator& Creator::operator=(const Creator& other9) {
   user_id = other9.user_id;

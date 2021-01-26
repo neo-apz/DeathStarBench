@@ -4,16 +4,16 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "MyPostStorageService.h"
+#include "PostStorageService.h"
 
 namespace my_social_network {
 
 
-MyPostStorageService_StorePost_args::~MyPostStorageService_StorePost_args() throw() {
+PostStorageService_StorePost_args::~PostStorageService_StorePost_args() throw() {
 }
 
 
-uint32_t MyPostStorageService_StorePost_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_StorePost_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -62,10 +62,10 @@ uint32_t MyPostStorageService_StorePost_args::read(::apache::thrift::protocol::T
   return xfer;
 }
 
-uint32_t MyPostStorageService_StorePost_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_StorePost_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyPostStorageService_StorePost_args");
+  xfer += oprot->writeStructBegin("PostStorageService_StorePost_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -81,14 +81,14 @@ uint32_t MyPostStorageService_StorePost_args::write(::apache::thrift::protocol::
 }
 
 
-MyPostStorageService_StorePost_pargs::~MyPostStorageService_StorePost_pargs() throw() {
+PostStorageService_StorePost_pargs::~PostStorageService_StorePost_pargs() throw() {
 }
 
 
-uint32_t MyPostStorageService_StorePost_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_StorePost_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyPostStorageService_StorePost_pargs");
+  xfer += oprot->writeStructBegin("PostStorageService_StorePost_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -104,11 +104,11 @@ uint32_t MyPostStorageService_StorePost_pargs::write(::apache::thrift::protocol:
 }
 
 
-MyPostStorageService_StorePost_result::~MyPostStorageService_StorePost_result() throw() {
+PostStorageService_StorePost_result::~PostStorageService_StorePost_result() throw() {
 }
 
 
-uint32_t MyPostStorageService_StorePost_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_StorePost_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -136,11 +136,11 @@ uint32_t MyPostStorageService_StorePost_result::read(::apache::thrift::protocol:
   return xfer;
 }
 
-uint32_t MyPostStorageService_StorePost_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_StorePost_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyPostStorageService_StorePost_result");
+  xfer += oprot->writeStructBegin("PostStorageService_StorePost_result");
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
@@ -148,11 +148,11 @@ uint32_t MyPostStorageService_StorePost_result::write(::apache::thrift::protocol
 }
 
 
-MyPostStorageService_StorePost_presult::~MyPostStorageService_StorePost_presult() throw() {
+PostStorageService_StorePost_presult::~PostStorageService_StorePost_presult() throw() {
 }
 
 
-uint32_t MyPostStorageService_StorePost_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_StorePost_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -181,11 +181,11 @@ uint32_t MyPostStorageService_StorePost_presult::read(::apache::thrift::protocol
 }
 
 
-MyPostStorageService_ReadPost_args::~MyPostStorageService_ReadPost_args() throw() {
+PostStorageService_ReadPost_args::~PostStorageService_ReadPost_args() throw() {
 }
 
 
-uint32_t MyPostStorageService_ReadPost_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_ReadPost_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -234,10 +234,10 @@ uint32_t MyPostStorageService_ReadPost_args::read(::apache::thrift::protocol::TP
   return xfer;
 }
 
-uint32_t MyPostStorageService_ReadPost_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_ReadPost_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyPostStorageService_ReadPost_args");
+  xfer += oprot->writeStructBegin("PostStorageService_ReadPost_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -253,14 +253,14 @@ uint32_t MyPostStorageService_ReadPost_args::write(::apache::thrift::protocol::T
 }
 
 
-MyPostStorageService_ReadPost_pargs::~MyPostStorageService_ReadPost_pargs() throw() {
+PostStorageService_ReadPost_pargs::~PostStorageService_ReadPost_pargs() throw() {
 }
 
 
-uint32_t MyPostStorageService_ReadPost_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_ReadPost_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyPostStorageService_ReadPost_pargs");
+  xfer += oprot->writeStructBegin("PostStorageService_ReadPost_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -276,11 +276,11 @@ uint32_t MyPostStorageService_ReadPost_pargs::write(::apache::thrift::protocol::
 }
 
 
-MyPostStorageService_ReadPost_result::~MyPostStorageService_ReadPost_result() throw() {
+PostStorageService_ReadPost_result::~PostStorageService_ReadPost_result() throw() {
 }
 
 
-uint32_t MyPostStorageService_ReadPost_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_ReadPost_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -321,11 +321,11 @@ uint32_t MyPostStorageService_ReadPost_result::read(::apache::thrift::protocol::
   return xfer;
 }
 
-uint32_t MyPostStorageService_ReadPost_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_ReadPost_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyPostStorageService_ReadPost_result");
+  xfer += oprot->writeStructBegin("PostStorageService_ReadPost_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRUCT, 0);
@@ -338,11 +338,11 @@ uint32_t MyPostStorageService_ReadPost_result::write(::apache::thrift::protocol:
 }
 
 
-MyPostStorageService_ReadPost_presult::~MyPostStorageService_ReadPost_presult() throw() {
+PostStorageService_ReadPost_presult::~PostStorageService_ReadPost_presult() throw() {
 }
 
 
-uint32_t MyPostStorageService_ReadPost_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_ReadPost_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -384,11 +384,11 @@ uint32_t MyPostStorageService_ReadPost_presult::read(::apache::thrift::protocol:
 }
 
 
-MyPostStorageService_ReadPosts_args::~MyPostStorageService_ReadPosts_args() throw() {
+PostStorageService_ReadPosts_args::~PostStorageService_ReadPosts_args() throw() {
 }
 
 
-uint32_t MyPostStorageService_ReadPosts_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_ReadPosts_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -421,14 +421,14 @@ uint32_t MyPostStorageService_ReadPosts_args::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->post_ids.clear();
-            uint32_t _size54;
-            ::apache::thrift::protocol::TType _etype57;
-            xfer += iprot->readListBegin(_etype57, _size54);
-            this->post_ids.resize(_size54);
-            uint32_t _i58;
-            for (_i58 = 0; _i58 < _size54; ++_i58)
+            uint32_t _size129;
+            ::apache::thrift::protocol::TType _etype132;
+            xfer += iprot->readListBegin(_etype132, _size129);
+            this->post_ids.resize(_size129);
+            uint32_t _i133;
+            for (_i133 = 0; _i133 < _size129; ++_i133)
             {
-              xfer += iprot->readI64(this->post_ids[_i58]);
+              xfer += iprot->readI64(this->post_ids[_i133]);
             }
             xfer += iprot->readListEnd();
           }
@@ -449,10 +449,10 @@ uint32_t MyPostStorageService_ReadPosts_args::read(::apache::thrift::protocol::T
   return xfer;
 }
 
-uint32_t MyPostStorageService_ReadPosts_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_ReadPosts_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyPostStorageService_ReadPosts_args");
+  xfer += oprot->writeStructBegin("PostStorageService_ReadPosts_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -461,10 +461,10 @@ uint32_t MyPostStorageService_ReadPosts_args::write(::apache::thrift::protocol::
   xfer += oprot->writeFieldBegin("post_ids", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->post_ids.size()));
-    std::vector<int64_t> ::const_iterator _iter59;
-    for (_iter59 = this->post_ids.begin(); _iter59 != this->post_ids.end(); ++_iter59)
+    std::vector<int64_t> ::const_iterator _iter134;
+    for (_iter134 = this->post_ids.begin(); _iter134 != this->post_ids.end(); ++_iter134)
     {
-      xfer += oprot->writeI64((*_iter59));
+      xfer += oprot->writeI64((*_iter134));
     }
     xfer += oprot->writeListEnd();
   }
@@ -476,14 +476,14 @@ uint32_t MyPostStorageService_ReadPosts_args::write(::apache::thrift::protocol::
 }
 
 
-MyPostStorageService_ReadPosts_pargs::~MyPostStorageService_ReadPosts_pargs() throw() {
+PostStorageService_ReadPosts_pargs::~PostStorageService_ReadPosts_pargs() throw() {
 }
 
 
-uint32_t MyPostStorageService_ReadPosts_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_ReadPosts_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyPostStorageService_ReadPosts_pargs");
+  xfer += oprot->writeStructBegin("PostStorageService_ReadPosts_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -492,10 +492,10 @@ uint32_t MyPostStorageService_ReadPosts_pargs::write(::apache::thrift::protocol:
   xfer += oprot->writeFieldBegin("post_ids", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>((*(this->post_ids)).size()));
-    std::vector<int64_t> ::const_iterator _iter60;
-    for (_iter60 = (*(this->post_ids)).begin(); _iter60 != (*(this->post_ids)).end(); ++_iter60)
+    std::vector<int64_t> ::const_iterator _iter135;
+    for (_iter135 = (*(this->post_ids)).begin(); _iter135 != (*(this->post_ids)).end(); ++_iter135)
     {
-      xfer += oprot->writeI64((*_iter60));
+      xfer += oprot->writeI64((*_iter135));
     }
     xfer += oprot->writeListEnd();
   }
@@ -507,11 +507,11 @@ uint32_t MyPostStorageService_ReadPosts_pargs::write(::apache::thrift::protocol:
 }
 
 
-MyPostStorageService_ReadPosts_result::~MyPostStorageService_ReadPosts_result() throw() {
+PostStorageService_ReadPosts_result::~PostStorageService_ReadPosts_result() throw() {
 }
 
 
-uint32_t MyPostStorageService_ReadPosts_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_ReadPosts_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -536,14 +536,14 @@ uint32_t MyPostStorageService_ReadPosts_result::read(::apache::thrift::protocol:
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size61;
-            ::apache::thrift::protocol::TType _etype64;
-            xfer += iprot->readListBegin(_etype64, _size61);
-            this->success.resize(_size61);
-            uint32_t _i65;
-            for (_i65 = 0; _i65 < _size61; ++_i65)
+            uint32_t _size136;
+            ::apache::thrift::protocol::TType _etype139;
+            xfer += iprot->readListBegin(_etype139, _size136);
+            this->success.resize(_size136);
+            uint32_t _i140;
+            for (_i140 = 0; _i140 < _size136; ++_i140)
             {
-              xfer += this->success[_i65].read(iprot);
+              xfer += this->success[_i140].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -564,20 +564,20 @@ uint32_t MyPostStorageService_ReadPosts_result::read(::apache::thrift::protocol:
   return xfer;
 }
 
-uint32_t MyPostStorageService_ReadPosts_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t PostStorageService_ReadPosts_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyPostStorageService_ReadPosts_result");
+  xfer += oprot->writeStructBegin("PostStorageService_ReadPosts_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Post> ::const_iterator _iter66;
-      for (_iter66 = this->success.begin(); _iter66 != this->success.end(); ++_iter66)
+      std::vector<Post> ::const_iterator _iter141;
+      for (_iter141 = this->success.begin(); _iter141 != this->success.end(); ++_iter141)
       {
-        xfer += (*_iter66).write(oprot);
+        xfer += (*_iter141).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -589,11 +589,11 @@ uint32_t MyPostStorageService_ReadPosts_result::write(::apache::thrift::protocol
 }
 
 
-MyPostStorageService_ReadPosts_presult::~MyPostStorageService_ReadPosts_presult() throw() {
+PostStorageService_ReadPosts_presult::~PostStorageService_ReadPosts_presult() throw() {
 }
 
 
-uint32_t MyPostStorageService_ReadPosts_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t PostStorageService_ReadPosts_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -618,14 +618,14 @@ uint32_t MyPostStorageService_ReadPosts_presult::read(::apache::thrift::protocol
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size67;
-            ::apache::thrift::protocol::TType _etype70;
-            xfer += iprot->readListBegin(_etype70, _size67);
-            (*(this->success)).resize(_size67);
-            uint32_t _i71;
-            for (_i71 = 0; _i71 < _size67; ++_i71)
+            uint32_t _size142;
+            ::apache::thrift::protocol::TType _etype145;
+            xfer += iprot->readListBegin(_etype145, _size142);
+            (*(this->success)).resize(_size142);
+            uint32_t _i146;
+            for (_i146 = 0; _i146 < _size142; ++_i146)
             {
-              xfer += (*(this->success))[_i71].read(iprot);
+              xfer += (*(this->success))[_i146].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -646,18 +646,18 @@ uint32_t MyPostStorageService_ReadPosts_presult::read(::apache::thrift::protocol
   return xfer;
 }
 
-void MyPostStorageServiceClient::StorePost(const int64_t req_id, const Post& post)
+void PostStorageServiceClient::StorePost(const int64_t req_id, const Post& post)
 {
   send_StorePost(req_id, post);
   recv_StorePost();
 }
 
-void MyPostStorageServiceClient::send_StorePost(const int64_t req_id, const Post& post)
+void PostStorageServiceClient::send_StorePost(const int64_t req_id, const Post& post)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyPostStorageService_StorePost_pargs args;
+  PostStorageService_StorePost_pargs args;
   args.req_id = &req_id;
   args.post = &post;
   args.write(oprot_);
@@ -667,7 +667,7 @@ void MyPostStorageServiceClient::send_StorePost(const int64_t req_id, const Post
   oprot_->getTransport()->flush();
 }
 
-void MyPostStorageServiceClient::recv_StorePost()
+void PostStorageServiceClient::recv_StorePost()
 {
 
   int32_t rseqid = 0;
@@ -692,7 +692,7 @@ void MyPostStorageServiceClient::recv_StorePost()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  MyPostStorageService_StorePost_presult result;
+  PostStorageService_StorePost_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
@@ -700,18 +700,18 @@ void MyPostStorageServiceClient::recv_StorePost()
   return;
 }
 
-void MyPostStorageServiceClient::ReadPost(Post& _return, const int64_t req_id, const int64_t post_id)
+void PostStorageServiceClient::ReadPost(Post& _return, const int64_t req_id, const int64_t post_id)
 {
   send_ReadPost(req_id, post_id);
   recv_ReadPost(_return);
 }
 
-void MyPostStorageServiceClient::send_ReadPost(const int64_t req_id, const int64_t post_id)
+void PostStorageServiceClient::send_ReadPost(const int64_t req_id, const int64_t post_id)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ReadPost", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyPostStorageService_ReadPost_pargs args;
+  PostStorageService_ReadPost_pargs args;
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.write(oprot_);
@@ -721,7 +721,7 @@ void MyPostStorageServiceClient::send_ReadPost(const int64_t req_id, const int64
   oprot_->getTransport()->flush();
 }
 
-void MyPostStorageServiceClient::recv_ReadPost(Post& _return)
+void PostStorageServiceClient::recv_ReadPost(Post& _return)
 {
 
   int32_t rseqid = 0;
@@ -746,7 +746,7 @@ void MyPostStorageServiceClient::recv_ReadPost(Post& _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  MyPostStorageService_ReadPost_presult result;
+  PostStorageService_ReadPost_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -759,18 +759,18 @@ void MyPostStorageServiceClient::recv_ReadPost(Post& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPost failed: unknown result");
 }
 
-void MyPostStorageServiceClient::ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids)
+void PostStorageServiceClient::ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids)
 {
   send_ReadPosts(req_id, post_ids);
   recv_ReadPosts(_return);
 }
 
-void MyPostStorageServiceClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids)
+void PostStorageServiceClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ReadPosts", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyPostStorageService_ReadPosts_pargs args;
+  PostStorageService_ReadPosts_pargs args;
   args.req_id = &req_id;
   args.post_ids = &post_ids;
   args.write(oprot_);
@@ -780,7 +780,7 @@ void MyPostStorageServiceClient::send_ReadPosts(const int64_t req_id, const std:
   oprot_->getTransport()->flush();
 }
 
-void MyPostStorageServiceClient::recv_ReadPosts(std::vector<Post> & _return)
+void PostStorageServiceClient::recv_ReadPosts(std::vector<Post> & _return)
 {
 
   int32_t rseqid = 0;
@@ -805,7 +805,7 @@ void MyPostStorageServiceClient::recv_ReadPosts(std::vector<Post> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  MyPostStorageService_ReadPosts_presult result;
+  PostStorageService_ReadPosts_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -818,7 +818,7 @@ void MyPostStorageServiceClient::recv_ReadPosts(std::vector<Post> & _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPosts failed: unknown result");
 }
 
-bool MyPostStorageServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
+bool PostStorageServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
   ProcessMap::iterator pfn;
   pfn = processMap_.find(fname);
   if (pfn == processMap_.end()) {
@@ -837,33 +837,33 @@ bool MyPostStorageServiceProcessor::dispatchCall(::apache::thrift::protocol::TPr
   return true;
 }
 
-void MyPostStorageServiceProcessor::process_StorePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void PostStorageServiceProcessor::process_StorePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyPostStorageService.StorePost", callContext);
+    ctx = this->eventHandler_->getContext("PostStorageService.StorePost", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyPostStorageService.StorePost");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.StorePost");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyPostStorageService.StorePost");
+    this->eventHandler_->preRead(ctx, "PostStorageService.StorePost");
   }
 
-  MyPostStorageService_StorePost_args args;
+  PostStorageService_StorePost_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyPostStorageService.StorePost", bytes);
+    this->eventHandler_->postRead(ctx, "PostStorageService.StorePost", bytes);
   }
 
-  MyPostStorageService_StorePost_result result;
+  PostStorageService_StorePost_result result;
   try {
     iface_->StorePost(args.req_id, args.post);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyPostStorageService.StorePost");
+      this->eventHandler_->handlerError(ctx, "PostStorageService.StorePost");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -876,7 +876,7 @@ void MyPostStorageServiceProcessor::process_StorePost(int32_t seqid, ::apache::t
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyPostStorageService.StorePost");
+    this->eventHandler_->preWrite(ctx, "PostStorageService.StorePost");
   }
 
   oprot->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -886,38 +886,38 @@ void MyPostStorageServiceProcessor::process_StorePost(int32_t seqid, ::apache::t
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyPostStorageService.StorePost", bytes);
+    this->eventHandler_->postWrite(ctx, "PostStorageService.StorePost", bytes);
   }
 }
 
-void MyPostStorageServiceProcessor::process_ReadPost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void PostStorageServiceProcessor::process_ReadPost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyPostStorageService.ReadPost", callContext);
+    ctx = this->eventHandler_->getContext("PostStorageService.ReadPost", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyPostStorageService.ReadPost");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.ReadPost");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyPostStorageService.ReadPost");
+    this->eventHandler_->preRead(ctx, "PostStorageService.ReadPost");
   }
 
-  MyPostStorageService_ReadPost_args args;
+  PostStorageService_ReadPost_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyPostStorageService.ReadPost", bytes);
+    this->eventHandler_->postRead(ctx, "PostStorageService.ReadPost", bytes);
   }
 
-  MyPostStorageService_ReadPost_result result;
+  PostStorageService_ReadPost_result result;
   try {
     iface_->ReadPost(result.success, args.req_id, args.post_id);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyPostStorageService.ReadPost");
+      this->eventHandler_->handlerError(ctx, "PostStorageService.ReadPost");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -930,7 +930,7 @@ void MyPostStorageServiceProcessor::process_ReadPost(int32_t seqid, ::apache::th
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyPostStorageService.ReadPost");
+    this->eventHandler_->preWrite(ctx, "PostStorageService.ReadPost");
   }
 
   oprot->writeMessageBegin("ReadPost", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -940,38 +940,38 @@ void MyPostStorageServiceProcessor::process_ReadPost(int32_t seqid, ::apache::th
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyPostStorageService.ReadPost", bytes);
+    this->eventHandler_->postWrite(ctx, "PostStorageService.ReadPost", bytes);
   }
 }
 
-void MyPostStorageServiceProcessor::process_ReadPosts(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void PostStorageServiceProcessor::process_ReadPosts(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyPostStorageService.ReadPosts", callContext);
+    ctx = this->eventHandler_->getContext("PostStorageService.ReadPosts", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyPostStorageService.ReadPosts");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.ReadPosts");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyPostStorageService.ReadPosts");
+    this->eventHandler_->preRead(ctx, "PostStorageService.ReadPosts");
   }
 
-  MyPostStorageService_ReadPosts_args args;
+  PostStorageService_ReadPosts_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyPostStorageService.ReadPosts", bytes);
+    this->eventHandler_->postRead(ctx, "PostStorageService.ReadPosts", bytes);
   }
 
-  MyPostStorageService_ReadPosts_result result;
+  PostStorageService_ReadPosts_result result;
   try {
     iface_->ReadPosts(result.success, args.req_id, args.post_ids);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyPostStorageService.ReadPosts");
+      this->eventHandler_->handlerError(ctx, "PostStorageService.ReadPosts");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -984,7 +984,7 @@ void MyPostStorageServiceProcessor::process_ReadPosts(int32_t seqid, ::apache::t
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyPostStorageService.ReadPosts");
+    this->eventHandler_->preWrite(ctx, "PostStorageService.ReadPosts");
   }
 
   oprot->writeMessageBegin("ReadPosts", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -994,30 +994,30 @@ void MyPostStorageServiceProcessor::process_ReadPosts(int32_t seqid, ::apache::t
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyPostStorageService.ReadPosts", bytes);
+    this->eventHandler_->postWrite(ctx, "PostStorageService.ReadPosts", bytes);
   }
 }
 
-::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > MyPostStorageServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
-  ::apache::thrift::ReleaseHandler< MyPostStorageServiceIfFactory > cleanup(handlerFactory_);
-  ::apache::thrift::stdcxx::shared_ptr< MyPostStorageServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new MyPostStorageServiceProcessor(handler));
+::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > PostStorageServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< PostStorageServiceIfFactory > cleanup(handlerFactory_);
+  ::apache::thrift::stdcxx::shared_ptr< PostStorageServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new PostStorageServiceProcessor(handler));
   return processor;
 }
 
-void MyPostStorageServiceConcurrentClient::StorePost(const int64_t req_id, const Post& post)
+void PostStorageServiceConcurrentClient::StorePost(const int64_t req_id, const Post& post)
 {
   int32_t seqid = send_StorePost(req_id, post);
   recv_StorePost(seqid);
 }
 
-int32_t MyPostStorageServiceConcurrentClient::send_StorePost(const int64_t req_id, const Post& post)
+int32_t PostStorageServiceConcurrentClient::send_StorePost(const int64_t req_id, const Post& post)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyPostStorageService_StorePost_pargs args;
+  PostStorageService_StorePost_pargs args;
   args.req_id = &req_id;
   args.post = &post;
   args.write(oprot_);
@@ -1030,7 +1030,7 @@ int32_t MyPostStorageServiceConcurrentClient::send_StorePost(const int64_t req_i
   return cseqid;
 }
 
-void MyPostStorageServiceConcurrentClient::recv_StorePost(const int32_t seqid)
+void PostStorageServiceConcurrentClient::recv_StorePost(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -1068,7 +1068,7 @@ void MyPostStorageServiceConcurrentClient::recv_StorePost(const int32_t seqid)
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      MyPostStorageService_StorePost_presult result;
+      PostStorageService_StorePost_presult result;
       result.read(iprot_);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
@@ -1084,19 +1084,19 @@ void MyPostStorageServiceConcurrentClient::recv_StorePost(const int32_t seqid)
   } // end while(true)
 }
 
-void MyPostStorageServiceConcurrentClient::ReadPost(Post& _return, const int64_t req_id, const int64_t post_id)
+void PostStorageServiceConcurrentClient::ReadPost(Post& _return, const int64_t req_id, const int64_t post_id)
 {
   int32_t seqid = send_ReadPost(req_id, post_id);
   recv_ReadPost(_return, seqid);
 }
 
-int32_t MyPostStorageServiceConcurrentClient::send_ReadPost(const int64_t req_id, const int64_t post_id)
+int32_t PostStorageServiceConcurrentClient::send_ReadPost(const int64_t req_id, const int64_t post_id)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ReadPost", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyPostStorageService_ReadPost_pargs args;
+  PostStorageService_ReadPost_pargs args;
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.write(oprot_);
@@ -1109,7 +1109,7 @@ int32_t MyPostStorageServiceConcurrentClient::send_ReadPost(const int64_t req_id
   return cseqid;
 }
 
-void MyPostStorageServiceConcurrentClient::recv_ReadPost(Post& _return, const int32_t seqid)
+void PostStorageServiceConcurrentClient::recv_ReadPost(Post& _return, const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -1147,7 +1147,7 @@ void MyPostStorageServiceConcurrentClient::recv_ReadPost(Post& _return, const in
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      MyPostStorageService_ReadPost_presult result;
+      PostStorageService_ReadPost_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -1169,19 +1169,19 @@ void MyPostStorageServiceConcurrentClient::recv_ReadPost(Post& _return, const in
   } // end while(true)
 }
 
-void MyPostStorageServiceConcurrentClient::ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids)
+void PostStorageServiceConcurrentClient::ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids)
 {
   int32_t seqid = send_ReadPosts(req_id, post_ids);
   recv_ReadPosts(_return, seqid);
 }
 
-int32_t MyPostStorageServiceConcurrentClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids)
+int32_t PostStorageServiceConcurrentClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ReadPosts", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyPostStorageService_ReadPosts_pargs args;
+  PostStorageService_ReadPosts_pargs args;
   args.req_id = &req_id;
   args.post_ids = &post_ids;
   args.write(oprot_);
@@ -1194,7 +1194,7 @@ int32_t MyPostStorageServiceConcurrentClient::send_ReadPosts(const int64_t req_i
   return cseqid;
 }
 
-void MyPostStorageServiceConcurrentClient::recv_ReadPosts(std::vector<Post> & _return, const int32_t seqid)
+void PostStorageServiceConcurrentClient::recv_ReadPosts(std::vector<Post> & _return, const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -1232,7 +1232,7 @@ void MyPostStorageServiceConcurrentClient::recv_ReadPosts(std::vector<Post> & _r
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      MyPostStorageService_ReadPosts_presult result;
+      PostStorageService_ReadPosts_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();

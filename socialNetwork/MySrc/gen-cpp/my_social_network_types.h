@@ -17,6 +17,7 @@
 
 #include <thrift/stdcxx.h>
 
+#include "RandomGenerator.h"
 
 namespace my_social_network {
 
@@ -130,6 +131,7 @@ class Media : public virtual ::apache::thrift::TBase {
   Media& operator=(const Media&);
   Media() : media_id(0), media_type() {
   }
+	Media(RandomGenerator* randGen);
 
   virtual ~Media() throw();
   int64_t media_id;
@@ -178,6 +180,7 @@ class Url : public virtual ::apache::thrift::TBase {
   Url& operator=(const Url&);
   Url() : shortened_url(), expanded_url() {
   }
+	Url(RandomGenerator* randGen);
 
   virtual ~Url() throw();
   std::string shortened_url;
@@ -226,6 +229,7 @@ class UserMention : public virtual ::apache::thrift::TBase {
   UserMention& operator=(const UserMention&);
   UserMention() : user_id(0), username() {
   }
+	UserMention(RandomGenerator* randGen);
 
   virtual ~UserMention() throw();
   int64_t user_id;
@@ -274,6 +278,7 @@ class Creator : public virtual ::apache::thrift::TBase {
   Creator& operator=(const Creator&);
   Creator() : user_id(0), username() {
   }
+	Creator(RandomGenerator *randGen);
 
   virtual ~Creator() throw();
   int64_t user_id;

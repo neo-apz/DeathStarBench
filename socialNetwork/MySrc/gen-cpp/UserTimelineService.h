@@ -4,8 +4,8 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef MyUserTimelineService_H
-#define MyUserTimelineService_H
+#ifndef UserTimelineService_H
+#define UserTimelineService_H
 
 #include <thrift/TDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
@@ -18,40 +18,40 @@ namespace my_social_network {
   #pragma warning (disable : 4250 ) //inheriting methods via dominance 
 #endif
 
-class MyUserTimelineServiceIf {
+class UserTimelineServiceIf {
  public:
-  virtual ~MyUserTimelineServiceIf() {}
+  virtual ~UserTimelineServiceIf() {}
   virtual void WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp) = 0;
   virtual void ReadUserTimeline(std::vector<Post> & _return, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop) = 0;
 };
 
-class MyUserTimelineServiceIfFactory {
+class UserTimelineServiceIfFactory {
  public:
-  typedef MyUserTimelineServiceIf Handler;
+  typedef UserTimelineServiceIf Handler;
 
-  virtual ~MyUserTimelineServiceIfFactory() {}
+  virtual ~UserTimelineServiceIfFactory() {}
 
-  virtual MyUserTimelineServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
-  virtual void releaseHandler(MyUserTimelineServiceIf* /* handler */) = 0;
+  virtual UserTimelineServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(UserTimelineServiceIf* /* handler */) = 0;
 };
 
-class MyUserTimelineServiceIfSingletonFactory : virtual public MyUserTimelineServiceIfFactory {
+class UserTimelineServiceIfSingletonFactory : virtual public UserTimelineServiceIfFactory {
  public:
-  MyUserTimelineServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<MyUserTimelineServiceIf>& iface) : iface_(iface) {}
-  virtual ~MyUserTimelineServiceIfSingletonFactory() {}
+  UserTimelineServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceIf>& iface) : iface_(iface) {}
+  virtual ~UserTimelineServiceIfSingletonFactory() {}
 
-  virtual MyUserTimelineServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+  virtual UserTimelineServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
     return iface_.get();
   }
-  virtual void releaseHandler(MyUserTimelineServiceIf* /* handler */) {}
+  virtual void releaseHandler(UserTimelineServiceIf* /* handler */) {}
 
  protected:
-  ::apache::thrift::stdcxx::shared_ptr<MyUserTimelineServiceIf> iface_;
+  ::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceIf> iface_;
 };
 
-class MyUserTimelineServiceNull : virtual public MyUserTimelineServiceIf {
+class UserTimelineServiceNull : virtual public UserTimelineServiceIf {
  public:
-  virtual ~MyUserTimelineServiceNull() {}
+  virtual ~UserTimelineServiceNull() {}
   void WriteUserTimeline(const int64_t /* req_id */, const int64_t /* post_id */, const int64_t /* user_id */, const int64_t /* timestamp */) {
     return;
   }
@@ -60,29 +60,29 @@ class MyUserTimelineServiceNull : virtual public MyUserTimelineServiceIf {
   }
 };
 
-typedef struct _MyUserTimelineService_WriteUserTimeline_args__isset {
-  _MyUserTimelineService_WriteUserTimeline_args__isset() : req_id(false), post_id(false), user_id(false), timestamp(false) {}
+typedef struct _UserTimelineService_WriteUserTimeline_args__isset {
+  _UserTimelineService_WriteUserTimeline_args__isset() : req_id(false), post_id(false), user_id(false), timestamp(false) {}
   bool req_id :1;
   bool post_id :1;
   bool user_id :1;
   bool timestamp :1;
-} _MyUserTimelineService_WriteUserTimeline_args__isset;
+} _UserTimelineService_WriteUserTimeline_args__isset;
 
-class MyUserTimelineService_WriteUserTimeline_args {
+class UserTimelineService_WriteUserTimeline_args {
  public:
 
-  MyUserTimelineService_WriteUserTimeline_args(const MyUserTimelineService_WriteUserTimeline_args&);
-  MyUserTimelineService_WriteUserTimeline_args& operator=(const MyUserTimelineService_WriteUserTimeline_args&);
-  MyUserTimelineService_WriteUserTimeline_args() : req_id(0), post_id(0), user_id(0), timestamp(0) {
+  UserTimelineService_WriteUserTimeline_args(const UserTimelineService_WriteUserTimeline_args&);
+  UserTimelineService_WriteUserTimeline_args& operator=(const UserTimelineService_WriteUserTimeline_args&);
+  UserTimelineService_WriteUserTimeline_args() : req_id(0), post_id(0), user_id(0), timestamp(0) {
   }
 
-  virtual ~MyUserTimelineService_WriteUserTimeline_args() throw();
+  virtual ~UserTimelineService_WriteUserTimeline_args() throw();
   int64_t req_id;
   int64_t post_id;
   int64_t user_id;
   int64_t timestamp;
 
-  _MyUserTimelineService_WriteUserTimeline_args__isset __isset;
+  _UserTimelineService_WriteUserTimeline_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
@@ -92,7 +92,7 @@ class MyUserTimelineService_WriteUserTimeline_args {
 
   void __set_timestamp(const int64_t val);
 
-  bool operator == (const MyUserTimelineService_WriteUserTimeline_args & rhs) const
+  bool operator == (const UserTimelineService_WriteUserTimeline_args & rhs) const
   {
     if (!(req_id == rhs.req_id))
       return false;
@@ -104,11 +104,11 @@ class MyUserTimelineService_WriteUserTimeline_args {
       return false;
     return true;
   }
-  bool operator != (const MyUserTimelineService_WriteUserTimeline_args &rhs) const {
+  bool operator != (const UserTimelineService_WriteUserTimeline_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUserTimelineService_WriteUserTimeline_args & ) const;
+  bool operator < (const UserTimelineService_WriteUserTimeline_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -116,11 +116,11 @@ class MyUserTimelineService_WriteUserTimeline_args {
 };
 
 
-class MyUserTimelineService_WriteUserTimeline_pargs {
+class UserTimelineService_WriteUserTimeline_pargs {
  public:
 
 
-  virtual ~MyUserTimelineService_WriteUserTimeline_pargs() throw();
+  virtual ~UserTimelineService_WriteUserTimeline_pargs() throw();
   const int64_t* req_id;
   const int64_t* post_id;
   const int64_t* user_id;
@@ -131,25 +131,25 @@ class MyUserTimelineService_WriteUserTimeline_pargs {
 };
 
 
-class MyUserTimelineService_WriteUserTimeline_result {
+class UserTimelineService_WriteUserTimeline_result {
  public:
 
-  MyUserTimelineService_WriteUserTimeline_result(const MyUserTimelineService_WriteUserTimeline_result&);
-  MyUserTimelineService_WriteUserTimeline_result& operator=(const MyUserTimelineService_WriteUserTimeline_result&);
-  MyUserTimelineService_WriteUserTimeline_result() {
+  UserTimelineService_WriteUserTimeline_result(const UserTimelineService_WriteUserTimeline_result&);
+  UserTimelineService_WriteUserTimeline_result& operator=(const UserTimelineService_WriteUserTimeline_result&);
+  UserTimelineService_WriteUserTimeline_result() {
   }
 
-  virtual ~MyUserTimelineService_WriteUserTimeline_result() throw();
+  virtual ~UserTimelineService_WriteUserTimeline_result() throw();
 
-  bool operator == (const MyUserTimelineService_WriteUserTimeline_result & /* rhs */) const
+  bool operator == (const UserTimelineService_WriteUserTimeline_result & /* rhs */) const
   {
     return true;
   }
-  bool operator != (const MyUserTimelineService_WriteUserTimeline_result &rhs) const {
+  bool operator != (const UserTimelineService_WriteUserTimeline_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUserTimelineService_WriteUserTimeline_result & ) const;
+  bool operator < (const UserTimelineService_WriteUserTimeline_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -157,39 +157,39 @@ class MyUserTimelineService_WriteUserTimeline_result {
 };
 
 
-class MyUserTimelineService_WriteUserTimeline_presult {
+class UserTimelineService_WriteUserTimeline_presult {
  public:
 
 
-  virtual ~MyUserTimelineService_WriteUserTimeline_presult() throw();
+  virtual ~UserTimelineService_WriteUserTimeline_presult() throw();
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-typedef struct _MyUserTimelineService_ReadUserTimeline_args__isset {
-  _MyUserTimelineService_ReadUserTimeline_args__isset() : req_id(false), user_id(false), start(false), stop(false) {}
+typedef struct _UserTimelineService_ReadUserTimeline_args__isset {
+  _UserTimelineService_ReadUserTimeline_args__isset() : req_id(false), user_id(false), start(false), stop(false) {}
   bool req_id :1;
   bool user_id :1;
   bool start :1;
   bool stop :1;
-} _MyUserTimelineService_ReadUserTimeline_args__isset;
+} _UserTimelineService_ReadUserTimeline_args__isset;
 
-class MyUserTimelineService_ReadUserTimeline_args {
+class UserTimelineService_ReadUserTimeline_args {
  public:
 
-  MyUserTimelineService_ReadUserTimeline_args(const MyUserTimelineService_ReadUserTimeline_args&);
-  MyUserTimelineService_ReadUserTimeline_args& operator=(const MyUserTimelineService_ReadUserTimeline_args&);
-  MyUserTimelineService_ReadUserTimeline_args() : req_id(0), user_id(0), start(0), stop(0) {
+  UserTimelineService_ReadUserTimeline_args(const UserTimelineService_ReadUserTimeline_args&);
+  UserTimelineService_ReadUserTimeline_args& operator=(const UserTimelineService_ReadUserTimeline_args&);
+  UserTimelineService_ReadUserTimeline_args() : req_id(0), user_id(0), start(0), stop(0) {
   }
 
-  virtual ~MyUserTimelineService_ReadUserTimeline_args() throw();
+  virtual ~UserTimelineService_ReadUserTimeline_args() throw();
   int64_t req_id;
   int64_t user_id;
   int32_t start;
   int32_t stop;
 
-  _MyUserTimelineService_ReadUserTimeline_args__isset __isset;
+  _UserTimelineService_ReadUserTimeline_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
@@ -199,7 +199,7 @@ class MyUserTimelineService_ReadUserTimeline_args {
 
   void __set_stop(const int32_t val);
 
-  bool operator == (const MyUserTimelineService_ReadUserTimeline_args & rhs) const
+  bool operator == (const UserTimelineService_ReadUserTimeline_args & rhs) const
   {
     if (!(req_id == rhs.req_id))
       return false;
@@ -211,11 +211,11 @@ class MyUserTimelineService_ReadUserTimeline_args {
       return false;
     return true;
   }
-  bool operator != (const MyUserTimelineService_ReadUserTimeline_args &rhs) const {
+  bool operator != (const UserTimelineService_ReadUserTimeline_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUserTimelineService_ReadUserTimeline_args & ) const;
+  bool operator < (const UserTimelineService_ReadUserTimeline_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -223,11 +223,11 @@ class MyUserTimelineService_ReadUserTimeline_args {
 };
 
 
-class MyUserTimelineService_ReadUserTimeline_pargs {
+class UserTimelineService_ReadUserTimeline_pargs {
  public:
 
 
-  virtual ~MyUserTimelineService_ReadUserTimeline_pargs() throw();
+  virtual ~UserTimelineService_ReadUserTimeline_pargs() throw();
   const int64_t* req_id;
   const int64_t* user_id;
   const int32_t* start;
@@ -237,67 +237,67 @@ class MyUserTimelineService_ReadUserTimeline_pargs {
 
 };
 
-typedef struct _MyUserTimelineService_ReadUserTimeline_result__isset {
-  _MyUserTimelineService_ReadUserTimeline_result__isset() : success(false) {}
+typedef struct _UserTimelineService_ReadUserTimeline_result__isset {
+  _UserTimelineService_ReadUserTimeline_result__isset() : success(false) {}
   bool success :1;
-} _MyUserTimelineService_ReadUserTimeline_result__isset;
+} _UserTimelineService_ReadUserTimeline_result__isset;
 
-class MyUserTimelineService_ReadUserTimeline_result {
+class UserTimelineService_ReadUserTimeline_result {
  public:
 
-  MyUserTimelineService_ReadUserTimeline_result(const MyUserTimelineService_ReadUserTimeline_result&);
-  MyUserTimelineService_ReadUserTimeline_result& operator=(const MyUserTimelineService_ReadUserTimeline_result&);
-  MyUserTimelineService_ReadUserTimeline_result() {
+  UserTimelineService_ReadUserTimeline_result(const UserTimelineService_ReadUserTimeline_result&);
+  UserTimelineService_ReadUserTimeline_result& operator=(const UserTimelineService_ReadUserTimeline_result&);
+  UserTimelineService_ReadUserTimeline_result() {
   }
 
-  virtual ~MyUserTimelineService_ReadUserTimeline_result() throw();
+  virtual ~UserTimelineService_ReadUserTimeline_result() throw();
   std::vector<Post>  success;
 
-  _MyUserTimelineService_ReadUserTimeline_result__isset __isset;
+  _UserTimelineService_ReadUserTimeline_result__isset __isset;
 
   void __set_success(const std::vector<Post> & val);
 
-  bool operator == (const MyUserTimelineService_ReadUserTimeline_result & rhs) const
+  bool operator == (const UserTimelineService_ReadUserTimeline_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const MyUserTimelineService_ReadUserTimeline_result &rhs) const {
+  bool operator != (const UserTimelineService_ReadUserTimeline_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUserTimelineService_ReadUserTimeline_result & ) const;
+  bool operator < (const UserTimelineService_ReadUserTimeline_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _MyUserTimelineService_ReadUserTimeline_presult__isset {
-  _MyUserTimelineService_ReadUserTimeline_presult__isset() : success(false) {}
+typedef struct _UserTimelineService_ReadUserTimeline_presult__isset {
+  _UserTimelineService_ReadUserTimeline_presult__isset() : success(false) {}
   bool success :1;
-} _MyUserTimelineService_ReadUserTimeline_presult__isset;
+} _UserTimelineService_ReadUserTimeline_presult__isset;
 
-class MyUserTimelineService_ReadUserTimeline_presult {
+class UserTimelineService_ReadUserTimeline_presult {
  public:
 
 
-  virtual ~MyUserTimelineService_ReadUserTimeline_presult() throw();
+  virtual ~UserTimelineService_ReadUserTimeline_presult() throw();
   std::vector<Post> * success;
 
-  _MyUserTimelineService_ReadUserTimeline_presult__isset __isset;
+  _UserTimelineService_ReadUserTimeline_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-class MyUserTimelineServiceClient : virtual public MyUserTimelineServiceIf {
+class UserTimelineServiceClient : virtual public UserTimelineServiceIf {
  public:
-  MyUserTimelineServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+  UserTimelineServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
   }
-  MyUserTimelineServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  UserTimelineServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
  private:
@@ -330,46 +330,46 @@ class MyUserTimelineServiceClient : virtual public MyUserTimelineServiceIf {
   ::apache::thrift::protocol::TProtocol* oprot_;
 };
 
-class MyUserTimelineServiceProcessor : public ::apache::thrift::TDispatchProcessor {
+class UserTimelineServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  protected:
-  ::apache::thrift::stdcxx::shared_ptr<MyUserTimelineServiceIf> iface_;
+  ::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
-  typedef  void (MyUserTimelineServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  typedef  void (UserTimelineServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_WriteUserTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ReadUserTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
-  MyUserTimelineServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUserTimelineServiceIf> iface) :
+  UserTimelineServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceIf> iface) :
     iface_(iface) {
-    processMap_["WriteUserTimeline"] = &MyUserTimelineServiceProcessor::process_WriteUserTimeline;
-    processMap_["ReadUserTimeline"] = &MyUserTimelineServiceProcessor::process_ReadUserTimeline;
+    processMap_["WriteUserTimeline"] = &UserTimelineServiceProcessor::process_WriteUserTimeline;
+    processMap_["ReadUserTimeline"] = &UserTimelineServiceProcessor::process_ReadUserTimeline;
   }
 
-  virtual ~MyUserTimelineServiceProcessor() {}
+  virtual ~UserTimelineServiceProcessor() {}
 };
 
-class MyUserTimelineServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
+class UserTimelineServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
-  MyUserTimelineServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< MyUserTimelineServiceIfFactory >& handlerFactory) :
+  UserTimelineServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UserTimelineServiceIfFactory >& handlerFactory) :
       handlerFactory_(handlerFactory) {}
 
   ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
-  ::apache::thrift::stdcxx::shared_ptr< MyUserTimelineServiceIfFactory > handlerFactory_;
+  ::apache::thrift::stdcxx::shared_ptr< UserTimelineServiceIfFactory > handlerFactory_;
 };
 
-class MyUserTimelineServiceMultiface : virtual public MyUserTimelineServiceIf {
+class UserTimelineServiceMultiface : virtual public UserTimelineServiceIf {
  public:
-  MyUserTimelineServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<MyUserTimelineServiceIf> >& ifaces) : ifaces_(ifaces) {
+  UserTimelineServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<UserTimelineServiceIf> >& ifaces) : ifaces_(ifaces) {
   }
-  virtual ~MyUserTimelineServiceMultiface() {}
+  virtual ~UserTimelineServiceMultiface() {}
  protected:
-  std::vector<apache::thrift::stdcxx::shared_ptr<MyUserTimelineServiceIf> > ifaces_;
-  MyUserTimelineServiceMultiface() {}
-  void add(::apache::thrift::stdcxx::shared_ptr<MyUserTimelineServiceIf> iface) {
+  std::vector<apache::thrift::stdcxx::shared_ptr<UserTimelineServiceIf> > ifaces_;
+  UserTimelineServiceMultiface() {}
+  void add(::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceIf> iface) {
     ifaces_.push_back(iface);
   }
  public:
@@ -397,12 +397,12 @@ class MyUserTimelineServiceMultiface : virtual public MyUserTimelineServiceIf {
 // The 'concurrent' client is a thread safe client that correctly handles
 // out of order responses.  It is slower than the regular client, so should
 // only be used when you need to share a connection among multiple threads
-class MyUserTimelineServiceConcurrentClient : virtual public MyUserTimelineServiceIf {
+class UserTimelineServiceConcurrentClient : virtual public UserTimelineServiceIf {
  public:
-  MyUserTimelineServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+  UserTimelineServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
   }
-  MyUserTimelineServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  UserTimelineServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
  private:

@@ -16,7 +16,7 @@
 #include "../../gen-cpp/MyUniqueIdService.h"
 #include "../../gen-cpp/my_social_network_types.h"
 
-#include "../../gen-cpp/MyComposePostService.h"
+#include "../../gen-cpp/ComposePostService.h"
 
 #include <logger.h>
 #include <NebulaClientPool.h>
@@ -50,7 +50,7 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
   MyUniqueIdHandler(
       std::mutex *,
       const std::string &,
-			NebulaClientPool<MyComposePostServiceClient> *);
+			NebulaClientPool<ComposePostServiceClient> *);
 
   int64_t UploadUniqueId(int64_t, PostType::type) override;
 
@@ -58,13 +58,13 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
   std::mutex *_thread_lock;
   // MyLock *_thread_lock;
   std::string _machine_id;
-	NebulaClientPool<MyComposePostServiceClient> *_compose_client_pool;
+	NebulaClientPool<ComposePostServiceClient> *_compose_client_pool;
 };
 
 MyUniqueIdHandler::MyUniqueIdHandler(
     std::mutex *thread_lock,
     const std::string &machine_id,
-		NebulaClientPool<MyComposePostServiceClient> * compose_client_pool){
+		NebulaClientPool<ComposePostServiceClient> * compose_client_pool){
   _thread_lock = thread_lock;
   _machine_id = machine_id;
 	_compose_client_pool = compose_client_pool;

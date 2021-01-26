@@ -4,8 +4,8 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef MyPostStorageService_H
-#define MyPostStorageService_H
+#ifndef PostStorageService_H
+#define PostStorageService_H
 
 #include <thrift/TDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
@@ -18,41 +18,41 @@ namespace my_social_network {
   #pragma warning (disable : 4250 ) //inheriting methods via dominance 
 #endif
 
-class MyPostStorageServiceIf {
+class PostStorageServiceIf {
  public:
-  virtual ~MyPostStorageServiceIf() {}
+  virtual ~PostStorageServiceIf() {}
   virtual void StorePost(const int64_t req_id, const Post& post) = 0;
   virtual void ReadPost(Post& _return, const int64_t req_id, const int64_t post_id) = 0;
   virtual void ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids) = 0;
 };
 
-class MyPostStorageServiceIfFactory {
+class PostStorageServiceIfFactory {
  public:
-  typedef MyPostStorageServiceIf Handler;
+  typedef PostStorageServiceIf Handler;
 
-  virtual ~MyPostStorageServiceIfFactory() {}
+  virtual ~PostStorageServiceIfFactory() {}
 
-  virtual MyPostStorageServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
-  virtual void releaseHandler(MyPostStorageServiceIf* /* handler */) = 0;
+  virtual PostStorageServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(PostStorageServiceIf* /* handler */) = 0;
 };
 
-class MyPostStorageServiceIfSingletonFactory : virtual public MyPostStorageServiceIfFactory {
+class PostStorageServiceIfSingletonFactory : virtual public PostStorageServiceIfFactory {
  public:
-  MyPostStorageServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<MyPostStorageServiceIf>& iface) : iface_(iface) {}
-  virtual ~MyPostStorageServiceIfSingletonFactory() {}
+  PostStorageServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<PostStorageServiceIf>& iface) : iface_(iface) {}
+  virtual ~PostStorageServiceIfSingletonFactory() {}
 
-  virtual MyPostStorageServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+  virtual PostStorageServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
     return iface_.get();
   }
-  virtual void releaseHandler(MyPostStorageServiceIf* /* handler */) {}
+  virtual void releaseHandler(PostStorageServiceIf* /* handler */) {}
 
  protected:
-  ::apache::thrift::stdcxx::shared_ptr<MyPostStorageServiceIf> iface_;
+  ::apache::thrift::stdcxx::shared_ptr<PostStorageServiceIf> iface_;
 };
 
-class MyPostStorageServiceNull : virtual public MyPostStorageServiceIf {
+class PostStorageServiceNull : virtual public PostStorageServiceIf {
  public:
-  virtual ~MyPostStorageServiceNull() {}
+  virtual ~PostStorageServiceNull() {}
   void StorePost(const int64_t /* req_id */, const Post& /* post */) {
     return;
   }
@@ -64,31 +64,31 @@ class MyPostStorageServiceNull : virtual public MyPostStorageServiceIf {
   }
 };
 
-typedef struct _MyPostStorageService_StorePost_args__isset {
-  _MyPostStorageService_StorePost_args__isset() : req_id(false), post(false) {}
+typedef struct _PostStorageService_StorePost_args__isset {
+  _PostStorageService_StorePost_args__isset() : req_id(false), post(false) {}
   bool req_id :1;
   bool post :1;
-} _MyPostStorageService_StorePost_args__isset;
+} _PostStorageService_StorePost_args__isset;
 
-class MyPostStorageService_StorePost_args {
+class PostStorageService_StorePost_args {
  public:
 
-  MyPostStorageService_StorePost_args(const MyPostStorageService_StorePost_args&);
-  MyPostStorageService_StorePost_args& operator=(const MyPostStorageService_StorePost_args&);
-  MyPostStorageService_StorePost_args() : req_id(0) {
+  PostStorageService_StorePost_args(const PostStorageService_StorePost_args&);
+  PostStorageService_StorePost_args& operator=(const PostStorageService_StorePost_args&);
+  PostStorageService_StorePost_args() : req_id(0) {
   }
 
-  virtual ~MyPostStorageService_StorePost_args() throw();
+  virtual ~PostStorageService_StorePost_args() throw();
   int64_t req_id;
   Post post;
 
-  _MyPostStorageService_StorePost_args__isset __isset;
+  _PostStorageService_StorePost_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
   void __set_post(const Post& val);
 
-  bool operator == (const MyPostStorageService_StorePost_args & rhs) const
+  bool operator == (const PostStorageService_StorePost_args & rhs) const
   {
     if (!(req_id == rhs.req_id))
       return false;
@@ -96,11 +96,11 @@ class MyPostStorageService_StorePost_args {
       return false;
     return true;
   }
-  bool operator != (const MyPostStorageService_StorePost_args &rhs) const {
+  bool operator != (const PostStorageService_StorePost_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyPostStorageService_StorePost_args & ) const;
+  bool operator < (const PostStorageService_StorePost_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -108,11 +108,11 @@ class MyPostStorageService_StorePost_args {
 };
 
 
-class MyPostStorageService_StorePost_pargs {
+class PostStorageService_StorePost_pargs {
  public:
 
 
-  virtual ~MyPostStorageService_StorePost_pargs() throw();
+  virtual ~PostStorageService_StorePost_pargs() throw();
   const int64_t* req_id;
   const Post* post;
 
@@ -121,25 +121,25 @@ class MyPostStorageService_StorePost_pargs {
 };
 
 
-class MyPostStorageService_StorePost_result {
+class PostStorageService_StorePost_result {
  public:
 
-  MyPostStorageService_StorePost_result(const MyPostStorageService_StorePost_result&);
-  MyPostStorageService_StorePost_result& operator=(const MyPostStorageService_StorePost_result&);
-  MyPostStorageService_StorePost_result() {
+  PostStorageService_StorePost_result(const PostStorageService_StorePost_result&);
+  PostStorageService_StorePost_result& operator=(const PostStorageService_StorePost_result&);
+  PostStorageService_StorePost_result() {
   }
 
-  virtual ~MyPostStorageService_StorePost_result() throw();
+  virtual ~PostStorageService_StorePost_result() throw();
 
-  bool operator == (const MyPostStorageService_StorePost_result & /* rhs */) const
+  bool operator == (const PostStorageService_StorePost_result & /* rhs */) const
   {
     return true;
   }
-  bool operator != (const MyPostStorageService_StorePost_result &rhs) const {
+  bool operator != (const PostStorageService_StorePost_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyPostStorageService_StorePost_result & ) const;
+  bool operator < (const PostStorageService_StorePost_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -147,41 +147,41 @@ class MyPostStorageService_StorePost_result {
 };
 
 
-class MyPostStorageService_StorePost_presult {
+class PostStorageService_StorePost_presult {
  public:
 
 
-  virtual ~MyPostStorageService_StorePost_presult() throw();
+  virtual ~PostStorageService_StorePost_presult() throw();
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-typedef struct _MyPostStorageService_ReadPost_args__isset {
-  _MyPostStorageService_ReadPost_args__isset() : req_id(false), post_id(false) {}
+typedef struct _PostStorageService_ReadPost_args__isset {
+  _PostStorageService_ReadPost_args__isset() : req_id(false), post_id(false) {}
   bool req_id :1;
   bool post_id :1;
-} _MyPostStorageService_ReadPost_args__isset;
+} _PostStorageService_ReadPost_args__isset;
 
-class MyPostStorageService_ReadPost_args {
+class PostStorageService_ReadPost_args {
  public:
 
-  MyPostStorageService_ReadPost_args(const MyPostStorageService_ReadPost_args&);
-  MyPostStorageService_ReadPost_args& operator=(const MyPostStorageService_ReadPost_args&);
-  MyPostStorageService_ReadPost_args() : req_id(0), post_id(0) {
+  PostStorageService_ReadPost_args(const PostStorageService_ReadPost_args&);
+  PostStorageService_ReadPost_args& operator=(const PostStorageService_ReadPost_args&);
+  PostStorageService_ReadPost_args() : req_id(0), post_id(0) {
   }
 
-  virtual ~MyPostStorageService_ReadPost_args() throw();
+  virtual ~PostStorageService_ReadPost_args() throw();
   int64_t req_id;
   int64_t post_id;
 
-  _MyPostStorageService_ReadPost_args__isset __isset;
+  _PostStorageService_ReadPost_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
   void __set_post_id(const int64_t val);
 
-  bool operator == (const MyPostStorageService_ReadPost_args & rhs) const
+  bool operator == (const PostStorageService_ReadPost_args & rhs) const
   {
     if (!(req_id == rhs.req_id))
       return false;
@@ -189,11 +189,11 @@ class MyPostStorageService_ReadPost_args {
       return false;
     return true;
   }
-  bool operator != (const MyPostStorageService_ReadPost_args &rhs) const {
+  bool operator != (const PostStorageService_ReadPost_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyPostStorageService_ReadPost_args & ) const;
+  bool operator < (const PostStorageService_ReadPost_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -201,11 +201,11 @@ class MyPostStorageService_ReadPost_args {
 };
 
 
-class MyPostStorageService_ReadPost_pargs {
+class PostStorageService_ReadPost_pargs {
  public:
 
 
-  virtual ~MyPostStorageService_ReadPost_pargs() throw();
+  virtual ~PostStorageService_ReadPost_pargs() throw();
   const int64_t* req_id;
   const int64_t* post_id;
 
@@ -213,86 +213,86 @@ class MyPostStorageService_ReadPost_pargs {
 
 };
 
-typedef struct _MyPostStorageService_ReadPost_result__isset {
-  _MyPostStorageService_ReadPost_result__isset() : success(false) {}
+typedef struct _PostStorageService_ReadPost_result__isset {
+  _PostStorageService_ReadPost_result__isset() : success(false) {}
   bool success :1;
-} _MyPostStorageService_ReadPost_result__isset;
+} _PostStorageService_ReadPost_result__isset;
 
-class MyPostStorageService_ReadPost_result {
+class PostStorageService_ReadPost_result {
  public:
 
-  MyPostStorageService_ReadPost_result(const MyPostStorageService_ReadPost_result&);
-  MyPostStorageService_ReadPost_result& operator=(const MyPostStorageService_ReadPost_result&);
-  MyPostStorageService_ReadPost_result() {
+  PostStorageService_ReadPost_result(const PostStorageService_ReadPost_result&);
+  PostStorageService_ReadPost_result& operator=(const PostStorageService_ReadPost_result&);
+  PostStorageService_ReadPost_result() {
   }
 
-  virtual ~MyPostStorageService_ReadPost_result() throw();
+  virtual ~PostStorageService_ReadPost_result() throw();
   Post success;
 
-  _MyPostStorageService_ReadPost_result__isset __isset;
+  _PostStorageService_ReadPost_result__isset __isset;
 
   void __set_success(const Post& val);
 
-  bool operator == (const MyPostStorageService_ReadPost_result & rhs) const
+  bool operator == (const PostStorageService_ReadPost_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const MyPostStorageService_ReadPost_result &rhs) const {
+  bool operator != (const PostStorageService_ReadPost_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyPostStorageService_ReadPost_result & ) const;
+  bool operator < (const PostStorageService_ReadPost_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _MyPostStorageService_ReadPost_presult__isset {
-  _MyPostStorageService_ReadPost_presult__isset() : success(false) {}
+typedef struct _PostStorageService_ReadPost_presult__isset {
+  _PostStorageService_ReadPost_presult__isset() : success(false) {}
   bool success :1;
-} _MyPostStorageService_ReadPost_presult__isset;
+} _PostStorageService_ReadPost_presult__isset;
 
-class MyPostStorageService_ReadPost_presult {
+class PostStorageService_ReadPost_presult {
  public:
 
 
-  virtual ~MyPostStorageService_ReadPost_presult() throw();
+  virtual ~PostStorageService_ReadPost_presult() throw();
   Post* success;
 
-  _MyPostStorageService_ReadPost_presult__isset __isset;
+  _PostStorageService_ReadPost_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-typedef struct _MyPostStorageService_ReadPosts_args__isset {
-  _MyPostStorageService_ReadPosts_args__isset() : req_id(false), post_ids(false) {}
+typedef struct _PostStorageService_ReadPosts_args__isset {
+  _PostStorageService_ReadPosts_args__isset() : req_id(false), post_ids(false) {}
   bool req_id :1;
   bool post_ids :1;
-} _MyPostStorageService_ReadPosts_args__isset;
+} _PostStorageService_ReadPosts_args__isset;
 
-class MyPostStorageService_ReadPosts_args {
+class PostStorageService_ReadPosts_args {
  public:
 
-  MyPostStorageService_ReadPosts_args(const MyPostStorageService_ReadPosts_args&);
-  MyPostStorageService_ReadPosts_args& operator=(const MyPostStorageService_ReadPosts_args&);
-  MyPostStorageService_ReadPosts_args() : req_id(0) {
+  PostStorageService_ReadPosts_args(const PostStorageService_ReadPosts_args&);
+  PostStorageService_ReadPosts_args& operator=(const PostStorageService_ReadPosts_args&);
+  PostStorageService_ReadPosts_args() : req_id(0) {
   }
 
-  virtual ~MyPostStorageService_ReadPosts_args() throw();
+  virtual ~PostStorageService_ReadPosts_args() throw();
   int64_t req_id;
   std::vector<int64_t>  post_ids;
 
-  _MyPostStorageService_ReadPosts_args__isset __isset;
+  _PostStorageService_ReadPosts_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
   void __set_post_ids(const std::vector<int64_t> & val);
 
-  bool operator == (const MyPostStorageService_ReadPosts_args & rhs) const
+  bool operator == (const PostStorageService_ReadPosts_args & rhs) const
   {
     if (!(req_id == rhs.req_id))
       return false;
@@ -300,11 +300,11 @@ class MyPostStorageService_ReadPosts_args {
       return false;
     return true;
   }
-  bool operator != (const MyPostStorageService_ReadPosts_args &rhs) const {
+  bool operator != (const PostStorageService_ReadPosts_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyPostStorageService_ReadPosts_args & ) const;
+  bool operator < (const PostStorageService_ReadPosts_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -312,11 +312,11 @@ class MyPostStorageService_ReadPosts_args {
 };
 
 
-class MyPostStorageService_ReadPosts_pargs {
+class PostStorageService_ReadPosts_pargs {
  public:
 
 
-  virtual ~MyPostStorageService_ReadPosts_pargs() throw();
+  virtual ~PostStorageService_ReadPosts_pargs() throw();
   const int64_t* req_id;
   const std::vector<int64_t> * post_ids;
 
@@ -324,67 +324,67 @@ class MyPostStorageService_ReadPosts_pargs {
 
 };
 
-typedef struct _MyPostStorageService_ReadPosts_result__isset {
-  _MyPostStorageService_ReadPosts_result__isset() : success(false) {}
+typedef struct _PostStorageService_ReadPosts_result__isset {
+  _PostStorageService_ReadPosts_result__isset() : success(false) {}
   bool success :1;
-} _MyPostStorageService_ReadPosts_result__isset;
+} _PostStorageService_ReadPosts_result__isset;
 
-class MyPostStorageService_ReadPosts_result {
+class PostStorageService_ReadPosts_result {
  public:
 
-  MyPostStorageService_ReadPosts_result(const MyPostStorageService_ReadPosts_result&);
-  MyPostStorageService_ReadPosts_result& operator=(const MyPostStorageService_ReadPosts_result&);
-  MyPostStorageService_ReadPosts_result() {
+  PostStorageService_ReadPosts_result(const PostStorageService_ReadPosts_result&);
+  PostStorageService_ReadPosts_result& operator=(const PostStorageService_ReadPosts_result&);
+  PostStorageService_ReadPosts_result() {
   }
 
-  virtual ~MyPostStorageService_ReadPosts_result() throw();
+  virtual ~PostStorageService_ReadPosts_result() throw();
   std::vector<Post>  success;
 
-  _MyPostStorageService_ReadPosts_result__isset __isset;
+  _PostStorageService_ReadPosts_result__isset __isset;
 
   void __set_success(const std::vector<Post> & val);
 
-  bool operator == (const MyPostStorageService_ReadPosts_result & rhs) const
+  bool operator == (const PostStorageService_ReadPosts_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const MyPostStorageService_ReadPosts_result &rhs) const {
+  bool operator != (const PostStorageService_ReadPosts_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyPostStorageService_ReadPosts_result & ) const;
+  bool operator < (const PostStorageService_ReadPosts_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _MyPostStorageService_ReadPosts_presult__isset {
-  _MyPostStorageService_ReadPosts_presult__isset() : success(false) {}
+typedef struct _PostStorageService_ReadPosts_presult__isset {
+  _PostStorageService_ReadPosts_presult__isset() : success(false) {}
   bool success :1;
-} _MyPostStorageService_ReadPosts_presult__isset;
+} _PostStorageService_ReadPosts_presult__isset;
 
-class MyPostStorageService_ReadPosts_presult {
+class PostStorageService_ReadPosts_presult {
  public:
 
 
-  virtual ~MyPostStorageService_ReadPosts_presult() throw();
+  virtual ~PostStorageService_ReadPosts_presult() throw();
   std::vector<Post> * success;
 
-  _MyPostStorageService_ReadPosts_presult__isset __isset;
+  _PostStorageService_ReadPosts_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-class MyPostStorageServiceClient : virtual public MyPostStorageServiceIf {
+class PostStorageServiceClient : virtual public PostStorageServiceIf {
  public:
-  MyPostStorageServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+  PostStorageServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
   }
-  MyPostStorageServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  PostStorageServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
  private:
@@ -420,48 +420,48 @@ class MyPostStorageServiceClient : virtual public MyPostStorageServiceIf {
   ::apache::thrift::protocol::TProtocol* oprot_;
 };
 
-class MyPostStorageServiceProcessor : public ::apache::thrift::TDispatchProcessor {
+class PostStorageServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  protected:
-  ::apache::thrift::stdcxx::shared_ptr<MyPostStorageServiceIf> iface_;
+  ::apache::thrift::stdcxx::shared_ptr<PostStorageServiceIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
-  typedef  void (MyPostStorageServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  typedef  void (PostStorageServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_StorePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ReadPost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ReadPosts(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
-  MyPostStorageServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyPostStorageServiceIf> iface) :
+  PostStorageServiceProcessor(::apache::thrift::stdcxx::shared_ptr<PostStorageServiceIf> iface) :
     iface_(iface) {
-    processMap_["StorePost"] = &MyPostStorageServiceProcessor::process_StorePost;
-    processMap_["ReadPost"] = &MyPostStorageServiceProcessor::process_ReadPost;
-    processMap_["ReadPosts"] = &MyPostStorageServiceProcessor::process_ReadPosts;
+    processMap_["StorePost"] = &PostStorageServiceProcessor::process_StorePost;
+    processMap_["ReadPost"] = &PostStorageServiceProcessor::process_ReadPost;
+    processMap_["ReadPosts"] = &PostStorageServiceProcessor::process_ReadPosts;
   }
 
-  virtual ~MyPostStorageServiceProcessor() {}
+  virtual ~PostStorageServiceProcessor() {}
 };
 
-class MyPostStorageServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
+class PostStorageServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
-  MyPostStorageServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< MyPostStorageServiceIfFactory >& handlerFactory) :
+  PostStorageServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< PostStorageServiceIfFactory >& handlerFactory) :
       handlerFactory_(handlerFactory) {}
 
   ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
-  ::apache::thrift::stdcxx::shared_ptr< MyPostStorageServiceIfFactory > handlerFactory_;
+  ::apache::thrift::stdcxx::shared_ptr< PostStorageServiceIfFactory > handlerFactory_;
 };
 
-class MyPostStorageServiceMultiface : virtual public MyPostStorageServiceIf {
+class PostStorageServiceMultiface : virtual public PostStorageServiceIf {
  public:
-  MyPostStorageServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<MyPostStorageServiceIf> >& ifaces) : ifaces_(ifaces) {
+  PostStorageServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<PostStorageServiceIf> >& ifaces) : ifaces_(ifaces) {
   }
-  virtual ~MyPostStorageServiceMultiface() {}
+  virtual ~PostStorageServiceMultiface() {}
  protected:
-  std::vector<apache::thrift::stdcxx::shared_ptr<MyPostStorageServiceIf> > ifaces_;
-  MyPostStorageServiceMultiface() {}
-  void add(::apache::thrift::stdcxx::shared_ptr<MyPostStorageServiceIf> iface) {
+  std::vector<apache::thrift::stdcxx::shared_ptr<PostStorageServiceIf> > ifaces_;
+  PostStorageServiceMultiface() {}
+  void add(::apache::thrift::stdcxx::shared_ptr<PostStorageServiceIf> iface) {
     ifaces_.push_back(iface);
   }
  public:
@@ -499,12 +499,12 @@ class MyPostStorageServiceMultiface : virtual public MyPostStorageServiceIf {
 // The 'concurrent' client is a thread safe client that correctly handles
 // out of order responses.  It is slower than the regular client, so should
 // only be used when you need to share a connection among multiple threads
-class MyPostStorageServiceConcurrentClient : virtual public MyPostStorageServiceIf {
+class PostStorageServiceConcurrentClient : virtual public PostStorageServiceIf {
  public:
-  MyPostStorageServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+  PostStorageServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
   }
-  MyPostStorageServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  PostStorageServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
  private:

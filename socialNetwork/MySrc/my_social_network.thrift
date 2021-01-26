@@ -55,6 +55,170 @@ service MyUniqueIdService {
   )
 }
 
+service ComposePostService {
+  i64 UploadText(
+      1: i64 req_id,
+      2: string text
+  ) 
+
+  i64 UploadMedia(
+      1: i64 req_id,
+      2: list<Media> media
+  ) 
+
+  i64 UploadUniqueId(
+      1: i64 req_id,
+      2: i64 post_id,
+      3: PostType post_type
+  ) 
+
+  i64 UploadCreator(
+      1: i64 req_id,
+      2: Creator creator
+  ) 
+
+  i64 UploadUrls(
+      1: i64 req_id,
+      2: list<Url> urls
+  ) 
+
+  i64 UploadUserMentions(
+      1: i64 req_id,
+      2: list<UserMention> user_mentions
+  ) 
+}
+
+service FakeRedis {
+  void HSetCreator(
+      1: i64 req_id,
+      2: string field,
+      3: Creator creator
+  )
+
+  void HSetText(
+      1: i64 req_id,
+      2: string field,
+      3: string text
+  )
+
+  void HSetMedia(
+      1: i64 req_id,
+      2: string field,
+      3: list<Media> media
+  )
+
+  void HSetPostId(
+      1: i64 req_id,
+      2: string field,
+      3: i64 post_id
+  )
+
+  void HSetPostType(
+      1: i64 req_id,
+      2: string field,
+      3: PostType post_type
+  )
+
+  void HSetUrls(
+      1: i64 req_id,
+      2: string field,
+      3: list<Url> urls
+  )
+
+  void HSetUserMentions(
+      1: i64 req_id,
+      2: string field,
+      3: list<UserMention> user_mentions
+  )
+
+  Creator HGetCreator(
+      1: i64 req_id,
+      2: string field
+  )
+
+  string HGetText(
+      1: i64 req_id,
+      2: string field
+  )
+
+  list<Media> HGetMedia(
+      1: i64 req_id,
+      2: string field
+  )
+
+  i64 HGetPostId(
+      1: i64 req_id,
+      2: string field
+  )
+
+  PostType HGetPostType(
+      1: i64 req_id,
+      2: string field
+  )
+
+  list<Url> HGetUrls(
+      1: i64 req_id,
+      2: string field
+  )
+
+  list<UserMention> HGetUserMentions(
+      1: i64 req_id,
+      2: string field
+  )
+
+  i64 HIncrBy(
+      1: i64 key,
+      2: string field,
+      3: i64 value
+  )
+}
+
+service FakeRabbitmq {
+  void UploadHomeTimeline(
+    1: i64 req_id,
+    2: i64 post_id,
+    3: i64 user_id,
+    4: i64 timestamp,
+    5: list<i64> user_mentions_id
+  )
+}
+
+service UserTimelineService {
+  void WriteUserTimeline(
+    1: i64 req_id,
+    2: i64 post_id,
+    3: i64 user_id,
+    4: i64 timestamp
+  ) 
+
+  list<Post> ReadUserTimeline(
+    1: i64 req_id,
+    2: i64 user_id,
+    3: i32 start,
+    4: i32 stop
+  ) 
+}
+
+service PostStorageService {
+  void StorePost(
+    1: i64 req_id,
+    2: Post post
+    // 3: map<string, string> carrier
+  ) 
+
+  Post ReadPost(
+    1: i64 req_id,
+    2: i64 post_id
+    // 3: map<string, string> carrier
+  ) 
+
+  list<Post> ReadPosts(
+    1: i64 req_id,
+    2: list<i64> post_ids
+    // 3: map<string, string> carrier
+  ) 
+}
+
 service MyTextService {
   void UploadText (
       1: i64 req_id,
@@ -104,79 +268,8 @@ service MyUserService {
   ) 
 }
 
-service MyComposePostService {
-  i64 UploadText(
-      1: i64 req_id,
-      2: string text
-  ) 
-
-  i64 UploadMedia(
-      1: i64 req_id,
-      2: list<Media> media
-  ) 
-
-  i64 UploadUniqueId(
-      1: i64 req_id,
-      2: i64 post_id,
-      3: PostType post_type
-  ) 
-
-  i64 UploadCreator(
-      1: i64 req_id,
-      2: Creator creator
-  ) 
-
-  i64 UploadUrls(
-      1: i64 req_id,
-      2: list<Url> urls
-  ) 
-
-  i64 UploadUserMentions(
-      1: i64 req_id,
-      2: list<UserMention> user_mentions
-  ) 
-}
-
-service MyPostStorageService {
-  void StorePost(
-    1: i64 req_id,
-    2: Post post
-    // 3: map<string, string> carrier
-  ) 
-
-  Post ReadPost(
-    1: i64 req_id,
-    2: i64 post_id
-    // 3: map<string, string> carrier
-  ) 
-
-  list<Post> ReadPosts(
-    1: i64 req_id,
-    2: list<i64> post_ids
-    // 3: map<string, string> carrier
-  ) 
-}
-
 service MyHomeTimelineService {
   list<Post> ReadHomeTimeline(
-    1: i64 req_id,
-    2: i64 user_id,
-    3: i32 start,
-    4: i32 stop
-    // 5: map<string, string> carrier
-  ) 
-}
-
-service MyUserTimelineService {
-  void WriteUserTimeline(
-    1: i64 req_id,
-    2: i64 post_id,
-    3: i64 user_id,
-    4: i64 timestamp
-    // 5: map<string, string> carrier
-  ) 
-
-  list<Post> ReadUserTimeline(
     1: i64 req_id,
     2: i64 user_id,
     3: i32 start,

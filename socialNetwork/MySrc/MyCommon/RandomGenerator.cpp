@@ -21,6 +21,7 @@ int64_t RandomGenerator::getInt64(int64_t limit) {
     return ((int64_t) getDouble(limit));
 }
 
+// TODO: check the bounds!
 int64_t RandomGenerator::getInt64(int64_t begin, int64_t end) {
     return getInt64(end - begin + 1) + begin;
 }
@@ -64,6 +65,10 @@ string RandomGenerator::getAlphaNumericString(size_t length) {
 string RandomGenerator::getNumericString(size_t length) {
   const char charset[] = "0123456789";
   return this->randomString(charset, sizeof(charset), length);
+}
+
+string RandomGenerator::getRandText() {
+  return this->getAlphaNumericString(80);
 }
 
 double RandomGenerator::getDouble(uint64_t limit) {

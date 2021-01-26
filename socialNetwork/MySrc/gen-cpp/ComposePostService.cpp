@@ -4,16 +4,16 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "MyComposePostService.h"
+#include "ComposePostService.h"
 
 namespace my_social_network {
 
 
-MyComposePostService_UploadText_args::~MyComposePostService_UploadText_args() throw() {
+ComposePostService_UploadText_args::~ComposePostService_UploadText_args() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadText_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadText_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -62,10 +62,10 @@ uint32_t MyComposePostService_UploadText_args::read(::apache::thrift::protocol::
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadText_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadText_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadText_args");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadText_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -81,14 +81,14 @@ uint32_t MyComposePostService_UploadText_args::write(::apache::thrift::protocol:
 }
 
 
-MyComposePostService_UploadText_pargs::~MyComposePostService_UploadText_pargs() throw() {
+ComposePostService_UploadText_pargs::~ComposePostService_UploadText_pargs() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadText_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadText_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadText_pargs");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadText_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -104,11 +104,11 @@ uint32_t MyComposePostService_UploadText_pargs::write(::apache::thrift::protocol
 }
 
 
-MyComposePostService_UploadText_result::~MyComposePostService_UploadText_result() throw() {
+ComposePostService_UploadText_result::~ComposePostService_UploadText_result() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadText_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadText_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -149,11 +149,11 @@ uint32_t MyComposePostService_UploadText_result::read(::apache::thrift::protocol
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadText_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadText_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadText_result");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadText_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
@@ -166,11 +166,11 @@ uint32_t MyComposePostService_UploadText_result::write(::apache::thrift::protoco
 }
 
 
-MyComposePostService_UploadText_presult::~MyComposePostService_UploadText_presult() throw() {
+ComposePostService_UploadText_presult::~ComposePostService_UploadText_presult() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadText_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadText_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -212,11 +212,11 @@ uint32_t MyComposePostService_UploadText_presult::read(::apache::thrift::protoco
 }
 
 
-MyComposePostService_UploadMedia_args::~MyComposePostService_UploadMedia_args() throw() {
+ComposePostService_UploadMedia_args::~ComposePostService_UploadMedia_args() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadMedia_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadMedia_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -277,10 +277,10 @@ uint32_t MyComposePostService_UploadMedia_args::read(::apache::thrift::protocol:
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadMedia_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadMedia_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadMedia_args");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadMedia_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -304,14 +304,14 @@ uint32_t MyComposePostService_UploadMedia_args::write(::apache::thrift::protocol
 }
 
 
-MyComposePostService_UploadMedia_pargs::~MyComposePostService_UploadMedia_pargs() throw() {
+ComposePostService_UploadMedia_pargs::~ComposePostService_UploadMedia_pargs() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadMedia_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadMedia_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadMedia_pargs");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadMedia_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -335,11 +335,11 @@ uint32_t MyComposePostService_UploadMedia_pargs::write(::apache::thrift::protoco
 }
 
 
-MyComposePostService_UploadMedia_result::~MyComposePostService_UploadMedia_result() throw() {
+ComposePostService_UploadMedia_result::~ComposePostService_UploadMedia_result() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadMedia_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadMedia_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -380,11 +380,11 @@ uint32_t MyComposePostService_UploadMedia_result::read(::apache::thrift::protoco
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadMedia_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadMedia_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadMedia_result");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadMedia_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
@@ -397,11 +397,11 @@ uint32_t MyComposePostService_UploadMedia_result::write(::apache::thrift::protoc
 }
 
 
-MyComposePostService_UploadMedia_presult::~MyComposePostService_UploadMedia_presult() throw() {
+ComposePostService_UploadMedia_presult::~ComposePostService_UploadMedia_presult() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadMedia_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadMedia_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -443,11 +443,11 @@ uint32_t MyComposePostService_UploadMedia_presult::read(::apache::thrift::protoc
 }
 
 
-MyComposePostService_UploadUniqueId_args::~MyComposePostService_UploadUniqueId_args() throw() {
+ComposePostService_UploadUniqueId_args::~ComposePostService_UploadUniqueId_args() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUniqueId_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUniqueId_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -506,10 +506,10 @@ uint32_t MyComposePostService_UploadUniqueId_args::read(::apache::thrift::protoc
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadUniqueId_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUniqueId_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUniqueId_args");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUniqueId_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -529,14 +529,14 @@ uint32_t MyComposePostService_UploadUniqueId_args::write(::apache::thrift::proto
 }
 
 
-MyComposePostService_UploadUniqueId_pargs::~MyComposePostService_UploadUniqueId_pargs() throw() {
+ComposePostService_UploadUniqueId_pargs::~ComposePostService_UploadUniqueId_pargs() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUniqueId_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUniqueId_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUniqueId_pargs");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUniqueId_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -556,11 +556,11 @@ uint32_t MyComposePostService_UploadUniqueId_pargs::write(::apache::thrift::prot
 }
 
 
-MyComposePostService_UploadUniqueId_result::~MyComposePostService_UploadUniqueId_result() throw() {
+ComposePostService_UploadUniqueId_result::~ComposePostService_UploadUniqueId_result() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUniqueId_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUniqueId_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -601,11 +601,11 @@ uint32_t MyComposePostService_UploadUniqueId_result::read(::apache::thrift::prot
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadUniqueId_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUniqueId_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUniqueId_result");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUniqueId_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
@@ -618,11 +618,11 @@ uint32_t MyComposePostService_UploadUniqueId_result::write(::apache::thrift::pro
 }
 
 
-MyComposePostService_UploadUniqueId_presult::~MyComposePostService_UploadUniqueId_presult() throw() {
+ComposePostService_UploadUniqueId_presult::~ComposePostService_UploadUniqueId_presult() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUniqueId_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUniqueId_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -664,11 +664,11 @@ uint32_t MyComposePostService_UploadUniqueId_presult::read(::apache::thrift::pro
 }
 
 
-MyComposePostService_UploadCreator_args::~MyComposePostService_UploadCreator_args() throw() {
+ComposePostService_UploadCreator_args::~ComposePostService_UploadCreator_args() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadCreator_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadCreator_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -717,10 +717,10 @@ uint32_t MyComposePostService_UploadCreator_args::read(::apache::thrift::protoco
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadCreator_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadCreator_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadCreator_args");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadCreator_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -736,14 +736,14 @@ uint32_t MyComposePostService_UploadCreator_args::write(::apache::thrift::protoc
 }
 
 
-MyComposePostService_UploadCreator_pargs::~MyComposePostService_UploadCreator_pargs() throw() {
+ComposePostService_UploadCreator_pargs::~ComposePostService_UploadCreator_pargs() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadCreator_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadCreator_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadCreator_pargs");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadCreator_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -759,11 +759,11 @@ uint32_t MyComposePostService_UploadCreator_pargs::write(::apache::thrift::proto
 }
 
 
-MyComposePostService_UploadCreator_result::~MyComposePostService_UploadCreator_result() throw() {
+ComposePostService_UploadCreator_result::~ComposePostService_UploadCreator_result() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadCreator_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadCreator_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -804,11 +804,11 @@ uint32_t MyComposePostService_UploadCreator_result::read(::apache::thrift::proto
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadCreator_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadCreator_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadCreator_result");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadCreator_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
@@ -821,11 +821,11 @@ uint32_t MyComposePostService_UploadCreator_result::write(::apache::thrift::prot
 }
 
 
-MyComposePostService_UploadCreator_presult::~MyComposePostService_UploadCreator_presult() throw() {
+ComposePostService_UploadCreator_presult::~ComposePostService_UploadCreator_presult() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadCreator_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadCreator_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -867,11 +867,11 @@ uint32_t MyComposePostService_UploadCreator_presult::read(::apache::thrift::prot
 }
 
 
-MyComposePostService_UploadUrls_args::~MyComposePostService_UploadUrls_args() throw() {
+ComposePostService_UploadUrls_args::~ComposePostService_UploadUrls_args() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUrls_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUrls_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -932,10 +932,10 @@ uint32_t MyComposePostService_UploadUrls_args::read(::apache::thrift::protocol::
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadUrls_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUrls_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUrls_args");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUrls_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -959,14 +959,14 @@ uint32_t MyComposePostService_UploadUrls_args::write(::apache::thrift::protocol:
 }
 
 
-MyComposePostService_UploadUrls_pargs::~MyComposePostService_UploadUrls_pargs() throw() {
+ComposePostService_UploadUrls_pargs::~ComposePostService_UploadUrls_pargs() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUrls_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUrls_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUrls_pargs");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUrls_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -990,11 +990,11 @@ uint32_t MyComposePostService_UploadUrls_pargs::write(::apache::thrift::protocol
 }
 
 
-MyComposePostService_UploadUrls_result::~MyComposePostService_UploadUrls_result() throw() {
+ComposePostService_UploadUrls_result::~ComposePostService_UploadUrls_result() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUrls_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUrls_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1035,11 +1035,11 @@ uint32_t MyComposePostService_UploadUrls_result::read(::apache::thrift::protocol
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadUrls_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUrls_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUrls_result");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUrls_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
@@ -1052,11 +1052,11 @@ uint32_t MyComposePostService_UploadUrls_result::write(::apache::thrift::protoco
 }
 
 
-MyComposePostService_UploadUrls_presult::~MyComposePostService_UploadUrls_presult() throw() {
+ComposePostService_UploadUrls_presult::~ComposePostService_UploadUrls_presult() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUrls_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUrls_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1098,11 +1098,11 @@ uint32_t MyComposePostService_UploadUrls_presult::read(::apache::thrift::protoco
 }
 
 
-MyComposePostService_UploadUserMentions_args::~MyComposePostService_UploadUserMentions_args() throw() {
+ComposePostService_UploadUserMentions_args::~ComposePostService_UploadUserMentions_args() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUserMentions_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUserMentions_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1163,10 +1163,10 @@ uint32_t MyComposePostService_UploadUserMentions_args::read(::apache::thrift::pr
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadUserMentions_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUserMentions_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUserMentions_args");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUserMentions_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -1190,14 +1190,14 @@ uint32_t MyComposePostService_UploadUserMentions_args::write(::apache::thrift::p
 }
 
 
-MyComposePostService_UploadUserMentions_pargs::~MyComposePostService_UploadUserMentions_pargs() throw() {
+ComposePostService_UploadUserMentions_pargs::~ComposePostService_UploadUserMentions_pargs() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUserMentions_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUserMentions_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUserMentions_pargs");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUserMentions_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -1221,11 +1221,11 @@ uint32_t MyComposePostService_UploadUserMentions_pargs::write(::apache::thrift::
 }
 
 
-MyComposePostService_UploadUserMentions_result::~MyComposePostService_UploadUserMentions_result() throw() {
+ComposePostService_UploadUserMentions_result::~ComposePostService_UploadUserMentions_result() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUserMentions_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUserMentions_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1266,11 +1266,11 @@ uint32_t MyComposePostService_UploadUserMentions_result::read(::apache::thrift::
   return xfer;
 }
 
-uint32_t MyComposePostService_UploadUserMentions_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t ComposePostService_UploadUserMentions_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyComposePostService_UploadUserMentions_result");
+  xfer += oprot->writeStructBegin("ComposePostService_UploadUserMentions_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
@@ -1283,11 +1283,11 @@ uint32_t MyComposePostService_UploadUserMentions_result::write(::apache::thrift:
 }
 
 
-MyComposePostService_UploadUserMentions_presult::~MyComposePostService_UploadUserMentions_presult() throw() {
+ComposePostService_UploadUserMentions_presult::~ComposePostService_UploadUserMentions_presult() throw() {
 }
 
 
-uint32_t MyComposePostService_UploadUserMentions_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t ComposePostService_UploadUserMentions_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -1328,18 +1328,18 @@ uint32_t MyComposePostService_UploadUserMentions_presult::read(::apache::thrift:
   return xfer;
 }
 
-int64_t MyComposePostServiceClient::UploadText(const int64_t req_id, const std::string& text)
+int64_t ComposePostServiceClient::UploadText(const int64_t req_id, const std::string& text)
 {
   send_UploadText(req_id, text);
   return recv_UploadText();
 }
 
-void MyComposePostServiceClient::send_UploadText(const int64_t req_id, const std::string& text)
+void ComposePostServiceClient::send_UploadText(const int64_t req_id, const std::string& text)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadText", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadText_pargs args;
+  ComposePostService_UploadText_pargs args;
   args.req_id = &req_id;
   args.text = &text;
   args.write(oprot_);
@@ -1349,7 +1349,7 @@ void MyComposePostServiceClient::send_UploadText(const int64_t req_id, const std
   oprot_->getTransport()->flush();
 }
 
-int64_t MyComposePostServiceClient::recv_UploadText()
+int64_t ComposePostServiceClient::recv_UploadText()
 {
 
   int32_t rseqid = 0;
@@ -1375,7 +1375,7 @@ int64_t MyComposePostServiceClient::recv_UploadText()
     iprot_->getTransport()->readEnd();
   }
   int64_t _return;
-  MyComposePostService_UploadText_presult result;
+  ComposePostService_UploadText_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -1387,18 +1387,18 @@ int64_t MyComposePostServiceClient::recv_UploadText()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadText failed: unknown result");
 }
 
-int64_t MyComposePostServiceClient::UploadMedia(const int64_t req_id, const std::vector<Media> & media)
+int64_t ComposePostServiceClient::UploadMedia(const int64_t req_id, const std::vector<Media> & media)
 {
   send_UploadMedia(req_id, media);
   return recv_UploadMedia();
 }
 
-void MyComposePostServiceClient::send_UploadMedia(const int64_t req_id, const std::vector<Media> & media)
+void ComposePostServiceClient::send_UploadMedia(const int64_t req_id, const std::vector<Media> & media)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadMedia", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadMedia_pargs args;
+  ComposePostService_UploadMedia_pargs args;
   args.req_id = &req_id;
   args.media = &media;
   args.write(oprot_);
@@ -1408,7 +1408,7 @@ void MyComposePostServiceClient::send_UploadMedia(const int64_t req_id, const st
   oprot_->getTransport()->flush();
 }
 
-int64_t MyComposePostServiceClient::recv_UploadMedia()
+int64_t ComposePostServiceClient::recv_UploadMedia()
 {
 
   int32_t rseqid = 0;
@@ -1434,7 +1434,7 @@ int64_t MyComposePostServiceClient::recv_UploadMedia()
     iprot_->getTransport()->readEnd();
   }
   int64_t _return;
-  MyComposePostService_UploadMedia_presult result;
+  ComposePostService_UploadMedia_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -1446,9 +1446,9 @@ int64_t MyComposePostServiceClient::recv_UploadMedia()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadMedia failed: unknown result");
 }
 
-int64_t MyComposePostServiceClient::FakeUploadUniqueId(RandomGenerator *randGen)
+int64_t ComposePostServiceClient::FakeUploadUniqueId(RandomGenerator *randGen)
 {
-	MyComposePostService_UploadUniqueId_result result;
+	ComposePostService_UploadUniqueId_result result;
 
 	result.success = randGen->getInt64(0xFFFFFFFFFFFFFF);
 	result.__isset.success = true;
@@ -1460,18 +1460,18 @@ int64_t MyComposePostServiceClient::FakeUploadUniqueId(RandomGenerator *randGen)
   iprot_->getTransport()->flush();
 }
 
-int64_t MyComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
+int64_t ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_id, post_type);
   return recv_UploadUniqueId();
 }
 
-void MyComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
+void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadUniqueId_pargs args;
+  ComposePostService_UploadUniqueId_pargs args;
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.post_type = &post_type;
@@ -1482,7 +1482,7 @@ void MyComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const
   oprot_->getTransport()->flush();
 }
 
-int64_t MyComposePostServiceClient::recv_UploadUniqueId()
+int64_t ComposePostServiceClient::recv_UploadUniqueId()
 {
 
   int32_t rseqid = 0;
@@ -1508,7 +1508,7 @@ int64_t MyComposePostServiceClient::recv_UploadUniqueId()
     iprot_->getTransport()->readEnd();
   }
   int64_t _return;
-  MyComposePostService_UploadUniqueId_presult result;
+  ComposePostService_UploadUniqueId_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -1520,18 +1520,18 @@ int64_t MyComposePostServiceClient::recv_UploadUniqueId()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadUniqueId failed: unknown result");
 }
 
-int64_t MyComposePostServiceClient::UploadCreator(const int64_t req_id, const Creator& creator)
+int64_t ComposePostServiceClient::UploadCreator(const int64_t req_id, const Creator& creator)
 {
   send_UploadCreator(req_id, creator);
   return recv_UploadCreator();
 }
 
-void MyComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
+void ComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadCreator", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadCreator_pargs args;
+  ComposePostService_UploadCreator_pargs args;
   args.req_id = &req_id;
   args.creator = &creator;
   args.write(oprot_);
@@ -1541,7 +1541,7 @@ void MyComposePostServiceClient::send_UploadCreator(const int64_t req_id, const 
   oprot_->getTransport()->flush();
 }
 
-int64_t MyComposePostServiceClient::recv_UploadCreator()
+int64_t ComposePostServiceClient::recv_UploadCreator()
 {
 
   int32_t rseqid = 0;
@@ -1567,7 +1567,7 @@ int64_t MyComposePostServiceClient::recv_UploadCreator()
     iprot_->getTransport()->readEnd();
   }
   int64_t _return;
-  MyComposePostService_UploadCreator_presult result;
+  ComposePostService_UploadCreator_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -1579,18 +1579,18 @@ int64_t MyComposePostServiceClient::recv_UploadCreator()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadCreator failed: unknown result");
 }
 
-int64_t MyComposePostServiceClient::UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
+int64_t ComposePostServiceClient::UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
 {
   send_UploadUrls(req_id, urls);
   return recv_UploadUrls();
 }
 
-void MyComposePostServiceClient::send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
+void ComposePostServiceClient::send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUrls", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadUrls_pargs args;
+  ComposePostService_UploadUrls_pargs args;
   args.req_id = &req_id;
   args.urls = &urls;
   args.write(oprot_);
@@ -1600,7 +1600,7 @@ void MyComposePostServiceClient::send_UploadUrls(const int64_t req_id, const std
   oprot_->getTransport()->flush();
 }
 
-int64_t MyComposePostServiceClient::recv_UploadUrls()
+int64_t ComposePostServiceClient::recv_UploadUrls()
 {
 
   int32_t rseqid = 0;
@@ -1626,7 +1626,7 @@ int64_t MyComposePostServiceClient::recv_UploadUrls()
     iprot_->getTransport()->readEnd();
   }
   int64_t _return;
-  MyComposePostService_UploadUrls_presult result;
+  ComposePostService_UploadUrls_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -1638,18 +1638,18 @@ int64_t MyComposePostServiceClient::recv_UploadUrls()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadUrls failed: unknown result");
 }
 
-int64_t MyComposePostServiceClient::UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
+int64_t ComposePostServiceClient::UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
 {
   send_UploadUserMentions(req_id, user_mentions);
   return recv_UploadUserMentions();
 }
 
-void MyComposePostServiceClient::send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
+void ComposePostServiceClient::send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadUserMentions_pargs args;
+  ComposePostService_UploadUserMentions_pargs args;
   args.req_id = &req_id;
   args.user_mentions = &user_mentions;
   args.write(oprot_);
@@ -1659,7 +1659,7 @@ void MyComposePostServiceClient::send_UploadUserMentions(const int64_t req_id, c
   oprot_->getTransport()->flush();
 }
 
-int64_t MyComposePostServiceClient::recv_UploadUserMentions()
+int64_t ComposePostServiceClient::recv_UploadUserMentions()
 {
 
   int32_t rseqid = 0;
@@ -1685,7 +1685,7 @@ int64_t MyComposePostServiceClient::recv_UploadUserMentions()
     iprot_->getTransport()->readEnd();
   }
   int64_t _return;
-  MyComposePostService_UploadUserMentions_presult result;
+  ComposePostService_UploadUserMentions_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -1697,7 +1697,7 @@ int64_t MyComposePostServiceClient::recv_UploadUserMentions()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadUserMentions failed: unknown result");
 }
 
-bool MyComposePostServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
+bool ComposePostServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
   ProcessMap::iterator pfn;
   pfn = processMap_.find(fname);
   if (pfn == processMap_.end()) {
@@ -1716,69 +1716,34 @@ bool MyComposePostServiceProcessor::dispatchCall(::apache::thrift::protocol::TPr
   return true;
 }
 
-bool MyComposePostServiceProcessor::process(::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> in,
-                       ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> out,
-                       void* connectionContext) {
-    
-    #ifdef FLEXUS
-      HEADER_BEGIN();
-    #endif
-
-    #ifdef SW
-      this->headerSW.start();
-    #endif
-
-    std::string fname;
-    ::apache::thrift::protocol::TMessageType mtype;
-    int32_t seqid;
-    in->readMessageBegin(fname, mtype, seqid);
-    
-    #ifdef FLEXUS
-      HEADER_END();
-      DISPATCH_BEGIN();
-    #endif
-
-    #ifdef SW
-      this->headerSW.stop();
-      this->disSW.start();
-    #endif
-
-    if (mtype != ::apache::thrift::protocol::T_CALL && mtype != ::apache::thrift::protocol::T_ONEWAY) {
-      ::apache::thrift::GlobalOutput.printf("received invalid message type %d from client", mtype);
-      return false;
-    }
-
-    return dispatchCall(in.get(), out.get(), fname, seqid, connectionContext);
-}
-
-void MyComposePostServiceProcessor::process_UploadText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ComposePostServiceProcessor::process_UploadText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyComposePostService.UploadText", callContext);
+    ctx = this->eventHandler_->getContext("ComposePostService.UploadText", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyComposePostService.UploadText");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ComposePostService.UploadText");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyComposePostService.UploadText");
+    this->eventHandler_->preRead(ctx, "ComposePostService.UploadText");
   }
 
-  MyComposePostService_UploadText_args args;
+  ComposePostService_UploadText_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyComposePostService.UploadText", bytes);
+    this->eventHandler_->postRead(ctx, "ComposePostService.UploadText", bytes);
   }
 
-  MyComposePostService_UploadText_result result;
+  ComposePostService_UploadText_result result;
   try {
     result.success = iface_->UploadText(args.req_id, args.text);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadText");
+      this->eventHandler_->handlerError(ctx, "ComposePostService.UploadText");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -1791,7 +1756,7 @@ void MyComposePostServiceProcessor::process_UploadText(int32_t seqid, ::apache::
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyComposePostService.UploadText");
+    this->eventHandler_->preWrite(ctx, "ComposePostService.UploadText");
   }
 
   oprot->writeMessageBegin("UploadText", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -1801,38 +1766,38 @@ void MyComposePostServiceProcessor::process_UploadText(int32_t seqid, ::apache::
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyComposePostService.UploadText", bytes);
+    this->eventHandler_->postWrite(ctx, "ComposePostService.UploadText", bytes);
   }
 }
 
-void MyComposePostServiceProcessor::process_UploadMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ComposePostServiceProcessor::process_UploadMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyComposePostService.UploadMedia", callContext);
+    ctx = this->eventHandler_->getContext("ComposePostService.UploadMedia", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyComposePostService.UploadMedia");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ComposePostService.UploadMedia");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyComposePostService.UploadMedia");
+    this->eventHandler_->preRead(ctx, "ComposePostService.UploadMedia");
   }
 
-  MyComposePostService_UploadMedia_args args;
+  ComposePostService_UploadMedia_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyComposePostService.UploadMedia", bytes);
+    this->eventHandler_->postRead(ctx, "ComposePostService.UploadMedia", bytes);
   }
 
-  MyComposePostService_UploadMedia_result result;
+  ComposePostService_UploadMedia_result result;
   try {
     result.success = iface_->UploadMedia(args.req_id, args.media);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadMedia");
+      this->eventHandler_->handlerError(ctx, "ComposePostService.UploadMedia");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -1845,7 +1810,7 @@ void MyComposePostServiceProcessor::process_UploadMedia(int32_t seqid, ::apache:
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyComposePostService.UploadMedia");
+    this->eventHandler_->preWrite(ctx, "ComposePostService.UploadMedia");
   }
 
   oprot->writeMessageBegin("UploadMedia", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -1855,38 +1820,38 @@ void MyComposePostServiceProcessor::process_UploadMedia(int32_t seqid, ::apache:
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyComposePostService.UploadMedia", bytes);
+    this->eventHandler_->postWrite(ctx, "ComposePostService.UploadMedia", bytes);
   }
 }
 
-void MyComposePostServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ComposePostServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyComposePostService.UploadUniqueId", callContext);
+    ctx = this->eventHandler_->getContext("ComposePostService.UploadUniqueId", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyComposePostService.UploadUniqueId");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ComposePostService.UploadUniqueId");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyComposePostService.UploadUniqueId");
+    this->eventHandler_->preRead(ctx, "ComposePostService.UploadUniqueId");
   }
 
-  MyComposePostService_UploadUniqueId_args args;
+  ComposePostService_UploadUniqueId_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyComposePostService.UploadUniqueId", bytes);
+    this->eventHandler_->postRead(ctx, "ComposePostService.UploadUniqueId", bytes);
   }
 
-  MyComposePostService_UploadUniqueId_result result;
+  ComposePostService_UploadUniqueId_result result;
   try {
     result.success = iface_->UploadUniqueId(args.req_id, args.post_id, args.post_type);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadUniqueId");
+      this->eventHandler_->handlerError(ctx, "ComposePostService.UploadUniqueId");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -1899,7 +1864,7 @@ void MyComposePostServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apac
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyComposePostService.UploadUniqueId");
+    this->eventHandler_->preWrite(ctx, "ComposePostService.UploadUniqueId");
   }
 
   oprot->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -1909,38 +1874,38 @@ void MyComposePostServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apac
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyComposePostService.UploadUniqueId", bytes);
+    this->eventHandler_->postWrite(ctx, "ComposePostService.UploadUniqueId", bytes);
   }
 }
 
-void MyComposePostServiceProcessor::process_UploadCreator(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ComposePostServiceProcessor::process_UploadCreator(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyComposePostService.UploadCreator", callContext);
+    ctx = this->eventHandler_->getContext("ComposePostService.UploadCreator", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyComposePostService.UploadCreator");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ComposePostService.UploadCreator");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyComposePostService.UploadCreator");
+    this->eventHandler_->preRead(ctx, "ComposePostService.UploadCreator");
   }
 
-  MyComposePostService_UploadCreator_args args;
+  ComposePostService_UploadCreator_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyComposePostService.UploadCreator", bytes);
+    this->eventHandler_->postRead(ctx, "ComposePostService.UploadCreator", bytes);
   }
 
-  MyComposePostService_UploadCreator_result result;
+  ComposePostService_UploadCreator_result result;
   try {
     result.success = iface_->UploadCreator(args.req_id, args.creator);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadCreator");
+      this->eventHandler_->handlerError(ctx, "ComposePostService.UploadCreator");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -1953,7 +1918,7 @@ void MyComposePostServiceProcessor::process_UploadCreator(int32_t seqid, ::apach
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyComposePostService.UploadCreator");
+    this->eventHandler_->preWrite(ctx, "ComposePostService.UploadCreator");
   }
 
   oprot->writeMessageBegin("UploadCreator", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -1963,38 +1928,38 @@ void MyComposePostServiceProcessor::process_UploadCreator(int32_t seqid, ::apach
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyComposePostService.UploadCreator", bytes);
+    this->eventHandler_->postWrite(ctx, "ComposePostService.UploadCreator", bytes);
   }
 }
 
-void MyComposePostServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ComposePostServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyComposePostService.UploadUrls", callContext);
+    ctx = this->eventHandler_->getContext("ComposePostService.UploadUrls", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyComposePostService.UploadUrls");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ComposePostService.UploadUrls");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyComposePostService.UploadUrls");
+    this->eventHandler_->preRead(ctx, "ComposePostService.UploadUrls");
   }
 
-  MyComposePostService_UploadUrls_args args;
+  ComposePostService_UploadUrls_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyComposePostService.UploadUrls", bytes);
+    this->eventHandler_->postRead(ctx, "ComposePostService.UploadUrls", bytes);
   }
 
-  MyComposePostService_UploadUrls_result result;
+  ComposePostService_UploadUrls_result result;
   try {
     result.success = iface_->UploadUrls(args.req_id, args.urls);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadUrls");
+      this->eventHandler_->handlerError(ctx, "ComposePostService.UploadUrls");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -2007,7 +1972,7 @@ void MyComposePostServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyComposePostService.UploadUrls");
+    this->eventHandler_->preWrite(ctx, "ComposePostService.UploadUrls");
   }
 
   oprot->writeMessageBegin("UploadUrls", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -2017,38 +1982,38 @@ void MyComposePostServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyComposePostService.UploadUrls", bytes);
+    this->eventHandler_->postWrite(ctx, "ComposePostService.UploadUrls", bytes);
   }
 }
 
-void MyComposePostServiceProcessor::process_UploadUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void ComposePostServiceProcessor::process_UploadUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyComposePostService.UploadUserMentions", callContext);
+    ctx = this->eventHandler_->getContext("ComposePostService.UploadUserMentions", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyComposePostService.UploadUserMentions");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ComposePostService.UploadUserMentions");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyComposePostService.UploadUserMentions");
+    this->eventHandler_->preRead(ctx, "ComposePostService.UploadUserMentions");
   }
 
-  MyComposePostService_UploadUserMentions_args args;
+  ComposePostService_UploadUserMentions_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyComposePostService.UploadUserMentions", bytes);
+    this->eventHandler_->postRead(ctx, "ComposePostService.UploadUserMentions", bytes);
   }
 
-  MyComposePostService_UploadUserMentions_result result;
+  ComposePostService_UploadUserMentions_result result;
   try {
     result.success = iface_->UploadUserMentions(args.req_id, args.user_mentions);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyComposePostService.UploadUserMentions");
+      this->eventHandler_->handlerError(ctx, "ComposePostService.UploadUserMentions");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -2061,7 +2026,7 @@ void MyComposePostServiceProcessor::process_UploadUserMentions(int32_t seqid, ::
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyComposePostService.UploadUserMentions");
+    this->eventHandler_->preWrite(ctx, "ComposePostService.UploadUserMentions");
   }
 
   oprot->writeMessageBegin("UploadUserMentions", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -2071,30 +2036,30 @@ void MyComposePostServiceProcessor::process_UploadUserMentions(int32_t seqid, ::
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyComposePostService.UploadUserMentions", bytes);
+    this->eventHandler_->postWrite(ctx, "ComposePostService.UploadUserMentions", bytes);
   }
 }
 
-::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > MyComposePostServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
-  ::apache::thrift::ReleaseHandler< MyComposePostServiceIfFactory > cleanup(handlerFactory_);
-  ::apache::thrift::stdcxx::shared_ptr< MyComposePostServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new MyComposePostServiceProcessor(handler));
+::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > ComposePostServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< ComposePostServiceIfFactory > cleanup(handlerFactory_);
+  ::apache::thrift::stdcxx::shared_ptr< ComposePostServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new ComposePostServiceProcessor(handler));
   return processor;
 }
 
-int64_t MyComposePostServiceConcurrentClient::UploadText(const int64_t req_id, const std::string& text)
+int64_t ComposePostServiceConcurrentClient::UploadText(const int64_t req_id, const std::string& text)
 {
   int32_t seqid = send_UploadText(req_id, text);
   return recv_UploadText(seqid);
 }
 
-int32_t MyComposePostServiceConcurrentClient::send_UploadText(const int64_t req_id, const std::string& text)
+int32_t ComposePostServiceConcurrentClient::send_UploadText(const int64_t req_id, const std::string& text)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("UploadText", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadText_pargs args;
+  ComposePostService_UploadText_pargs args;
   args.req_id = &req_id;
   args.text = &text;
   args.write(oprot_);
@@ -2107,7 +2072,7 @@ int32_t MyComposePostServiceConcurrentClient::send_UploadText(const int64_t req_
   return cseqid;
 }
 
-int64_t MyComposePostServiceConcurrentClient::recv_UploadText(const int32_t seqid)
+int64_t ComposePostServiceConcurrentClient::recv_UploadText(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2146,7 +2111,7 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadText(const int32_t seqi
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
       int64_t _return;
-      MyComposePostService_UploadText_presult result;
+      ComposePostService_UploadText_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -2167,19 +2132,19 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadText(const int32_t seqi
   } // end while(true)
 }
 
-int64_t MyComposePostServiceConcurrentClient::UploadMedia(const int64_t req_id, const std::vector<Media> & media)
+int64_t ComposePostServiceConcurrentClient::UploadMedia(const int64_t req_id, const std::vector<Media> & media)
 {
   int32_t seqid = send_UploadMedia(req_id, media);
   return recv_UploadMedia(seqid);
 }
 
-int32_t MyComposePostServiceConcurrentClient::send_UploadMedia(const int64_t req_id, const std::vector<Media> & media)
+int32_t ComposePostServiceConcurrentClient::send_UploadMedia(const int64_t req_id, const std::vector<Media> & media)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("UploadMedia", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadMedia_pargs args;
+  ComposePostService_UploadMedia_pargs args;
   args.req_id = &req_id;
   args.media = &media;
   args.write(oprot_);
@@ -2192,7 +2157,7 @@ int32_t MyComposePostServiceConcurrentClient::send_UploadMedia(const int64_t req
   return cseqid;
 }
 
-int64_t MyComposePostServiceConcurrentClient::recv_UploadMedia(const int32_t seqid)
+int64_t ComposePostServiceConcurrentClient::recv_UploadMedia(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2231,7 +2196,7 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadMedia(const int32_t seq
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
       int64_t _return;
-      MyComposePostService_UploadMedia_presult result;
+      ComposePostService_UploadMedia_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -2252,19 +2217,19 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadMedia(const int32_t seq
   } // end while(true)
 }
 
-int64_t MyComposePostServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
+int64_t ComposePostServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   int32_t seqid = send_UploadUniqueId(req_id, post_id, post_type);
   return recv_UploadUniqueId(seqid);
 }
 
-int32_t MyComposePostServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
+int32_t ComposePostServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadUniqueId_pargs args;
+  ComposePostService_UploadUniqueId_pargs args;
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.post_type = &post_type;
@@ -2278,7 +2243,7 @@ int32_t MyComposePostServiceConcurrentClient::send_UploadUniqueId(const int64_t 
   return cseqid;
 }
 
-int64_t MyComposePostServiceConcurrentClient::recv_UploadUniqueId(const int32_t seqid)
+int64_t ComposePostServiceConcurrentClient::recv_UploadUniqueId(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2317,7 +2282,7 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadUniqueId(const int32_t 
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
       int64_t _return;
-      MyComposePostService_UploadUniqueId_presult result;
+      ComposePostService_UploadUniqueId_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -2338,19 +2303,19 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadUniqueId(const int32_t 
   } // end while(true)
 }
 
-int64_t MyComposePostServiceConcurrentClient::UploadCreator(const int64_t req_id, const Creator& creator)
+int64_t ComposePostServiceConcurrentClient::UploadCreator(const int64_t req_id, const Creator& creator)
 {
   int32_t seqid = send_UploadCreator(req_id, creator);
   return recv_UploadCreator(seqid);
 }
 
-int32_t MyComposePostServiceConcurrentClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
+int32_t ComposePostServiceConcurrentClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("UploadCreator", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadCreator_pargs args;
+  ComposePostService_UploadCreator_pargs args;
   args.req_id = &req_id;
   args.creator = &creator;
   args.write(oprot_);
@@ -2363,7 +2328,7 @@ int32_t MyComposePostServiceConcurrentClient::send_UploadCreator(const int64_t r
   return cseqid;
 }
 
-int64_t MyComposePostServiceConcurrentClient::recv_UploadCreator(const int32_t seqid)
+int64_t ComposePostServiceConcurrentClient::recv_UploadCreator(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2402,7 +2367,7 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadCreator(const int32_t s
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
       int64_t _return;
-      MyComposePostService_UploadCreator_presult result;
+      ComposePostService_UploadCreator_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -2423,19 +2388,19 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadCreator(const int32_t s
   } // end while(true)
 }
 
-int64_t MyComposePostServiceConcurrentClient::UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
+int64_t ComposePostServiceConcurrentClient::UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
 {
   int32_t seqid = send_UploadUrls(req_id, urls);
   return recv_UploadUrls(seqid);
 }
 
-int32_t MyComposePostServiceConcurrentClient::send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
+int32_t ComposePostServiceConcurrentClient::send_UploadUrls(const int64_t req_id, const std::vector<Url> & urls)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("UploadUrls", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadUrls_pargs args;
+  ComposePostService_UploadUrls_pargs args;
   args.req_id = &req_id;
   args.urls = &urls;
   args.write(oprot_);
@@ -2448,7 +2413,7 @@ int32_t MyComposePostServiceConcurrentClient::send_UploadUrls(const int64_t req_
   return cseqid;
 }
 
-int64_t MyComposePostServiceConcurrentClient::recv_UploadUrls(const int32_t seqid)
+int64_t ComposePostServiceConcurrentClient::recv_UploadUrls(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2487,7 +2452,7 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadUrls(const int32_t seqi
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
       int64_t _return;
-      MyComposePostService_UploadUrls_presult result;
+      ComposePostService_UploadUrls_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -2508,19 +2473,19 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadUrls(const int32_t seqi
   } // end while(true)
 }
 
-int64_t MyComposePostServiceConcurrentClient::UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
+int64_t ComposePostServiceConcurrentClient::UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
 {
   int32_t seqid = send_UploadUserMentions(req_id, user_mentions);
   return recv_UploadUserMentions(seqid);
 }
 
-int32_t MyComposePostServiceConcurrentClient::send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
+int32_t ComposePostServiceConcurrentClient::send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("UploadUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyComposePostService_UploadUserMentions_pargs args;
+  ComposePostService_UploadUserMentions_pargs args;
   args.req_id = &req_id;
   args.user_mentions = &user_mentions;
   args.write(oprot_);
@@ -2533,7 +2498,7 @@ int32_t MyComposePostServiceConcurrentClient::send_UploadUserMentions(const int6
   return cseqid;
 }
 
-int64_t MyComposePostServiceConcurrentClient::recv_UploadUserMentions(const int32_t seqid)
+int64_t ComposePostServiceConcurrentClient::recv_UploadUserMentions(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2572,7 +2537,7 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadUserMentions(const int3
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
       int64_t _return;
-      MyComposePostService_UploadUserMentions_presult result;
+      ComposePostService_UploadUserMentions_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
@@ -2594,4 +2559,3 @@ int64_t MyComposePostServiceConcurrentClient::recv_UploadUserMentions(const int3
 }
 
 } // namespace
-

@@ -51,13 +51,13 @@ void GenRequests(MyThriftClient<MyUniqueIdServiceClient> *clientPtr,
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;  
 }
 
-void InitializeFunctionMap(FunctionClientMap<MyComposePostServiceClient> *f2cmap, RandomGenerator *randGen) {
-	MyThriftClient<MyComposePostServiceClient>** clients = new MyThriftClient<MyComposePostServiceClient>*[NUM_TEMPLATE_CLIENTS];
+void InitializeFunctionMap(FunctionClientMap<ComposePostServiceClient> *f2cmap, RandomGenerator *randGen) {
+	MyThriftClient<ComposePostServiceClient>** clients = new MyThriftClient<ComposePostServiceClient>*[NUM_TEMPLATE_CLIENTS];
 
 	// Fill up the clients
 	uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
 	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
+		clients[i] = new MyThriftClient<ComposePostServiceClient>(buffer_size);
 		clients[i]->GetClient()->FakeUploadUniqueId(randGen);
 	}
 
@@ -67,7 +67,7 @@ void InitializeFunctionMap(FunctionClientMap<MyComposePostServiceClient> *f2cmap
 void GenAndProcessReqs(rpcNUMAContext* ctx,
 											 int tid,
 											 std::shared_ptr<MyUniqueIdHandler> handler,
-											 NebulaClientPool<MyComposePostServiceClient> *clientPool) {
+											 NebulaClientPool<ComposePostServiceClient> *clientPool) {
 
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
   RandomGenerator randGen(tid);
@@ -163,7 +163,7 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-	NebulaClientPool<MyComposePostServiceClient> compose_post_pool("compose-post", BUFFER_SIZE, rpcContext);
+	NebulaClientPool<ComposePostServiceClient> compose_post_pool("compose-post", BUFFER_SIZE, rpcContext);
   std::shared_ptr<MyUniqueIdHandler> handler = std::make_shared<MyUniqueIdHandler>(
                                               &thread_lock, machine_id, &compose_post_pool);
   

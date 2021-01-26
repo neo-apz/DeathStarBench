@@ -1,31 +1,24 @@
-#include "../../MyCommon/utils.h"
+#include <utils.h>
+#include <NebulaThriftProcessor.h>
+#include <RandomGenerator.h>
+#include <NebulaClientPool.h>
+
 #include "MyComposePostHandler.h"
 
-#include "../../MyCommon/MyThriftClient.h"
-
-#include "../../MyCommon/stopwatch.h"
-#include "../../MyCommon/RandomGenerator.h"
-
-#ifdef __aarch64__
-  #include "../../MyCommon/MagicBreakPoint.h"
-#endif
-
-#include "../../MyCommon/MyProcessorEventHandler.h"
-
 using namespace my_social_network;
-
 using namespace std;
 
 uint64_t num_iterations;
-
 cpu_set_t *cpuSet;
 
 volatile bool start = false;
 pthread_barrier_t barrier;
 
-#define BUFFER_SIZE  220
+#define BASE_BUFFER_SIZE  220
+#define NUM_TEMPLATE_CLIENTS     20
+#define NUM_MSGS_PER_CLIENT      1
+
 #define REQ_ID_BEGIN 0xFFFFFFFFFFFF
-#define WARM_UP_ITER  100
 
 struct MsgType {
   enum type {
@@ -41,7 +34,7 @@ struct MsgType {
 };
 
 void ClientSendComposePost(
-  MyThriftClient<MyComposePostServiceClient> *clientPtr,
+  MyThriftClient<ComposePostServiceClient> *clientPtr,
   int64_t req_id, MsgType::type msg_type, RandomGenerator* randGen){
   
   clientPtr->Connect();
@@ -50,7 +43,7 @@ void ClientSendComposePost(
   switch (msg_type) {
     case MsgType::TEXT:
       {
-        string str = randGen->getAlphaNumericString(80);
+        string str = randGen->getRandText();
         client->send_UploadText(req_id, str);
       }
       break;
@@ -59,9 +52,7 @@ void ClientSendComposePost(
         std::vector<Media> media_vector;
         uint32_t iters = randGen->getUInt32(1, 2);
         for(int i=0; i < iters; i++){
-          Media media;
-          media.media_id = randGen->getInt64(RAND_NUM_LIMIT);
-          media.media_type = randGen->getAlphaString(10);
+          Media media(randGen);
           media_vector.emplace_back(media);
         }
         client->send_UploadMedia(req_id, media_vector);
@@ -76,9 +67,7 @@ void ClientSendComposePost(
       break;
     case MsgType::CREATOR :
       {
-        Creator creator;
-        creator.user_id = randGen->getInt64(RAND_NUM_LIMIT);
-        creator.username = randGen->getAlphaNumericString(12);
+        Creator creator(randGen);
         client->send_UploadCreator(req_id, creator);
       }
       break;
@@ -87,9 +76,7 @@ void ClientSendComposePost(
         std::vector<Url> urls;
         uint32_t iters = randGen->getUInt32(1, 2);
         for (int i = 0; i < iters; i++){
-          Url url;
-          url.expanded_url = randGen->getAlphaNumericString(60);
-          url.shortened_url = randGen->getAlphaNumericString(25);
+          Url url(randGen);
           urls.emplace_back(url);
         }
         client->send_UploadUrls(req_id, urls);
@@ -100,9 +87,7 @@ void ClientSendComposePost(
         std::vector<UserMention> user_mentions;
         uint32_t iters = randGen->getUInt32(1, 2);
         for (int i = 0; i < iters; i++){
-          UserMention user_mention;
-          user_mention.user_id = randGen->getInt64(RAND_NUM_LIMIT);
-          user_mention.username = randGen->getAlphaNumericString(12);
+          UserMention user_mention(randGen);
           user_mentions.emplace_back(user_mention);
         }
         client->send_UploadUserMentions(req_id, user_mentions);
@@ -114,71 +99,200 @@ void ClientSendComposePost(
   }     
 }
 
-void ClientRecvComposePost(
-  MyThriftClient<MyComposePostServiceClient> *composePostClient, MsgType::type msg_type){
+
+void GenRequests(MyThriftClient<ComposePostServiceClient> *clientPtr,
+								 RandomGenerator *randGen){
+
+	for (int i = 0; i < NUM_MSGS_PER_CLIENT; i++) {
+		int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
+	  MsgType::type msg_type = (MsgType::type) randGen->getInt64(0, MsgType::SIZE-1);
+
+		ClientSendComposePost(clientPtr, req_id, msg_type, randGen);
+	}
+
+  // uint8_t* cltIBufPtr, *cltOBufPtr;
+  // uint32_t ISz, OSz;
   
-  composePostClient->Connect();
-  auto client = composePostClient->GetClient();
+  // clientPtr->GetBuffer(&cltIBufPtr, &ISz, &cltOBufPtr, &OSz);
 
-  switch (msg_type)
-  {
-    case MsgType::TEXT :
-      client->recv_UploadText();
-      break;
-    case MsgType::MEDIA :
-      client->recv_UploadMedia();
-      break;
-    case MsgType::UNIQUE_ID :
-      client->recv_UploadUniqueId();
-      break;
-    case MsgType::CREATOR :
-      client->recv_UploadCreator();
-      break;
-    case MsgType::URLS :
-      client->recv_UploadUrls();
-      break;
-    case MsgType::USER_MENTIONS :
-      client->recv_UploadUserMentions();
-      break;    
-    default:
-      cout << "This is an error, wrong message type!" << endl;
-      exit(1);
-  } 
-
+  // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;  
 }
 
-void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *clientPtr,
-                                  std::shared_ptr<MyComposePostHandler> handler,
-                                  int64_t req_id,
-                                  int tid, int max_tid) {
+typedef void (*fakeFunc)(void); // type for conciseness
 
-  std::shared_ptr<MyComposePostServiceProcessor> processor =
-      std::make_shared<MyComposePostServiceProcessor>(handler);
 
+// void InitializeFunctionMap(FunctionClientMap<FakeRedisClient> *f2cmap,
+// 													 RandomGenerator *randGen,
+// 													 void (*fakeFunc)(RandomGenerator*),
+// 													 FakeRedisClient::FuncType::type funcType) {
+
+// 	uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
+
+// 	MyThriftClient<FakeRedisClient>** clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+// 	// Fill up the clients
+// 	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+// 		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+// 		clients[i]->GetClient()->(*fakeFunc)(randGen);
+// 	}
+// 	f2cmap->RegisterFunction(funcType, clients);
+// }
+
+void InitializeFunctionMapRedis(FunctionClientMap<FakeRedisClient> *f2cmap, RandomGenerator *randGen) {
+
+	// InitializeFunctionMap(f2cmap, randGen, FakeHSetCreator, FakeRedisClient::FuncType::HS_CREATOR);
+
+	uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
+
+	MyThriftClient<FakeRedisClient>** clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHSetCreator(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_CREATOR, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHSetText(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_TEXT, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHSetMedia(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_MEDIA, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHSetPostId(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_POST_ID, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHSetPostType(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_POST_TYPE, clients);
+	
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHSetUrls(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_URLS, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHSetUserMentions(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_USER_MENTIONS, clients);
+
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHGetCreator(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_CREATOR, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHGetText(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_TEXT, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHGetMedia(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_MEDIA, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHGetPostId(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_POST_ID, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHGetPostType(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_POST_TYPE, clients);
+	
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHGetUrls(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_URLS, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHGetUserMentions(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_USER_MENTIONS, clients);
+
+	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
+	// Fill up the clients
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
+		clients[i]->GetClient()->FakeHHIncrBy(randGen);
+	}
+	f2cmap->RegisterFunction(FakeRedisClient::FuncType::H_INC, clients);
+}
+
+void GenAndProcessReqs(rpcNUMAContext* ctx,
+											 int tid,
+											 std::shared_ptr<ComposePostHandler> handler) {
+
+  // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
   RandomGenerator randGen(tid);
 
-  uint64_t client_count = 0;
-  uint64_t iter_count = 0;
-
-  uint64_t iterations = num_iterations / MsgType::SIZE;
+  uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
   
-  uint32_t msg_types[MsgType::SIZE];
-  // apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> srvIProt, srvOProt;
-  while (iter_count < iterations){
-    randGen.getUInt32Set(msg_types, MsgType::SIZE);
+  MyThriftClient<ComposePostServiceClient>* clients[NUM_TEMPLATE_CLIENTS];
 
-    for (int i = 0; i < MsgType::SIZE; i++){
-      MsgType::type msg_type = (MsgType::type) msg_types[i];
+	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new MyThriftClient<ComposePostServiceClient>(buffer_size);
+		GenRequests(clients[i], &randGen);
+	}
 
-      // ClientSendComposePost(clientPtrs[client_count], req_id, msg_type, &randGen);
-      ClientSendComposePost(clientPtr, req_id, msg_type, &randGen);
-      
-      client_count++;
-    }
-      
-    iter_count++;
-    req_id++;
-  }
+  std::shared_ptr<ComposePostServiceProcessor> proc = 
+		std::make_shared<ComposePostServiceProcessor>(handler);
+
+	auto processor = new NebulaThriftProcessor<ComposePostServiceProcessor, ComposePostServiceClient>(ctx, tid, proc, clients);
+
+	auto f2cMapRedis = handler->_redis_pool->AddToPool(ctx->getQP(tid));
+	auto f2cMapPostStorage = handler->_post_storage_pool->AddToPool(ctx->getQP(tid));
+	auto f2cMapUserTimeline = handler->_user_timeline_pool->AddToPool(ctx->getQP(tid));
+	auto f2cMapRabbitmq = handler->_rabbitmq_pool->AddToPool(ctx->getQP(tid));
+
+
+	InitializeFunctionMapRedis(f2cMapRedis, &randGen);
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;
@@ -187,58 +301,32 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *cl
 
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
-  std::shared_ptr<MyProcessorEventHandler> eventHandler;
-
-  #ifdef SW
-    eventHandler = std::make_shared<MyProcessorEventHandler>(&(processor->disSW));
-  #else
-    eventHandler = std::make_shared<MyProcessorEventHandler>();
-  #endif
-
-  processor->setEventHandler(eventHandler);
-
-  auto srvIProt = clientPtr->GetClient()->getOutputProtocol();
-  auto srvOProt = clientPtr->GetClient()->getInputProtocol();
-
   pthread_barrier_wait(&barrier);
-  if (tid == max_tid) {
-    #ifdef FLEXUS
-    BREAKPOINT();
-    #endif
+
+  if (tid == 0) {
+		fprintf(stdout,"Init done! Ready to start execution!\n");
+    ctx->readyForTiming();
+
     start = true;
     // LOG(warning) << "Process Phase Started!!";
   }
 
   while(!start);
 
-  client_count = 0;
+  uint64_t count = 1;
 
-  iterations = iterations * MsgType::SIZE;
-
-  while (client_count < iterations){
-    // srvIProt = clientPtrs[client_count]->GetClient()->getOutputProtocol();
-    // srvOProt = clientPtrs[client_count]->GetClient()->getInputProtocol();
-
-    // msg_type = (MsgType::type) (count % MsgType::SIZE);
+  while (count <= num_iterations) {
+    processor->process(count);
 
     // std::cout << "Processing Thread " << tid << " count=" << count  << std::endl;
-    // cout << "Process " << count << " finished!" << endl;
-    
-    #ifdef __aarch64__
-      PROCESS_BEGIN(client_count+1);
-    #endif
+    // ClientRecvUniqueId(uniqueIdClient);
 
-    processor->process(srvIProt, srvOProt, nullptr);
-
-    #ifdef __aarch64__
-      PROCESS_END(client_count+1);
-    #endif
-
-    client_count++;
+    count++;
   }
 
-  // if (tid == max_tid)
-  //   LOG(warning) << "Process Phase finished!";
+  #ifdef SW
+    processor->printSWResults();
+  #endif
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;
@@ -247,86 +335,87 @@ void GenAndProcessComposePostReqs(MyThriftClient<MyComposePostServiceClient> *cl
 
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
-  #ifdef SW
-    eventHandler->printResults();
-    processor->headerSW.post_process();
-    processor->disSW.post_process();
-
-    double headerTime = (processor->headerSW.mean() * 1.0);
-    cout << "AVG HeaderParsing Latency (us): " << headerTime / 1000 << endl;
-
-    double disTime = (processor->disSW.mean() * 1.0);
-    cout << "AVG Dispatch Latency (us): " << disTime / 1000 << endl;
-  #endif
+  // if (tid == max_tid)
+  //   LOG(warning) << "Process Phase finished!";
 }
 
 int main(int argc, char *argv[]) {
   init_logger();
 
-  uint64_t num_threads;
+  uint64_t num_threads, num_nodes;
 
-  if (argc != 3) {
-    cout << "Invalid input! Usage: ./MyComposePostService <num_threads> <iterations> \n" << endl;
+  if (argc != 4) {
+    cout << "Invalid input! Usage: " << argv[0] << " <total # nodes> <num_threads> <iterations> \n" << endl;
     exit(-1);
   } else {
-    num_threads = atoi(argv[1]);
-    num_iterations = atoi(argv[2]);
+    num_nodes = atoi(argv[1]);
+    num_threads = atoi(argv[2]);
+    num_iterations = atoi(argv[3]);
   }
 
   cpu_set_t  mask;
   CPU_ZERO(&mask);
-  CPU_SET(0, &mask);
+  CPU_SET(1, &mask); // pin the main thread to core #1
   sched_setaffinity(0, sizeof(mask), &mask);
-
-  uint64_t buffer_size = num_iterations * BUFFER_SIZE;
 
   pthread_barrier_init(&barrier, NULL, num_threads);
 
-  // MyThriftClient<MyComposePostServiceClient>** clients[num_threads];
-  MyThriftClient<MyComposePostServiceClient>* clients[num_threads];
-  
-  std::shared_ptr<MyComposePostHandler> handler = std::make_shared<MyComposePostHandler>();
+  int node_id = 1;
+  // Create the RPC NUMA Context!
+  rpcNUMAContext* rpcContext = new rpcNUMAContext(node_id, num_nodes, num_threads+1);
 
-  std::thread processThreads[num_threads];
+	NebulaClientPool<FakeRedisClient> redis_pool("redis", BUFFER_SIZE, rpcContext);
+	NebulaClientPool<PostStorageServiceClient> post_storage_pool("post-storage-client", BUFFER_SIZE, rpcContext);
+	NebulaClientPool<UserTimelineServiceClient> user_timeline_pool("user-timeline-client", BUFFER_SIZE, rpcContext);
+	NebulaClientPool<FakeRabbitmqClient> rabbitmq_pool("rabbitmq", BUFFER_SIZE, rpcContext);
+
+
+  std::shared_ptr<ComposePostHandler> handler = std::make_shared<ComposePostHandler>(
+                                              &redis_pool,
+																							&post_storage_pool,
+																							&user_timeline_pool,
+																							&rabbitmq_pool);
+  
+  std::thread processThreads[num_threads+1];
+
+  int coreID = 0;
+  while (coreID <= num_threads) {
+
+    if (coreID == 1) { //skip this core, this will only run the main thread
+      coreID++;
+      continue;
+    }
+
+    processThreads[coreID] = std::thread(GenAndProcessReqs,
+                                          rpcContext,
+                                          coreID,
+                                          handler);
+
+    CPU_ZERO(&mask);
+    CPU_SET(coreID, &mask);
+    int error = pthread_setaffinity_np(processThreads[coreID].native_handle(), sizeof(cpu_set_t), &mask);
+    if (error) {
+      printf("Could not bind thread %d to core %d! (error %d)\n", coreID, coreID, error);
+    }
+    coreID++;
+  }
+
 
   int64_t req_id_begin = REQ_ID_BEGIN;
+	    req_id_begin += num_iterations + 2;
 
-  cpuSet = (cpu_set_t*) malloc(sizeof(cpu_set_t) * num_threads);
 
-  // buffer_size = BUFFER_SIZE;
-  for (int i = 0; i < num_threads; i++) {
-    // clients[i] = (MyThriftClient<MyComposePostServiceClient>**) malloc(sizeof(MyThriftClient<MyComposePostServiceClient>**) * num_iterations);
-    clients[i] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
+	coreID = 0;
+  while (coreID <= num_threads) {
+    if (coreID == 1) { //skip this core, this will only run the main thread
+      coreID++;
+      continue;
+    }
 
-    // for (int c = 0; c < num_iterations; c++) {
-    //   clients[i][c] = new MyThriftClient<MyComposePostServiceClient>(buffer_size);
-    // }
+    processThreads[coreID].join();
 
-    processThreads[i] = std::thread(GenAndProcessComposePostReqs,
-                                      clients[i],
-                                      handler,
-                                      req_id_begin,
-                                      i, num_threads - 1);
-
-    req_id_begin += num_iterations + 2;
-
-    CPU_ZERO(&cpuSet[i]);
-    CPU_SET(i+1, &cpuSet[i]);
-    pthread_setaffinity_np(processThreads[i].native_handle(), sizeof(cpu_set_t), &cpuSet[i]);
+    coreID++;
   }
-
-  for (int i = 0; i < num_threads; i++) {
-    processThreads[i].join();
-  }
-
-  for (int i = 0; i < num_threads; i++) {
-    delete clients[i];
-    // for (int c = 0; c < num_iterations; c++) {
-    //   delete clients[i][c];
-    // }
-  }
-
-  // std::cout << "Percentage: " << (handler->counter * 100.0) / (num_iterations*num_threads) << std::endl;
 
   return 0;
 }

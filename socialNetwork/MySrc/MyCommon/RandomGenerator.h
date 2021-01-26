@@ -14,6 +14,8 @@ typedef unsigned char byte;
 #define SEED0   0xBEEF
 #define SEED1   0xDEAD
 
+#define RAND_NUM_LIMIT 0xFFFFFFFFFFFFFF
+
 class RandomGenerator {
 
  public:
@@ -49,6 +51,8 @@ class RandomGenerator {
   string getAlphaString(size_t length);
   string getAlphaNumericString(size_t length);
   string getNumericString(size_t length);
+
+	string getRandText();
 
 
  private:

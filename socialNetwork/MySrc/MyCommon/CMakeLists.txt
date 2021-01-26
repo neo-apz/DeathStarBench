@@ -32,7 +32,6 @@ add_library(
     ${COMMON_DIR}/core_schedule.cpp
 		${COMMON_DIR}/MyProcessorEventHandler.cpp
 )
-
 target_link_libraries(mycommon sonuma)
 
 add_library(
@@ -40,3 +39,4 @@ add_library(
 
     ${THRIFT_GEN_CPP_DIR}/my_social_network_types.cpp
 )
+target_include_directories(mysocialnet_types PUBLIC ${COMMON_DIR})
