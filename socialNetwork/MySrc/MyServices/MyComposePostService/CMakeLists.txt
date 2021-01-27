@@ -3,7 +3,6 @@ add_executable(
     MyComposePostService
 
     MyComposePostService.cpp
-		${THRIFT_GEN_CPP_DIR}/ComposePostService.cpp
 		${THRIFT_GEN_CPP_DIR}/FakeRedis.cpp
 		${THRIFT_GEN_CPP_DIR}/PostStorageService.cpp
 		${THRIFT_GEN_CPP_DIR}/UserTimelineService.cpp
@@ -16,7 +15,8 @@ target_include_directories(
 target_link_libraries(
     MyComposePostService
 
-    mycommon
+		compose_post
+		mycommon
     mysocialnet_types
     ${THRIFT_LIB}
     ${CMAKE_THREAD_LIBS_INIT}

@@ -3,8 +3,6 @@ add_executable(
     MyUniqueIdService
     
     MyUniqueIdService.cpp
-		${THRIFT_GEN_CPP_DIR}/MyUniqueIdService.cpp
-		${THRIFT_GEN_CPP_DIR}/ComposePostService.cpp
 )
 
 target_include_directories(
@@ -15,7 +13,9 @@ target_link_libraries(
     MyUniqueIdService
     
     mycommon
-    mysocialnet_types
+		mysocialnet_types
+		compose_post
+		unique_id
     ${THRIFT_LIB}
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}

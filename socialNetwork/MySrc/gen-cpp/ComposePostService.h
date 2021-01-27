@@ -11,14 +11,6 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
-#ifdef SW
-  #include "../MyCommon/stopwatch.h"
-#endif
-
-#if defined(__aarch64__) || defined(FLEXUS)
-    #include "../MyCommon/MagicBreakPoint.h"
-#endif
-
 #include <RandomGenerator.h>
 
 namespace my_social_network {

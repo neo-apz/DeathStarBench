@@ -55,7 +55,15 @@ if (SW)
     message("-- Stopwatch enabled!")
 endif()
 
+set(THRIFT_GEN_CPP_DIR "${PROJECT_SOURCE_DIR}/gen-cpp")
+set(COMMON_DIR "${PROJECT_SOURCE_DIR}/MyCommon")
+set(SON_COMMON_DIR "${COMMON_DIR}/son-common")
+set(LIBSONUMA_DIR "${SON_COMMON_DIR}/libsonuma")
+set(SON_TOOLS_DIR "${SON_COMMON_DIR}/tools")
+
 include(MyCommon/CMakeLists.txt)
+include(gen-cpp/CMakeLists.txt)
+
 add_subdirectory(MyServices)
 
 string( REPLACE "-DNDEBUG" "" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
