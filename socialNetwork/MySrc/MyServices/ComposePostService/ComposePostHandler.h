@@ -18,6 +18,8 @@
 
 #include "../../MyCommon/RandomGenerator.h"
 
+#include <NebulaClientPool.h>
+
 #define NUM_COMPONENTS 6
 
 #define NUM_ELEMENTS 10

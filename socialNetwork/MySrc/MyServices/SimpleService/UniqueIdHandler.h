@@ -13,7 +13,7 @@
 #include <sys/socket.h>
 
 
-#include "../../gen-cpp/MyUniqueIdService.h"
+#include "../../gen-cpp/UniqueIdService.h"
 #include "../../gen-cpp/my_social_network_types.h"
 
 #include "../../gen-cpp/ComposePostService.h"
@@ -44,10 +44,10 @@ static int GetCounter(int64_t timestamp) {
   }
 }
 
-class MyUniqueIdHandler : public MyUniqueIdServiceIf {
+class UniqueIdHandler : public UniqueIdServiceIf {
  public:
-  ~MyUniqueIdHandler() override = default;
-  MyUniqueIdHandler(
+  ~UniqueIdHandler() override = default;
+  UniqueIdHandler(
       std::mutex *,
       const std::string &,
 			NebulaClientPool<ComposePostServiceClient> *);
@@ -61,7 +61,7 @@ class MyUniqueIdHandler : public MyUniqueIdServiceIf {
 	NebulaClientPool<ComposePostServiceClient> *_compose_client_pool;
 };
 
-MyUniqueIdHandler::MyUniqueIdHandler(
+UniqueIdHandler::UniqueIdHandler(
     std::mutex *thread_lock,
     const std::string &machine_id,
 		NebulaClientPool<ComposePostServiceClient> * compose_client_pool){
@@ -70,7 +70,7 @@ MyUniqueIdHandler::MyUniqueIdHandler(
 	_compose_client_pool = compose_client_pool;
 }
 
-int64_t MyUniqueIdHandler::UploadUniqueId(
+int64_t UniqueIdHandler::UploadUniqueId(
     int64_t req_id,
     PostType::type post_type) {
 

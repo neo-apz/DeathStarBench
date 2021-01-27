@@ -4,16 +4,16 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "MyUniqueIdService.h"
+#include "UniqueIdService.h"
 
 namespace my_social_network {
 
 
-MyUniqueIdService_UploadUniqueId_args::~MyUniqueIdService_UploadUniqueId_args() throw() {
+UniqueIdService_UploadUniqueId_args::~UniqueIdService_UploadUniqueId_args() throw() {
 }
 
 
-uint32_t MyUniqueIdService_UploadUniqueId_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t UniqueIdService_UploadUniqueId_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -64,10 +64,10 @@ uint32_t MyUniqueIdService_UploadUniqueId_args::read(::apache::thrift::protocol:
   return xfer;
 }
 
-uint32_t MyUniqueIdService_UploadUniqueId_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t UniqueIdService_UploadUniqueId_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyUniqueIdService_UploadUniqueId_args");
+  xfer += oprot->writeStructBegin("UniqueIdService_UploadUniqueId_args");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->req_id);
@@ -83,14 +83,14 @@ uint32_t MyUniqueIdService_UploadUniqueId_args::write(::apache::thrift::protocol
 }
 
 
-MyUniqueIdService_UploadUniqueId_pargs::~MyUniqueIdService_UploadUniqueId_pargs() throw() {
+UniqueIdService_UploadUniqueId_pargs::~UniqueIdService_UploadUniqueId_pargs() throw() {
 }
 
 
-uint32_t MyUniqueIdService_UploadUniqueId_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t UniqueIdService_UploadUniqueId_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
-  xfer += oprot->writeStructBegin("MyUniqueIdService_UploadUniqueId_pargs");
+  xfer += oprot->writeStructBegin("UniqueIdService_UploadUniqueId_pargs");
 
   xfer += oprot->writeFieldBegin("req_id", ::apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64((*(this->req_id)));
@@ -106,11 +106,11 @@ uint32_t MyUniqueIdService_UploadUniqueId_pargs::write(::apache::thrift::protoco
 }
 
 
-MyUniqueIdService_UploadUniqueId_result::~MyUniqueIdService_UploadUniqueId_result() throw() {
+UniqueIdService_UploadUniqueId_result::~UniqueIdService_UploadUniqueId_result() throw() {
 }
 
 
-uint32_t MyUniqueIdService_UploadUniqueId_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t UniqueIdService_UploadUniqueId_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -151,11 +151,11 @@ uint32_t MyUniqueIdService_UploadUniqueId_result::read(::apache::thrift::protoco
   return xfer;
 }
 
-uint32_t MyUniqueIdService_UploadUniqueId_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t UniqueIdService_UploadUniqueId_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("MyUniqueIdService_UploadUniqueId_result");
+  xfer += oprot->writeStructBegin("UniqueIdService_UploadUniqueId_result");
 
   if (this->__isset.success) {
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
@@ -168,11 +168,11 @@ uint32_t MyUniqueIdService_UploadUniqueId_result::write(::apache::thrift::protoc
 }
 
 
-MyUniqueIdService_UploadUniqueId_presult::~MyUniqueIdService_UploadUniqueId_presult() throw() {
+UniqueIdService_UploadUniqueId_presult::~UniqueIdService_UploadUniqueId_presult() throw() {
 }
 
 
-uint32_t MyUniqueIdService_UploadUniqueId_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t UniqueIdService_UploadUniqueId_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
   uint32_t xfer = 0;
@@ -213,18 +213,18 @@ uint32_t MyUniqueIdService_UploadUniqueId_presult::read(::apache::thrift::protoc
   return xfer;
 }
 
-int64_t MyUniqueIdServiceClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
+int64_t UniqueIdServiceClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_type);
   return recv_UploadUniqueId();
 }
 
-void MyUniqueIdServiceClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type)
+void UniqueIdServiceClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyUniqueIdService_UploadUniqueId_pargs args;
+  UniqueIdService_UploadUniqueId_pargs args;
   args.req_id = &req_id;
   args.post_type = &post_type;
   args.write(oprot_);
@@ -234,7 +234,7 @@ void MyUniqueIdServiceClient::send_UploadUniqueId(const int64_t req_id, const Po
   oprot_->getTransport()->flush();
 }
 
-int64_t MyUniqueIdServiceClient::recv_UploadUniqueId()
+int64_t UniqueIdServiceClient::recv_UploadUniqueId()
 {
 
   int32_t rseqid = 0;
@@ -260,7 +260,7 @@ int64_t MyUniqueIdServiceClient::recv_UploadUniqueId()
     iprot_->getTransport()->readEnd();
   }
   int64_t _return;
-  MyUniqueIdService_UploadUniqueId_presult result;
+  UniqueIdService_UploadUniqueId_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -272,7 +272,7 @@ int64_t MyUniqueIdServiceClient::recv_UploadUniqueId()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadUniqueId failed: unknown result");
 }
 
-bool MyUniqueIdServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
+bool UniqueIdServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
   ProcessMap::iterator pfn;
   pfn = processMap_.find(fname);
   if (pfn == processMap_.end()) {
@@ -291,34 +291,34 @@ bool MyUniqueIdServiceProcessor::dispatchCall(::apache::thrift::protocol::TProto
   return true;
 }
 
-void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+void UniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
   if (this->eventHandler_.get() != NULL) {
-    ctx = this->eventHandler_->getContext("MyUniqueIdService.UploadUniqueId", callContext);
+    ctx = this->eventHandler_->getContext("UniqueIdService.UploadUniqueId", callContext);
   }
-  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MyUniqueIdService.UploadUniqueId");
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UniqueIdService.UploadUniqueId");
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preRead(ctx, "MyUniqueIdService.UploadUniqueId");
+    this->eventHandler_->preRead(ctx, "UniqueIdService.UploadUniqueId");
   }
 
-  MyUniqueIdService_UploadUniqueId_args args;
+  UniqueIdService_UploadUniqueId_args args;
   args.read(iprot);
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postRead(ctx, "MyUniqueIdService.UploadUniqueId", bytes);
+    this->eventHandler_->postRead(ctx, "UniqueIdService.UploadUniqueId", bytes);
   }
 
-  MyUniqueIdService_UploadUniqueId_result result;
+  UniqueIdService_UploadUniqueId_result result;
   try {
     result.success = iface_->UploadUniqueId(args.req_id, args.post_type);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
-      this->eventHandler_->handlerError(ctx, "MyUniqueIdService.UploadUniqueId");
+      this->eventHandler_->handlerError(ctx, "UniqueIdService.UploadUniqueId");
     }
 
     ::apache::thrift::TApplicationException x(e.what());
@@ -331,7 +331,7 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   }
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->preWrite(ctx, "MyUniqueIdService.UploadUniqueId");
+    this->eventHandler_->preWrite(ctx, "UniqueIdService.UploadUniqueId");
   }
 
   oprot->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, seqid);
@@ -341,30 +341,30 @@ void MyUniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache:
   oprot->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
-    this->eventHandler_->postWrite(ctx, "MyUniqueIdService.UploadUniqueId", bytes);
+    this->eventHandler_->postWrite(ctx, "UniqueIdService.UploadUniqueId", bytes);
   }
 }
 
-::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > MyUniqueIdServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
-  ::apache::thrift::ReleaseHandler< MyUniqueIdServiceIfFactory > cleanup(handlerFactory_);
-  ::apache::thrift::stdcxx::shared_ptr< MyUniqueIdServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new MyUniqueIdServiceProcessor(handler));
+::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > UniqueIdServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< UniqueIdServiceIfFactory > cleanup(handlerFactory_);
+  ::apache::thrift::stdcxx::shared_ptr< UniqueIdServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UniqueIdServiceProcessor(handler));
   return processor;
 }
 
-int64_t MyUniqueIdServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
+int64_t UniqueIdServiceConcurrentClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   int32_t seqid = send_UploadUniqueId(req_id, post_type);
   return recv_UploadUniqueId(seqid);
 }
 
-int32_t MyUniqueIdServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type)
+int32_t UniqueIdServiceConcurrentClient::send_UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  MyUniqueIdService_UploadUniqueId_pargs args;
+  UniqueIdService_UploadUniqueId_pargs args;
   args.req_id = &req_id;
   args.post_type = &post_type;
   args.write(oprot_);
@@ -377,7 +377,7 @@ int32_t MyUniqueIdServiceConcurrentClient::send_UploadUniqueId(const int64_t req
   return cseqid;
 }
 
-int64_t MyUniqueIdServiceConcurrentClient::recv_UploadUniqueId(const int32_t seqid)
+int64_t UniqueIdServiceConcurrentClient::recv_UploadUniqueId(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -416,7 +416,7 @@ int64_t MyUniqueIdServiceConcurrentClient::recv_UploadUniqueId(const int32_t seq
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
       int64_t _return;
-      MyUniqueIdService_UploadUniqueId_presult result;
+      UniqueIdService_UploadUniqueId_presult result;
       result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();

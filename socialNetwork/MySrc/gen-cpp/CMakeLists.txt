@@ -12,10 +12,36 @@ add_library(
     ${THRIFT_GEN_CPP_DIR}/ComposePostService.cpp
 )
 target_include_directories(compose_post PUBLIC ${COMMON_DIR})
+target_link_libraries(compose_post mysocialnet_types)
 
 add_library(
     unique_id STATIC
 
-    ${THRIFT_GEN_CPP_DIR}/MyUniqueIdService.cpp
+    ${THRIFT_GEN_CPP_DIR}/UniqueIdService.cpp
 )
 target_include_directories(unique_id PUBLIC ${COMMON_DIR})
+target_link_libraries(unique_id mysocialnet_types)
+
+add_library(
+    fake_redis STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/FakeRedis.cpp
+)
+target_include_directories(fake_redis PUBLIC ${COMMON_DIR})
+target_link_libraries(fake_redis mysocialnet_types)
+
+add_library(
+    post_storage STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/PostStorageService.cpp
+)
+target_include_directories(post_storage PUBLIC ${COMMON_DIR})
+target_link_libraries(post_storage mysocialnet_types)
+
+add_library(
+    user_timeline STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/UserTimelineService.cpp
+)
+target_include_directories(user_timeline PUBLIC ${COMMON_DIR})
+target_link_libraries(user_timeline mysocialnet_types)

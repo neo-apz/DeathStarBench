@@ -1,16 +1,16 @@
 
 add_executable(
-    MyUniqueIdService
+    UniqueIdService
     
-    MyUniqueIdService.cpp
+    UniqueIdService.cpp
 )
 
 target_include_directories(
-		MyUniqueIdService PRIVATE ${COMMON_DIR}
+		UniqueIdService PRIVATE ${COMMON_DIR}
 )
 
 target_link_libraries(
-    MyUniqueIdService
+    UniqueIdService
     
     mycommon
 		mysocialnet_types
@@ -23,4 +23,4 @@ target_link_libraries(
     Boost::log_setup
 )
 
-install(TARGETS MyUniqueIdService DESTINATION ./)
+install(TARGETS UniqueIdService DESTINATION ./)

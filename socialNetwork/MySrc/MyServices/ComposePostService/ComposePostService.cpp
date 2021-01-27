@@ -3,7 +3,7 @@
 #include <RandomGenerator.h>
 #include <NebulaClientPool.h>
 
-#include "MyComposePostHandler.h"
+#include "ComposePostHandler.h"
 
 using namespace my_social_network;
 using namespace std;

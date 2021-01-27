@@ -48,7 +48,7 @@ struct Post {
   9: PostType post_type;
 }
 
-service MyUniqueIdService {
+service UniqueIdService {
   i64 UploadUniqueId (
       1: i64 req_id,
       2: PostType post_type

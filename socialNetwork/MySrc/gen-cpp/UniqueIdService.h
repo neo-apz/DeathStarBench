@@ -4,8 +4,8 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef MyUniqueIdService_H
-#define MyUniqueIdService_H
+#ifndef UniqueIdService_H
+#define UniqueIdService_H
 
 #include <thrift/TDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
@@ -18,70 +18,70 @@ namespace my_social_network {
   #pragma warning (disable : 4250 ) //inheriting methods via dominance 
 #endif
 
-class MyUniqueIdServiceIf {
+class UniqueIdServiceIf {
  public:
-  virtual ~MyUniqueIdServiceIf() {}
+  virtual ~UniqueIdServiceIf() {}
   virtual int64_t UploadUniqueId(const int64_t req_id, const PostType::type post_type) = 0;
 };
 
-class MyUniqueIdServiceIfFactory {
+class UniqueIdServiceIfFactory {
  public:
-  typedef MyUniqueIdServiceIf Handler;
+  typedef UniqueIdServiceIf Handler;
 
-  virtual ~MyUniqueIdServiceIfFactory() {}
+  virtual ~UniqueIdServiceIfFactory() {}
 
-  virtual MyUniqueIdServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
-  virtual void releaseHandler(MyUniqueIdServiceIf* /* handler */) = 0;
+  virtual UniqueIdServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(UniqueIdServiceIf* /* handler */) = 0;
 };
 
-class MyUniqueIdServiceIfSingletonFactory : virtual public MyUniqueIdServiceIfFactory {
+class UniqueIdServiceIfSingletonFactory : virtual public UniqueIdServiceIfFactory {
  public:
-  MyUniqueIdServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf>& iface) : iface_(iface) {}
-  virtual ~MyUniqueIdServiceIfSingletonFactory() {}
+  UniqueIdServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf>& iface) : iface_(iface) {}
+  virtual ~UniqueIdServiceIfSingletonFactory() {}
 
-  virtual MyUniqueIdServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+  virtual UniqueIdServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
     return iface_.get();
   }
-  virtual void releaseHandler(MyUniqueIdServiceIf* /* handler */) {}
+  virtual void releaseHandler(UniqueIdServiceIf* /* handler */) {}
 
  protected:
-  ::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface_;
+  ::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> iface_;
 };
 
-class MyUniqueIdServiceNull : virtual public MyUniqueIdServiceIf {
+class UniqueIdServiceNull : virtual public UniqueIdServiceIf {
  public:
-  virtual ~MyUniqueIdServiceNull() {}
+  virtual ~UniqueIdServiceNull() {}
   int64_t UploadUniqueId(const int64_t /* req_id */, const PostType::type /* post_type */) {
     int64_t _return = 0;
     return _return;
   }
 };
 
-typedef struct _MyUniqueIdService_UploadUniqueId_args__isset {
-  _MyUniqueIdService_UploadUniqueId_args__isset() : req_id(false), post_type(false) {}
+typedef struct _UniqueIdService_UploadUniqueId_args__isset {
+  _UniqueIdService_UploadUniqueId_args__isset() : req_id(false), post_type(false) {}
   bool req_id :1;
   bool post_type :1;
-} _MyUniqueIdService_UploadUniqueId_args__isset;
+} _UniqueIdService_UploadUniqueId_args__isset;
 
-class MyUniqueIdService_UploadUniqueId_args {
+class UniqueIdService_UploadUniqueId_args {
  public:
 
-  MyUniqueIdService_UploadUniqueId_args(const MyUniqueIdService_UploadUniqueId_args&);
-  MyUniqueIdService_UploadUniqueId_args& operator=(const MyUniqueIdService_UploadUniqueId_args&);
-  MyUniqueIdService_UploadUniqueId_args() : req_id(0), post_type((PostType::type)0) {
+  UniqueIdService_UploadUniqueId_args(const UniqueIdService_UploadUniqueId_args&);
+  UniqueIdService_UploadUniqueId_args& operator=(const UniqueIdService_UploadUniqueId_args&);
+  UniqueIdService_UploadUniqueId_args() : req_id(0), post_type((PostType::type)0) {
   }
 
-  virtual ~MyUniqueIdService_UploadUniqueId_args() throw();
+  virtual ~UniqueIdService_UploadUniqueId_args() throw();
   int64_t req_id;
   PostType::type post_type;
 
-  _MyUniqueIdService_UploadUniqueId_args__isset __isset;
+  _UniqueIdService_UploadUniqueId_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
   void __set_post_type(const PostType::type val);
 
-  bool operator == (const MyUniqueIdService_UploadUniqueId_args & rhs) const
+  bool operator == (const UniqueIdService_UploadUniqueId_args & rhs) const
   {
     if (!(req_id == rhs.req_id))
       return false;
@@ -89,11 +89,11 @@ class MyUniqueIdService_UploadUniqueId_args {
       return false;
     return true;
   }
-  bool operator != (const MyUniqueIdService_UploadUniqueId_args &rhs) const {
+  bool operator != (const UniqueIdService_UploadUniqueId_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUniqueIdService_UploadUniqueId_args & ) const;
+  bool operator < (const UniqueIdService_UploadUniqueId_args & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -101,11 +101,11 @@ class MyUniqueIdService_UploadUniqueId_args {
 };
 
 
-class MyUniqueIdService_UploadUniqueId_pargs {
+class UniqueIdService_UploadUniqueId_pargs {
  public:
 
 
-  virtual ~MyUniqueIdService_UploadUniqueId_pargs() throw();
+  virtual ~UniqueIdService_UploadUniqueId_pargs() throw();
   const int64_t* req_id;
   const PostType::type* post_type;
 
@@ -113,67 +113,67 @@ class MyUniqueIdService_UploadUniqueId_pargs {
 
 };
 
-typedef struct _MyUniqueIdService_UploadUniqueId_result__isset {
-  _MyUniqueIdService_UploadUniqueId_result__isset() : success(false) {}
+typedef struct _UniqueIdService_UploadUniqueId_result__isset {
+  _UniqueIdService_UploadUniqueId_result__isset() : success(false) {}
   bool success :1;
-} _MyUniqueIdService_UploadUniqueId_result__isset;
+} _UniqueIdService_UploadUniqueId_result__isset;
 
-class MyUniqueIdService_UploadUniqueId_result {
+class UniqueIdService_UploadUniqueId_result {
  public:
 
-  MyUniqueIdService_UploadUniqueId_result(const MyUniqueIdService_UploadUniqueId_result&);
-  MyUniqueIdService_UploadUniqueId_result& operator=(const MyUniqueIdService_UploadUniqueId_result&);
-  MyUniqueIdService_UploadUniqueId_result() : success(0) {
+  UniqueIdService_UploadUniqueId_result(const UniqueIdService_UploadUniqueId_result&);
+  UniqueIdService_UploadUniqueId_result& operator=(const UniqueIdService_UploadUniqueId_result&);
+  UniqueIdService_UploadUniqueId_result() : success(0) {
   }
 
-  virtual ~MyUniqueIdService_UploadUniqueId_result() throw();
+  virtual ~UniqueIdService_UploadUniqueId_result() throw();
   int64_t success;
 
-  _MyUniqueIdService_UploadUniqueId_result__isset __isset;
+  _UniqueIdService_UploadUniqueId_result__isset __isset;
 
   void __set_success(const int64_t val);
 
-  bool operator == (const MyUniqueIdService_UploadUniqueId_result & rhs) const
+  bool operator == (const UniqueIdService_UploadUniqueId_result & rhs) const
   {
     if (!(success == rhs.success))
       return false;
     return true;
   }
-  bool operator != (const MyUniqueIdService_UploadUniqueId_result &rhs) const {
+  bool operator != (const UniqueIdService_UploadUniqueId_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const MyUniqueIdService_UploadUniqueId_result & ) const;
+  bool operator < (const UniqueIdService_UploadUniqueId_result & ) const;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
-typedef struct _MyUniqueIdService_UploadUniqueId_presult__isset {
-  _MyUniqueIdService_UploadUniqueId_presult__isset() : success(false) {}
+typedef struct _UniqueIdService_UploadUniqueId_presult__isset {
+  _UniqueIdService_UploadUniqueId_presult__isset() : success(false) {}
   bool success :1;
-} _MyUniqueIdService_UploadUniqueId_presult__isset;
+} _UniqueIdService_UploadUniqueId_presult__isset;
 
-class MyUniqueIdService_UploadUniqueId_presult {
+class UniqueIdService_UploadUniqueId_presult {
  public:
 
 
-  virtual ~MyUniqueIdService_UploadUniqueId_presult() throw();
+  virtual ~UniqueIdService_UploadUniqueId_presult() throw();
   int64_t* success;
 
-  _MyUniqueIdService_UploadUniqueId_presult__isset __isset;
+  _UniqueIdService_UploadUniqueId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
 };
 
-class MyUniqueIdServiceClient : virtual public MyUniqueIdServiceIf {
+class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
  public:
-  MyUniqueIdServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+  UniqueIdServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
   }
-  MyUniqueIdServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  UniqueIdServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
  private:
@@ -203,44 +203,44 @@ class MyUniqueIdServiceClient : virtual public MyUniqueIdServiceIf {
   ::apache::thrift::protocol::TProtocol* oprot_;
 };
 
-class MyUniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
+class UniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  protected:
-  ::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface_;
+  ::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> iface_;
  private:
-  typedef  void (MyUniqueIdServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  typedef  void (UniqueIdServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
-  MyUniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface) :
+  UniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> iface) :
     iface_(iface) {
-    processMap_["UploadUniqueId"] = &MyUniqueIdServiceProcessor::process_UploadUniqueId;
+    processMap_["UploadUniqueId"] = &UniqueIdServiceProcessor::process_UploadUniqueId;
   }
 	virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
 
-  virtual ~MyUniqueIdServiceProcessor() {}
+  virtual ~UniqueIdServiceProcessor() {}
 };
 
-class MyUniqueIdServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
+class UniqueIdServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
-  MyUniqueIdServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< MyUniqueIdServiceIfFactory >& handlerFactory) :
+  UniqueIdServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UniqueIdServiceIfFactory >& handlerFactory) :
       handlerFactory_(handlerFactory) {}
 
   ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
-  ::apache::thrift::stdcxx::shared_ptr< MyUniqueIdServiceIfFactory > handlerFactory_;
+  ::apache::thrift::stdcxx::shared_ptr< UniqueIdServiceIfFactory > handlerFactory_;
 };
 
-class MyUniqueIdServiceMultiface : virtual public MyUniqueIdServiceIf {
+class UniqueIdServiceMultiface : virtual public UniqueIdServiceIf {
  public:
-  MyUniqueIdServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> >& ifaces) : ifaces_(ifaces) {
+  UniqueIdServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> >& ifaces) : ifaces_(ifaces) {
   }
-  virtual ~MyUniqueIdServiceMultiface() {}
+  virtual ~UniqueIdServiceMultiface() {}
  protected:
-  std::vector<apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> > ifaces_;
-  MyUniqueIdServiceMultiface() {}
-  void add(::apache::thrift::stdcxx::shared_ptr<MyUniqueIdServiceIf> iface) {
+  std::vector<apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> > ifaces_;
+  UniqueIdServiceMultiface() {}
+  void add(::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> iface) {
     ifaces_.push_back(iface);
   }
  public:
@@ -258,12 +258,12 @@ class MyUniqueIdServiceMultiface : virtual public MyUniqueIdServiceIf {
 // The 'concurrent' client is a thread safe client that correctly handles
 // out of order responses.  It is slower than the regular client, so should
 // only be used when you need to share a connection among multiple threads
-class MyUniqueIdServiceConcurrentClient : virtual public MyUniqueIdServiceIf {
+class UniqueIdServiceConcurrentClient : virtual public UniqueIdServiceIf {
  public:
-  MyUniqueIdServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+  UniqueIdServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
     setProtocol(prot);
   }
-  MyUniqueIdServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  UniqueIdServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
  private:
