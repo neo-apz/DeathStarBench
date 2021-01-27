@@ -51,19 +51,6 @@ void GenRequests(MyThriftClient<UniqueIdServiceClient> *clientPtr,
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;  
 }
 
-void InitializeFunctionMap(FunctionClientMap<ComposePostServiceClient> *f2cmap, RandomGenerator *randGen) {
-	MyThriftClient<ComposePostServiceClient>** clients = new MyThriftClient<ComposePostServiceClient>*[NUM_TEMPLATE_CLIENTS];
-
-	// Fill up the clients
-	uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<ComposePostServiceClient>(buffer_size);
-		clients[i]->GetClient()->FakeUploadUniqueId(randGen);
-	}
-
-	f2cmap->RegisterFunction(0, clients);
-}
-
 void GenAndProcessReqs(rpcNUMAContext* ctx,
 											 int tid,
 											 std::shared_ptr<UniqueIdHandler> handler,
@@ -87,7 +74,7 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
 	auto processor = new NebulaThriftProcessor<UniqueIdServiceProcessor, UniqueIdServiceClient>(ctx, tid, proc, clients);
 
 	auto f2cMap = clientPool->AddToPool(ctx->getQP(tid));
-	InitializeFunctionMap(f2cMap, &randGen);
+	ComposePostServiceClient::InitializeFuncMapComposePost(f2cMap, &randGen, NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, BUFFER_SIZE);
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;

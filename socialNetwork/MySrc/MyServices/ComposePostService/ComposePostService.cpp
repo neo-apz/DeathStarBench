@@ -118,153 +118,6 @@ void GenRequests(MyThriftClient<ComposePostServiceClient> *clientPtr,
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;  
 }
 
-typedef void (*fakeFunc)(void); // type for conciseness
-
-
-// void InitializeFunctionMap(FunctionClientMap<FakeRedisClient> *f2cmap,
-// 													 RandomGenerator *randGen,
-// 													 void (*fakeFunc)(RandomGenerator*),
-// 													 FakeRedisClient::FuncType::type funcType) {
-
-// 	uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
-
-// 	MyThriftClient<FakeRedisClient>** clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-// 	// Fill up the clients
-// 	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-// 		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-// 		clients[i]->GetClient()->(*fakeFunc)(randGen);
-// 	}
-// 	f2cmap->RegisterFunction(funcType, clients);
-// }
-
-void InitializeFunctionMapRedis(FunctionClientMap<FakeRedisClient> *f2cmap, RandomGenerator *randGen) {
-
-	// InitializeFunctionMap(f2cmap, randGen, FakeHSetCreator, FakeRedisClient::FuncType::HS_CREATOR);
-
-	uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
-
-	MyThriftClient<FakeRedisClient>** clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetCreator(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_CREATOR, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetText(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_TEXT, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetMedia(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_MEDIA, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetPostId(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_POST_ID, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetPostType(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_POST_TYPE, clients);
-	
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetUrls(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_URLS, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetUserMentions(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_USER_MENTIONS, clients);
-
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetCreator(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_CREATOR, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetText(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_TEXT, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetMedia(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_MEDIA, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetPostId(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_POST_ID, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetPostType(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_POST_TYPE, clients);
-	
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetUrls(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_URLS, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetUserMentions(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_USER_MENTIONS, clients);
-
-	clients = new MyThriftClient<FakeRedisClient>*[NUM_TEMPLATE_CLIENTS];
-	// Fill up the clients
-	for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHHIncrBy(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::H_INC, clients);
-}
-
 void GenAndProcessReqs(rpcNUMAContext* ctx,
 											 int tid,
 											 std::shared_ptr<ComposePostHandler> handler) {
@@ -292,7 +145,10 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
 	auto f2cMapRabbitmq = handler->_rabbitmq_pool->AddToPool(ctx->getQP(tid));
 
 
-	InitializeFunctionMapRedis(f2cMapRedis, &randGen);
+	FakeRedisClient::InitializeFuncMapRedis(f2cMapRedis, &randGen, NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, BUFFER_SIZE);
+	PostStorageServiceClient::InitializeFuncMapPostStorage(f2cMapPostStorage, &randGen, NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, BUFFER_SIZE);
+	UserTimelineServiceClient::InitializeFuncMapUserTimeline(f2cMapUserTimeline, &randGen, NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, BUFFER_SIZE);
+	FakeRabbitmqClient::InitializeFuncMapRabbitmq(f2cMapRabbitmq, &randGen, NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, BUFFER_SIZE);
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;

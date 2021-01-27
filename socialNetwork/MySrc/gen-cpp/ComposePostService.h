@@ -12,6 +12,7 @@
 #include "my_social_network_types.h"
 
 #include <RandomGenerator.h>
+#include <FunctionClientMap.h>
 
 namespace my_social_network {
 
@@ -802,6 +803,34 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
   int64_t recv_UploadUserMentions();
 
 	int64_t FakeUploadUniqueId(RandomGenerator *randGen);
+
+	struct FuncType {
+  enum type {
+    UPLOAD_UNIQUE_ID = 0,
+
+    SIZE = 1
+  	};
+	};
+
+	static void InitializeFuncMapComposePost(FunctionClientMap<ComposePostServiceClient> *f2cmap,
+																	RandomGenerator *randGen,
+																	int num_template_clients,
+																	int num_msg_per_client,
+																	int base_buffer_size) {
+	
+	uint64_t buffer_size = num_msg_per_client * base_buffer_size;
+
+	MyThriftClient<ComposePostServiceClient>** clients = new MyThriftClient<ComposePostServiceClient>*[num_template_clients];
+
+	// Fill up the clients
+	for (int i = 0; i < num_template_clients; i++) {
+		clients[i] = new MyThriftClient<ComposePostServiceClient>(buffer_size);
+		clients[i]->GetClient()->FakeUploadUniqueId(randGen);
+	}
+
+	f2cmap->RegisterFunction(ComposePostServiceClient::FuncType::UPLOAD_UNIQUE_ID, clients);
+	}
+
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

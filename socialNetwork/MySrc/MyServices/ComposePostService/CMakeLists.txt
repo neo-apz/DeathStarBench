@@ -16,6 +16,7 @@ target_link_libraries(
 		user_timeline
 		post_storage
 		fake_redis
+		fake_rabbitmq
 		mycommon
     mysocialnet_types
     ${THRIFT_LIB}

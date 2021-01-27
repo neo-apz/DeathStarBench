@@ -11,6 +11,9 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <RandomGenerator.h>
+#include <FunctionClientMap.h>
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -323,6 +326,34 @@ class UserTimelineServiceClient : virtual public UserTimelineServiceIf {
   void ReadUserTimeline(std::vector<Post> & _return, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop);
   void send_ReadUserTimeline(const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop);
   void recv_ReadUserTimeline(std::vector<Post> & _return);
+ 	
+	 void FakeWriteUserTimeline(RandomGenerator *randGen);
+
+	struct FuncType {
+  enum type {
+    WRITE_TIMELINE = 0,
+    
+    SIZE = 1
+  	};
+	};
+
+	static void InitializeFuncMapUserTimeline(FunctionClientMap<UserTimelineServiceClient> *f2cmap,
+																RandomGenerator *randGen,
+																int num_template_clients,
+																int num_msg_per_client,
+																int base_buffer_size) {
+
+		uint64_t buffer_size = num_msg_per_client * base_buffer_size;
+
+		MyThriftClient<UserTimelineServiceClient>** clients = new MyThriftClient<UserTimelineServiceClient>*[num_template_clients];
+		// Fill up the clients
+		for (int i = 0; i < num_template_clients; i++) {
+			clients[i] = new MyThriftClient<UserTimelineServiceClient>(buffer_size);
+			clients[i]->GetClient()->FakeWriteUserTimeline(randGen);
+		}
+		f2cmap->RegisterFunction(UserTimelineServiceClient::FuncType::WRITE_TIMELINE, clients);
+	}																
+
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

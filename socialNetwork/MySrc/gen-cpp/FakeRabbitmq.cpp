@@ -256,6 +256,16 @@ uint32_t FakeRabbitmq_UploadHomeTimeline_presult::read(::apache::thrift::protoco
   return xfer;
 }
 
+void FakeRabbitmqClient::FakeUploadHomeTimeline(RandomGenerator *randGen) {
+	FakeRabbitmq_UploadHomeTimeline_result result;
+
+	iprot_->writeMessageBegin("UploadHomeTimeline", ::apache::thrift::protocol::T_REPLY, 0);
+  result.write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
 void FakeRabbitmqClient::UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id)
 {
   send_UploadHomeTimeline(req_id, post_id, user_id, timestamp, user_mentions_id);

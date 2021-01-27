@@ -479,6 +479,16 @@ uint32_t UserTimelineService_ReadUserTimeline_presult::read(::apache::thrift::pr
   return xfer;
 }
 
+void UserTimelineServiceClient::FakeWriteUserTimeline(RandomGenerator *randGen) {
+	UserTimelineService_WriteUserTimeline_result result;
+
+	iprot_->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_REPLY, 0);
+  result.write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
 void UserTimelineServiceClient::WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp)
 {
   send_WriteUserTimeline(req_id, post_id, user_id, timestamp);

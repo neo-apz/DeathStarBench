@@ -11,6 +11,9 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <RandomGenerator.h>
+#include <FunctionClientMap.h>
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -198,6 +201,34 @@ class FakeRabbitmqClient : virtual public FakeRabbitmqIf {
   void UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id);
   void send_UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id);
   void recv_UploadHomeTimeline();
+ 
+ 	void FakeUploadHomeTimeline(RandomGenerator *randGen);
+
+	struct FuncType {
+  enum type {
+    UPLOAD_TIMELINE = 0,
+    
+    SIZE = 1
+  	};
+	};
+
+	static void InitializeFuncMapRabbitmq(FunctionClientMap<FakeRabbitmqClient> *f2cmap,
+																RandomGenerator *randGen,
+																int num_template_clients,
+																int num_msg_per_client,
+																int base_buffer_size) {
+
+		uint64_t buffer_size = num_msg_per_client * base_buffer_size;
+
+		MyThriftClient<FakeRabbitmqClient>** clients = new MyThriftClient<FakeRabbitmqClient>*[num_template_clients];
+		// Fill up the clients
+		for (int i = 0; i < num_template_clients; i++) {
+			clients[i] = new MyThriftClient<FakeRabbitmqClient>(buffer_size);
+			clients[i]->GetClient()->FakeUploadHomeTimeline(randGen);
+		}
+		f2cmap->RegisterFunction(FakeRabbitmqClient::FuncType::UPLOAD_TIMELINE, clients);
+	}
+ 
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

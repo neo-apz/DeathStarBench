@@ -32,4 +32,5 @@ add_library(
     ${COMMON_DIR}/core_schedule.cpp
 		${COMMON_DIR}/MyProcessorEventHandler.cpp
 )
+target_include_directories(mycommon PUBLIC ${COMMON_DIR})
 target_link_libraries(mycommon sonuma)

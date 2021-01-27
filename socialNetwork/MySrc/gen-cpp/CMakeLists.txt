@@ -45,3 +45,11 @@ add_library(
 )
 target_include_directories(user_timeline PUBLIC ${COMMON_DIR})
 target_link_libraries(user_timeline mysocialnet_types)
+
+add_library(
+    fake_rabbitmq STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/FakeRabbitmq.cpp
+)
+target_include_directories(fake_rabbitmq PUBLIC ${COMMON_DIR})
+target_link_libraries(fake_rabbitmq mysocialnet_types)

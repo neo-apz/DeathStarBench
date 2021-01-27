@@ -646,6 +646,16 @@ uint32_t PostStorageService_ReadPosts_presult::read(::apache::thrift::protocol::
   return xfer;
 }
 
+void PostStorageServiceClient::FakeStorePost(RandomGenerator *randGen) {
+	PostStorageService_StorePost_result result;
+
+	iprot_->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_REPLY, 0);
+  result.write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
 void PostStorageServiceClient::StorePost(const int64_t req_id, const Post& post)
 {
   send_StorePost(req_id, post);

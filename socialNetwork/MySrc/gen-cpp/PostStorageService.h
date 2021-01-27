@@ -11,6 +11,9 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <RandomGenerator.h>
+#include <FunctionClientMap.h>
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -413,6 +416,34 @@ class PostStorageServiceClient : virtual public PostStorageServiceIf {
   void ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids);
   void send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids);
   void recv_ReadPosts(std::vector<Post> & _return);
+ 
+	void FakeStorePost(RandomGenerator *randGen);
+
+	struct FuncType {
+  enum type {
+    STORE_POST = 0,
+    
+    SIZE = 1
+  	};
+	};
+
+	static void InitializeFuncMapPostStorage(FunctionClientMap<PostStorageServiceClient> *f2cmap,
+																RandomGenerator *randGen,
+																int num_template_clients,
+																int num_msg_per_client,
+																int base_buffer_size) {
+
+		uint64_t buffer_size = num_msg_per_client * base_buffer_size;
+
+		MyThriftClient<PostStorageServiceClient>** clients = new MyThriftClient<PostStorageServiceClient>*[num_template_clients];
+		// Fill up the clients
+		for (int i = 0; i < num_template_clients; i++) {
+			clients[i] = new MyThriftClient<PostStorageServiceClient>(buffer_size);
+			clients[i]->GetClient()->FakeStorePost(randGen);
+		}
+		f2cmap->RegisterFunction(PostStorageServiceClient::FuncType::STORE_POST, clients);
+	}
+ 
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

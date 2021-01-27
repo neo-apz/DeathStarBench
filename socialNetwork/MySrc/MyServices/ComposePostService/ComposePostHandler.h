@@ -71,12 +71,12 @@ class ComposePostHandler : public ComposePostServiceIf {
 
   void _ComposeAndUpload(int64_t req_id);
 
-  int64_t _UploadUserTimelineHelper(int64_t req_id, int64_t post_id,
+  void _UploadUserTimelineHelper(int64_t req_id, int64_t post_id,
       int64_t user_id, int64_t timestamp);
 
-  int64_t _UploadPostHelper(int64_t req_id, const Post &post);
+  void _UploadPostHelper(int64_t req_id, const Post &post);
 
-  int64_t _UploadHomeTimelineHelper(int64_t req_id, int64_t post_id,
+  void _UploadHomeTimelineHelper(int64_t req_id, int64_t post_id,
       int64_t user_id, int64_t timestamp,
       const std::vector<int64_t> &user_mentions_id);
 
@@ -446,33 +446,63 @@ void ComposePostHandler::_ComposeAndUpload(
   _UploadUserTimelineHelper(req_id, post.post_id, post.creator.user_id, post.timestamp);
 
   _UploadHomeTimelineHelper(req_id, post.post_id, post.creator.user_id, post.timestamp,
-                            user_mentions_id);
+                            std::ref(user_mentions_id));
 }
 
-int64_t ComposePostHandler::_UploadPostHelper(
+void ComposePostHandler::_UploadPostHelper(
     int64_t req_id,
     const Post &post) {
   
-  return req_id;
+  // Connect to PostStorageService
+	try {
+		auto post_storage_client_wrapper = _post_storage_pool->Get(PostStorageServiceClient::FuncType::STORE_POST);
+		auto post_storage_client = post_storage_client_wrapper->GetClient();
+		post_storage_client->StorePost(req_id, post);
+		post_storage_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to connect to post-storage-service:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 }
 
-int64_t ComposePostHandler::_UploadUserTimelineHelper(
+void ComposePostHandler::_UploadUserTimelineHelper(
     int64_t req_id,
     int64_t post_id,
     int64_t user_id,
     int64_t timestamp) {
   
-  return req_id + user_id - post_id + timestamp;
+  // Connect to UserTimeLineService
+	try {
+		auto user_timeline_client_wrapper = _user_timeline_pool->Get(UserTimelineServiceClient::FuncType::WRITE_TIMELINE);
+		auto user_timeline_client = user_timeline_client_wrapper->GetClient();
+		user_timeline_client->WriteUserTimeline(req_id, post_id, user_id, timestamp);
+		user_timeline_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to connect to user-timeline-service:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 }
 
-int64_t ComposePostHandler::_UploadHomeTimelineHelper(
+void ComposePostHandler::_UploadHomeTimelineHelper(
     int64_t req_id,
     int64_t post_id,
     int64_t user_id,
     int64_t timestamp,
     const std::vector<int64_t> &user_mentions_id) {
   
-  return req_id + user_id + post_id - timestamp;
+  // Connect to FakeRabbitMQ
+	try {
+		auto rabbitmq_client_wrapper = _rabbitmq_pool->Get(FakeRabbitmqClient::FuncType::UPLOAD_TIMELINE);
+		auto rabbitmq_client = rabbitmq_client_wrapper->GetClient();
+		rabbitmq_client->UploadHomeTimeline(req_id, post_id, user_id, timestamp, user_mentions_id);
+		rabbitmq_client_wrapper->ResetBuffers(true, false);
+	} catch(const std::exception& e) {
+		LOG(error) << "Failed to connect to home-timeline-rabbitmq:\n"
+							 << e.what() << '\n' ;
+		exit(EXIT_FAILURE);
+	}
 }
 
 } // namespace my_social_network
