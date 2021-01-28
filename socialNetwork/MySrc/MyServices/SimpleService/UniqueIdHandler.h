@@ -81,10 +81,15 @@ int64_t UniqueIdHandler::UploadUniqueId(
 
 	// Upload to compose post service
 	try {
-		auto compose_post_client_wrapper = _compose_client_pool->Get(ComposePostServiceClient::FuncType::UPLOAD_UNIQUE_ID);
+		#ifdef CEREBROS
+		auto compose_post_client = _compose_client_pool->Get(ComposePostServiceIf::FuncType::UPLOAD_UNIQUE_ID);
+		compose_post_client->UploadUniqueId(req_id, post_id, post_type);
+		#else
+		auto compose_post_client_wrapper = _compose_client_pool->Get(ComposePostServiceIf::FuncType::UPLOAD_UNIQUE_ID);
 		auto compose_post_client = compose_post_client_wrapper->GetClient();
 		compose_post_client->UploadUniqueId(req_id, post_id, post_type);
 		compose_post_client_wrapper->ResetBuffers(true, false);
+		#endif
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to upload unique-id to compose-post-service:\n"
 							 << e.what() << '\n' ;

@@ -55,6 +55,11 @@ if (SW)
     message("-- Stopwatch enabled!")
 endif()
 
+if (CEREBROS)
+    add_definitions(-DCEREBROS)
+    message("-- Cerebros mode enabled!")
+endif()
+
 set(THRIFT_GEN_CPP_DIR "${PROJECT_SOURCE_DIR}/gen-cpp")
 set(COMMON_DIR "${PROJECT_SOURCE_DIR}/MyCommon")
 set(SON_COMMON_DIR "${COMMON_DIR}/son-common")

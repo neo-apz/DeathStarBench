@@ -17,7 +17,8 @@ std::string machine_id;
 volatile bool start = false;
 pthread_barrier_t   barrier;
 
-#define NUM_TEMPLATE_MSGS  20
+#define NUM_TEMPLATE_CLIENTS  	20
+#define NUM_MSGS_PER_CLIENT      1
 
 #define WARM_UP_ITER  100
 
@@ -26,25 +27,29 @@ pthread_barrier_t   barrier;
 void GenRequests(UniqueIdServiceClient** clients,
 								 RandomGenerator *randGen) {
 
-  for (int i = 0; i < NUM_TEMPLATE_MSGS; i++) {
-		clients[i]->uploadUniqueId_args = new UniqueIdService_UploadUniqueId_args(randGen);
+  for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new UniqueIdServiceClient(randGen);
   }
 }
 
 void GenAndProcessReqs(rpcNUMAContext* ctx,
 											 int tid,
-											 std::shared_ptr<UniqueIdHandler> handler){
+											 std::shared_ptr<UniqueIdHandler> handler,
+											 NebulaClientPool<ComposePostServiceClient> *clientPool){
 
 	RandomGenerator randGen(tid);
 
 	// Generate fake requests
-	UniqueIdServiceClient *clients[NUM_TEMPLATE_MSGS];
+	UniqueIdServiceClient *clients[NUM_TEMPLATE_CLIENTS];
   GenRequests(clients, &randGen);
 	
 	std::shared_ptr<UniqueIdServiceCerebrosProcessor> proc = 
 		std::make_shared<UniqueIdServiceCerebrosProcessor>(handler);
 
 	auto processor = new CerebrosProcessor<UniqueIdServiceCerebrosProcessor, UniqueIdServiceClient>(ctx, tid, proc, clients);
+
+	auto f2cMap = clientPool->AddToPool(ctx->getQP(tid));
+	ComposePostServiceClient::InitializeFuncMapComposePost(f2cMap, NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, -1);
 
   // Wait for all the threads to reach here & then pause.
   pthread_barrier_wait(&barrier);
@@ -95,8 +100,9 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
+	NebulaClientPool<ComposePostServiceClient> compose_post_pool("compose-post", BUFFER_SIZE, rpcContext);
   std::shared_ptr<UniqueIdHandler> handler = std::make_shared<UniqueIdHandler>(
-																								&thread_lock, machine_id, nullptr);
+																								&thread_lock, machine_id, &compose_post_pool);
 
   std::thread processThreads[num_threads+1];
 
@@ -111,7 +117,8 @@ int main(int argc, char *argv[]) {
     processThreads[coreID] = std::thread(GenAndProcessReqs,
 																					rpcContext,
 																					coreID,
-																					handler);
+																					handler,
+																					&compose_post_pool);
 
     CPU_ZERO(&mask);
     CPU_SET(coreID, &mask);

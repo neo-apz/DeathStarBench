@@ -30,6 +30,14 @@ class ComposePostServiceIf {
   virtual int64_t UploadCreator(const int64_t req_id, const Creator& creator) = 0;
   virtual int64_t UploadUrls(const int64_t req_id, const std::vector<Url> & urls) = 0;
   virtual int64_t UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions) = 0;
+
+	struct FuncType {
+  enum type {
+    UPLOAD_UNIQUE_ID = 0,
+
+    SIZE = 1
+  	};
+	};
 };
 
 class ComposePostServiceIfFactory {
@@ -382,6 +390,11 @@ class ComposePostService_UploadUniqueId_result {
   ComposePostService_UploadUniqueId_result& operator=(const ComposePostService_UploadUniqueId_result&);
   ComposePostService_UploadUniqueId_result() : success(0) {
   }
+
+	ComposePostService_UploadUniqueId_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(0xFFFFFFFFFFFFFF);
+		__isset.success = true;
+	}
 
   virtual ~ComposePostService_UploadUniqueId_result() throw();
   int64_t success;
@@ -766,6 +779,8 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
   ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	ComposePostServiceClient() {
+  }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -802,33 +817,33 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
   void send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
   int64_t recv_UploadUserMentions();
 
-	int64_t FakeUploadUniqueId(RandomGenerator *randGen);
+	int64_t FakeUploadUniqueId();
 
-	struct FuncType {
-  enum type {
-    UPLOAD_UNIQUE_ID = 0,
-
-    SIZE = 1
-  	};
-	};
+	ComposePostService_UploadUniqueId_result uploadUniqueId_res;
 
 	static void InitializeFuncMapComposePost(FunctionClientMap<ComposePostServiceClient> *f2cmap,
-																	RandomGenerator *randGen,
 																	int num_template_clients,
 																	int num_msg_per_client,
 																	int base_buffer_size) {
 	
 	uint64_t buffer_size = num_msg_per_client * base_buffer_size;
 
+	#ifdef CEREBROS
+	ComposePostServiceClient** clients = new ComposePostServiceClient*[num_template_clients];
+	// Fill up the clients
+	for (int i = 0; i < num_template_clients; i++) {
+		clients[i] = new ComposePostServiceClient();
+	}
+	#else
 	MyThriftClient<ComposePostServiceClient>** clients = new MyThriftClient<ComposePostServiceClient>*[num_template_clients];
-
 	// Fill up the clients
 	for (int i = 0; i < num_template_clients; i++) {
 		clients[i] = new MyThriftClient<ComposePostServiceClient>(buffer_size);
-		clients[i]->GetClient()->FakeUploadUniqueId(randGen);
+		clients[i]->GetClient()->FakeUploadUniqueId();
 	}
+	#endif
 
-	f2cmap->RegisterFunction(ComposePostServiceClient::FuncType::UPLOAD_UNIQUE_ID, clients);
+	f2cmap->RegisterFunction(ComposePostServiceIf::FuncType::UPLOAD_UNIQUE_ID, clients);
 	}
 
  protected:

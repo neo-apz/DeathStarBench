@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <utility>  
+#include <thread>
 
 #include "logger.h"
 
@@ -25,7 +26,11 @@ class NebulaClientPool {
   NebulaClientPool& operator=(NebulaClientPool&&) = default;
 
   FunctionClientMap<TThriftClient>* AddToPool(soNUMAQP_T* qp);
+	#ifdef CEREBROS
+	TThriftClient* Get(int fid);
+	#else
 	MyThriftClient<TThriftClient>* Get(int fid);
+	#endif
 
  private:
   map<thread::id,
@@ -64,7 +69,11 @@ FunctionClientMap<TThriftClient>* NebulaClientPool<TThriftClient>::AddToPool(soN
 }
 
 template<class TThriftClient>
+#ifdef CEREBROS
+TThriftClient* NebulaClientPool<TThriftClient>::Get(int fid) {
+#else
 MyThriftClient<TThriftClient>* NebulaClientPool<TThriftClient>::Get(int fid) {
+#endif
 	thread::id tid = this_thread::get_id();
 
 	try{

@@ -1446,15 +1446,10 @@ int64_t ComposePostServiceClient::recv_UploadMedia()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadMedia failed: unknown result");
 }
 
-int64_t ComposePostServiceClient::FakeUploadUniqueId(RandomGenerator *randGen)
+int64_t ComposePostServiceClient::FakeUploadUniqueId()
 {
-	ComposePostService_UploadUniqueId_result result;
-
-	result.success = randGen->getInt64(0xFFFFFFFFFFFFFF);
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  uploadUniqueId_res.write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();

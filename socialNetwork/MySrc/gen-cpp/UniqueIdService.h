@@ -189,6 +189,9 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
   UniqueIdServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	UniqueIdServiceClient(RandomGenerator* randGen) {
+    uploadUniqueId_args = new UniqueIdService_UploadUniqueId_args(randGen);
+  }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
