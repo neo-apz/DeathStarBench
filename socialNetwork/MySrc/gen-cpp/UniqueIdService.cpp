@@ -345,6 +345,15 @@ void UniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::t
   }
 }
 
+uint64_t UniqueIdServiceCerebrosProcessor::process_UploadUniqueId(UniqueIdServiceClient* client) {
+	UniqueIdService_UploadUniqueId_args* args = client->uploadUniqueId_args;
+	UniqueIdService_UploadUniqueId_result* res = &(client->uploadUniqueId_res);
+
+	res->success = iface_->UploadUniqueId(args->req_id, args->post_type);
+
+	return (uint64_t) res;
+}
+
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > UniqueIdServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< UniqueIdServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< UniqueIdServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);

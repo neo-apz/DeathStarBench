@@ -37,10 +37,8 @@ void GenRequests(MyThriftClient<UniqueIdServiceClient> *clientPtr,
 
 	auto client = clientPtr->GetClient();
 	for (int i = 0; i < NUM_MSGS_PER_CLIENT; i++) {
-		int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
-	  PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
-
-  	client->send_UploadUniqueId(req_id, post_type);
+		auto args = UniqueIdService_UploadUniqueId_args(randGen);
+  	client->send_UploadUniqueId(args.req_id, args.post_type);
 	}
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;

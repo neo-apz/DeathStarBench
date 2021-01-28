@@ -22,6 +22,14 @@ class UniqueIdServiceIf {
  public:
   virtual ~UniqueIdServiceIf() {}
   virtual int64_t UploadUniqueId(const int64_t req_id, const PostType::type post_type) = 0;
+
+	struct FuncType {
+  enum type {
+    UPLOAD_UNIQUE_ID = 0,
+    
+		SIZE = 1
+  	};
+	};
 };
 
 class UniqueIdServiceIfFactory {
@@ -69,6 +77,11 @@ class UniqueIdService_UploadUniqueId_args {
   UniqueIdService_UploadUniqueId_args(const UniqueIdService_UploadUniqueId_args&);
   UniqueIdService_UploadUniqueId_args& operator=(const UniqueIdService_UploadUniqueId_args&);
   UniqueIdService_UploadUniqueId_args() : req_id(0), post_type((PostType::type)0) {
+  }
+
+	UniqueIdService_UploadUniqueId_args(RandomGenerator *randGen) {
+		req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
+	  post_type = (PostType::type) randGen->getInt64(0, 3);
   }
 
   virtual ~UniqueIdService_UploadUniqueId_args() throw();
@@ -196,6 +209,9 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
   int64_t UploadUniqueId(const int64_t req_id, const PostType::type post_type);
   void send_UploadUniqueId(const int64_t req_id, const PostType::type post_type);
   int64_t recv_UploadUniqueId();
+
+	UniqueIdService_UploadUniqueId_args *uploadUniqueId_args;
+	UniqueIdService_UploadUniqueId_result uploadUniqueId_res;
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -219,6 +235,27 @@ class UniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
 	virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
 
   virtual ~UniqueIdServiceProcessor() {}
+};
+
+class UniqueIdServiceCerebrosProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> iface_;
+ private:
+  typedef  uint64_t (UniqueIdServiceCerebrosProcessor::*ProcessFunction)(UniqueIdServiceClient*);
+  // typedef struct ProcessMap { ProcessFunction x[UniqueIdServiceIf::FuncType::SIZE]; } ProcessMap;
+	typedef ProcessFunction ProcessMap[UniqueIdServiceIf::FuncType::SIZE];
+  ProcessMap processMap_;
+  uint64_t process_UploadUniqueId(UniqueIdServiceClient* client);
+ public:
+  UniqueIdServiceCerebrosProcessor(::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> iface) :
+    iface_(iface) {
+    processMap_[UniqueIdServiceIf::FuncType::UPLOAD_UNIQUE_ID] = &UniqueIdServiceCerebrosProcessor::process_UploadUniqueId;
+  }
+	virtual uint64_t dispatchCall(int funcCode, UniqueIdServiceClient* client) {
+		return (this->*(processMap_[funcCode]))(client);
+	}
+
+  virtual ~UniqueIdServiceCerebrosProcessor() {}
 };
 
 class UniqueIdServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

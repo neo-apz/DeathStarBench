@@ -24,3 +24,27 @@ target_link_libraries(
 )
 
 install(TARGETS UniqueIdService DESTINATION ./)
+
+add_executable(
+	CerbUniqueIdService
+	
+	CerbUniqueIdService.cpp
+)
+
+target_include_directories(
+	CerbUniqueIdService PRIVATE ${COMMON_DIR}
+)
+
+target_link_libraries(
+	CerbUniqueIdService
+	
+	mycommon
+	mysocialnet_types
+	compose_post
+	unique_id
+	${THRIFT_LIB}
+	${CMAKE_THREAD_LIBS_INIT}
+	${Boost_LIBRARIES}
+	Boost::log
+	Boost::log_setup
+)
