@@ -1449,7 +1449,7 @@ int64_t ComposePostServiceClient::recv_UploadMedia()
 int64_t ComposePostServiceClient::FakeUploadUniqueId()
 {
 	iprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, 0);
-  uploadUniqueId_res.write(iprot_);
+  uploadUniqueId_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -1457,8 +1457,12 @@ int64_t ComposePostServiceClient::FakeUploadUniqueId()
 
 int64_t ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
-  send_UploadUniqueId(req_id, post_id, post_type);
+  #ifdef CEREBROS
+	return this->uploadUniqueId_res->success;
+	#else
+	send_UploadUniqueId(req_id, post_id, post_type);
   return recv_UploadUniqueId();
+	#endif
 }
 
 void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)

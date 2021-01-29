@@ -819,26 +819,27 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
 
 	int64_t FakeUploadUniqueId();
 
-	ComposePostService_UploadUniqueId_result uploadUniqueId_res;
+	ComposePostService_UploadUniqueId_result *uploadUniqueId_res;
 
 	static void InitializeFuncMapComposePost(FunctionClientMap<ComposePostServiceClient> *f2cmap,
-																	int num_template_clients,
-																	int num_msg_per_client,
-																	int base_buffer_size) {
-	
-	uint64_t buffer_size = num_msg_per_client * base_buffer_size;
-
+																					 RandomGenerator *randGen,
+																					 int num_template_clients,
+																					 int num_msg_per_client,
+																					 int base_buffer_size) {
 	#ifdef CEREBROS
 	ComposePostServiceClient** clients = new ComposePostServiceClient*[num_template_clients];
 	// Fill up the clients
 	for (int i = 0; i < num_template_clients; i++) {
 		clients[i] = new ComposePostServiceClient();
+		clients[i]->uploadUniqueId_res = new ComposePostService_UploadUniqueId_result(randGen);
 	}
 	#else
+	uint64_t buffer_size = num_msg_per_client * base_buffer_size;
 	MyThriftClient<ComposePostServiceClient>** clients = new MyThriftClient<ComposePostServiceClient>*[num_template_clients];
 	// Fill up the clients
 	for (int i = 0; i < num_template_clients; i++) {
 		clients[i] = new MyThriftClient<ComposePostServiceClient>(buffer_size);
+		clients[i]->GetClient()->uploadUniqueId_res = new ComposePostService_UploadUniqueId_result(randGen);
 		clients[i]->GetClient()->FakeUploadUniqueId();
 	}
 	#endif

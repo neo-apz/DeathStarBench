@@ -12,7 +12,6 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 
-
 #include "../../gen-cpp/UniqueIdService.h"
 #include "../../gen-cpp/my_social_network_types.h"
 

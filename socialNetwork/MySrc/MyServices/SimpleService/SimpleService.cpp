@@ -3,7 +3,7 @@
 #include <RandomGenerator.h>
 #include <NebulaClientPool.h>
 
-#include "UniqueIdHandler.h"
+#include "SimpleHandler.h"
 
 using namespace my_social_network;
 
@@ -74,7 +74,11 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
 	auto processor = new NebulaThriftProcessor<UniqueIdServiceProcessor, UniqueIdServiceClient>(ctx, tid, proc, clients);
 
 	auto f2cMap = clientPool->AddToPool(ctx->getQP(tid));
-	ComposePostServiceClient::InitializeFuncMapComposePost(f2cMap, &randGen, NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, BUFFER_SIZE);
+	ComposePostServiceClient::InitializeFuncMapComposePost(f2cMap,
+																												 &randGen,
+																												 NUM_TEMPLATE_CLIENTS,
+																												 NUM_MSGS_PER_CLIENT,
+																												 BUFFER_SIZE);
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
   // uint32_t ISz, OSz;

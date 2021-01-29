@@ -254,7 +254,12 @@ class UniqueIdServiceCerebrosProcessor {
     iface_(iface) {
     processMap_[UniqueIdServiceIf::FuncType::UPLOAD_UNIQUE_ID] = &UniqueIdServiceCerebrosProcessor::process_UploadUniqueId;
   }
-	virtual uint64_t dispatchCall(int funcCode, UniqueIdServiceClient* client) {
+	uint64_t dispatchCall(int funcCode, UniqueIdServiceClient* client) {
+		if (funcCode >= UniqueIdServiceIf::FuncType::SIZE){
+			printf("Bad func code (%d) to dispatch in UniqueIdService!\n", funcCode);
+			exit(1);
+		}
+
 		return (this->*(processMap_[funcCode]))(client);
 	}
 
