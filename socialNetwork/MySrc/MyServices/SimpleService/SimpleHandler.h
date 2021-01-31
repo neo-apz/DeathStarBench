@@ -12,6 +12,7 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 
+
 #include "../../gen-cpp/UniqueIdService.h"
 #include "../../gen-cpp/my_social_network_types.h"
 
@@ -75,7 +76,7 @@ int64_t UniqueIdHandler::UploadUniqueId(
 
   int64_t timestamp = CUSTOM_EPOCH + req_id;
   int idx = GetCounter(timestamp);
-  
+
   int64_t post_id = idx & 0x7FFFFFFFFFFFFFFF;
 
 	// Upload to compose post service

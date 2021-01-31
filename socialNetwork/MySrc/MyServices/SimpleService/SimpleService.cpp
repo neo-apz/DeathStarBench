@@ -1,7 +1,13 @@
+#include <thread>
+
 #include <utils.h>
+#ifdef CEREBROS
+#include <CerebrosProcessor.h>
+#else
 #include <NebulaThriftProcessor.h>
-#include <RandomGenerator.h>
+#endif
 #include <NebulaClientPool.h>
+#include <RandomGenerator.h>
 
 #include "SimpleHandler.h"
 
@@ -11,10 +17,7 @@ using namespace std;
 
 uint64_t num_iterations;
 std::mutex thread_lock;
-// MyLock thread_lock;
 std::string machine_id;
-
-cpu_set_t *cpuSet;
 
 volatile bool start = false;
 pthread_barrier_t barrier;
@@ -32,15 +35,23 @@ void ClientRecvUniqueId(MyThriftClient<UniqueIdServiceClient> *uniqueIdClient){
   client->recv_UploadUniqueId();
 }
 
+#ifdef CEREBROS
+void GenRequests(UniqueIdServiceClient** clients,
+								 RandomGenerator *randGen) {
+
+  for (int i = 0; i < NUM_TEMPLATE_CLIENTS; i++) {
+		clients[i] = new UniqueIdServiceClient(randGen);
+  }
+}
+#else
 void GenRequests(MyThriftClient<UniqueIdServiceClient> *clientPtr,
 								 RandomGenerator *randGen){
 
 	auto client = clientPtr->GetClient();
 	for (int i = 0; i < NUM_MSGS_PER_CLIENT; i++) {
-		int64_t req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
-	  PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
-
-  	client->send_UploadUniqueId(req_id, post_type);
+		client->uploadUniqueId_args = new UniqueIdService_UploadUniqueId_args(randGen);
+		auto args = client->uploadUniqueId_args;
+  	client->send_UploadUniqueId(args->req_id, args->post_type);
 	}
 
   // uint8_t* cltIBufPtr, *cltOBufPtr;
@@ -50,6 +61,7 @@ void GenRequests(MyThriftClient<UniqueIdServiceClient> *clientPtr,
 
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;  
 }
+#endif
 
 void GenAndProcessReqs(rpcNUMAContext* ctx,
 											 int tid,
@@ -59,7 +71,18 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
   // LOG(warning) << "User TID: " << tid << " TID: " << std::this_thread::get_id();
   RandomGenerator randGen(tid);
 
-  uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
+// Generate fake requests
+#ifdef CEREBROS
+	UniqueIdServiceClient *clients[NUM_TEMPLATE_CLIENTS];
+  GenRequests(clients, &randGen);
+
+	std::shared_ptr<UniqueIdServiceCerebrosProcessor> proc = 
+		std::make_shared<UniqueIdServiceCerebrosProcessor>(handler);
+
+	auto processor = new CerebrosProcessor<UniqueIdServiceCerebrosProcessor, UniqueIdServiceClient>(ctx, tid, proc, clients);
+
+#else
+	uint64_t buffer_size = NUM_MSGS_PER_CLIENT * BASE_BUFFER_SIZE;
   
   MyThriftClient<UniqueIdServiceClient>* clients[NUM_TEMPLATE_CLIENTS];
 
@@ -68,10 +91,13 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
 		GenRequests(clients[i], &randGen);
 	}
 
-  std::shared_ptr<UniqueIdServiceProcessor> proc = 
+	std::shared_ptr<UniqueIdServiceProcessor> proc = 
 		std::make_shared<UniqueIdServiceProcessor>(handler);
 
 	auto processor = new NebulaThriftProcessor<UniqueIdServiceProcessor, UniqueIdServiceClient>(ctx, tid, proc, clients);
+
+#endif
+  
 
 	auto f2cMap = clientPool->AddToPool(ctx->getQP(tid));
 	ComposePostServiceClient::InitializeFuncMapComposePost(f2cMap,
@@ -87,6 +113,7 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
 
   // std::cout << "ISz: " <<  ISz << " OSz: " << OSz << std::endl;
 
+	// Wait for all the threads to reach here & then pause.
   pthread_barrier_wait(&barrier);
 
   if (tid == 0) {
@@ -101,7 +128,8 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
 
   uint64_t count = 1;
 
-  while (count <= num_iterations) {
+  // Process loop
+	while (count <= num_iterations) {
     processor->process(count);
 
     // std::cout << "Processing Thread " << tid << " count=" << count  << std::endl;
