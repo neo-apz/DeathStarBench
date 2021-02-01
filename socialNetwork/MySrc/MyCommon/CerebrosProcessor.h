@@ -76,24 +76,35 @@ template<class TProcessor, class TClient>
 void CerebrosProcessor<TProcessor, TClient>::process(uint64_t count){
 
 	#ifdef __aarch64__
+		PROCESS_BEGIN(count);
+		GETREQ_BEGIN();
+
 		PASS2FLEXUS_MEASURE(0, NETPIPE_END, count);
 	#endif
 	_getRequest();
 
 	#ifdef __aarch64__
-		PROCESS_BEGIN(count);
 		PASS2FLEXUS_MEASURE(0, MEASUREMENT, 101); // sets "notification time" in msg_lat.csv
     PASS2FLEXUS_MEASURE(0, NETPIPE_START,count+1);
+
+		GETREQ_END();
+		IN_PROCESS_BEGIN();
 	#endif
 	
 	_internalProcess();
 
 	#ifdef __aarch64__
+		IN_PROCESS_END();
+		RESP_BEGIN();
 		PASS2FLEXUS_MEASURE(0, MEASUREMENT, 102); // sets "exec_time_synth" in msg_lat.csv
-		PROCESS_END(count);
 	#endif
 
 	_respond();
+
+	#ifdef __aarch64__
+		RESP_END();
+		PROCESS_END(count);
+	#endif
 }
 
 template<class TProcessor, class TClient>

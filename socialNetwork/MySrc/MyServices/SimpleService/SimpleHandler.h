@@ -79,6 +79,9 @@ int64_t UniqueIdHandler::UploadUniqueId(
 
   int64_t post_id = idx & 0x7FFFFFFFFFFFFFFF;
 
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+	#endif
 	// Upload to compose post service
 	try {
 		#ifdef CEREBROS
@@ -95,6 +98,9 @@ int64_t UniqueIdHandler::UploadUniqueId(
 							 << e.what() << '\n' ;
 		exit(EXIT_FAILURE);
 	}
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
 
   return post_id;
 }

@@ -92,21 +92,31 @@ NebulaThriftProcessor<TThriftProcessor, TThriftClient>::~NebulaThriftProcessor()
 
 template<class TThriftProcessor, class TThriftClient>
 bool NebulaThriftProcessor<TThriftProcessor, TThriftClient>::process(uint64_t count){
-
-	_getRequest();
-
 	#ifdef __aarch64__
 		PROCESS_BEGIN(count);
+		GETREQ_BEGIN();
+	#endif
+
+	_getRequest();
+	
+	#ifdef __aarch64__
+		GETREQ_END();
+		IN_PROCESS_BEGIN();
 	#endif
 	
 	bool retVal = _internalProcess();
 
 	#ifdef __aarch64__
-		PROCESS_END(count);
+		IN_PROCESS_END();
+		RESP_BEGIN();
 	#endif
 
 	_respond();
 
+	#ifdef __aarch64__
+		RESP_END();
+		PROCESS_END(count);
+	#endif
 	return retVal;
 }
 

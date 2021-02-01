@@ -11,6 +11,10 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
+
 namespace my_social_network {
 
 #ifdef _MSC_VER

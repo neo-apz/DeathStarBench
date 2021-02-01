@@ -1460,15 +1460,24 @@ int64_t ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int
   #ifdef CEREBROS
 	return this->uploadUniqueId_res->success;
 	#else
+	
 	send_UploadUniqueId(req_id, post_id, post_type);
-  return recv_UploadUniqueId();
+	return recv_UploadUniqueId();
 	#endif
 }
 
 void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   ComposePostService_UploadUniqueId_pargs args;
   args.req_id = &req_id;
@@ -1483,6 +1492,9 @@ void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const i
 
 int64_t ComposePostServiceClient::recv_UploadUniqueId()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -1506,7 +1518,11 @@ int64_t ComposePostServiceClient::recv_UploadUniqueId()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  int64_t _return;
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
+	int64_t _return;
   ComposePostService_UploadUniqueId_presult result;
   result.success = &_return;
   result.read(iprot_);

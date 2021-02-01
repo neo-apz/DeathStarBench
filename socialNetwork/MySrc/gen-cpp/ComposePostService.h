@@ -14,6 +14,9 @@
 #include <RandomGenerator.h>
 #include <FunctionClientMap.h>
 
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
 namespace my_social_network {
 
 #ifdef _MSC_VER
