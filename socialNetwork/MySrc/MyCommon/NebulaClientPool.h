@@ -74,6 +74,10 @@ TThriftClient* NebulaClientPool<TThriftClient>::Get(int fid) {
 #else
 MyThriftClient<TThriftClient>* NebulaClientPool<TThriftClient>::Get(int fid) {
 #endif
+
+	#ifdef __aarch64__
+	NESTED_TRANSPORT_BEGIN();
+	#endif
 	thread::id tid = this_thread::get_id();
 
 	try{
@@ -97,10 +101,15 @@ MyThriftClient<TThriftClient>* NebulaClientPool<TThriftClient>::Get(int fid) {
 		// Get a response
 		_ctx->cerRecvRPC(qp->qp_id, qp->wq, qp->cq, &resp, false);
 		cid = resp.req->param_ptr;
-		auto client = clientMap->GetClient(fid, cid);
 
 		// Free up the resources!
 		_ctx->cerFreeBuff(qp->wq, (uint8_t*) resp.req, 64);
+
+		#ifdef __aarch64__
+		NESTED_TRANSPORT_END();
+		#endif
+
+		auto client = clientMap->GetClient(fid, cid);
 
 		return client;
 	} catch(const std::exception& e) {

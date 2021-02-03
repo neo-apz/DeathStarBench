@@ -39,6 +39,9 @@
 #define MAGIC_NHEADER_BEGIN        			2101
 #define MAGIC_NHEADER_END	       		  	2100
 
+#define MAGIC_NTRANSPORT_BEGIN        	2201
+#define MAGIC_NTRANSPORT_END	       		2200
+
 // static inline __attribute__ ((always_inline))
 //     uint64_t  call_magic_2_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2){
 // #ifdef __aarch64__
@@ -174,6 +177,13 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
                     } while (0)										   
 #define NESTED_HEADER_END() do { \
                         call_magic_2_64(42, MAGIC_NHEADER_END, 0); \
+                    } while (0)																				
+
+#define NESTED_TRANSPORT_BEGIN() do { \
+                        call_magic_2_64(42, MAGIC_NTRANSPORT_BEGIN, 0); \
+                    } while (0)										   
+#define NESTED_TRANSPORT_END() do { \
+                        call_magic_2_64(42, MAGIC_NTRANSPORT_END, 0); \
                     } while (0)																				
 
 #define PROCESS_END(PROCESS_COUNT) do { \
