@@ -54,11 +54,12 @@ class UniqueIdHandler : public UniqueIdServiceIf {
 
   int64_t UploadUniqueId(int64_t, PostType::type) override;
 
+	NebulaClientPool<ComposePostServiceClient> *_compose_client_pool;
+
  private:
   std::mutex *_thread_lock;
   // MyLock *_thread_lock;
   std::string _machine_id;
-	NebulaClientPool<ComposePostServiceClient> *_compose_client_pool;
 };
 
 UniqueIdHandler::UniqueIdHandler(

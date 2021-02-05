@@ -84,7 +84,7 @@ class UniqueIdService_UploadUniqueId_args {
   }
 
 	UniqueIdService_UploadUniqueId_args(RandomGenerator *randGen) {
-		req_id = randGen->getInt64(0xFFFFFFFFFFFFFF);
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
 	  post_type = (PostType::type) randGen->getInt64(0, 3);
   }
 
@@ -194,7 +194,7 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
     setProtocol(iprot,oprot);
   }
 	UniqueIdServiceClient(RandomGenerator* randGen) {
-    uploadUniqueId_args = new UniqueIdService_UploadUniqueId_args(randGen);
+		initArgs(randGen);
   }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -218,6 +218,9 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
   int64_t recv_UploadUniqueId();
 
 	UniqueIdService_UploadUniqueId_args *uploadUniqueId_args;
+	void initArgs(RandomGenerator* randGen);
+	void send_RandReq(RandomGenerator* randGen);
+
 	UniqueIdService_UploadUniqueId_result uploadUniqueId_res;
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;

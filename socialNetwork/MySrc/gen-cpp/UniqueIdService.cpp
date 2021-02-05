@@ -213,6 +213,16 @@ uint32_t UniqueIdService_UploadUniqueId_presult::read(::apache::thrift::protocol
   return xfer;
 }
 
+void UniqueIdServiceClient::initArgs(RandomGenerator* randGen)
+{
+	this->uploadUniqueId_args = new UniqueIdService_UploadUniqueId_args(randGen);
+}
+
+void UniqueIdServiceClient::send_RandReq(RandomGenerator* randGen)
+{
+	send_UploadUniqueId(uploadUniqueId_args->req_id, uploadUniqueId_args->post_type);
+}
+
 int64_t UniqueIdServiceClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_type);
