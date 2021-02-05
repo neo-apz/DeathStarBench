@@ -1334,6 +1334,12 @@ int64_t ComposePostServiceClient::UploadText(const int64_t req_id, const std::st
   return recv_UploadText();
 }
 
+void ComposePostServiceClient::initResults(RandomGenerator* randGen)
+{
+	this->uploadUniqueId_res = new ComposePostService_UploadUniqueId_result(randGen);
+}
+
+
 void ComposePostServiceClient::send_UploadText(const int64_t req_id, const std::string& text)
 {
   int32_t cseqid = 0;
@@ -1446,7 +1452,7 @@ int64_t ComposePostServiceClient::recv_UploadMedia()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadMedia failed: unknown result");
 }
 
-int64_t ComposePostServiceClient::FakeUploadUniqueId()
+void ComposePostServiceClient::FakeUploadUniqueId()
 {
 	iprot_->writeMessageBegin("UploadUniqueId", ::apache::thrift::protocol::T_REPLY, 0);
   uploadUniqueId_res->write(iprot_);

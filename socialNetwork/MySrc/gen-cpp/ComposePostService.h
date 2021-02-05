@@ -820,34 +820,22 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
   void send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
   int64_t recv_UploadUserMentions();
 
-	int64_t FakeUploadUniqueId();
-
+	void initResults(RandomGenerator* randGen);
 	ComposePostService_UploadUniqueId_result *uploadUniqueId_res;
+	void FakeUploadUniqueId();
 
-	static void InitializeFuncMapComposePost(FunctionClientMap<ComposePostServiceClient> *f2cmap,
-																					 RandomGenerator *randGen,
-																					 int num_template_clients,
-																					 int num_msg_per_client,
-																					 int base_buffer_size) {
-	#ifdef CEREBROS
-	ComposePostServiceClient** clients = new ComposePostServiceClient*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new ComposePostServiceClient();
-		clients[i]->uploadUniqueId_res = new ComposePostService_UploadUniqueId_result(randGen);
-	}
-	#else
-	uint64_t buffer_size = num_msg_per_client * base_buffer_size;
-	MyThriftClient<ComposePostServiceClient>** clients = new MyThriftClient<ComposePostServiceClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<ComposePostServiceClient>(buffer_size);
-		clients[i]->GetClient()->uploadUniqueId_res = new ComposePostService_UploadUniqueId_result(randGen);
-		clients[i]->GetClient()->FakeUploadUniqueId();
-	}
-	#endif
-
-	f2cmap->RegisterFunction(ComposePostServiceIf::FuncType::UPLOAD_UNIQUE_ID, clients);
+	static void FakeRespGen(ComposePostServiceClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::UPLOAD_UNIQUE_ID:
+			client->FakeUploadUniqueId();
+			break;
+		
+		default:
+			std::cout << "This is an error, wrong message type (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
 	}
 
  protected:

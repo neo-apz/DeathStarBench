@@ -20,12 +20,13 @@ void initPools(RandomGenerator* randGen, rpcNUMAContext* ctx,
 							 std::shared_ptr<UniqueIdHandler> handler, int tid) {
 
 	auto f2cMap = handler->_compose_client_pool->AddToPool(ctx->getQP(tid));
-	ComposePostServiceClient::InitializeFuncMapComposePost(f2cMap,
-																												 randGen,
-																												 NUM_TEMPLATE_CLIENTS,
-																												 NUM_MSGS_PER_CLIENT,
-																												 BUFFER_SIZE);								 
+	
+	fake_resp_gen_func<ComposePostServiceClient> resp_gen_func = ComposePostServiceClient::FakeRespGen;
 
+	f2cMap->InitMap(resp_gen_func,
+									ComposePostServiceClient::FuncType::UPLOAD_UNIQUE_ID,
+									randGen, NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, BUFFER_SIZE);
+	
 }
 
 int main(int argc, char *argv[]) {
