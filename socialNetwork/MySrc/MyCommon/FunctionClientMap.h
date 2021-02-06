@@ -71,7 +71,7 @@ MyThriftClient<TThriftClient>* FunctionClientMap<TThriftClient>::GetClient(int f
 
 template<class TThriftClient>
 void FunctionClientMap<TThriftClient>::InitMap(
-				fake_resp_gen_func<TThriftClient> f,
+				fake_resp_gen_func<TThriftClient> resp_gen_func,
 				uint64_t fid,
 				RandomGenerator *randGen,
 				uint64_t num_template_clients,
@@ -97,7 +97,7 @@ void FunctionClientMap<TThriftClient>::InitMap(
 		#else
 		clients[i] = new MyThriftClient<TThriftClient>(buffer_size);
 		clients[i]->GetClient()->initResults(randGen);
-		f(clients[i]->GetClient(), fid);
+		resp_gen_func(clients[i]->GetClient(), fid);
 		#endif
 	}
 

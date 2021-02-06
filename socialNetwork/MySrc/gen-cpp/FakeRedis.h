@@ -13,6 +13,15 @@
 
 #include <RandomGenerator.h>
 #include <FunctionClientMap.h>
+
+#include <iostream>
+
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
+
+#include <iostream>
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -38,6 +47,30 @@ class FakeRedisIf {
   virtual void HGetUrls(std::vector<Url> & _return, const int64_t req_id, const std::string& field) = 0;
   virtual void HGetUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::string& field) = 0;
   virtual int64_t HIncrBy(const int64_t key, const std::string& field, const int64_t value) = 0;
+
+	struct FuncType {
+  enum type {
+    HS_CREATOR = 0,
+    HS_TEXT = 1,
+    HS_MEDIA = 2,
+    HS_POST_ID = 3,
+    HS_POST_TYPE = 4,
+    HS_URLS = 5,
+		HS_USER_MENTIONS = 6,
+    
+		HG_CREATOR = 7,
+    HG_TEXT = 8,
+    HG_MEDIA = 9,
+    HG_POST_ID = 10,
+    HG_POST_TYPE = 11,
+    HG_URLS = 12,
+		HG_USER_MENTIONS = 13,
+
+		H_INC = 14,
+
+    SIZE = 15
+  	};
+	};
 };
 
 class FakeRedisIfFactory {
@@ -189,6 +222,9 @@ class FakeRedis_HSetCreator_result {
   FakeRedis_HSetCreator_result() {
   }
 
+	FakeRedis_HSetCreator_result(RandomGenerator* randGen) {
+  }
+
   virtual ~FakeRedis_HSetCreator_result() throw();
 
   bool operator == (const FakeRedis_HSetCreator_result & /* rhs */) const
@@ -287,6 +323,9 @@ class FakeRedis_HSetText_result {
   FakeRedis_HSetText_result(const FakeRedis_HSetText_result&);
   FakeRedis_HSetText_result& operator=(const FakeRedis_HSetText_result&);
   FakeRedis_HSetText_result() {
+  }
+
+	FakeRedis_HSetText_result(RandomGenerator* randGen) {
   }
 
   virtual ~FakeRedis_HSetText_result() throw();
@@ -389,6 +428,9 @@ class FakeRedis_HSetMedia_result {
   FakeRedis_HSetMedia_result() {
   }
 
+	FakeRedis_HSetMedia_result(RandomGenerator* randGen) {
+  }
+
   virtual ~FakeRedis_HSetMedia_result() throw();
 
   bool operator == (const FakeRedis_HSetMedia_result & /* rhs */) const
@@ -487,6 +529,9 @@ class FakeRedis_HSetPostId_result {
   FakeRedis_HSetPostId_result(const FakeRedis_HSetPostId_result&);
   FakeRedis_HSetPostId_result& operator=(const FakeRedis_HSetPostId_result&);
   FakeRedis_HSetPostId_result() {
+  }
+
+	FakeRedis_HSetPostId_result(RandomGenerator* randGen) {
   }
 
   virtual ~FakeRedis_HSetPostId_result() throw();
@@ -589,6 +634,9 @@ class FakeRedis_HSetPostType_result {
   FakeRedis_HSetPostType_result() {
   }
 
+	FakeRedis_HSetPostType_result(RandomGenerator* randGen) {
+  }
+
   virtual ~FakeRedis_HSetPostType_result() throw();
 
   bool operator == (const FakeRedis_HSetPostType_result & /* rhs */) const
@@ -687,6 +735,9 @@ class FakeRedis_HSetUrls_result {
   FakeRedis_HSetUrls_result(const FakeRedis_HSetUrls_result&);
   FakeRedis_HSetUrls_result& operator=(const FakeRedis_HSetUrls_result&);
   FakeRedis_HSetUrls_result() {
+  }
+
+	FakeRedis_HSetUrls_result(RandomGenerator* randGen) {
   }
 
   virtual ~FakeRedis_HSetUrls_result() throw();
@@ -789,6 +840,9 @@ class FakeRedis_HSetUserMentions_result {
   FakeRedis_HSetUserMentions_result() {
   }
 
+	FakeRedis_HSetUserMentions_result(RandomGenerator* randGen) {
+  }
+
   virtual ~FakeRedis_HSetUserMentions_result() throw();
 
   bool operator == (const FakeRedis_HSetUserMentions_result & /* rhs */) const
@@ -884,6 +938,11 @@ class FakeRedis_HGetCreator_result {
   FakeRedis_HGetCreator_result(const FakeRedis_HGetCreator_result&);
   FakeRedis_HGetCreator_result& operator=(const FakeRedis_HGetCreator_result&);
   FakeRedis_HGetCreator_result() {
+  }
+
+	FakeRedis_HGetCreator_result(RandomGenerator* randGen) {
+		success = Creator(randGen);
+		__isset.success = true;
   }
 
   virtual ~FakeRedis_HGetCreator_result() throw();
@@ -997,6 +1056,11 @@ class FakeRedis_HGetText_result {
   FakeRedis_HGetText_result() : success() {
   }
 
+	FakeRedis_HGetText_result(RandomGenerator* randGen) {
+		success = randGen->getRandText();
+		__isset.success = true;
+  }
+
   virtual ~FakeRedis_HGetText_result() throw();
   std::string success;
 
@@ -1106,6 +1170,15 @@ class FakeRedis_HGetMedia_result {
   FakeRedis_HGetMedia_result(const FakeRedis_HGetMedia_result&);
   FakeRedis_HGetMedia_result& operator=(const FakeRedis_HGetMedia_result&);
   FakeRedis_HGetMedia_result() {
+  }
+
+	FakeRedis_HGetMedia_result(RandomGenerator* randGen) {
+		uint32_t iters = randGen->getUInt32(1, 2);
+		for(int i=0; i < iters; i++){
+			Media m(randGen);
+			success.emplace_back(m);
+		}
+		__isset.success = true;
   }
 
   virtual ~FakeRedis_HGetMedia_result() throw();
@@ -1219,6 +1292,11 @@ class FakeRedis_HGetPostId_result {
   FakeRedis_HGetPostId_result() : success(0) {
   }
 
+	FakeRedis_HGetPostId_result(RandomGenerator* randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+  }
+
   virtual ~FakeRedis_HGetPostId_result() throw();
   int64_t success;
 
@@ -1328,6 +1406,11 @@ class FakeRedis_HGetPostType_result {
   FakeRedis_HGetPostType_result(const FakeRedis_HGetPostType_result&);
   FakeRedis_HGetPostType_result& operator=(const FakeRedis_HGetPostType_result&);
   FakeRedis_HGetPostType_result() : success((PostType::type)0) {
+  }
+
+	FakeRedis_HGetPostType_result(RandomGenerator* randGen) {
+		success = (PostType::type) randGen->getInt64(0, 3);
+		__isset.success = true;
   }
 
   virtual ~FakeRedis_HGetPostType_result() throw();
@@ -1441,6 +1524,15 @@ class FakeRedis_HGetUrls_result {
   FakeRedis_HGetUrls_result() {
   }
 
+	FakeRedis_HGetUrls_result(RandomGenerator* randGen) {
+		uint32_t iters = randGen->getUInt32(1, 2);
+		for(int i=0; i < iters; i++){
+			Url url(randGen);
+			success.emplace_back(url);
+		}
+		__isset.success = true;
+  }
+
   virtual ~FakeRedis_HGetUrls_result() throw();
   std::vector<Url>  success;
 
@@ -1550,6 +1642,15 @@ class FakeRedis_HGetUserMentions_result {
   FakeRedis_HGetUserMentions_result(const FakeRedis_HGetUserMentions_result&);
   FakeRedis_HGetUserMentions_result& operator=(const FakeRedis_HGetUserMentions_result&);
   FakeRedis_HGetUserMentions_result() {
+  }
+
+	FakeRedis_HGetUserMentions_result(RandomGenerator* randGen) {
+		uint32_t iters = randGen->getUInt32(1, 2);
+		for(int i=0; i < iters; i++){
+			UserMention um(randGen);
+			success.emplace_back(um);
+		}
+		__isset.success = true;
   }
 
   virtual ~FakeRedis_HGetUserMentions_result() throw();
@@ -1670,6 +1771,11 @@ class FakeRedis_HIncrBy_result {
   FakeRedis_HIncrBy_result() : success(0) {
   }
 
+	FakeRedis_HIncrBy_result(RandomGenerator* randGen) {
+		success = randGen->getInt64(1, 6);
+		__isset.success = true;
+  }
+
   virtual ~FakeRedis_HIncrBy_result() throw();
   int64_t success;
 
@@ -1720,6 +1826,8 @@ class FakeRedisClient : virtual public FakeRedisIf {
   FakeRedisClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	FakeRedisClient(){
+	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -1783,47 +1891,113 @@ class FakeRedisClient : virtual public FakeRedisIf {
   void send_HIncrBy(const int64_t key, const std::string& field, const int64_t value);
   int64_t recv_HIncrBy();
  
-	void FakeHSetCreator(RandomGenerator *randGen);
-	void FakeHSetText(RandomGenerator *randGen);
-	void FakeHSetMedia(RandomGenerator *randGen);
-  void FakeHSetPostId(RandomGenerator *randGen);
-  void FakeHSetPostType(RandomGenerator *randGen);
-  void FakeHSetUrls(RandomGenerator *randGen);
-  void FakeHSetUserMentions(RandomGenerator *randGen);
+	void initResults(RandomGenerator* randGen);
 
-	void FakeHGetCreator(RandomGenerator *randGen);
-	void FakeHGetText(RandomGenerator *randGen);
-	void FakeHGetMedia(RandomGenerator *randGen);
-  void FakeHGetPostId(RandomGenerator *randGen);
-  void FakeHGetPostType(RandomGenerator *randGen);
-  void FakeHGetUrls(RandomGenerator *randGen);
-  void FakeHGetUserMentions(RandomGenerator *randGen);
+	FakeRedis_HSetCreator_result *hSetCreator_res;
+	FakeRedis_HSetText_result *hSetText_res;
+	FakeRedis_HSetMedia_result *hSetMedia_res;
+	FakeRedis_HSetPostId_result *hSetPostId_res;
+	FakeRedis_HSetPostType_result *hSetPostType_res;
+	FakeRedis_HSetUrls_result *hSetUrls_res;
+	FakeRedis_HSetUserMentions_result *hSetUserMentions_res;
 
-	void FakeHHIncrBy(RandomGenerator *randGen);
+	FakeRedis_HGetCreator_result *hGetCreator_res;
+	FakeRedis_HGetText_result *hGetText_res;
+	FakeRedis_HGetMedia_result *hGetMedia_res;
+	FakeRedis_HGetPostId_result *hGetPostId_res;
+	FakeRedis_HGetPostType_result *hGetPostType_res;
+	FakeRedis_HGetUrls_result *hGetUrls_res;
+	FakeRedis_HGetUserMentions_result *hGetUserMentions_res;
 
-	struct FuncType {
-  enum type {
-    HS_CREATOR = 0,
-    HS_TEXT = 1,
-    HS_MEDIA = 2,
-    HS_POST_ID = 3,
-    HS_POST_TYPE = 4,
-    HS_URLS = 5,
-		HS_USER_MENTIONS = 6,
-    
-		HG_CREATOR = 7,
-    HG_TEXT = 8,
-    HG_MEDIA = 9,
-    HG_POST_ID = 10,
-    HG_POST_TYPE = 11,
-    HG_URLS = 12,
-		HG_USER_MENTIONS = 13,
+	FakeRedis_HIncrBy_result *hIncBy_res;
+	
+	void FakeHSetCreator();
+	void FakeHSetText();
+	void FakeHSetMedia();
+  void FakeHSetPostId();
+  void FakeHSetPostType();
+  void FakeHSetUrls();
+  void FakeHSetUserMentions();
 
-		H_INC = 14,
+	void FakeHGetCreator();
+	void FakeHGetText();
+	void FakeHGetMedia();
+  void FakeHGetPostId();
+  void FakeHGetPostType();
+  void FakeHGetUrls();
+  void FakeHGetUserMentions();
 
-    SIZE = 15
-  	};
-	};
+	void FakeHIncrBy();
+
+	static void FakeRespGen(FakeRedisClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::HS_CREATOR:
+			client->FakeHSetCreator();
+			break;
+
+		case FuncType::HS_TEXT:
+			client->FakeHSetText();
+			break;
+
+		case FuncType::HS_MEDIA:
+			client->FakeHSetMedia();
+			break;
+
+		case FuncType::HS_POST_ID:
+			client->FakeHSetPostId();
+			break;
+
+		case FuncType::HS_POST_TYPE:
+			client->FakeHSetPostType();
+			break;
+
+		case FuncType::HS_URLS:
+			client->FakeHSetUrls();
+			break;
+
+		case FuncType::HS_USER_MENTIONS:
+			client->FakeHSetUserMentions();
+			break;	
+		
+		case FuncType::HG_CREATOR:
+			client->FakeHGetCreator();
+			break;
+
+		case FuncType::HG_TEXT:
+			client->FakeHGetText();
+			break;
+
+		case FuncType::HG_MEDIA:
+			client->FakeHGetMedia();
+			break;
+
+		case FuncType::HG_POST_ID:
+			client->FakeHGetPostId();
+			break;
+
+		case FuncType::HG_POST_TYPE:
+			client->FakeHGetPostType();
+			break;
+
+		case FuncType::HG_URLS:
+			client->FakeHGetUrls();
+			break;
+
+		case FuncType::HG_USER_MENTIONS:
+			client->FakeHGetUserMentions();
+			break;
+
+		case FuncType::H_INC:
+			client->FakeHIncrBy();
+			break;
+
+		default:
+			std::cout << "This is an error, wrong message type (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
+	}
 
 	static void InitializeFuncMapRedis(FunctionClientMap<FakeRedisClient> *f2cmap,
 																RandomGenerator *randGen,
@@ -1831,128 +2005,52 @@ class FakeRedisClient : virtual public FakeRedisIf {
 																int num_msg_per_client,
 																int base_buffer_size) {
 
-	uint64_t buffer_size = num_msg_per_client * base_buffer_size;
+		fake_resp_gen_func<FakeRedisClient> redis_resp_gen_func = FakeRedisClient::FakeRespGen;
+		
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HS_CREATOR,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	MyThriftClient<FakeRedisClient>** clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetCreator(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_CREATOR, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HS_TEXT,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetText(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_TEXT, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HS_MEDIA,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);										
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetMedia(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_MEDIA, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HS_POST_ID,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetPostId(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_POST_ID, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HS_POST_TYPE,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetPostType(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_POST_TYPE, clients);
-	
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetUrls(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_URLS, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HS_URLS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHSetUserMentions(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HS_USER_MENTIONS, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HS_USER_MENTIONS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HG_CREATOR,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetCreator(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_CREATOR, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HG_TEXT,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetText(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_TEXT, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HG_MEDIA,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);										
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetMedia(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_MEDIA, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HG_POST_ID,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetPostId(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_POST_ID, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HG_POST_TYPE,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetPostType(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_POST_TYPE, clients);
-	
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetUrls(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_URLS, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HG_URLS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHGetUserMentions(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::HG_USER_MENTIONS, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::HG_USER_MENTIONS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
-	clients = new MyThriftClient<FakeRedisClient>*[num_template_clients];
-	// Fill up the clients
-	for (int i = 0; i < num_template_clients; i++) {
-		clients[i] = new MyThriftClient<FakeRedisClient>(buffer_size);
-		clients[i]->GetClient()->FakeHHIncrBy(randGen);
-	}
-	f2cmap->RegisterFunction(FakeRedisClient::FuncType::H_INC, clients);
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::H_INC,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 }
  
  protected:

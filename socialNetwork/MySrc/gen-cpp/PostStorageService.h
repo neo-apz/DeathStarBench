@@ -14,6 +14,12 @@
 #include <RandomGenerator.h>
 #include <FunctionClientMap.h>
 
+#include <iostream>
+
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -27,6 +33,14 @@ class PostStorageServiceIf {
   virtual void StorePost(const int64_t req_id, const Post& post) = 0;
   virtual void ReadPost(Post& _return, const int64_t req_id, const int64_t post_id) = 0;
   virtual void ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids) = 0;
+
+	struct FuncType {
+  enum type {
+    STORE_POST = 0,
+    
+    SIZE = 1
+  	};
+	};
 };
 
 class PostStorageServiceIfFactory {
@@ -130,6 +144,9 @@ class PostStorageService_StorePost_result {
   PostStorageService_StorePost_result(const PostStorageService_StorePost_result&);
   PostStorageService_StorePost_result& operator=(const PostStorageService_StorePost_result&);
   PostStorageService_StorePost_result() {
+  }
+
+	PostStorageService_StorePost_result(RandomGenerator *randGen) {
   }
 
   virtual ~PostStorageService_StorePost_result() throw();
@@ -390,6 +407,8 @@ class PostStorageServiceClient : virtual public PostStorageServiceIf {
   PostStorageServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	PostStorageServiceClient(){
+	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -417,31 +436,33 @@ class PostStorageServiceClient : virtual public PostStorageServiceIf {
   void send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids);
   void recv_ReadPosts(std::vector<Post> & _return);
  
-	void FakeStorePost(RandomGenerator *randGen);
+	void initResults(RandomGenerator* randGen);
+	PostStorageService_StorePost_result *storePost_res;
+	void FakeStorePost();
 
-	struct FuncType {
-  enum type {
-    STORE_POST = 0,
-    
-    SIZE = 1
-  	};
-	};
+	static void FakeRespGen(PostStorageServiceClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::STORE_POST:
+			client->FakeStorePost();
+			break;
+		
+		default:
+			std::cout << "This is an error, wrong message type (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
+	}
 
 	static void InitializeFuncMapPostStorage(FunctionClientMap<PostStorageServiceClient> *f2cmap,
-																RandomGenerator *randGen,
-																int num_template_clients,
-																int num_msg_per_client,
-																int base_buffer_size) {
+																					 RandomGenerator *randGen,
+																					 int num_template_clients,
+																					 int num_msg_per_client,
+																					 int base_buffer_size) {
 
-		uint64_t buffer_size = num_msg_per_client * base_buffer_size;
-
-		MyThriftClient<PostStorageServiceClient>** clients = new MyThriftClient<PostStorageServiceClient>*[num_template_clients];
-		// Fill up the clients
-		for (int i = 0; i < num_template_clients; i++) {
-			clients[i] = new MyThriftClient<PostStorageServiceClient>(buffer_size);
-			clients[i]->GetClient()->FakeStorePost(randGen);
-		}
-		f2cmap->RegisterFunction(PostStorageServiceClient::FuncType::STORE_POST, clients);
+		fake_resp_gen_func<PostStorageServiceClient> resp_gen_func = PostStorageServiceClient::FakeRespGen;
+		f2cmap->InitMap(resp_gen_func, FuncType::STORE_POST,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 	}
  
  protected:

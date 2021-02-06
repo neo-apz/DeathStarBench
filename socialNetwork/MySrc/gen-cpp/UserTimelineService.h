@@ -14,6 +14,12 @@
 #include <RandomGenerator.h>
 #include <FunctionClientMap.h>
 
+#include <iostream>
+
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -26,6 +32,14 @@ class UserTimelineServiceIf {
   virtual ~UserTimelineServiceIf() {}
   virtual void WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp) = 0;
   virtual void ReadUserTimeline(std::vector<Post> & _return, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop) = 0;
+
+	struct FuncType {
+  enum type {
+    WRITE_TIMELINE = 0,
+    
+    SIZE = 1
+  	};
+	};
 };
 
 class UserTimelineServiceIfFactory {
@@ -140,6 +154,9 @@ class UserTimelineService_WriteUserTimeline_result {
   UserTimelineService_WriteUserTimeline_result(const UserTimelineService_WriteUserTimeline_result&);
   UserTimelineService_WriteUserTimeline_result& operator=(const UserTimelineService_WriteUserTimeline_result&);
   UserTimelineService_WriteUserTimeline_result() {
+  }
+
+	UserTimelineService_WriteUserTimeline_result(RandomGenerator* randGen) {
   }
 
   virtual ~UserTimelineService_WriteUserTimeline_result() throw();
@@ -303,6 +320,8 @@ class UserTimelineServiceClient : virtual public UserTimelineServiceIf {
   UserTimelineServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	UserTimelineServiceClient(){
+	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -327,31 +346,33 @@ class UserTimelineServiceClient : virtual public UserTimelineServiceIf {
   void send_ReadUserTimeline(const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop);
   void recv_ReadUserTimeline(std::vector<Post> & _return);
  	
-	 void FakeWriteUserTimeline(RandomGenerator *randGen);
+	void initResults(RandomGenerator* randGen);
+	UserTimelineService_WriteUserTimeline_result *writeUserTimeline_res;
+	void FakeWriteUserTimeline();
 
-	struct FuncType {
-  enum type {
-    WRITE_TIMELINE = 0,
-    
-    SIZE = 1
-  	};
-	};
-
+	static void FakeRespGen(UserTimelineServiceClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::WRITE_TIMELINE:
+			client->FakeWriteUserTimeline();
+			break;
+		
+		default:
+			std::cout << "This is an error, wrong message type (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
+	}
+	
 	static void InitializeFuncMapUserTimeline(FunctionClientMap<UserTimelineServiceClient> *f2cmap,
-																RandomGenerator *randGen,
-																int num_template_clients,
-																int num_msg_per_client,
-																int base_buffer_size) {
+																						RandomGenerator *randGen,
+																						int num_template_clients,
+																						int num_msg_per_client,
+																						int base_buffer_size) {
 
-		uint64_t buffer_size = num_msg_per_client * base_buffer_size;
-
-		MyThriftClient<UserTimelineServiceClient>** clients = new MyThriftClient<UserTimelineServiceClient>*[num_template_clients];
-		// Fill up the clients
-		for (int i = 0; i < num_template_clients; i++) {
-			clients[i] = new MyThriftClient<UserTimelineServiceClient>(buffer_size);
-			clients[i]->GetClient()->FakeWriteUserTimeline(randGen);
-		}
-		f2cmap->RegisterFunction(UserTimelineServiceClient::FuncType::WRITE_TIMELINE, clients);
+		fake_resp_gen_func<UserTimelineServiceClient> resp_gen_func = UserTimelineServiceClient::FakeRespGen;
+		f2cmap->InitMap(resp_gen_func, FuncType::WRITE_TIMELINE,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 	}																
 
  protected:

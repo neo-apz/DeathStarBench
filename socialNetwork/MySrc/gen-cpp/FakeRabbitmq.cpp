@@ -256,11 +256,15 @@ uint32_t FakeRabbitmq_UploadHomeTimeline_presult::read(::apache::thrift::protoco
   return xfer;
 }
 
-void FakeRabbitmqClient::FakeUploadHomeTimeline(RandomGenerator *randGen) {
-	FakeRabbitmq_UploadHomeTimeline_result result;
+void FakeRabbitmqClient::initResults(RandomGenerator* randGen)
+{
+	this->uploadHomeTimeline_res = new FakeRabbitmq_UploadHomeTimeline_result(randGen);
+}
 
+void FakeRabbitmqClient::FakeUploadHomeTimeline()
+{
 	iprot_->writeMessageBegin("UploadHomeTimeline", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  uploadHomeTimeline_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -268,14 +272,26 @@ void FakeRabbitmqClient::FakeUploadHomeTimeline(RandomGenerator *randGen) {
 
 void FakeRabbitmqClient::UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id)
 {
-  send_UploadHomeTimeline(req_id, post_id, user_id, timestamp, user_mentions_id);
+  #ifdef CEREBROS	
+	
+	#else
+	send_UploadHomeTimeline(req_id, post_id, user_id, timestamp, user_mentions_id);
   recv_UploadHomeTimeline();
+	#endif
 }
 
 void FakeRabbitmqClient::send_UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRabbitmq_UploadHomeTimeline_pargs args;
   args.req_id = &req_id;
@@ -292,7 +308,10 @@ void FakeRabbitmqClient::send_UploadHomeTimeline(const int64_t req_id, const int
 
 void FakeRabbitmqClient::recv_UploadHomeTimeline()
 {
-
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+	
   int32_t rseqid = 0;
   std::string fname;
   ::apache::thrift::protocol::TMessageType mtype;
@@ -315,6 +334,10 @@ void FakeRabbitmqClient::recv_UploadHomeTimeline()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeRabbitmq_UploadHomeTimeline_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();

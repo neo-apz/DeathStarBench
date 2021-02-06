@@ -14,6 +14,12 @@
 #include <RandomGenerator.h>
 #include <FunctionClientMap.h>
 
+#include <iostream>
+
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -25,6 +31,14 @@ class FakeRabbitmqIf {
  public:
   virtual ~FakeRabbitmqIf() {}
   virtual void UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id) = 0;
+
+	struct FuncType {
+  enum type {
+    UPLOAD_TIMELINE = 0,
+    
+    SIZE = 1
+  	};
+	};
 };
 
 class FakeRabbitmqIfFactory {
@@ -145,6 +159,9 @@ class FakeRabbitmq_UploadHomeTimeline_result {
   FakeRabbitmq_UploadHomeTimeline_result() {
   }
 
+	FakeRabbitmq_UploadHomeTimeline_result(RandomGenerator* randGen) {
+  }
+
   virtual ~FakeRabbitmq_UploadHomeTimeline_result() throw();
 
   bool operator == (const FakeRabbitmq_UploadHomeTimeline_result & /* rhs */) const
@@ -181,6 +198,8 @@ class FakeRabbitmqClient : virtual public FakeRabbitmqIf {
   FakeRabbitmqClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	FakeRabbitmqClient() {
+	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -202,31 +221,33 @@ class FakeRabbitmqClient : virtual public FakeRabbitmqIf {
   void send_UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id);
   void recv_UploadHomeTimeline();
  
- 	void FakeUploadHomeTimeline(RandomGenerator *randGen);
+	void initResults(RandomGenerator* randGen);
+	FakeRabbitmq_UploadHomeTimeline_result *uploadHomeTimeline_res;
+	void FakeUploadHomeTimeline();
 
-	struct FuncType {
-  enum type {
-    UPLOAD_TIMELINE = 0,
-    
-    SIZE = 1
-  	};
-	};
+	static void FakeRespGen(FakeRabbitmqClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::UPLOAD_TIMELINE:
+			client->FakeUploadHomeTimeline();
+			break;
+		
+		default:
+			std::cout << "This is an error, wrong message type (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
+	}
 
 	static void InitializeFuncMapRabbitmq(FunctionClientMap<FakeRabbitmqClient> *f2cmap,
-																RandomGenerator *randGen,
-																int num_template_clients,
-																int num_msg_per_client,
-																int base_buffer_size) {
+																				RandomGenerator *randGen,
+																				int num_template_clients,
+																				int num_msg_per_client,
+																				int base_buffer_size) {
 
-		uint64_t buffer_size = num_msg_per_client * base_buffer_size;
-
-		MyThriftClient<FakeRabbitmqClient>** clients = new MyThriftClient<FakeRabbitmqClient>*[num_template_clients];
-		// Fill up the clients
-		for (int i = 0; i < num_template_clients; i++) {
-			clients[i] = new MyThriftClient<FakeRabbitmqClient>(buffer_size);
-			clients[i]->GetClient()->FakeUploadHomeTimeline(randGen);
-		}
-		f2cmap->RegisterFunction(FakeRabbitmqClient::FuncType::UPLOAD_TIMELINE, clients);
+		fake_resp_gen_func<FakeRabbitmqClient> resp_gen_func = FakeRabbitmqClient::FakeRespGen;
+		f2cmap->InitMap(resp_gen_func, FuncType::UPLOAD_TIMELINE,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 	}
  
  protected:

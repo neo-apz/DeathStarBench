@@ -143,6 +143,11 @@ class UniqueIdService_UploadUniqueId_result {
   UniqueIdService_UploadUniqueId_result() : success(0) {
   }
 
+	UniqueIdService_UploadUniqueId_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+	}
+
   virtual ~UniqueIdService_UploadUniqueId_result() throw();
   int64_t success;
 
@@ -195,6 +200,7 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
   }
 	UniqueIdServiceClient(RandomGenerator* randGen) {
 		initArgs(randGen);
+		initResults(randGen);
   }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -221,7 +227,8 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
 	void initArgs(RandomGenerator* randGen);
 	void send_RandReq(RandomGenerator* randGen);
 
-	UniqueIdService_UploadUniqueId_result uploadUniqueId_res;
+	void initResults(RandomGenerator* randGen);
+	UniqueIdService_UploadUniqueId_result *uploadUniqueId_res;
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -252,7 +259,6 @@ class UniqueIdServiceCerebrosProcessor {
   ::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> iface_;
  private:
   typedef  uint64_t (UniqueIdServiceCerebrosProcessor::*ProcessFunction)(UniqueIdServiceClient*);
-  // typedef struct ProcessMap { ProcessFunction x[UniqueIdServiceIf::FuncType::SIZE]; } ProcessMap;
 	typedef ProcessFunction ProcessMap[UniqueIdServiceIf::FuncType::SIZE];
   ProcessMap processMap_;
   uint64_t process_UploadUniqueId(UniqueIdServiceClient* client);

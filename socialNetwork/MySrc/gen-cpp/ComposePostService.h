@@ -14,6 +14,8 @@
 #include <RandomGenerator.h>
 #include <FunctionClientMap.h>
 
+#include <iostream>
+
 #ifdef __aarch64__
 	#include "MagicBreakPoint.h"
 #endif
@@ -36,9 +38,14 @@ class ComposePostServiceIf {
 
 	struct FuncType {
   enum type {
-    UPLOAD_UNIQUE_ID = 0,
-
-    SIZE = 1
+    UPLOAD_TEXT = 0,
+    UPLOAD_MEDIA = 1,
+    UPLOAD_UNIQUE_ID = 2,
+    UPLOAD_CREATOR = 3,
+    UPLOAD_URLS = 4,
+		UPLOAD_USER_MENTIONS = 5,
+    
+    SIZE = 6
   	};
 	};
 };
@@ -110,6 +117,11 @@ class ComposePostService_UploadText_args {
   ComposePostService_UploadText_args() : req_id(0), text() {
   }
 
+	ComposePostService_UploadText_args(RandomGenerator* randGen) {
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		text = randGen->getRandText();
+  }
+
   virtual ~ComposePostService_UploadText_args() throw();
   int64_t req_id;
   std::string text;
@@ -164,6 +176,11 @@ class ComposePostService_UploadText_result {
   ComposePostService_UploadText_result& operator=(const ComposePostService_UploadText_result&);
   ComposePostService_UploadText_result() : success(0) {
   }
+
+	ComposePostService_UploadText_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+	}
 
   virtual ~ComposePostService_UploadText_result() throw();
   int64_t success;
@@ -221,6 +238,15 @@ class ComposePostService_UploadMedia_args {
   ComposePostService_UploadMedia_args() : req_id(0) {
   }
 
+	ComposePostService_UploadMedia_args(RandomGenerator* randGen) {
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		uint32_t iters = randGen->getUInt32(1, 2);
+		for(int i=0; i < iters; i++){
+			Media m(randGen);
+			media.emplace_back(m);
+		}
+  }
+
   virtual ~ComposePostService_UploadMedia_args() throw();
   int64_t req_id;
   std::vector<Media>  media;
@@ -275,6 +301,11 @@ class ComposePostService_UploadMedia_result {
   ComposePostService_UploadMedia_result& operator=(const ComposePostService_UploadMedia_result&);
   ComposePostService_UploadMedia_result() : success(0) {
   }
+
+	ComposePostService_UploadMedia_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+	}
 
   virtual ~ComposePostService_UploadMedia_result() throw();
   int64_t success;
@@ -331,6 +362,12 @@ class ComposePostService_UploadUniqueId_args {
   ComposePostService_UploadUniqueId_args(const ComposePostService_UploadUniqueId_args&);
   ComposePostService_UploadUniqueId_args& operator=(const ComposePostService_UploadUniqueId_args&);
   ComposePostService_UploadUniqueId_args() : req_id(0), post_id(0), post_type((PostType::type)0) {
+  }
+
+	ComposePostService_UploadUniqueId_args(RandomGenerator* randGen) {
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		post_id = randGen->getInt64(RAND_NUM_LIMIT);
+		PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
   }
 
   virtual ~ComposePostService_UploadUniqueId_args() throw();
@@ -395,7 +432,7 @@ class ComposePostService_UploadUniqueId_result {
   }
 
 	ComposePostService_UploadUniqueId_result(RandomGenerator *randGen) {
-		success = randGen->getInt64(0xFFFFFFFFFFFFFF);
+		success = randGen->getInt64(RAND_NUM_LIMIT);
 		__isset.success = true;
 	}
 
@@ -455,6 +492,11 @@ class ComposePostService_UploadCreator_args {
   ComposePostService_UploadCreator_args() : req_id(0) {
   }
 
+	ComposePostService_UploadCreator_args(RandomGenerator* randGen) {
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		creator = Creator(randGen);
+  }
+
   virtual ~ComposePostService_UploadCreator_args() throw();
   int64_t req_id;
   Creator creator;
@@ -509,6 +551,11 @@ class ComposePostService_UploadCreator_result {
   ComposePostService_UploadCreator_result& operator=(const ComposePostService_UploadCreator_result&);
   ComposePostService_UploadCreator_result() : success(0) {
   }
+
+	ComposePostService_UploadCreator_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+	}
 
   virtual ~ComposePostService_UploadCreator_result() throw();
   int64_t success;
@@ -566,6 +613,15 @@ class ComposePostService_UploadUrls_args {
   ComposePostService_UploadUrls_args() : req_id(0) {
   }
 
+	ComposePostService_UploadUrls_args(RandomGenerator* randGen) {
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		uint32_t iters = randGen->getUInt32(1, 2);
+		for(int i=0; i < iters; i++){
+			Url url(randGen);
+			urls.emplace_back(url);
+		}
+  }
+
   virtual ~ComposePostService_UploadUrls_args() throw();
   int64_t req_id;
   std::vector<Url>  urls;
@@ -620,6 +676,11 @@ class ComposePostService_UploadUrls_result {
   ComposePostService_UploadUrls_result& operator=(const ComposePostService_UploadUrls_result&);
   ComposePostService_UploadUrls_result() : success(0) {
   }
+
+	ComposePostService_UploadUrls_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+	}
 
   virtual ~ComposePostService_UploadUrls_result() throw();
   int64_t success;
@@ -677,6 +738,15 @@ class ComposePostService_UploadUserMentions_args {
   ComposePostService_UploadUserMentions_args() : req_id(0) {
   }
 
+	ComposePostService_UploadUserMentions_args(RandomGenerator* randGen) {
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		uint32_t iters = randGen->getUInt32(1, 2);
+		for(int i=0; i < iters; i++){
+			UserMention um(randGen);
+			user_mentions.emplace_back(um);
+		}
+  }
+
   virtual ~ComposePostService_UploadUserMentions_args() throw();
   int64_t req_id;
   std::vector<UserMention>  user_mentions;
@@ -732,6 +802,11 @@ class ComposePostService_UploadUserMentions_result {
   ComposePostService_UploadUserMentions_result() : success(0) {
   }
 
+	ComposePostService_UploadUserMentions_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+	}
+
   virtual ~ComposePostService_UploadUserMentions_result() throw();
   int64_t success;
 
@@ -782,6 +857,10 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
   ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	ComposePostServiceClient(RandomGenerator* randGen) {
+		initArgs(randGen);
+		initResults(randGen);
+  }
 	ComposePostServiceClient() {
   }
  private:
@@ -820,8 +899,22 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
   void send_UploadUserMentions(const int64_t req_id, const std::vector<UserMention> & user_mentions);
   int64_t recv_UploadUserMentions();
 
+	ComposePostService_UploadText_args *uploadText_args;
+	ComposePostService_UploadMedia_args *uploadMedia_args;
+	ComposePostService_UploadUniqueId_args *uploadUniqueId_args;
+	ComposePostService_UploadCreator_args *uploadCreator_args;
+	ComposePostService_UploadUrls_args *uploadUrls_args;
+	ComposePostService_UploadUserMentions_args *uploadUserMentions_args;
+	void initArgs(RandomGenerator* randGen);
+	void send_RandReq(RandomGenerator* randGen);
+
 	void initResults(RandomGenerator* randGen);
+	ComposePostService_UploadText_result *uploadText_res;
+	ComposePostService_UploadMedia_result *uploadMedia_res;
 	ComposePostService_UploadUniqueId_result *uploadUniqueId_res;
+	ComposePostService_UploadCreator_result *uploadCreator_res;
+	ComposePostService_UploadUrls_result *uploadUrls_res;
+	ComposePostService_UploadUserMentions_result *uploadUserMentions_res;
 	void FakeUploadUniqueId();
 
 	static void FakeRespGen(ComposePostServiceClient *client, uint64_t fid) {
@@ -836,6 +929,17 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
 			exit(1);
 			break;
 		}	
+	}
+
+	static void InitializeFuncMapRedis(FunctionClientMap<ComposePostServiceClient> *f2cmap,
+																		 RandomGenerator *randGen,
+																		 int num_template_clients,
+																		 int num_msg_per_client,
+																		 int base_buffer_size) {
+
+		fake_resp_gen_func<ComposePostServiceClient> resp_gen_func = ComposePostServiceClient::FakeRespGen;
+		f2cmap->InitMap(resp_gen_func, FuncType::UPLOAD_UNIQUE_ID,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 	}
 
  protected:
@@ -871,6 +975,41 @@ class ComposePostServiceProcessor : public ::apache::thrift::TDispatchProcessor 
 	virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
 
   virtual ~ComposePostServiceProcessor() {}
+};
+
+class ComposePostServiceCerebrosProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface_;
+ private:
+  typedef  uint64_t (ComposePostServiceCerebrosProcessor::*ProcessFunction)(ComposePostServiceClient*);
+	typedef ProcessFunction ProcessMap[ComposePostServiceIf::FuncType::SIZE];
+  ProcessMap processMap_;
+  uint64_t process_UploadText(ComposePostServiceClient* client);
+	uint64_t process_UploadMedia(ComposePostServiceClient* client);
+	uint64_t process_UploadUniqueId(ComposePostServiceClient* client);
+	uint64_t process_UploadCreator(ComposePostServiceClient* client);
+	uint64_t process_UploadUrls(ComposePostServiceClient* client);
+	uint64_t process_UploadUserMentions(ComposePostServiceClient* client);
+ public:
+  ComposePostServiceCerebrosProcessor(::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface) :
+    iface_(iface) {
+		processMap_[ComposePostServiceIf::FuncType::UPLOAD_TEXT] = &ComposePostServiceCerebrosProcessor::process_UploadText;
+    processMap_[ComposePostServiceIf::FuncType::UPLOAD_MEDIA] = &ComposePostServiceCerebrosProcessor::process_UploadMedia;
+    processMap_[ComposePostServiceIf::FuncType::UPLOAD_UNIQUE_ID] = &ComposePostServiceCerebrosProcessor::process_UploadUniqueId;
+    processMap_[ComposePostServiceIf::FuncType::UPLOAD_CREATOR] = &ComposePostServiceCerebrosProcessor::process_UploadCreator;
+    processMap_[ComposePostServiceIf::FuncType::UPLOAD_URLS] = &ComposePostServiceCerebrosProcessor::process_UploadUrls;
+    processMap_[ComposePostServiceIf::FuncType::UPLOAD_USER_MENTIONS] = &ComposePostServiceCerebrosProcessor::process_UploadUserMentions;
+  }
+	uint64_t dispatchCall(int funcCode, ComposePostServiceClient* client) {
+		if (funcCode >= ComposePostServiceIf::FuncType::SIZE){
+			printf("Bad func code (%d) to dispatch in UniqueIdService!\n", funcCode);
+			exit(1);
+		}
+
+		return (this->*(processMap_[funcCode]))(client);
+	}
+
+  virtual ~ComposePostServiceCerebrosProcessor() {}
 };
 
 class ComposePostServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

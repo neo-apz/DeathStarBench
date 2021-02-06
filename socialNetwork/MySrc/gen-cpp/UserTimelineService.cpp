@@ -479,11 +479,15 @@ uint32_t UserTimelineService_ReadUserTimeline_presult::read(::apache::thrift::pr
   return xfer;
 }
 
-void UserTimelineServiceClient::FakeWriteUserTimeline(RandomGenerator *randGen) {
-	UserTimelineService_WriteUserTimeline_result result;
+void UserTimelineServiceClient::initResults(RandomGenerator* randGen)
+{
+	this->writeUserTimeline_res = new UserTimelineService_WriteUserTimeline_result(randGen);
+}
 
+void UserTimelineServiceClient::FakeWriteUserTimeline()
+{
 	iprot_->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  writeUserTimeline_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -491,16 +495,28 @@ void UserTimelineServiceClient::FakeWriteUserTimeline(RandomGenerator *randGen) 
 
 void UserTimelineServiceClient::WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp)
 {
-  send_WriteUserTimeline(req_id, post_id, user_id, timestamp);
+  #ifdef CEREBROS	
+	
+	#else
+	send_WriteUserTimeline(req_id, post_id, user_id, timestamp);
   recv_WriteUserTimeline();
+	#endif
 }
 
 void UserTimelineServiceClient::send_WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  UserTimelineService_WriteUserTimeline_pargs args;
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
+	UserTimelineService_WriteUserTimeline_pargs args;
   args.req_id = &req_id;
   args.post_id = &post_id;
   args.user_id = &user_id;
@@ -514,6 +530,9 @@ void UserTimelineServiceClient::send_WriteUserTimeline(const int64_t req_id, con
 
 void UserTimelineServiceClient::recv_WriteUserTimeline()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -537,6 +556,10 @@ void UserTimelineServiceClient::recv_WriteUserTimeline()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   UserTimelineService_WriteUserTimeline_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();

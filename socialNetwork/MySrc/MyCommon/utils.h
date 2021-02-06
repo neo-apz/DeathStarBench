@@ -27,7 +27,7 @@ volatile bool start = false;
 pthread_barrier_t barrier;
 
 template<typename TThriftHandler>
-using init_pools_function = void (*)(RandomGenerator*, rpcNUMAContext* ctx, std::shared_ptr<TThriftHandler>, int tid); // type for conciseness
+using init_pools_function = void (*)(RandomGenerator*, rpcNUMAContext*, std::shared_ptr<TThriftHandler>, int); // type for conciseness
 
 // typedef void (*init_pools_function)(RandomGenerator*, rpcNUMAContext* ctx, int tid); // type for conciseness
 

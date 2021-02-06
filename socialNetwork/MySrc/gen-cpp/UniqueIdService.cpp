@@ -223,6 +223,11 @@ void UniqueIdServiceClient::send_RandReq(RandomGenerator* randGen)
 	send_UploadUniqueId(uploadUniqueId_args->req_id, uploadUniqueId_args->post_type);
 }
 
+void UniqueIdServiceClient::initResults(RandomGenerator* randGen)
+{
+	this->uploadUniqueId_res = new UniqueIdService_UploadUniqueId_result(randGen);
+}
+
 int64_t UniqueIdServiceClient::UploadUniqueId(const int64_t req_id, const PostType::type post_type)
 {
   send_UploadUniqueId(req_id, post_type);
@@ -356,8 +361,8 @@ void UniqueIdServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::t
 }
 
 uint64_t UniqueIdServiceCerebrosProcessor::process_UploadUniqueId(UniqueIdServiceClient* client) {
-	UniqueIdService_UploadUniqueId_args* args = client->uploadUniqueId_args;
-	UniqueIdService_UploadUniqueId_result* res = &(client->uploadUniqueId_res);
+	auto args = client->uploadUniqueId_args;
+	auto res = client->uploadUniqueId_res;
 
 	res->success = iface_->UploadUniqueId(args->req_id, args->post_type);
 

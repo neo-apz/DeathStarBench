@@ -646,11 +646,15 @@ uint32_t PostStorageService_ReadPosts_presult::read(::apache::thrift::protocol::
   return xfer;
 }
 
-void PostStorageServiceClient::FakeStorePost(RandomGenerator *randGen) {
-	PostStorageService_StorePost_result result;
+void PostStorageServiceClient::initResults(RandomGenerator* randGen)
+{
+	this->storePost_res = new PostStorageService_StorePost_result(randGen);
+}
 
+void PostStorageServiceClient::FakeStorePost()
+{
 	iprot_->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  storePost_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -658,14 +662,26 @@ void PostStorageServiceClient::FakeStorePost(RandomGenerator *randGen) {
 
 void PostStorageServiceClient::StorePost(const int64_t req_id, const Post& post)
 {
-  send_StorePost(req_id, post);
+  #ifdef CEREBROS	
+	
+	#else
+	send_StorePost(req_id, post);
   recv_StorePost();
+	#endif
 }
 
 void PostStorageServiceClient::send_StorePost(const int64_t req_id, const Post& post)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   PostStorageService_StorePost_pargs args;
   args.req_id = &req_id;
@@ -679,6 +695,9 @@ void PostStorageServiceClient::send_StorePost(const int64_t req_id, const Post& 
 
 void PostStorageServiceClient::recv_StorePost()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -702,6 +721,10 @@ void PostStorageServiceClient::recv_StorePost()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   PostStorageService_StorePost_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();

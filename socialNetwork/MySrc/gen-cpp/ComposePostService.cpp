@@ -1328,17 +1328,68 @@ uint32_t ComposePostService_UploadUserMentions_presult::read(::apache::thrift::p
   return xfer;
 }
 
+void ComposePostServiceClient::initArgs(RandomGenerator* randGen)
+{
+	this->uploadText_args = new ComposePostService_UploadText_args(randGen);
+	this->uploadMedia_args = new ComposePostService_UploadMedia_args(randGen);
+	this->uploadUniqueId_args = new ComposePostService_UploadUniqueId_args(randGen);
+	this->uploadCreator_args = new ComposePostService_UploadCreator_args(randGen);
+	this->uploadUrls_args = new ComposePostService_UploadUrls_args(randGen);
+	this->uploadUserMentions_args = new ComposePostService_UploadUserMentions_args(randGen);
+}
+
+void ComposePostServiceClient::send_RandReq(RandomGenerator* randGen)
+{
+	FuncType::type msg_type = (FuncType::type) randGen->getInt64(0, FuncType::SIZE-1);
+
+	switch (msg_type)
+	{
+	case FuncType::UPLOAD_TEXT:
+		send_UploadText(uploadText_args->req_id, uploadText_args->text);
+		break;
+
+	case FuncType::UPLOAD_MEDIA:
+		send_UploadMedia(uploadMedia_args->req_id, uploadMedia_args->media);
+		break;
+
+	case FuncType::UPLOAD_UNIQUE_ID:
+		send_UploadUniqueId(uploadUniqueId_args->req_id, uploadUniqueId_args->post_id, uploadUniqueId_args->post_type);
+		break;
+
+	case FuncType::UPLOAD_CREATOR:
+		send_UploadCreator(uploadCreator_args->req_id, uploadCreator_args->creator);
+		break;
+
+	case FuncType::UPLOAD_URLS:
+		send_UploadUrls(uploadUrls_args->req_id, uploadUrls_args->urls);
+		break;
+
+	case FuncType::UPLOAD_USER_MENTIONS:
+		send_UploadUserMentions(uploadUserMentions_args->req_id, uploadUserMentions_args->user_mentions);
+		break;
+	
+	default:
+		std::cout << "This is an error, wrong message type (" << msg_type << ")!" << std::endl;
+		exit(1);
+		break;
+	}
+}
+
+void ComposePostServiceClient::initResults(RandomGenerator* randGen)
+{
+	this->uploadText_res = new ComposePostService_UploadText_result(randGen);
+	this->uploadMedia_res = new ComposePostService_UploadMedia_result(randGen);
+	this->uploadUniqueId_res = new ComposePostService_UploadUniqueId_result(randGen);
+	this->uploadCreator_res = new ComposePostService_UploadCreator_result(randGen);
+	this->uploadUrls_res = new ComposePostService_UploadUrls_result(randGen);
+	this->uploadUserMentions_res = new ComposePostService_UploadUserMentions_result(randGen);
+}
+
 int64_t ComposePostServiceClient::UploadText(const int64_t req_id, const std::string& text)
 {
   send_UploadText(req_id, text);
   return recv_UploadText();
 }
-
-void ComposePostServiceClient::initResults(RandomGenerator* randGen)
-{
-	this->uploadUniqueId_res = new ComposePostService_UploadUniqueId_result(randGen);
-}
-
 
 void ComposePostServiceClient::send_UploadText(const int64_t req_id, const std::string& text)
 {
@@ -1463,10 +1514,9 @@ void ComposePostServiceClient::FakeUploadUniqueId()
 
 int64_t ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
-  #ifdef CEREBROS
-	return this->uploadUniqueId_res->success;
+	#ifdef CEREBROS	
+	return this->uploadUniqueId_res->success;	
 	#else
-	
 	send_UploadUniqueId(req_id, post_id, post_type);
 	return recv_UploadUniqueId();
 	#endif
@@ -1737,6 +1787,15 @@ bool ComposePostServiceProcessor::dispatchCall(::apache::thrift::protocol::TProt
   return true;
 }
 
+uint64_t ComposePostServiceCerebrosProcessor::process_UploadText(ComposePostServiceClient* client) {
+	auto args = client->uploadText_args;
+	auto res = client->uploadText_res;
+
+	res->success = iface_->UploadText(args->req_id, args->text);
+
+	return (uint64_t) res;
+}
+
 void ComposePostServiceProcessor::process_UploadText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -1789,6 +1848,15 @@ void ComposePostServiceProcessor::process_UploadText(int32_t seqid, ::apache::th
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "ComposePostService.UploadText", bytes);
   }
+}
+
+uint64_t ComposePostServiceCerebrosProcessor::process_UploadMedia(ComposePostServiceClient* client) {
+	auto args = client->uploadMedia_args;
+	auto res = client->uploadMedia_res;
+
+	res->success = iface_->UploadMedia(args->req_id, args->media);
+
+	return (uint64_t) res;
 }
 
 void ComposePostServiceProcessor::process_UploadMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
@@ -1845,6 +1913,15 @@ void ComposePostServiceProcessor::process_UploadMedia(int32_t seqid, ::apache::t
   }
 }
 
+uint64_t ComposePostServiceCerebrosProcessor::process_UploadUniqueId(ComposePostServiceClient* client) {
+	auto args = client->uploadUniqueId_args;
+	auto res = client->uploadUniqueId_res;
+
+	res->success = iface_->UploadUniqueId(args->req_id, args->post_id, args->post_type);
+
+	return (uint64_t) res;
+}
+
 void ComposePostServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -1897,6 +1974,15 @@ void ComposePostServiceProcessor::process_UploadUniqueId(int32_t seqid, ::apache
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "ComposePostService.UploadUniqueId", bytes);
   }
+}
+
+uint64_t ComposePostServiceCerebrosProcessor::process_UploadCreator(ComposePostServiceClient* client) {
+	auto args = client->uploadCreator_args;
+	auto res = client->uploadCreator_res;
+
+	res->success = iface_->UploadCreator(args->req_id, args->creator);
+
+	return (uint64_t) res;
 }
 
 void ComposePostServiceProcessor::process_UploadCreator(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
@@ -1953,6 +2039,15 @@ void ComposePostServiceProcessor::process_UploadCreator(int32_t seqid, ::apache:
   }
 }
 
+uint64_t ComposePostServiceCerebrosProcessor::process_UploadUrls(ComposePostServiceClient* client) {
+	auto args = client->uploadUrls_args;
+	auto res = client->uploadUrls_res;
+
+	res->success = iface_->UploadUrls(args->req_id, args->urls);
+
+	return (uint64_t) res;
+}
+
 void ComposePostServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -2005,6 +2100,15 @@ void ComposePostServiceProcessor::process_UploadUrls(int32_t seqid, ::apache::th
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "ComposePostService.UploadUrls", bytes);
   }
+}
+
+uint64_t ComposePostServiceCerebrosProcessor::process_UploadUserMentions(ComposePostServiceClient* client) {
+	auto args = client->uploadUserMentions_args;
+	auto res = client->uploadUserMentions_res;
+
+	res->success = iface_->UploadUserMentions(args->req_id, args->user_mentions);
+
+	return (uint64_t) res;
 }
 
 void ComposePostServiceProcessor::process_UploadUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)

@@ -3150,12 +3150,31 @@ uint32_t FakeRedis_HIncrBy_presult::read(::apache::thrift::protocol::TProtocol* 
   return xfer;
 }
 
-void FakeRedisClient::FakeHSetCreator(RandomGenerator *randGen)
+void FakeRedisClient::initResults(RandomGenerator* randGen)
 {
-	FakeRedis_HSetCreator_result result;
+	this->hSetCreator_res = new FakeRedis_HSetCreator_result(randGen);
+	this->hSetText_res = new FakeRedis_HSetText_result(randGen);
+	this->hSetMedia_res = new FakeRedis_HSetMedia_result(randGen);
+	this->hSetPostId_res = new FakeRedis_HSetPostId_result(randGen);
+	this->hSetPostType_res = new FakeRedis_HSetPostType_result(randGen);
+	this->hSetUrls_res = new FakeRedis_HSetUrls_result(randGen);
+	this->hSetUserMentions_res = new FakeRedis_HSetUserMentions_result(randGen);
 
+	this->hGetCreator_res = new FakeRedis_HGetCreator_result(randGen);
+	this->hGetText_res = new FakeRedis_HGetText_result(randGen);
+	this->hGetMedia_res = new FakeRedis_HGetMedia_result(randGen);
+	this->hGetPostId_res = new FakeRedis_HGetPostId_result(randGen);
+	this->hGetPostType_res = new FakeRedis_HGetPostType_result(randGen);
+	this->hGetUrls_res = new FakeRedis_HGetUrls_result(randGen);
+	this->hGetUserMentions_res = new FakeRedis_HGetUserMentions_result(randGen);
+
+	this->hIncBy_res = new FakeRedis_HIncrBy_result(randGen);
+}
+
+void FakeRedisClient::FakeHSetCreator()
+{
 	iprot_->writeMessageBegin("HSetCreator", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hSetCreator_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3163,14 +3182,26 @@ void FakeRedisClient::FakeHSetCreator(RandomGenerator *randGen)
 
 void FakeRedisClient::HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator)
 {
-  send_HSetCreator(req_id, field, creator);
+  #ifdef CEREBROS	
+	
+	#else
+	send_HSetCreator(req_id, field, creator);
   recv_HSetCreator();
+	#endif
 }
 
 void FakeRedisClient::send_HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HSetCreator", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HSetCreator_pargs args;
   args.req_id = &req_id;
@@ -3185,6 +3216,9 @@ void FakeRedisClient::send_HSetCreator(const int64_t req_id, const std::string& 
 
 void FakeRedisClient::recv_HSetCreator()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3208,6 +3242,10 @@ void FakeRedisClient::recv_HSetCreator()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeRedis_HSetCreator_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -3216,12 +3254,10 @@ void FakeRedisClient::recv_HSetCreator()
   return;
 }
 
-void FakeRedisClient::FakeHSetText(RandomGenerator *randGen)
+void FakeRedisClient::FakeHSetText()
 {
-	FakeRedis_HSetText_result result;
-
 	iprot_->writeMessageBegin("HSetText", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hSetText_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3229,14 +3265,26 @@ void FakeRedisClient::FakeHSetText(RandomGenerator *randGen)
 
 void FakeRedisClient::HSetText(const int64_t req_id, const std::string& field, const std::string& text)
 {
-  send_HSetText(req_id, field, text);
+  #ifdef CEREBROS	
+	
+	#else
+	send_HSetText(req_id, field, text);
   recv_HSetText();
+	#endif
 }
 
 void FakeRedisClient::send_HSetText(const int64_t req_id, const std::string& field, const std::string& text)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HSetText", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HSetText_pargs args;
   args.req_id = &req_id;
@@ -3251,6 +3299,9 @@ void FakeRedisClient::send_HSetText(const int64_t req_id, const std::string& fie
 
 void FakeRedisClient::recv_HSetText()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3274,6 +3325,10 @@ void FakeRedisClient::recv_HSetText()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeRedis_HSetText_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -3282,12 +3337,10 @@ void FakeRedisClient::recv_HSetText()
   return;
 }
 
-void FakeRedisClient::FakeHSetMedia(RandomGenerator *randGen)
+void FakeRedisClient::FakeHSetMedia()
 {
-	FakeRedis_HSetMedia_result result;
-
 	iprot_->writeMessageBegin("HSetMedia", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hSetMedia_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3295,14 +3348,26 @@ void FakeRedisClient::FakeHSetMedia(RandomGenerator *randGen)
 
 void FakeRedisClient::HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media)
 {
-  send_HSetMedia(req_id, field, media);
+  #ifdef CEREBROS	
+	
+	#else
+	send_HSetMedia(req_id, field, media);
   recv_HSetMedia();
+	#endif
 }
 
 void FakeRedisClient::send_HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HSetMedia", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HSetMedia_pargs args;
   args.req_id = &req_id;
@@ -3317,6 +3382,9 @@ void FakeRedisClient::send_HSetMedia(const int64_t req_id, const std::string& fi
 
 void FakeRedisClient::recv_HSetMedia()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3340,7 +3408,11 @@ void FakeRedisClient::recv_HSetMedia()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  FakeRedis_HSetMedia_presult result;
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
+	FakeRedis_HSetMedia_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
@@ -3348,12 +3420,10 @@ void FakeRedisClient::recv_HSetMedia()
   return;
 }
 
-void FakeRedisClient::FakeHSetPostId(RandomGenerator *randGen)
+void FakeRedisClient::FakeHSetPostId()
 {
-	FakeRedis_HSetPostId_result result;
-
 	iprot_->writeMessageBegin("HSetPostId", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hSetPostId_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3361,14 +3431,26 @@ void FakeRedisClient::FakeHSetPostId(RandomGenerator *randGen)
 
 void FakeRedisClient::HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id)
 {
-  send_HSetPostId(req_id, field, post_id);
+  #ifdef CEREBROS	
+	
+	#else
+	send_HSetPostId(req_id, field, post_id);
   recv_HSetPostId();
+	#endif
 }
 
 void FakeRedisClient::send_HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HSetPostId", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HSetPostId_pargs args;
   args.req_id = &req_id;
@@ -3383,6 +3465,9 @@ void FakeRedisClient::send_HSetPostId(const int64_t req_id, const std::string& f
 
 void FakeRedisClient::recv_HSetPostId()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3406,7 +3491,11 @@ void FakeRedisClient::recv_HSetPostId()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  FakeRedis_HSetPostId_presult result;
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
+	FakeRedis_HSetPostId_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
@@ -3414,12 +3503,10 @@ void FakeRedisClient::recv_HSetPostId()
   return;
 }
 
-void FakeRedisClient::FakeHSetPostType(RandomGenerator *randGen)
+void FakeRedisClient::FakeHSetPostType()
 {
-	FakeRedis_HSetPostType_result result;
-
 	iprot_->writeMessageBegin("HSetPostType", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hSetPostType_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3427,14 +3514,26 @@ void FakeRedisClient::FakeHSetPostType(RandomGenerator *randGen)
 
 void FakeRedisClient::HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type)
 {
-  send_HSetPostType(req_id, field, post_type);
+  #ifdef CEREBROS	
+	
+	#else
+	send_HSetPostType(req_id, field, post_type);
   recv_HSetPostType();
+	#endif
 }
 
 void FakeRedisClient::send_HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HSetPostType", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HSetPostType_pargs args;
   args.req_id = &req_id;
@@ -3449,6 +3548,9 @@ void FakeRedisClient::send_HSetPostType(const int64_t req_id, const std::string&
 
 void FakeRedisClient::recv_HSetPostType()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3472,6 +3574,10 @@ void FakeRedisClient::recv_HSetPostType()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   FakeRedis_HSetPostType_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -3480,12 +3586,10 @@ void FakeRedisClient::recv_HSetPostType()
   return;
 }
 
-void FakeRedisClient::FakeHSetUrls(RandomGenerator *randGen)
+void FakeRedisClient::FakeHSetUrls()
 {
-	FakeRedis_HSetUrls_result result;
-
 	iprot_->writeMessageBegin("HSetUrls", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hSetUrls_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3493,14 +3597,26 @@ void FakeRedisClient::FakeHSetUrls(RandomGenerator *randGen)
 
 void FakeRedisClient::HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls)
 {
-  send_HSetUrls(req_id, field, urls);
+  #ifdef CEREBROS	
+	
+	#else
+	send_HSetUrls(req_id, field, urls);
   recv_HSetUrls();
+	#endif
 }
 
 void FakeRedisClient::send_HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HSetUrls", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HSetUrls_pargs args;
   args.req_id = &req_id;
@@ -3515,6 +3631,9 @@ void FakeRedisClient::send_HSetUrls(const int64_t req_id, const std::string& fie
 
 void FakeRedisClient::recv_HSetUrls()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3538,6 +3657,10 @@ void FakeRedisClient::recv_HSetUrls()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   FakeRedis_HSetUrls_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -3546,12 +3669,10 @@ void FakeRedisClient::recv_HSetUrls()
   return;
 }
 
-void FakeRedisClient::FakeHSetUserMentions(RandomGenerator *randGen)
+void FakeRedisClient::FakeHSetUserMentions()
 {
-	FakeRedis_HSetUserMentions_result result;
-
 	iprot_->writeMessageBegin("HSetUserMentions", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hSetUserMentions_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3559,14 +3680,26 @@ void FakeRedisClient::FakeHSetUserMentions(RandomGenerator *randGen)
 
 void FakeRedisClient::HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions)
 {
-  send_HSetUserMentions(req_id, field, user_mentions);
+  #ifdef CEREBROS	
+	
+	#else
+	send_HSetUserMentions(req_id, field, user_mentions);
   recv_HSetUserMentions();
+	#endif
 }
 
 void FakeRedisClient::send_HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HSetUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HSetUserMentions_pargs args;
   args.req_id = &req_id;
@@ -3581,6 +3714,9 @@ void FakeRedisClient::send_HSetUserMentions(const int64_t req_id, const std::str
 
 void FakeRedisClient::recv_HSetUserMentions()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3604,6 +3740,10 @@ void FakeRedisClient::recv_HSetUserMentions()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   FakeRedis_HSetUserMentions_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -3612,17 +3752,10 @@ void FakeRedisClient::recv_HSetUserMentions()
   return;
 }
 
-void FakeRedisClient::FakeHGetCreator(RandomGenerator *randGen)
+void FakeRedisClient::FakeHGetCreator()
 {
-	FakeRedis_HGetCreator_result result;
-
-	Creator creator(randGen);
-
-	result.success = creator;
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("HGetCreator", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hGetCreator_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3630,14 +3763,26 @@ void FakeRedisClient::FakeHGetCreator(RandomGenerator *randGen)
 
 void FakeRedisClient::HGetCreator(Creator& _return, const int64_t req_id, const std::string& field)
 {
-  send_HGetCreator(req_id, field);
+  #ifdef CEREBROS	
+	_return = hGetCreator_res->success;
+	#else
+	send_HGetCreator(req_id, field);
   recv_HGetCreator(_return);
+	#endif
 }
 
 void FakeRedisClient::send_HGetCreator(const int64_t req_id, const std::string& field)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HGetCreator", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HGetCreator_pargs args;
   args.req_id = &req_id;
@@ -3651,6 +3796,9 @@ void FakeRedisClient::send_HGetCreator(const int64_t req_id, const std::string& 
 
 void FakeRedisClient::recv_HGetCreator(Creator& _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3674,6 +3822,10 @@ void FakeRedisClient::recv_HGetCreator(Creator& _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   FakeRedis_HGetCreator_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -3687,17 +3839,10 @@ void FakeRedisClient::recv_HGetCreator(Creator& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HGetCreator failed: unknown result");
 }
 
-void FakeRedisClient::FakeHGetText(RandomGenerator *randGen)
+void FakeRedisClient::FakeHGetText()
 {
-	FakeRedis_HGetText_result result;
-
-	string str = randGen->getRandText();
-
-	result.success = str;
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("HGetText", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hGetText_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3705,14 +3850,26 @@ void FakeRedisClient::FakeHGetText(RandomGenerator *randGen)
 
 void FakeRedisClient::HGetText(std::string& _return, const int64_t req_id, const std::string& field)
 {
-  send_HGetText(req_id, field);
+  #ifdef CEREBROS	
+	_return = hGetText_res->success;
+	#else
+	send_HGetText(req_id, field);
   recv_HGetText(_return);
+	#endif
 }
 
 void FakeRedisClient::send_HGetText(const int64_t req_id, const std::string& field)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HGetText", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HGetText_pargs args;
   args.req_id = &req_id;
@@ -3726,6 +3883,9 @@ void FakeRedisClient::send_HGetText(const int64_t req_id, const std::string& fie
 
 void FakeRedisClient::recv_HGetText(std::string& _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3749,6 +3909,10 @@ void FakeRedisClient::recv_HGetText(std::string& _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   FakeRedis_HGetText_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -3762,22 +3926,10 @@ void FakeRedisClient::recv_HGetText(std::string& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HGetText failed: unknown result");
 }
 
-void FakeRedisClient::FakeHGetMedia(RandomGenerator *randGen)
+void FakeRedisClient::FakeHGetMedia()
 {
-	FakeRedis_HGetMedia_result result;
-
-	std::vector<Media> media_vector;
-	uint32_t iters = randGen->getUInt32(1, 2);
-	for(int i=0; i < iters; i++){
-		Media media(randGen);
-		media_vector.emplace_back(media);
-	}
-
-	result.success = media_vector;
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("HGetMedia", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hGetMedia_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3785,14 +3937,26 @@ void FakeRedisClient::FakeHGetMedia(RandomGenerator *randGen)
 
 void FakeRedisClient::HGetMedia(std::vector<Media> & _return, const int64_t req_id, const std::string& field)
 {
-  send_HGetMedia(req_id, field);
+  #ifdef CEREBROS	
+	_return = hGetMedia_res->success;
+	#else
+	send_HGetMedia(req_id, field);
   recv_HGetMedia(_return);
+	#endif
 }
 
 void FakeRedisClient::send_HGetMedia(const int64_t req_id, const std::string& field)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HGetMedia", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HGetMedia_pargs args;
   args.req_id = &req_id;
@@ -3806,6 +3970,9 @@ void FakeRedisClient::send_HGetMedia(const int64_t req_id, const std::string& fi
 
 void FakeRedisClient::recv_HGetMedia(std::vector<Media> & _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3829,6 +3996,10 @@ void FakeRedisClient::recv_HGetMedia(std::vector<Media> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   FakeRedis_HGetMedia_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -3842,17 +4013,10 @@ void FakeRedisClient::recv_HGetMedia(std::vector<Media> & _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HGetMedia failed: unknown result");
 }
 
-void FakeRedisClient::FakeHGetPostId(RandomGenerator *randGen)
+void FakeRedisClient::FakeHGetPostId()
 {
-	FakeRedis_HGetPostId_result result;
-
-	int64_t id = randGen->getInt64(RAND_NUM_LIMIT);
-
-	result.success = id;
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("HGetPostId", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hGetPostId_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3860,14 +4024,26 @@ void FakeRedisClient::FakeHGetPostId(RandomGenerator *randGen)
 
 int64_t FakeRedisClient::HGetPostId(const int64_t req_id, const std::string& field)
 {
-  send_HGetPostId(req_id, field);
+  #ifdef CEREBROS	
+	return hGetPostId_res->success;
+	#else
+	send_HGetPostId(req_id, field);
   return recv_HGetPostId();
+	#endif
 }
 
 void FakeRedisClient::send_HGetPostId(const int64_t req_id, const std::string& field)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HGetPostId", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HGetPostId_pargs args;
   args.req_id = &req_id;
@@ -3881,6 +4057,9 @@ void FakeRedisClient::send_HGetPostId(const int64_t req_id, const std::string& f
 
 int64_t FakeRedisClient::recv_HGetPostId()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3904,6 +4083,10 @@ int64_t FakeRedisClient::recv_HGetPostId()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   int64_t _return;
   FakeRedis_HGetPostId_presult result;
   result.success = &_return;
@@ -3917,17 +4100,10 @@ int64_t FakeRedisClient::recv_HGetPostId()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HGetPostId failed: unknown result");
 }
 
-void FakeRedisClient::FakeHGetPostType(RandomGenerator *randGen)
+void FakeRedisClient::FakeHGetPostType()
 {
-	FakeRedis_HGetPostType_result result;
-
-	PostType::type post_type = (PostType::type) randGen->getInt64(0, 3);
-
-	result.success = post_type;
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("HGetPostType", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hGetPostType_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -3935,14 +4111,26 @@ void FakeRedisClient::FakeHGetPostType(RandomGenerator *randGen)
 
 PostType::type FakeRedisClient::HGetPostType(const int64_t req_id, const std::string& field)
 {
-  send_HGetPostType(req_id, field);
+  #ifdef CEREBROS	
+	return hGetPostType_res->success;
+	#else
+	send_HGetPostType(req_id, field);
   return recv_HGetPostType();
+	#endif
 }
 
 void FakeRedisClient::send_HGetPostType(const int64_t req_id, const std::string& field)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HGetPostType", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HGetPostType_pargs args;
   args.req_id = &req_id;
@@ -3956,6 +4144,9 @@ void FakeRedisClient::send_HGetPostType(const int64_t req_id, const std::string&
 
 PostType::type FakeRedisClient::recv_HGetPostType()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -3979,6 +4170,10 @@ PostType::type FakeRedisClient::recv_HGetPostType()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   PostType::type _return;
   FakeRedis_HGetPostType_presult result;
   result.success = &_return;
@@ -3992,22 +4187,10 @@ PostType::type FakeRedisClient::recv_HGetPostType()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HGetPostType failed: unknown result");
 }
 
-void FakeRedisClient::FakeHGetUrls(RandomGenerator *randGen)
+void FakeRedisClient::FakeHGetUrls()
 {
-	FakeRedis_HGetUrls_result result;
-
-	std::vector<Url> urls;
-	uint32_t iters = randGen->getUInt32(1, 2);
-	for (int i = 0; i < iters; i++){
-		Url url(randGen);
-		urls.emplace_back(url);
-	}
-
-	result.success = urls;
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("HGetUrls", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hGetUrls_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -4015,14 +4198,26 @@ void FakeRedisClient::FakeHGetUrls(RandomGenerator *randGen)
 
 void FakeRedisClient::HGetUrls(std::vector<Url> & _return, const int64_t req_id, const std::string& field)
 {
-  send_HGetUrls(req_id, field);
+  #ifdef CEREBROS	
+	_return = hGetUrls_res->success;
+	#else
+	send_HGetUrls(req_id, field);
   recv_HGetUrls(_return);
+	#endif
 }
 
 void FakeRedisClient::send_HGetUrls(const int64_t req_id, const std::string& field)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HGetUrls", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HGetUrls_pargs args;
   args.req_id = &req_id;
@@ -4036,6 +4231,9 @@ void FakeRedisClient::send_HGetUrls(const int64_t req_id, const std::string& fie
 
 void FakeRedisClient::recv_HGetUrls(std::vector<Url> & _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -4059,6 +4257,10 @@ void FakeRedisClient::recv_HGetUrls(std::vector<Url> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   FakeRedis_HGetUrls_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -4072,22 +4274,10 @@ void FakeRedisClient::recv_HGetUrls(std::vector<Url> & _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HGetUrls failed: unknown result");
 }
 
-void FakeRedisClient::FakeHGetUserMentions(RandomGenerator *randGen)
+void FakeRedisClient::FakeHGetUserMentions()
 {
-	FakeRedis_HGetUserMentions_result result;
-
-	std::vector<UserMention> user_mentions;
-	uint32_t iters = randGen->getUInt32(1, 2);
-	for (int i = 0; i < iters; i++){
-		UserMention user_mention(randGen);
-		user_mentions.emplace_back(user_mention);
-	}
-
-	result.success = user_mentions;
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("HGetUserMentions", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hGetUserMentions_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -4095,14 +4285,26 @@ void FakeRedisClient::FakeHGetUserMentions(RandomGenerator *randGen)
 
 void FakeRedisClient::HGetUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::string& field)
 {
-  send_HGetUserMentions(req_id, field);
+  #ifdef CEREBROS	
+	_return = hGetUserMentions_res->success;
+	#else
+	send_HGetUserMentions(req_id, field);
   recv_HGetUserMentions(_return);
+	#endif
 }
 
 void FakeRedisClient::send_HGetUserMentions(const int64_t req_id, const std::string& field)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HGetUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HGetUserMentions_pargs args;
   args.req_id = &req_id;
@@ -4116,6 +4318,9 @@ void FakeRedisClient::send_HGetUserMentions(const int64_t req_id, const std::str
 
 void FakeRedisClient::recv_HGetUserMentions(std::vector<UserMention> & _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -4139,6 +4344,10 @@ void FakeRedisClient::recv_HGetUserMentions(std::vector<UserMention> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   FakeRedis_HGetUserMentions_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -4152,17 +4361,10 @@ void FakeRedisClient::recv_HGetUserMentions(std::vector<UserMention> & _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HGetUserMentions failed: unknown result");
 }
 
-void FakeRedisClient::FakeHHIncrBy(RandomGenerator *randGen)
+void FakeRedisClient::FakeHIncrBy()
 {
-	FakeRedis_HIncrBy_result result;
-
-	int64_t num_components = randGen->getInt64(1, 6);
-
-	result.success = num_components;
-	result.__isset.success = true;
-
 	iprot_->writeMessageBegin("HIncrBy", ::apache::thrift::protocol::T_REPLY, 0);
-  result.write(iprot_);
+  hIncBy_res->write(iprot_);
   iprot_->writeMessageEnd();
   iprot_->getTransport()->writeEnd();
   iprot_->getTransport()->flush();
@@ -4170,14 +4372,26 @@ void FakeRedisClient::FakeHHIncrBy(RandomGenerator *randGen)
 
 int64_t FakeRedisClient::HIncrBy(const int64_t key, const std::string& field, const int64_t value)
 {
-  send_HIncrBy(key, field, value);
+  #ifdef CEREBROS	
+	return hIncBy_res->success;
+	#else
+	send_HIncrBy(key, field, value);
   return recv_HIncrBy();
+	#endif
 }
 
 void FakeRedisClient::send_HIncrBy(const int64_t key, const std::string& field, const int64_t value)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("HIncrBy", ::apache::thrift::protocol::T_CALL, cseqid);
+	
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_HIncrBy_pargs args;
   args.key = &key;
@@ -4192,6 +4406,9 @@ void FakeRedisClient::send_HIncrBy(const int64_t key, const std::string& field, 
 
 int64_t FakeRedisClient::recv_HIncrBy()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -4215,6 +4432,10 @@ int64_t FakeRedisClient::recv_HIncrBy()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+  #ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   int64_t _return;
   FakeRedis_HIncrBy_presult result;
   result.success = &_return;
