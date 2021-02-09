@@ -227,8 +227,8 @@ service MyTextService {
   ) 
 }
 
-service MyUserService {
-  i64 RegisterUser (
+service UserService {
+  void RegisterUser (
       1: i64 req_id,
       2: string first_name,
       3: string last_name,
@@ -236,14 +236,14 @@ service MyUserService {
       5: string password
   ) 
 
-    i64 RegisterUserWithId (
-        1: i64 req_id,
-        2: string first_name,
-        3: string last_name,
-        4: string username,
-        5: string password,
-        6: i64 user_id
-    ) 
+	void RegisterUserWithId (
+			1: i64 req_id,
+			2: string first_name,
+			3: string last_name,
+			4: string username,
+			5: string password,
+			6: i64 user_id
+	) 
 
   string Login(
       1: i64 req_id,
@@ -251,13 +251,13 @@ service MyUserService {
       3: string password
   ) 
 
-  i64 UploadCreatorWithUserId(
+  void UploadCreatorWithUserId(
       1: i64 req_id,
       2: i64 user_id,
       3: string username
   ) 
 
-  i64 UploadCreatorWithUsername(
+  void UploadCreatorWithUsername(
       1: i64 req_id,
       2: string username
   ) 
