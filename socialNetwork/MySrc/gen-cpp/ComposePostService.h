@@ -931,7 +931,7 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
 		}	
 	}
 
-	static void InitializeFuncMapRedis(FunctionClientMap<ComposePostServiceClient> *f2cmap,
+	static void InitializeFuncMapComposePost(FunctionClientMap<ComposePostServiceClient> *f2cmap,
 																		 RandomGenerator *randGen,
 																		 int num_template_clients,
 																		 int num_msg_per_client,

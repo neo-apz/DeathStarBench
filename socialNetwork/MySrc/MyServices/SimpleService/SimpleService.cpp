@@ -20,7 +20,7 @@ void initPools(RandomGenerator* randGen, rpcNUMAContext* ctx,
 							 std::shared_ptr<UniqueIdHandler> handler, int tid) {
 
 	auto f2cMap = handler->_compose_client_pool->AddToPool(ctx->getQP(tid));
-	ComposePostServiceClient::InitializeFuncMapRedis(f2cMap, randGen,
+	ComposePostServiceClient::InitializeFuncMapComposePost(f2cMap, randGen,
 													NUM_TEMPLATE_CLIENTS, NUM_MSGS_PER_CLIENT, BUFFER_SIZE);
 }
 
