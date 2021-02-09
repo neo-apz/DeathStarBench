@@ -227,8 +227,50 @@ service MyTextService {
   ) 
 }
 
+service FakeMemcached {
+  i64 UserCached (
+		1: string username
+  )
+
+	i64 GetUserId (
+		1: string username
+  )
+
+	void InsertUserId (
+		1: string username
+		2: i64 user_id
+  )
+
+	User LoginCached (
+		1: string username
+  )
+
+	void InsertUser (
+		1: string username
+		2: User user
+  )
+}
+
+service FakeMongo {
+  bool UserExists (
+		1: string username
+  )
+
+	void InsertUser (
+		1: User user
+  )
+
+	i64 CreatorExists (
+		1: string username
+  )
+
+	User GetUser (
+		1: string username
+  ) 
+}
+
 service UserService {
-  void RegisterUser (
+  bool RegisterUser (
       1: i64 req_id,
       2: string first_name,
       3: string last_name,
@@ -236,7 +278,7 @@ service UserService {
       5: string password
   ) 
 
-	void RegisterUserWithId (
+	bool RegisterUserWithId (
 			1: i64 req_id,
 			2: string first_name,
 			3: string last_name,
@@ -257,7 +299,7 @@ service UserService {
       3: string username
   ) 
 
-  void UploadCreatorWithUsername(
+  bool UploadCreatorWithUsername(
       1: i64 req_id,
       2: string username
   ) 
