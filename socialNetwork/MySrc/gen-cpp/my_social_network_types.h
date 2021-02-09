@@ -63,6 +63,7 @@ class User : public virtual ::apache::thrift::TBase {
   User& operator=(const User&);
   User() : user_id(0), first_name(), last_name(), username(), password_hashed(), salt() {
   }
+	User(RandomGenerator *randGen);
 
   virtual ~User() throw();
   int64_t user_id;

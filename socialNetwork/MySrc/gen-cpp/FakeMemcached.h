@@ -11,6 +11,11 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <RandomGenerator.h>
+#include <FunctionClientMap.h>
+
+#include <iostream>
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -26,6 +31,18 @@ class FakeMemcachedIf {
   virtual void InsertUserId(const std::string& username, const int64_t user_id) = 0;
   virtual void LoginCached(User& _return, const std::string& username) = 0;
   virtual void InsertUser(const std::string& username, const User& user) = 0;
+
+	struct FuncType {
+  enum type {
+    USER_CACHED = 0,
+    GET_USER_ID = 1,
+    INSERT_USER_ID = 2,
+    LOGIN_CACHED = 3,
+		INSERT_USER = 4,
+
+    SIZE = 5
+  	};
+	};
 };
 
 class FakeMemcachedIfFactory {
@@ -136,6 +153,19 @@ class FakeMemcached_UserCached_result {
   FakeMemcached_UserCached_result() : success(0) {
   }
 
+	FakeMemcached_UserCached_result(RandomGenerator *randGen) {
+		uint64_t dice = randGen->getInt64(100);
+
+		if (dice < 90){ // Cached!
+			success = randGen->getInt64(RAND_NUM_LIMIT);
+		}
+		else { // Not Cached!
+			success = -1;
+		}
+
+		__isset.success = true;
+	}
+
   virtual ~FakeMemcached_UserCached_result() throw();
   int64_t success;
 
@@ -239,6 +269,19 @@ class FakeMemcached_GetUserId_result {
   FakeMemcached_GetUserId_result& operator=(const FakeMemcached_GetUserId_result&);
   FakeMemcached_GetUserId_result() : success(0) {
   }
+
+	FakeMemcached_GetUserId_result(RandomGenerator *randGen) {
+		uint64_t dice = randGen->getInt64(100);
+
+		if (dice < 90){ // Cached!
+			success = randGen->getInt64(RAND_NUM_LIMIT);
+		}
+		else { // Not Cached!
+			success = -1;
+		}
+
+		__isset.success = true;
+	}
 
   virtual ~FakeMemcached_GetUserId_result() throw();
   int64_t success;
@@ -347,6 +390,9 @@ class FakeMemcached_InsertUserId_result {
   FakeMemcached_InsertUserId_result() {
   }
 
+	FakeMemcached_InsertUserId_result(RandomGenerator *randGen) {
+	}
+
   virtual ~FakeMemcached_InsertUserId_result() throw();
 
   bool operator == (const FakeMemcached_InsertUserId_result & /* rhs */) const
@@ -436,6 +482,19 @@ class FakeMemcached_LoginCached_result {
   FakeMemcached_LoginCached_result& operator=(const FakeMemcached_LoginCached_result&);
   FakeMemcached_LoginCached_result() {
   }
+
+	FakeMemcached_LoginCached_result(RandomGenerator *randGen) {
+		uint64_t dice = randGen->getInt64(100);
+
+		if (dice < 90){ // Cached!
+			success = User(randGen);
+		}
+		else { // Not Cached!
+			success.user_id = -1;
+		}
+
+		__isset.success = true;
+	}
 
   virtual ~FakeMemcached_LoginCached_result() throw();
   User success;
@@ -544,6 +603,9 @@ class FakeMemcached_InsertUser_result {
   FakeMemcached_InsertUser_result() {
   }
 
+	FakeMemcached_InsertUser_result(RandomGenerator *randGen) {
+	}
+
   virtual ~FakeMemcached_InsertUser_result() throw();
 
   bool operator == (const FakeMemcached_InsertUser_result & /* rhs */) const
@@ -580,6 +642,9 @@ class FakeMemcachedClient : virtual public FakeMemcachedIf {
   FakeMemcachedClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	FakeMemcachedClient(){
+		
+	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -612,6 +677,73 @@ class FakeMemcachedClient : virtual public FakeMemcachedIf {
   void InsertUser(const std::string& username, const User& user);
   void send_InsertUser(const std::string& username, const User& user);
   void recv_InsertUser();
+
+	void initResults(RandomGenerator* randGen);
+	FakeMemcached_UserCached_result *userCached_res;
+	FakeMemcached_GetUserId_result *getUserId_res;
+	FakeMemcached_InsertUserId_result *insertUserId_res;
+	FakeMemcached_LoginCached_result *loginCached_res;
+	FakeMemcached_InsertUser_result *insertUser_res;
+	void FakeUserCached();
+	void FakeGetUserId();
+	void FakeInsertUserId();
+	void FakeLoginCached();
+	void FakeInsertUser();
+
+	static void FakeRespGen(FakeMemcachedClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::USER_CACHED:
+			client->FakeUserCached();
+			break;
+
+		case FuncType::GET_USER_ID:
+			client->FakeGetUserId();
+			break;
+
+		case FuncType::INSERT_USER_ID:
+			client->FakeInsertUserId();
+			break;
+
+		case FuncType::LOGIN_CACHED:
+			client->FakeLoginCached();
+			break;
+
+		case FuncType::INSERT_USER:
+			client->FakeInsertUser();
+			break;		
+
+		default:
+			std::cout << "This is an error, wrong message type in FakeMongo's FakeRespGen (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
+	}
+	
+	static void InitializeFuncMapMemcached(FunctionClientMap<FakeMemcachedClient> *f2cmap,
+															RandomGenerator *randGen,
+															int num_template_clients,
+															int num_msg_per_client,
+															int base_buffer_size) {
+
+		fake_resp_gen_func<FakeMemcachedClient> resp_gen_func = FakeMemcachedClient::FakeRespGen;
+		
+		f2cmap->InitMap(resp_gen_func, FuncType::USER_CACHED,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::GET_USER_ID,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::INSERT_USER_ID,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::LOGIN_CACHED,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);										
+		
+		f2cmap->InitMap(resp_gen_func, FuncType::INSERT_USER,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);										
+		}	
+
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

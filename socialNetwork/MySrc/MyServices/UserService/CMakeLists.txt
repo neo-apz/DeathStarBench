@@ -1,25 +1,29 @@
 
 add_executable(
-    MyUserService
+	UserService
 
-    MyUserService.cpp
-    ${THRIFT_GEN_CPP_DIR}/MyUserService.cpp
+	MyUserService.cpp
 )
 
 target_include_directories(
-    MyUserService PRIVATE
+	UserService PRIVATE ${COMMON_DIR}
 )
 
 target_link_libraries(
-    MyUserService
-    
-    mycommon
-    mysocialnet_types
-    ${THRIFT_LIB}
-    ${CMAKE_THREAD_LIBS_INIT}
-    ${Boost_LIBRARIES}
-    Boost::log
-    Boost::log_setup
+	UserService
+	
+	user
+	fake_memcached
+	fake_mongo
+	social_graph
+	compose_post
+	mycommon
+	mysocialnet_types
+	${THRIFT_LIB}
+	${CMAKE_THREAD_LIBS_INIT}
+	${Boost_LIBRARIES}
+	Boost::log
+	Boost::log_setup
 )
 
-install(TARGETS MyUserService DESTINATION ./)
+install(TARGETS UserService DESTINATION ./)

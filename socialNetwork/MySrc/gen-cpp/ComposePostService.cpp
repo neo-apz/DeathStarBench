@@ -1591,6 +1591,15 @@ int64_t ComposePostServiceClient::recv_UploadUniqueId()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadUniqueId failed: unknown result");
 }
 
+void ComposePostServiceClient::FakeUploadCreator()
+{
+	iprot_->writeMessageBegin("UploadCreator", ::apache::thrift::protocol::T_REPLY, 0);
+  uploadCreator_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
 int64_t ComposePostServiceClient::UploadCreator(const int64_t req_id, const Creator& creator)
 {
   send_UploadCreator(req_id, creator);

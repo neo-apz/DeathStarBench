@@ -725,6 +725,23 @@ uint32_t FakeMongo_GetUser_presult::read(::apache::thrift::protocol::TProtocol* 
   return xfer;
 }
 
+void FakeMongoClient::initResults(RandomGenerator* randGen)
+{
+	this->userExists_res = new FakeMongo_UserExists_result(randGen);
+	this->insertUser_res = new FakeMongo_InsertUser_result(randGen);
+	this->creatorExists_res = new FakeMongo_CreatorExists_result(randGen);
+	this->getUser_res = new FakeMongo_GetUser_result(randGen);
+}
+
+void FakeMongoClient::FakeUserExists()
+{
+	iprot_->writeMessageBegin("UserExists", ::apache::thrift::protocol::T_REPLY, 0);
+  userExists_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
 bool FakeMongoClient::UserExists(const std::string& username)
 {
   send_UserExists(username);
@@ -783,6 +800,15 @@ bool FakeMongoClient::recv_UserExists()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UserExists failed: unknown result");
 }
 
+void FakeMongoClient::FakeInsertUser()
+{
+	iprot_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_REPLY, 0);
+  insertUser_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
 void FakeMongoClient::InsertUser(const User& user)
 {
   send_InsertUser(user);
@@ -834,6 +860,15 @@ void FakeMongoClient::recv_InsertUser()
   iprot_->getTransport()->readEnd();
 
   return;
+}
+
+void FakeMongoClient::FakeCreatorExists()
+{
+	iprot_->writeMessageBegin("CreatorExists", ::apache::thrift::protocol::T_REPLY, 0);
+  creatorExists_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
 }
 
 int64_t FakeMongoClient::CreatorExists(const std::string& username)
@@ -892,6 +927,15 @@ int64_t FakeMongoClient::recv_CreatorExists()
     return _return;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "CreatorExists failed: unknown result");
+}
+
+void FakeMongoClient::FakeGetUser()
+{
+	iprot_->writeMessageBegin("GetUser", ::apache::thrift::protocol::T_REPLY, 0);
+  getUser_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
 }
 
 void FakeMongoClient::GetUser(User& _return, const std::string& username)

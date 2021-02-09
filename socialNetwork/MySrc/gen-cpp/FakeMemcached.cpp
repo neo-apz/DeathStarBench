@@ -913,6 +913,24 @@ uint32_t FakeMemcached_InsertUser_presult::read(::apache::thrift::protocol::TPro
   return xfer;
 }
 
+void FakeMemcachedClient::initResults(RandomGenerator* randGen)
+{
+	this->userCached_res = new FakeMemcached_UserCached_result(randGen);
+	this->getUserId_res = new FakeMemcached_GetUserId_result(randGen);
+	this->insertUserId_res = new FakeMemcached_InsertUserId_result(randGen);
+	this->loginCached_res = new FakeMemcached_LoginCached_result(randGen);
+	this->insertUser_res = new FakeMemcached_InsertUser_result(randGen);
+}
+
+void FakeMemcachedClient::FakeUserCached()
+{
+	iprot_->writeMessageBegin("UserCached", ::apache::thrift::protocol::T_REPLY, 0);
+  userCached_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
 int64_t FakeMemcachedClient::UserCached(const std::string& username)
 {
   send_UserCached(username);
@@ -969,6 +987,15 @@ int64_t FakeMemcachedClient::recv_UserCached()
     return _return;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UserCached failed: unknown result");
+}
+
+void FakeMemcachedClient::FakeGetUserId()
+{
+	iprot_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_REPLY, 0);
+  getUserId_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
 }
 
 int64_t FakeMemcachedClient::GetUserId(const std::string& username)
@@ -1029,6 +1056,15 @@ int64_t FakeMemcachedClient::recv_GetUserId()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetUserId failed: unknown result");
 }
 
+void FakeMemcachedClient::FakeInsertUserId()
+{
+	iprot_->writeMessageBegin("InsertUserId", ::apache::thrift::protocol::T_REPLY, 0);
+  insertUserId_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
 void FakeMemcachedClient::InsertUserId(const std::string& username, const int64_t user_id)
 {
   send_InsertUserId(username, user_id);
@@ -1081,6 +1117,15 @@ void FakeMemcachedClient::recv_InsertUserId()
   iprot_->getTransport()->readEnd();
 
   return;
+}
+
+void FakeMemcachedClient::FakeLoginCached()
+{
+	iprot_->writeMessageBegin("LoginCached", ::apache::thrift::protocol::T_REPLY, 0);
+  loginCached_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
 }
 
 void FakeMemcachedClient::LoginCached(User& _return, const std::string& username)
@@ -1139,6 +1184,15 @@ void FakeMemcachedClient::recv_LoginCached(User& _return)
     return;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "LoginCached failed: unknown result");
+}
+
+void FakeMemcachedClient::FakeInsertUser()
+{
+	iprot_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_REPLY, 0);
+  insertUser_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
 }
 
 void FakeMemcachedClient::InsertUser(const std::string& username, const User& user)

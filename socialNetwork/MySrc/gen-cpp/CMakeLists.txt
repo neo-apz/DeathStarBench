@@ -53,3 +53,35 @@ add_library(
 )
 target_include_directories(fake_rabbitmq PUBLIC ${COMMON_DIR})
 target_link_libraries(fake_rabbitmq mysocialnet_types mycommon)
+
+add_library(
+    user STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/UserService.cpp
+)
+target_include_directories(user PUBLIC ${COMMON_DIR})
+target_link_libraries(user mysocialnet_types mycommon)
+
+add_library(
+    social_graph STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/MySocialGraphService.cpp
+)
+target_include_directories(social_graph PUBLIC ${COMMON_DIR})
+target_link_libraries(social_graph mysocialnet_types mycommon)
+
+add_library(
+    fake_memcached STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/FakeMemcached.cpp
+)
+target_include_directories(fake_memcached PUBLIC ${COMMON_DIR})
+target_link_libraries(fake_memcached mysocialnet_types mycommon)
+
+add_library(
+    fake_mongo STATIC
+
+    ${THRIFT_GEN_CPP_DIR}/FakeMongo.cpp
+)
+target_include_directories(fake_mongo PUBLIC ${COMMON_DIR})
+target_link_libraries(fake_mongo mysocialnet_types mycommon)

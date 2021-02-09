@@ -11,14 +11,14 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
-#ifdef SW
-  #include "../MyCommon/stopwatch.h"
-#endif
+#include <RandomGenerator.h>
+#include <FunctionClientMap.h>
 
-#if defined(__aarch64__) || defined(FLEXUS)
-    #include "../MyCommon/MagicBreakPoint.h"
-#endif
+#include <iostream>
 
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
 
 namespace my_social_network {
 
@@ -37,6 +37,20 @@ class MySocialGraphServiceIf {
   virtual int64_t FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) = 0;
   virtual int64_t UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) = 0;
   virtual int64_t InsertUser(const int64_t req_id, const int64_t user_id) = 0;
+
+	struct FuncType {
+  enum type {
+    GET_FOLLOWERS = 0,
+    GET_FOLOWEES = 1,
+    FOLLOW = 2,
+    UNFOLLOW = 3,
+		FOLLOW_WUNAME = 4,
+    UNFOLLOW_WUNAME = 5,
+		INSERT_USER = 6,
+
+    SIZE = 7
+  	};
+	};
 };
 
 class MySocialGraphServiceIfFactory {
@@ -857,6 +871,11 @@ class MySocialGraphService_InsertUser_result {
   MySocialGraphService_InsertUser_result() : success(0) {
   }
 
+	MySocialGraphService_InsertUser_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+	}
+
   virtual ~MySocialGraphService_InsertUser_result() throw();
   int64_t success;
 
@@ -907,6 +926,9 @@ class MySocialGraphServiceClient : virtual public MySocialGraphServiceIf {
   MySocialGraphServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	MySocialGraphServiceClient(){
+		
+	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -945,6 +967,38 @@ class MySocialGraphServiceClient : virtual public MySocialGraphServiceIf {
   int64_t InsertUser(const int64_t req_id, const int64_t user_id);
   void send_InsertUser(const int64_t req_id, const int64_t user_id);
   int64_t recv_InsertUser();
+
+	void initResults(RandomGenerator* randGen);
+	MySocialGraphService_InsertUser_result *insertUser_res;
+	void FakeInsertUser();
+
+	static void FakeRespGen(MySocialGraphServiceClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::INSERT_USER:
+			client->FakeInsertUser();
+			break;
+
+		default:
+			std::cout << "This is an error, wrong message type in SocialGraphClient's FakeRespGen (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
+	}
+	
+	static void InitializeFuncMapSocialGraph(FunctionClientMap<MySocialGraphServiceClient> *f2cmap,
+																		 RandomGenerator *randGen,
+																		 int num_template_clients,
+																		 int num_msg_per_client,
+																		 int base_buffer_size) {
+
+		fake_resp_gen_func<MySocialGraphServiceClient> resp_gen_func = MySocialGraphServiceClient::FakeRespGen;
+		
+		f2cmap->InitMap(resp_gen_func, FuncType::INSERT_USER,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+	}
+  
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -980,14 +1034,6 @@ class MySocialGraphServiceProcessor : public ::apache::thrift::TDispatchProcesso
   }
 
   virtual ~MySocialGraphServiceProcessor() {}
-
-
-  #ifdef SW
-    Stopwatch<std::chrono::nanoseconds> headerSW;
-    Stopwatch<std::chrono::nanoseconds> disSW;
-  #endif
-
-  bool process(::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> in, ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> out, void* connectionContext) override;
 };
 
 class MySocialGraphServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

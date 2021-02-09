@@ -11,6 +11,15 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <RandomGenerator.h>
+#include <FunctionClientMap.h>
+
+#include <iostream>
+
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -27,6 +36,20 @@ class UserServiceIf {
   virtual void UploadCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username) = 0;
   virtual bool UploadCreatorWithUsername(const int64_t req_id, const std::string& username) = 0;
   virtual int64_t GetUserId(const int64_t req_id, const std::string& username) = 0;
+
+	struct FuncType {
+  enum type {
+    REG_USER = 0,
+    REG_USER_ID = 1,
+		LOGIN = 2,
+    UP_CRT_ID = 3,
+    UP_CRT_UNAME = 4,
+    GET_UID = 5,
+
+    SIZE = 6
+  };
+};
+
 };
 
 class UserServiceIfFactory {
@@ -96,6 +119,14 @@ class UserService_RegisterUser_args {
   UserService_RegisterUser_args& operator=(const UserService_RegisterUser_args&);
   UserService_RegisterUser_args() : req_id(0), first_name(), last_name(), username(), password() {
   }
+
+	UserService_RegisterUser_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		first_name = randGen->getAlphaString(8);
+		last_name = randGen->getAlphaString(10);
+		username = randGen->getAlphaNumericString(12);
+		password = randGen->getAlphaNumericString(12);
+	}
 
   virtual ~UserService_RegisterUser_args() throw();
   int64_t req_id;
@@ -170,6 +201,11 @@ class UserService_RegisterUser_result {
   UserService_RegisterUser_result() : success(0) {
   }
 
+	UserService_RegisterUser_result(RandomGenerator *randGen) {
+		success = randGen->getBool();
+		__isset.success = true;
+	}
+
   virtual ~UserService_RegisterUser_result() throw();
   bool success;
 
@@ -229,6 +265,15 @@ class UserService_RegisterUserWithId_args {
   UserService_RegisterUserWithId_args& operator=(const UserService_RegisterUserWithId_args&);
   UserService_RegisterUserWithId_args() : req_id(0), first_name(), last_name(), username(), password(), user_id(0) {
   }
+
+	UserService_RegisterUserWithId_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		first_name = randGen->getAlphaString(8);
+		last_name = randGen->getAlphaString(10);
+		username = randGen->getAlphaNumericString(12);
+		password = randGen->getAlphaNumericString(12);
+		user_id = randGen->getInt64(RAND_NUM_LIMIT);
+	}
 
   virtual ~UserService_RegisterUserWithId_args() throw();
   int64_t req_id;
@@ -309,6 +354,11 @@ class UserService_RegisterUserWithId_result {
   UserService_RegisterUserWithId_result() : success(0) {
   }
 
+	UserService_RegisterUserWithId_result(RandomGenerator *randGen) {
+		success = randGen->getBool();
+		__isset.success = true;
+	}
+
   virtual ~UserService_RegisterUserWithId_result() throw();
   bool success;
 
@@ -365,6 +415,12 @@ class UserService_Login_args {
   UserService_Login_args& operator=(const UserService_Login_args&);
   UserService_Login_args() : req_id(0), username(), password() {
   }
+
+	UserService_Login_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		username = randGen->getAlphaNumericString(12);
+		password = randGen->getAlphaNumericString(12);
+	}
 
   virtual ~UserService_Login_args() throw();
   int64_t req_id;
@@ -427,6 +483,11 @@ class UserService_Login_result {
   UserService_Login_result() : success() {
   }
 
+	UserService_Login_result(RandomGenerator *randGen) {
+		success = randGen->getAlphaNumericString(20);
+		__isset.success = true;
+	}
+
   virtual ~UserService_Login_result() throw();
   std::string success;
 
@@ -483,6 +544,12 @@ class UserService_UploadCreatorWithUserId_args {
   UserService_UploadCreatorWithUserId_args& operator=(const UserService_UploadCreatorWithUserId_args&);
   UserService_UploadCreatorWithUserId_args() : req_id(0), user_id(0), username() {
   }
+
+	UserService_UploadCreatorWithUserId_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		user_id = randGen->getInt64(RAND_NUM_LIMIT);
+		username = randGen->getAlphaNumericString(12);
+	}
 
   virtual ~UserService_UploadCreatorWithUserId_args() throw();
   int64_t req_id;
@@ -541,6 +608,9 @@ class UserService_UploadCreatorWithUserId_result {
   UserService_UploadCreatorWithUserId_result() {
   }
 
+	UserService_UploadCreatorWithUserId_result(RandomGenerator *randGen) {
+	}
+
   virtual ~UserService_UploadCreatorWithUserId_result() throw();
 
   bool operator == (const UserService_UploadCreatorWithUserId_result & /* rhs */) const
@@ -582,6 +652,11 @@ class UserService_UploadCreatorWithUsername_args {
   UserService_UploadCreatorWithUsername_args& operator=(const UserService_UploadCreatorWithUsername_args&);
   UserService_UploadCreatorWithUsername_args() : req_id(0), username() {
   }
+
+	UserService_UploadCreatorWithUsername_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		username = randGen->getAlphaNumericString(12);
+	}
 
   virtual ~UserService_UploadCreatorWithUsername_args() throw();
   int64_t req_id;
@@ -637,6 +712,11 @@ class UserService_UploadCreatorWithUsername_result {
   UserService_UploadCreatorWithUsername_result& operator=(const UserService_UploadCreatorWithUsername_result&);
   UserService_UploadCreatorWithUsername_result() : success(0) {
   }
+
+	UserService_UploadCreatorWithUsername_result(RandomGenerator *randGen) {
+		success = randGen->getBool();
+		__isset.success = true;
+	}
 
   virtual ~UserService_UploadCreatorWithUsername_result() throw();
   bool success;
@@ -694,6 +774,11 @@ class UserService_GetUserId_args {
   UserService_GetUserId_args() : req_id(0), username() {
   }
 
+	UserService_GetUserId_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		username = randGen->getAlphaNumericString(12);
+	}
+
   virtual ~UserService_GetUserId_args() throw();
   int64_t req_id;
   std::string username;
@@ -749,6 +834,11 @@ class UserService_GetUserId_result {
   UserService_GetUserId_result() : success(0) {
   }
 
+	UserService_GetUserId_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT);
+		__isset.success = true;
+	}
+
   virtual ~UserService_GetUserId_result() throw();
   int64_t success;
 
@@ -799,6 +889,14 @@ class UserServiceClient : virtual public UserServiceIf {
   UserServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+
+	UserServiceClient(RandomGenerator* randGen) {
+		initArgs(randGen);
+	}
+
+	UserServiceClient() {
+
+	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -809,6 +907,20 @@ class UserServiceClient : virtual public UserServiceIf {
     iprot_ = iprot.get();
     oprot_ = oprot.get();
   }
+
+	int chances[20] = {
+		FuncType::REG_USER,
+		FuncType::REG_USER_ID,
+		FuncType::LOGIN, FuncType::LOGIN,
+		FuncType::UP_CRT_ID, FuncType::UP_CRT_ID, FuncType::UP_CRT_ID,
+		FuncType::UP_CRT_ID, FuncType::UP_CRT_ID, FuncType::UP_CRT_ID,
+
+		FuncType::UP_CRT_UNAME, FuncType::UP_CRT_UNAME, FuncType::UP_CRT_UNAME,
+		FuncType::UP_CRT_UNAME, FuncType::UP_CRT_UNAME, FuncType::UP_CRT_UNAME,
+
+		FuncType::GET_UID, FuncType::GET_UID, FuncType::GET_UID, FuncType::GET_UID};
+	int chances_size = 20;
+
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
     return piprot_;
@@ -834,6 +946,24 @@ class UserServiceClient : virtual public UserServiceIf {
   int64_t GetUserId(const int64_t req_id, const std::string& username);
   void send_GetUserId(const int64_t req_id, const std::string& username);
   int64_t recv_GetUserId();
+
+	UserService_RegisterUser_args *registerUser_args;
+	UserService_RegisterUserWithId_args *registerUserWithId_args;
+	UserService_Login_args *login_args;
+	UserService_UploadCreatorWithUserId_args *uploadCreatorWithUserId_args;
+	UserService_UploadCreatorWithUsername_args *uploadCreatorWithUsername_args;
+	UserService_GetUserId_args *getUserId_args;
+	void initArgs(RandomGenerator* randGen);
+	void send_RandReq(RandomGenerator* randGen);
+
+	void initResults(RandomGenerator* randGen);
+	UserService_RegisterUser_result* registerUser_res;
+	UserService_RegisterUserWithId_result* registerUserWithId_res;
+	UserService_Login_result* login_res;
+	UserService_UploadCreatorWithUserId_result* uploadCreatorWithUserId_res;
+	UserService_UploadCreatorWithUsername_result* uploadCreatorWithUsername_res;
+	UserService_GetUserId_result* getUserId_res;
+
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -843,8 +973,7 @@ class UserServiceClient : virtual public UserServiceIf {
 
 class UserServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  protected:
-  ::apache::thrift::stdcxx::shared_ptr<UserServiceIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
+  ::apache::thrift::stdcxx::shared_ptr<UserServiceIf> iface_;  
  private:
   typedef  void (UserServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
@@ -865,8 +994,44 @@ class UserServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["UploadCreatorWithUsername"] = &UserServiceProcessor::process_UploadCreatorWithUsername;
     processMap_["GetUserId"] = &UserServiceProcessor::process_GetUserId;
   }
+	virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
 
   virtual ~UserServiceProcessor() {}
+};
+
+class UserServiceCerebrosProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UserServiceIf> iface_;  
+ private:
+  typedef  uint64_t (UserServiceCerebrosProcessor::*ProcessFunction)(UserServiceClient*);
+	typedef ProcessFunction ProcessMap[UserServiceIf::FuncType::SIZE];
+  ProcessMap processMap_;
+  uint64_t process_RegisterUser(UserServiceClient* client);
+  uint64_t process_RegisterUserWithId(UserServiceClient* client);
+  uint64_t process_Login(UserServiceClient* client);
+  uint64_t process_UploadCreatorWithUserId(UserServiceClient* client);
+  uint64_t process_UploadCreatorWithUsername(UserServiceClient* client);
+  uint64_t process_GetUserId(UserServiceClient* client);
+ public:
+  UserServiceCerebrosProcessor(::apache::thrift::stdcxx::shared_ptr<UserServiceIf> iface) :
+    iface_(iface) {
+    processMap_[UserServiceIf::FuncType::REG_USER] = &UserServiceCerebrosProcessor::process_RegisterUser;
+    processMap_[UserServiceIf::FuncType::REG_USER_ID] = &UserServiceCerebrosProcessor::process_RegisterUserWithId;
+    processMap_[UserServiceIf::FuncType::LOGIN] = &UserServiceCerebrosProcessor::process_Login;
+    processMap_[UserServiceIf::FuncType::UP_CRT_ID] = &UserServiceCerebrosProcessor::process_UploadCreatorWithUserId;
+    processMap_[UserServiceIf::FuncType::UP_CRT_UNAME] = &UserServiceCerebrosProcessor::process_UploadCreatorWithUsername;
+    processMap_[UserServiceIf::FuncType::GET_UID] = &UserServiceCerebrosProcessor::process_GetUserId;
+  }
+	uint64_t dispatchCall(int funcCode, UserServiceClient* client) {
+		if (funcCode >= UserServiceIf::FuncType::SIZE){
+			printf("Bad func code (%d) to dispatch in UserService!\n", funcCode);
+			exit(1);
+		}
+
+		return (this->*(processMap_[funcCode]))(client);
+	}
+
+  virtual ~UserServiceCerebrosProcessor() {}
 };
 
 class UserServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {

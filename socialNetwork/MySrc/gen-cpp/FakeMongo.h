@@ -11,6 +11,15 @@
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "my_social_network_types.h"
 
+#include <RandomGenerator.h>
+#include <FunctionClientMap.h>
+
+#include <iostream>
+
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
+
 namespace my_social_network {
 
 #ifdef _MSC_VER
@@ -25,6 +34,17 @@ class FakeMongoIf {
   virtual void InsertUser(const User& user) = 0;
   virtual int64_t CreatorExists(const std::string& username) = 0;
   virtual void GetUser(User& _return, const std::string& username) = 0;
+
+	struct FuncType {
+  enum type {
+    USER_EXISTS = 0,
+    INSERT_USER = 1,
+    CREATOR_EXISTS = 2,
+    GET_USER = 3,
+
+    SIZE = 4
+  	};
+	};
 };
 
 class FakeMongoIfFactory {
@@ -132,6 +152,19 @@ class FakeMongo_UserExists_result {
   FakeMongo_UserExists_result() : success(0) {
   }
 
+	FakeMongo_UserExists_result(RandomGenerator *randGen) {
+		uint64_t dice = randGen->getInt64(100);
+
+		if (dice < 97){ // Doesn't exist!
+			success = false;
+		}
+		else { // Exists!
+			success = true;
+		}
+
+		__isset.success = true;
+	}
+
   virtual ~FakeMongo_UserExists_result() throw();
   bool success;
 
@@ -232,6 +265,9 @@ class FakeMongo_InsertUser_result {
   FakeMongo_InsertUser_result() {
   }
 
+	FakeMongo_InsertUser_result(RandomGenerator *randGen) {
+	}
+
   virtual ~FakeMongo_InsertUser_result() throw();
 
   bool operator == (const FakeMongo_InsertUser_result & /* rhs */) const
@@ -321,6 +357,11 @@ class FakeMongo_CreatorExists_result {
   FakeMongo_CreatorExists_result& operator=(const FakeMongo_CreatorExists_result&);
   FakeMongo_CreatorExists_result() : success(0) {
   }
+
+	FakeMongo_CreatorExists_result(RandomGenerator *randGen) {
+		success = randGen->getInt64(RAND_NUM_LIMIT); // Always exists!
+		__isset.success = true;
+	}
 
   virtual ~FakeMongo_CreatorExists_result() throw();
   int64_t success;
@@ -426,6 +467,19 @@ class FakeMongo_GetUser_result {
   FakeMongo_GetUser_result() {
   }
 
+	FakeMongo_GetUser_result(RandomGenerator *randGen) {
+		uint64_t dice = randGen->getInt64(100);
+
+		if (dice < 98){ // Exists!
+			success = User(randGen);
+		}
+		else { // Does not exist!
+			success.user_id = -1;
+		}
+
+		__isset.success = true;
+	}
+
   virtual ~FakeMongo_GetUser_result() throw();
   User success;
 
@@ -476,6 +530,9 @@ class FakeMongoClient : virtual public FakeMongoIf {
   FakeMongoClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
+	FakeMongoClient(){
+		
+	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -505,6 +562,65 @@ class FakeMongoClient : virtual public FakeMongoIf {
   void GetUser(User& _return, const std::string& username);
   void send_GetUser(const std::string& username);
   void recv_GetUser(User& _return);
+
+	void initResults(RandomGenerator* randGen);
+	FakeMongo_UserExists_result *userExists_res;
+	FakeMongo_InsertUser_result *insertUser_res;
+	FakeMongo_CreatorExists_result *creatorExists_res;
+	FakeMongo_GetUser_result *getUser_res;
+	void FakeUserExists();
+	void FakeInsertUser();
+	void FakeCreatorExists();
+	void FakeGetUser();
+
+	static void FakeRespGen(FakeMongoClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::USER_EXISTS:
+			client->FakeUserExists();
+			break;
+
+		case FuncType::INSERT_USER:
+			client->FakeInsertUser();
+			break;
+
+		case FuncType::CREATOR_EXISTS:
+			client->FakeCreatorExists();
+			break;
+
+		case FuncType::GET_USER:
+			client->FakeGetUser();
+			break;		
+
+		default:
+			std::cout << "This is an error, wrong message type in FakeMongo's FakeRespGen (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
+	}
+	
+	static void InitializeFuncMapMongo(FunctionClientMap<FakeMongoClient> *f2cmap,
+															RandomGenerator *randGen,
+															int num_template_clients,
+															int num_msg_per_client,
+															int base_buffer_size) {
+
+		fake_resp_gen_func<FakeMongoClient> resp_gen_func = FakeMongoClient::FakeRespGen;
+		
+		f2cmap->InitMap(resp_gen_func, FuncType::USER_EXISTS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::INSERT_USER,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::CREATOR_EXISTS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::GET_USER,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);										
+
+}
+
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

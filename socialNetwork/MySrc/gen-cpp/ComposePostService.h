@@ -916,12 +916,17 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
 	ComposePostService_UploadUrls_result *uploadUrls_res;
 	ComposePostService_UploadUserMentions_result *uploadUserMentions_res;
 	void FakeUploadUniqueId();
+	void FakeUploadCreator();
 
 	static void FakeRespGen(ComposePostServiceClient *client, uint64_t fid) {
 		switch (fid)
 		{
 		case FuncType::UPLOAD_UNIQUE_ID:
 			client->FakeUploadUniqueId();
+			break;
+
+		case FuncType::UPLOAD_CREATOR:
+			client->FakeUploadCreator();
 			break;
 		
 		default:
@@ -938,7 +943,11 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
 																		 int base_buffer_size) {
 
 		fake_resp_gen_func<ComposePostServiceClient> resp_gen_func = ComposePostServiceClient::FakeRespGen;
+		
 		f2cmap->InitMap(resp_gen_func, FuncType::UPLOAD_UNIQUE_ID,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::UPLOAD_CREATOR,
 										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 	}
 
@@ -1002,7 +1011,7 @@ class ComposePostServiceCerebrosProcessor {
   }
 	uint64_t dispatchCall(int funcCode, ComposePostServiceClient* client) {
 		if (funcCode >= ComposePostServiceIf::FuncType::SIZE){
-			printf("Bad func code (%d) to dispatch in UniqueIdService!\n", funcCode);
+			printf("Bad func code (%d) to dispatch in ComposePostService!\n", funcCode);
 			exit(1);
 		}
 

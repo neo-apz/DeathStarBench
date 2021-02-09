@@ -1339,6 +1339,63 @@ uint32_t UserService_GetUserId_presult::read(::apache::thrift::protocol::TProtoc
   return xfer;
 }
 
+void UserServiceClient::initArgs(RandomGenerator* randGen)
+{
+	this->registerUser_args = new UserService_RegisterUser_args(randGen);
+	this->registerUserWithId_args = new UserService_RegisterUserWithId_args(randGen);
+	this->login_args = new UserService_Login_args(randGen);
+	this->uploadCreatorWithUserId_args = new UserService_UploadCreatorWithUserId_args(randGen);
+	this->uploadCreatorWithUsername_args = new UserService_UploadCreatorWithUsername_args(randGen);
+	this->getUserId_args = new UserService_GetUserId_args(randGen);
+}
+
+void UserServiceClient::send_RandReq(RandomGenerator* randGen)
+{
+	FuncType::type msg_type = (FuncType::type) chances[randGen->getUInt32(chances_size)];
+
+	switch (msg_type)
+	{
+	case FuncType::REG_USER:
+		send_RegisterUser(registerUser_args->req_id, registerUser_args->first_name, registerUser_args->last_name, registerUser_args->username, registerUser_args->password);
+		break;
+
+	case FuncType::REG_USER_ID:
+		send_RegisterUserWithId(registerUserWithId_args->req_id, registerUserWithId_args->first_name, registerUserWithId_args->last_name, registerUserWithId_args->username, registerUserWithId_args->password, registerUserWithId_args->user_id);
+		break;
+
+	case FuncType::LOGIN:
+		send_Login(login_args->req_id, login_args->username, login_args->password);
+		break;
+
+	case FuncType::UP_CRT_ID:
+		send_UploadCreatorWithUserId(uploadCreatorWithUserId_args->req_id, uploadCreatorWithUserId_args->user_id, uploadCreatorWithUserId_args->username);
+		break;
+
+	case FuncType::UP_CRT_UNAME:
+		send_UploadCreatorWithUsername(uploadCreatorWithUsername_args->req_id, uploadCreatorWithUsername_args->username);
+		break;
+
+	case FuncType::GET_UID:
+		send_GetUserId(getUserId_args->req_id, getUserId_args->username);
+		break;
+	
+	default:
+		std::cout << "This is an error, wrong message type in UserServiceClient (" << msg_type << ")!" << std::endl;
+		exit(1);
+		break;
+	}
+}
+
+void UserServiceClient::initResults(RandomGenerator* randGen)
+{
+	this->registerUser_res = new UserService_RegisterUser_result(randGen);
+	this->registerUserWithId_res = new UserService_RegisterUserWithId_result(randGen);
+	this->login_res = new UserService_Login_result(randGen);
+	this->uploadCreatorWithUserId_res = new UserService_UploadCreatorWithUserId_result(randGen);
+	this->uploadCreatorWithUsername_res = new UserService_UploadCreatorWithUsername_result(randGen);
+	this->getUserId_res = new UserService_GetUserId_result(randGen);
+}
+
 bool UserServiceClient::RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password)
 {
   send_RegisterUser(req_id, first_name, last_name, username, password);
@@ -1716,6 +1773,15 @@ bool UserServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* i
   return true;
 }
 
+uint64_t UserServiceCerebrosProcessor::process_RegisterUser(UserServiceClient* client) {
+	auto args = client->registerUser_args;
+	auto res = client->registerUser_res;
+
+	res->success = iface_->RegisterUser(args->req_id, args->first_name, args->last_name, args->username, args->password);
+
+	return (uint64_t) res;
+}
+
 void UserServiceProcessor::process_RegisterUser(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -1768,6 +1834,15 @@ void UserServiceProcessor::process_RegisterUser(int32_t seqid, ::apache::thrift:
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.RegisterUser", bytes);
   }
+}
+
+uint64_t UserServiceCerebrosProcessor::process_RegisterUserWithId(UserServiceClient* client) {
+	auto args = client->registerUserWithId_args;
+	auto res = client->registerUserWithId_res;
+
+	res->success = iface_->RegisterUserWithId(args->req_id, args->first_name, args->last_name, args->username, args->password, args->user_id);
+
+	return (uint64_t) res;
 }
 
 void UserServiceProcessor::process_RegisterUserWithId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
@@ -1824,6 +1899,15 @@ void UserServiceProcessor::process_RegisterUserWithId(int32_t seqid, ::apache::t
   }
 }
 
+uint64_t UserServiceCerebrosProcessor::process_Login(UserServiceClient* client) {
+	auto args = client->login_args;
+	auto res = client->login_res;
+
+	iface_->Login(res->success, args->req_id, args->username, args->password);
+
+	return (uint64_t) res;
+}
+
 void UserServiceProcessor::process_Login(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -1876,6 +1960,15 @@ void UserServiceProcessor::process_Login(int32_t seqid, ::apache::thrift::protoc
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.Login", bytes);
   }
+}
+
+uint64_t UserServiceCerebrosProcessor::process_UploadCreatorWithUserId(UserServiceClient* client) {
+	auto args = client->uploadCreatorWithUserId_args;
+	auto res = client->uploadCreatorWithUserId_res;
+
+	iface_->UploadCreatorWithUserId(args->req_id, args->user_id, args->username);
+
+	return (uint64_t) res;
 }
 
 void UserServiceProcessor::process_UploadCreatorWithUserId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
@@ -1931,6 +2024,15 @@ void UserServiceProcessor::process_UploadCreatorWithUserId(int32_t seqid, ::apac
   }
 }
 
+uint64_t UserServiceCerebrosProcessor::process_UploadCreatorWithUsername(UserServiceClient* client) {
+	auto args = client->uploadCreatorWithUsername_args;
+	auto res = client->uploadCreatorWithUsername_res;
+
+	res->success = iface_->UploadCreatorWithUsername(args->req_id, args->username);
+
+	return (uint64_t) res;
+}
+
 void UserServiceProcessor::process_UploadCreatorWithUsername(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -1983,6 +2085,15 @@ void UserServiceProcessor::process_UploadCreatorWithUsername(int32_t seqid, ::ap
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.UploadCreatorWithUsername", bytes);
   }
+}
+
+uint64_t UserServiceCerebrosProcessor::process_GetUserId(UserServiceClient* client) {
+	auto args = client->getUserId_args;
+	auto res = client->getUserId_res;
+
+	res->success = iface_->GetUserId(args->req_id, args->username);
+
+	return (uint64_t) res;
 }
 
 void UserServiceProcessor::process_GetUserId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)

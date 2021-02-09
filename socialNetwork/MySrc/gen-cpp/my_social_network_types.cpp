@@ -11,6 +11,8 @@
 
 #include <thrift/TToString.h>
 
+#include <PicoSHA2/picosha2.h>
+
 namespace my_social_network {
 
 int _kPostTypeValues[] = {
@@ -206,6 +208,16 @@ User::User(const User& other0) {
   password_hashed = other0.password_hashed;
   salt = other0.salt;
   __isset = other0.__isset;
+}
+User::User(RandomGenerator *randGen) {
+	user_id = randGen->getInt64(RAND_NUM_LIMIT);
+	first_name = randGen->getAlphaString(8);
+	last_name = randGen->getAlphaString(10);
+	username = randGen->getAlphaNumericString(12);
+
+	std::string password = randGen->getAlphaNumericString(12);
+	salt = randGen->getAlphaNumericString(32);
+	password_hashed = picosha2::hash256_hex_string(password + salt);
 }
 User& User::operator=(const User& other1) {
   user_id = other1.user_id;
