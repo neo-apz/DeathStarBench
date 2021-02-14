@@ -34,6 +34,13 @@ class FakeMongoIf {
   virtual void InsertUser(const User& user) = 0;
   virtual int64_t CreatorExists(const std::string& username) = 0;
   virtual void GetUser(User& _return, const std::string& username) = 0;
+  virtual void GetFLWRs(std::vector<int64_t> & _return, const int64_t user_id) = 0;
+  virtual void GetFLWEEs(std::vector<int64_t> & _return, const int64_t user_id) = 0;
+  virtual void AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp) = 0;
+  virtual void AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp) = 0;
+  virtual void RemoveFollower(const int64_t user_id, const int64_t followee_id) = 0;
+  virtual void RemoveFollowee(const int64_t followee_id, const int64_t user_id) = 0;
+  virtual void InsertUserId(const int64_t user_id) = 0;
 
 	struct FuncType {
   enum type {
@@ -42,7 +49,15 @@ class FakeMongoIf {
     CREATOR_EXISTS = 2,
     GET_USER = 3,
 
-    SIZE = 4
+		GET_FLWRS = 4,
+		GET_FLWEES = 5,
+		ADD_FLWR = 6,
+		ADD_FLWEE = 7,
+		RMV_FLWR = 8,
+		RMV_FLWEE = 9,
+		INSERT_USERID = 10,
+
+    SIZE = 11
   	};
 	};
 };
@@ -86,6 +101,27 @@ class FakeMongoNull : virtual public FakeMongoIf {
     return _return;
   }
   void GetUser(User& /* _return */, const std::string& /* username */) {
+    return;
+  }
+  void GetFLWRs(std::vector<int64_t> & /* _return */, const int64_t /* user_id */) {
+    return;
+  }
+  void GetFLWEEs(std::vector<int64_t> & /* _return */, const int64_t /* user_id */) {
+    return;
+  }
+  void AddFollower(const int64_t /* user_id */, const int64_t /* followee_id */, const int64_t /* timestamp */) {
+    return;
+  }
+  void AddFollowee(const int64_t /* followee_id */, const int64_t /* user_id */, const int64_t /* timestamp */) {
+    return;
+  }
+  void RemoveFollower(const int64_t /* user_id */, const int64_t /* followee_id */) {
+    return;
+  }
+  void RemoveFollowee(const int64_t /* followee_id */, const int64_t /* user_id */) {
+    return;
+  }
+  void InsertUserId(const int64_t /* user_id */) {
     return;
   }
 };
@@ -522,6 +558,719 @@ class FakeMongo_GetUser_presult {
 
 };
 
+typedef struct _FakeMongo_GetFLWRs_args__isset {
+  _FakeMongo_GetFLWRs_args__isset() : user_id(false) {}
+  bool user_id :1;
+} _FakeMongo_GetFLWRs_args__isset;
+
+class FakeMongo_GetFLWRs_args {
+ public:
+
+  FakeMongo_GetFLWRs_args(const FakeMongo_GetFLWRs_args&);
+  FakeMongo_GetFLWRs_args& operator=(const FakeMongo_GetFLWRs_args&);
+  FakeMongo_GetFLWRs_args() : user_id(0) {
+  }
+
+  virtual ~FakeMongo_GetFLWRs_args() throw();
+  int64_t user_id;
+
+  _FakeMongo_GetFLWRs_args__isset __isset;
+
+  void __set_user_id(const int64_t val);
+
+  bool operator == (const FakeMongo_GetFLWRs_args & rhs) const
+  {
+    if (!(user_id == rhs.user_id))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_GetFLWRs_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_GetFLWRs_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_GetFLWRs_pargs {
+ public:
+
+
+  virtual ~FakeMongo_GetFLWRs_pargs() throw();
+  const int64_t* user_id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _FakeMongo_GetFLWRs_result__isset {
+  _FakeMongo_GetFLWRs_result__isset() : success(false) {}
+  bool success :1;
+} _FakeMongo_GetFLWRs_result__isset;
+
+class FakeMongo_GetFLWRs_result {
+ public:
+
+  FakeMongo_GetFLWRs_result(const FakeMongo_GetFLWRs_result&);
+  FakeMongo_GetFLWRs_result& operator=(const FakeMongo_GetFLWRs_result&);
+  FakeMongo_GetFLWRs_result() {
+  }
+
+	FakeMongo_GetFLWRs_result(RandomGenerator* randGen) {
+		uint32_t iters = MAX_VECTOR_COUNT;
+		for(int i=0; i < iters; i++){
+			success.emplace_back(randGen->getInt64(RAND_NUM_LIMIT));
+		}
+
+		__isset.success = true;
+  }
+
+  virtual ~FakeMongo_GetFLWRs_result() throw();
+  std::vector<int64_t>  success;
+
+  _FakeMongo_GetFLWRs_result__isset __isset;
+
+  void __set_success(const std::vector<int64_t> & val);
+
+  bool operator == (const FakeMongo_GetFLWRs_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_GetFLWRs_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_GetFLWRs_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _FakeMongo_GetFLWRs_presult__isset {
+  _FakeMongo_GetFLWRs_presult__isset() : success(false) {}
+  bool success :1;
+} _FakeMongo_GetFLWRs_presult__isset;
+
+class FakeMongo_GetFLWRs_presult {
+ public:
+
+
+  virtual ~FakeMongo_GetFLWRs_presult() throw();
+  std::vector<int64_t> * success;
+
+  _FakeMongo_GetFLWRs_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeMongo_GetFLWEEs_args__isset {
+  _FakeMongo_GetFLWEEs_args__isset() : user_id(false) {}
+  bool user_id :1;
+} _FakeMongo_GetFLWEEs_args__isset;
+
+class FakeMongo_GetFLWEEs_args {
+ public:
+
+  FakeMongo_GetFLWEEs_args(const FakeMongo_GetFLWEEs_args&);
+  FakeMongo_GetFLWEEs_args& operator=(const FakeMongo_GetFLWEEs_args&);
+  FakeMongo_GetFLWEEs_args() : user_id(0) {
+  }
+
+  virtual ~FakeMongo_GetFLWEEs_args() throw();
+  int64_t user_id;
+
+  _FakeMongo_GetFLWEEs_args__isset __isset;
+
+  void __set_user_id(const int64_t val);
+
+  bool operator == (const FakeMongo_GetFLWEEs_args & rhs) const
+  {
+    if (!(user_id == rhs.user_id))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_GetFLWEEs_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_GetFLWEEs_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_GetFLWEEs_pargs {
+ public:
+
+
+  virtual ~FakeMongo_GetFLWEEs_pargs() throw();
+  const int64_t* user_id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _FakeMongo_GetFLWEEs_result__isset {
+  _FakeMongo_GetFLWEEs_result__isset() : success(false) {}
+  bool success :1;
+} _FakeMongo_GetFLWEEs_result__isset;
+
+class FakeMongo_GetFLWEEs_result {
+ public:
+
+  FakeMongo_GetFLWEEs_result(const FakeMongo_GetFLWEEs_result&);
+  FakeMongo_GetFLWEEs_result& operator=(const FakeMongo_GetFLWEEs_result&);
+  FakeMongo_GetFLWEEs_result() {
+  }
+
+	FakeMongo_GetFLWEEs_result(RandomGenerator* randGen) {
+		uint32_t iters = MAX_VECTOR_COUNT;
+		for(int i=0; i < iters; i++){
+			success.emplace_back(randGen->getInt64(RAND_NUM_LIMIT));
+		}
+
+		__isset.success = true;
+  }
+
+  virtual ~FakeMongo_GetFLWEEs_result() throw();
+  std::vector<int64_t>  success;
+
+  _FakeMongo_GetFLWEEs_result__isset __isset;
+
+  void __set_success(const std::vector<int64_t> & val);
+
+  bool operator == (const FakeMongo_GetFLWEEs_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_GetFLWEEs_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_GetFLWEEs_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _FakeMongo_GetFLWEEs_presult__isset {
+  _FakeMongo_GetFLWEEs_presult__isset() : success(false) {}
+  bool success :1;
+} _FakeMongo_GetFLWEEs_presult__isset;
+
+class FakeMongo_GetFLWEEs_presult {
+ public:
+
+
+  virtual ~FakeMongo_GetFLWEEs_presult() throw();
+  std::vector<int64_t> * success;
+
+  _FakeMongo_GetFLWEEs_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeMongo_AddFollower_args__isset {
+  _FakeMongo_AddFollower_args__isset() : user_id(false), followee_id(false), timestamp(false) {}
+  bool user_id :1;
+  bool followee_id :1;
+  bool timestamp :1;
+} _FakeMongo_AddFollower_args__isset;
+
+class FakeMongo_AddFollower_args {
+ public:
+
+  FakeMongo_AddFollower_args(const FakeMongo_AddFollower_args&);
+  FakeMongo_AddFollower_args& operator=(const FakeMongo_AddFollower_args&);
+  FakeMongo_AddFollower_args() : user_id(0), followee_id(0), timestamp(0) {
+  }
+
+  virtual ~FakeMongo_AddFollower_args() throw();
+  int64_t user_id;
+  int64_t followee_id;
+  int64_t timestamp;
+
+  _FakeMongo_AddFollower_args__isset __isset;
+
+  void __set_user_id(const int64_t val);
+
+  void __set_followee_id(const int64_t val);
+
+  void __set_timestamp(const int64_t val);
+
+  bool operator == (const FakeMongo_AddFollower_args & rhs) const
+  {
+    if (!(user_id == rhs.user_id))
+      return false;
+    if (!(followee_id == rhs.followee_id))
+      return false;
+    if (!(timestamp == rhs.timestamp))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_AddFollower_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_AddFollower_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_AddFollower_pargs {
+ public:
+
+
+  virtual ~FakeMongo_AddFollower_pargs() throw();
+  const int64_t* user_id;
+  const int64_t* followee_id;
+  const int64_t* timestamp;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_AddFollower_result {
+ public:
+
+  FakeMongo_AddFollower_result(const FakeMongo_AddFollower_result&);
+  FakeMongo_AddFollower_result& operator=(const FakeMongo_AddFollower_result&);
+  FakeMongo_AddFollower_result() {
+  }
+
+	FakeMongo_AddFollower_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeMongo_AddFollower_result() throw();
+
+  bool operator == (const FakeMongo_AddFollower_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeMongo_AddFollower_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_AddFollower_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_AddFollower_presult {
+ public:
+
+
+  virtual ~FakeMongo_AddFollower_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeMongo_AddFollowee_args__isset {
+  _FakeMongo_AddFollowee_args__isset() : followee_id(false), user_id(false), timestamp(false) {}
+  bool followee_id :1;
+  bool user_id :1;
+  bool timestamp :1;
+} _FakeMongo_AddFollowee_args__isset;
+
+class FakeMongo_AddFollowee_args {
+ public:
+
+  FakeMongo_AddFollowee_args(const FakeMongo_AddFollowee_args&);
+  FakeMongo_AddFollowee_args& operator=(const FakeMongo_AddFollowee_args&);
+  FakeMongo_AddFollowee_args() : followee_id(0), user_id(0), timestamp(0) {
+  }
+
+  virtual ~FakeMongo_AddFollowee_args() throw();
+  int64_t followee_id;
+  int64_t user_id;
+  int64_t timestamp;
+
+  _FakeMongo_AddFollowee_args__isset __isset;
+
+  void __set_followee_id(const int64_t val);
+
+  void __set_user_id(const int64_t val);
+
+  void __set_timestamp(const int64_t val);
+
+  bool operator == (const FakeMongo_AddFollowee_args & rhs) const
+  {
+    if (!(followee_id == rhs.followee_id))
+      return false;
+    if (!(user_id == rhs.user_id))
+      return false;
+    if (!(timestamp == rhs.timestamp))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_AddFollowee_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_AddFollowee_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_AddFollowee_pargs {
+ public:
+
+
+  virtual ~FakeMongo_AddFollowee_pargs() throw();
+  const int64_t* followee_id;
+  const int64_t* user_id;
+  const int64_t* timestamp;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_AddFollowee_result {
+ public:
+
+  FakeMongo_AddFollowee_result(const FakeMongo_AddFollowee_result&);
+  FakeMongo_AddFollowee_result& operator=(const FakeMongo_AddFollowee_result&);
+  FakeMongo_AddFollowee_result() {
+  }
+
+	FakeMongo_AddFollowee_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeMongo_AddFollowee_result() throw();
+
+  bool operator == (const FakeMongo_AddFollowee_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeMongo_AddFollowee_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_AddFollowee_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_AddFollowee_presult {
+ public:
+
+
+  virtual ~FakeMongo_AddFollowee_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeMongo_RemoveFollower_args__isset {
+  _FakeMongo_RemoveFollower_args__isset() : user_id(false), followee_id(false) {}
+  bool user_id :1;
+  bool followee_id :1;
+} _FakeMongo_RemoveFollower_args__isset;
+
+class FakeMongo_RemoveFollower_args {
+ public:
+
+  FakeMongo_RemoveFollower_args(const FakeMongo_RemoveFollower_args&);
+  FakeMongo_RemoveFollower_args& operator=(const FakeMongo_RemoveFollower_args&);
+  FakeMongo_RemoveFollower_args() : user_id(0), followee_id(0) {
+  }
+
+  virtual ~FakeMongo_RemoveFollower_args() throw();
+  int64_t user_id;
+  int64_t followee_id;
+
+  _FakeMongo_RemoveFollower_args__isset __isset;
+
+  void __set_user_id(const int64_t val);
+
+  void __set_followee_id(const int64_t val);
+
+  bool operator == (const FakeMongo_RemoveFollower_args & rhs) const
+  {
+    if (!(user_id == rhs.user_id))
+      return false;
+    if (!(followee_id == rhs.followee_id))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_RemoveFollower_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_RemoveFollower_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_RemoveFollower_pargs {
+ public:
+
+
+  virtual ~FakeMongo_RemoveFollower_pargs() throw();
+  const int64_t* user_id;
+  const int64_t* followee_id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_RemoveFollower_result {
+ public:
+
+  FakeMongo_RemoveFollower_result(const FakeMongo_RemoveFollower_result&);
+  FakeMongo_RemoveFollower_result& operator=(const FakeMongo_RemoveFollower_result&);
+  FakeMongo_RemoveFollower_result() {
+  }
+
+	FakeMongo_RemoveFollower_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeMongo_RemoveFollower_result() throw();
+
+  bool operator == (const FakeMongo_RemoveFollower_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeMongo_RemoveFollower_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_RemoveFollower_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_RemoveFollower_presult {
+ public:
+
+
+  virtual ~FakeMongo_RemoveFollower_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeMongo_RemoveFollowee_args__isset {
+  _FakeMongo_RemoveFollowee_args__isset() : followee_id(false), user_id(false) {}
+  bool followee_id :1;
+  bool user_id :1;
+} _FakeMongo_RemoveFollowee_args__isset;
+
+class FakeMongo_RemoveFollowee_args {
+ public:
+
+  FakeMongo_RemoveFollowee_args(const FakeMongo_RemoveFollowee_args&);
+  FakeMongo_RemoveFollowee_args& operator=(const FakeMongo_RemoveFollowee_args&);
+  FakeMongo_RemoveFollowee_args() : followee_id(0), user_id(0) {
+  }
+
+  virtual ~FakeMongo_RemoveFollowee_args() throw();
+  int64_t followee_id;
+  int64_t user_id;
+
+  _FakeMongo_RemoveFollowee_args__isset __isset;
+
+  void __set_followee_id(const int64_t val);
+
+  void __set_user_id(const int64_t val);
+
+  bool operator == (const FakeMongo_RemoveFollowee_args & rhs) const
+  {
+    if (!(followee_id == rhs.followee_id))
+      return false;
+    if (!(user_id == rhs.user_id))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_RemoveFollowee_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_RemoveFollowee_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_RemoveFollowee_pargs {
+ public:
+
+
+  virtual ~FakeMongo_RemoveFollowee_pargs() throw();
+  const int64_t* followee_id;
+  const int64_t* user_id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_RemoveFollowee_result {
+ public:
+
+  FakeMongo_RemoveFollowee_result(const FakeMongo_RemoveFollowee_result&);
+  FakeMongo_RemoveFollowee_result& operator=(const FakeMongo_RemoveFollowee_result&);
+  FakeMongo_RemoveFollowee_result() {
+  }
+
+	FakeMongo_RemoveFollowee_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeMongo_RemoveFollowee_result() throw();
+
+  bool operator == (const FakeMongo_RemoveFollowee_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeMongo_RemoveFollowee_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_RemoveFollowee_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_RemoveFollowee_presult {
+ public:
+
+
+  virtual ~FakeMongo_RemoveFollowee_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeMongo_InsertUserId_args__isset {
+  _FakeMongo_InsertUserId_args__isset() : user_id(false) {}
+  bool user_id :1;
+} _FakeMongo_InsertUserId_args__isset;
+
+class FakeMongo_InsertUserId_args {
+ public:
+
+  FakeMongo_InsertUserId_args(const FakeMongo_InsertUserId_args&);
+  FakeMongo_InsertUserId_args& operator=(const FakeMongo_InsertUserId_args&);
+  FakeMongo_InsertUserId_args() : user_id(0) {
+  }
+
+  virtual ~FakeMongo_InsertUserId_args() throw();
+  int64_t user_id;
+
+  _FakeMongo_InsertUserId_args__isset __isset;
+
+  void __set_user_id(const int64_t val);
+
+  bool operator == (const FakeMongo_InsertUserId_args & rhs) const
+  {
+    if (!(user_id == rhs.user_id))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeMongo_InsertUserId_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_InsertUserId_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_InsertUserId_pargs {
+ public:
+
+
+  virtual ~FakeMongo_InsertUserId_pargs() throw();
+  const int64_t* user_id;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_InsertUserId_result {
+ public:
+
+  FakeMongo_InsertUserId_result(const FakeMongo_InsertUserId_result&);
+  FakeMongo_InsertUserId_result& operator=(const FakeMongo_InsertUserId_result&);
+  FakeMongo_InsertUserId_result() {
+  }
+	
+	FakeMongo_InsertUserId_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeMongo_InsertUserId_result() throw();
+
+  bool operator == (const FakeMongo_InsertUserId_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeMongo_InsertUserId_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeMongo_InsertUserId_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeMongo_InsertUserId_presult {
+ public:
+
+
+  virtual ~FakeMongo_InsertUserId_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class FakeMongoClient : virtual public FakeMongoIf {
  public:
   FakeMongoClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -529,9 +1278,9 @@ class FakeMongoClient : virtual public FakeMongoIf {
   }
   FakeMongoClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
-  }
-	FakeMongoClient(){
-		
+	}
+	FakeMongoClient(){	
+
 	}
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -562,7 +1311,28 @@ class FakeMongoClient : virtual public FakeMongoIf {
   void GetUser(User& _return, const std::string& username);
   void send_GetUser(const std::string& username);
   void recv_GetUser(User& _return);
-
+  void GetFLWRs(std::vector<int64_t> & _return, const int64_t user_id);
+  void send_GetFLWRs(const int64_t user_id);
+  void recv_GetFLWRs(std::vector<int64_t> & _return);
+  void GetFLWEEs(std::vector<int64_t> & _return, const int64_t user_id);
+  void send_GetFLWEEs(const int64_t user_id);
+  void recv_GetFLWEEs(std::vector<int64_t> & _return);
+  void AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp);
+  void send_AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp);
+  void recv_AddFollower();
+  void AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp);
+  void send_AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp);
+  void recv_AddFollowee();
+  void RemoveFollower(const int64_t user_id, const int64_t followee_id);
+  void send_RemoveFollower(const int64_t user_id, const int64_t followee_id);
+  void recv_RemoveFollower();
+  void RemoveFollowee(const int64_t followee_id, const int64_t user_id);
+  void send_RemoveFollowee(const int64_t followee_id, const int64_t user_id);
+  void recv_RemoveFollowee();
+  void InsertUserId(const int64_t user_id);
+  void send_InsertUserId(const int64_t user_id);
+  void recv_InsertUserId();
+	
 	void initResults(RandomGenerator* randGen);
 	FakeMongo_UserExists_result *userExists_res;
 	FakeMongo_InsertUser_result *insertUser_res;
@@ -572,6 +1342,21 @@ class FakeMongoClient : virtual public FakeMongoIf {
 	void FakeInsertUser();
 	void FakeCreatorExists();
 	void FakeGetUser();
+
+	FakeMongo_GetFLWRs_result *getFLWRs_res;
+	FakeMongo_GetFLWEEs_result *getFLWEEs_res;
+	FakeMongo_AddFollower_result *addFollower_res;
+	FakeMongo_AddFollowee_result *addFollowee_res;
+	FakeMongo_RemoveFollower_result *removeFollower_res;
+	FakeMongo_RemoveFollowee_result *removeFollowee_res;
+	FakeMongo_InsertUserId_result *insertUserId_res;
+	void FakeGetFLWRs();
+	void FakeGetFLWEEs();
+	void FakeAddFollower();
+	void FakeAddFollowee();
+	void FakeRemoveFollower();
+	void FakeRemoveFollowee();
+	void FakeInsertUserId();
 
 	static void FakeRespGen(FakeMongoClient *client, uint64_t fid) {
 		switch (fid)
@@ -591,6 +1376,34 @@ class FakeMongoClient : virtual public FakeMongoIf {
 		case FuncType::GET_USER:
 			client->FakeGetUser();
 			break;		
+
+		case FuncType::GET_FLWRS:
+			client->FakeGetFLWRs();
+			break;
+
+		case FuncType::GET_FLWEES:
+			client->FakeGetFLWEEs();
+			break;
+
+		case FuncType::ADD_FLWR:
+			client->FakeAddFollower();
+			break;
+
+		case FuncType::ADD_FLWEE:
+			client->FakeAddFollowee();
+			break;		
+
+		case FuncType::RMV_FLWR:
+			client->FakeRemoveFollower();
+			break;
+
+		case FuncType::RMV_FLWEE:
+			client->FakeRemoveFollowee();
+			break;
+
+		case FuncType::INSERT_USERID:
+			client->FakeInsertUserId();
+			break;	
 
 		default:
 			std::cout << "This is an error, wrong message type in FakeMongo's FakeRespGen (" << fid << ")!" << std::endl;
@@ -617,8 +1430,28 @@ class FakeMongoClient : virtual public FakeMongoIf {
 										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
 		f2cmap->InitMap(resp_gen_func, FuncType::GET_USER,
-										randGen, num_template_clients, num_msg_per_client, base_buffer_size);										
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
+		f2cmap->InitMap(resp_gen_func, FuncType::GET_FLWRS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::GET_FLWEES,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::ADD_FLWR,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::ADD_FLWEE,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::RMV_FLWR,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::RMV_FLWEE,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(resp_gen_func, FuncType::INSERT_USERID,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);																																								
 }
 
  protected:
@@ -640,6 +1473,13 @@ class FakeMongoProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_InsertUser(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_CreatorExists(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_GetUser(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_GetFLWRs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_GetFLWEEs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_AddFollower(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_AddFollowee(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_RemoveFollower(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_RemoveFollowee(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_InsertUserId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   FakeMongoProcessor(::apache::thrift::stdcxx::shared_ptr<FakeMongoIf> iface) :
     iface_(iface) {
@@ -647,6 +1487,13 @@ class FakeMongoProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["InsertUser"] = &FakeMongoProcessor::process_InsertUser;
     processMap_["CreatorExists"] = &FakeMongoProcessor::process_CreatorExists;
     processMap_["GetUser"] = &FakeMongoProcessor::process_GetUser;
+    processMap_["GetFLWRs"] = &FakeMongoProcessor::process_GetFLWRs;
+    processMap_["GetFLWEEs"] = &FakeMongoProcessor::process_GetFLWEEs;
+    processMap_["AddFollower"] = &FakeMongoProcessor::process_AddFollower;
+    processMap_["AddFollowee"] = &FakeMongoProcessor::process_AddFollowee;
+    processMap_["RemoveFollower"] = &FakeMongoProcessor::process_RemoveFollower;
+    processMap_["RemoveFollowee"] = &FakeMongoProcessor::process_RemoveFollowee;
+    processMap_["InsertUserId"] = &FakeMongoProcessor::process_InsertUserId;
   }
 
   virtual ~FakeMongoProcessor() {}
@@ -712,6 +1559,71 @@ class FakeMongoMultiface : virtual public FakeMongoIf {
     return;
   }
 
+  void GetFLWRs(std::vector<int64_t> & _return, const int64_t user_id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->GetFLWRs(_return, user_id);
+    }
+    ifaces_[i]->GetFLWRs(_return, user_id);
+    return;
+  }
+
+  void GetFLWEEs(std::vector<int64_t> & _return, const int64_t user_id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->GetFLWEEs(_return, user_id);
+    }
+    ifaces_[i]->GetFLWEEs(_return, user_id);
+    return;
+  }
+
+  void AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->AddFollower(user_id, followee_id, timestamp);
+    }
+    ifaces_[i]->AddFollower(user_id, followee_id, timestamp);
+  }
+
+  void AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->AddFollowee(followee_id, user_id, timestamp);
+    }
+    ifaces_[i]->AddFollowee(followee_id, user_id, timestamp);
+  }
+
+  void RemoveFollower(const int64_t user_id, const int64_t followee_id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->RemoveFollower(user_id, followee_id);
+    }
+    ifaces_[i]->RemoveFollower(user_id, followee_id);
+  }
+
+  void RemoveFollowee(const int64_t followee_id, const int64_t user_id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->RemoveFollowee(followee_id, user_id);
+    }
+    ifaces_[i]->RemoveFollowee(followee_id, user_id);
+  }
+
+  void InsertUserId(const int64_t user_id) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->InsertUserId(user_id);
+    }
+    ifaces_[i]->InsertUserId(user_id);
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -754,6 +1666,27 @@ class FakeMongoConcurrentClient : virtual public FakeMongoIf {
   void GetUser(User& _return, const std::string& username);
   int32_t send_GetUser(const std::string& username);
   void recv_GetUser(User& _return, const int32_t seqid);
+  void GetFLWRs(std::vector<int64_t> & _return, const int64_t user_id);
+  int32_t send_GetFLWRs(const int64_t user_id);
+  void recv_GetFLWRs(std::vector<int64_t> & _return, const int32_t seqid);
+  void GetFLWEEs(std::vector<int64_t> & _return, const int64_t user_id);
+  int32_t send_GetFLWEEs(const int64_t user_id);
+  void recv_GetFLWEEs(std::vector<int64_t> & _return, const int32_t seqid);
+  void AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp);
+  int32_t send_AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp);
+  void recv_AddFollower(const int32_t seqid);
+  void AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp);
+  int32_t send_AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp);
+  void recv_AddFollowee(const int32_t seqid);
+  void RemoveFollower(const int64_t user_id, const int64_t followee_id);
+  int32_t send_RemoveFollower(const int64_t user_id, const int64_t followee_id);
+  void recv_RemoveFollower(const int32_t seqid);
+  void RemoveFollowee(const int64_t followee_id, const int64_t user_id);
+  int32_t send_RemoveFollowee(const int64_t followee_id, const int64_t user_id);
+  void recv_RemoveFollowee(const int32_t seqid);
+  void InsertUserId(const int64_t user_id);
+  int32_t send_InsertUserId(const int64_t user_id);
+  void recv_InsertUserId(const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

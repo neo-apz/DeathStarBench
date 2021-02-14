@@ -133,14 +133,14 @@ uint32_t MySocialGraphService_GetFollowers_result::read(::apache::thrift::protoc
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size158;
-            ::apache::thrift::protocol::TType _etype161;
-            xfer += iprot->readListBegin(_etype161, _size158);
-            this->success.resize(_size158);
-            uint32_t _i162;
-            for (_i162 = 0; _i162 < _size158; ++_i162)
+            uint32_t _size216;
+            ::apache::thrift::protocol::TType _etype219;
+            xfer += iprot->readListBegin(_etype219, _size216);
+            this->success.resize(_size216);
+            uint32_t _i220;
+            for (_i220 = 0; _i220 < _size216; ++_i220)
             {
-              xfer += iprot->readI64(this->success[_i162]);
+              xfer += iprot->readI64(this->success[_i220]);
             }
             xfer += iprot->readListEnd();
           }
@@ -171,10 +171,10 @@ uint32_t MySocialGraphService_GetFollowers_result::write(::apache::thrift::proto
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->success.size()));
-      std::vector<int64_t> ::const_iterator _iter163;
-      for (_iter163 = this->success.begin(); _iter163 != this->success.end(); ++_iter163)
+      std::vector<int64_t> ::const_iterator _iter221;
+      for (_iter221 = this->success.begin(); _iter221 != this->success.end(); ++_iter221)
       {
-        xfer += oprot->writeI64((*_iter163));
+        xfer += oprot->writeI64((*_iter221));
       }
       xfer += oprot->writeListEnd();
     }
@@ -215,14 +215,14 @@ uint32_t MySocialGraphService_GetFollowers_presult::read(::apache::thrift::proto
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size164;
-            ::apache::thrift::protocol::TType _etype167;
-            xfer += iprot->readListBegin(_etype167, _size164);
-            (*(this->success)).resize(_size164);
-            uint32_t _i168;
-            for (_i168 = 0; _i168 < _size164; ++_i168)
+            uint32_t _size222;
+            ::apache::thrift::protocol::TType _etype225;
+            xfer += iprot->readListBegin(_etype225, _size222);
+            (*(this->success)).resize(_size222);
+            uint32_t _i226;
+            for (_i226 = 0; _i226 < _size222; ++_i226)
             {
-              xfer += iprot->readI64((*(this->success))[_i168]);
+              xfer += iprot->readI64((*(this->success))[_i226]);
             }
             xfer += iprot->readListEnd();
           }
@@ -368,14 +368,14 @@ uint32_t MySocialGraphService_GetFollowees_result::read(::apache::thrift::protoc
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size169;
-            ::apache::thrift::protocol::TType _etype172;
-            xfer += iprot->readListBegin(_etype172, _size169);
-            this->success.resize(_size169);
-            uint32_t _i173;
-            for (_i173 = 0; _i173 < _size169; ++_i173)
+            uint32_t _size227;
+            ::apache::thrift::protocol::TType _etype230;
+            xfer += iprot->readListBegin(_etype230, _size227);
+            this->success.resize(_size227);
+            uint32_t _i231;
+            for (_i231 = 0; _i231 < _size227; ++_i231)
             {
-              xfer += iprot->readI64(this->success[_i173]);
+              xfer += iprot->readI64(this->success[_i231]);
             }
             xfer += iprot->readListEnd();
           }
@@ -406,10 +406,10 @@ uint32_t MySocialGraphService_GetFollowees_result::write(::apache::thrift::proto
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->success.size()));
-      std::vector<int64_t> ::const_iterator _iter174;
-      for (_iter174 = this->success.begin(); _iter174 != this->success.end(); ++_iter174)
+      std::vector<int64_t> ::const_iterator _iter232;
+      for (_iter232 = this->success.begin(); _iter232 != this->success.end(); ++_iter232)
       {
-        xfer += oprot->writeI64((*_iter174));
+        xfer += oprot->writeI64((*_iter232));
       }
       xfer += oprot->writeListEnd();
     }
@@ -450,14 +450,14 @@ uint32_t MySocialGraphService_GetFollowees_presult::read(::apache::thrift::proto
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size175;
-            ::apache::thrift::protocol::TType _etype178;
-            xfer += iprot->readListBegin(_etype178, _size175);
-            (*(this->success)).resize(_size175);
-            uint32_t _i179;
-            for (_i179 = 0; _i179 < _size175; ++_i179)
+            uint32_t _size233;
+            ::apache::thrift::protocol::TType _etype236;
+            xfer += iprot->readListBegin(_etype236, _size233);
+            (*(this->success)).resize(_size233);
+            uint32_t _i237;
+            for (_i237 = 0; _i237 < _size233; ++_i237)
             {
-              xfer += iprot->readI64((*(this->success))[_i179]);
+              xfer += iprot->readI64((*(this->success))[_i237]);
             }
             xfer += iprot->readListEnd();
           }
@@ -613,20 +613,7 @@ uint32_t MySocialGraphService_Follow_result::read(::apache::thrift::protocol::TP
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->success);
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -641,11 +628,6 @@ uint32_t MySocialGraphService_Follow_result::write(::apache::thrift::protocol::T
 
   xfer += oprot->writeStructBegin("MySocialGraphService_Follow_result");
 
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
-    xfer += oprot->writeI64(this->success);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -675,20 +657,7 @@ uint32_t MySocialGraphService_Follow_presult::read(::apache::thrift::protocol::T
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -832,20 +801,7 @@ uint32_t MySocialGraphService_Unfollow_result::read(::apache::thrift::protocol::
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->success);
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -860,11 +816,6 @@ uint32_t MySocialGraphService_Unfollow_result::write(::apache::thrift::protocol:
 
   xfer += oprot->writeStructBegin("MySocialGraphService_Unfollow_result");
 
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
-    xfer += oprot->writeI64(this->success);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -894,20 +845,7 @@ uint32_t MySocialGraphService_Unfollow_presult::read(::apache::thrift::protocol:
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1051,20 +989,7 @@ uint32_t MySocialGraphService_FollowWithUsername_result::read(::apache::thrift::
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->success);
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1079,11 +1004,6 @@ uint32_t MySocialGraphService_FollowWithUsername_result::write(::apache::thrift:
 
   xfer += oprot->writeStructBegin("MySocialGraphService_FollowWithUsername_result");
 
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
-    xfer += oprot->writeI64(this->success);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1113,20 +1033,7 @@ uint32_t MySocialGraphService_FollowWithUsername_presult::read(::apache::thrift:
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1270,20 +1177,7 @@ uint32_t MySocialGraphService_UnfollowWithUsername_result::read(::apache::thrift
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->success);
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1298,11 +1192,6 @@ uint32_t MySocialGraphService_UnfollowWithUsername_result::write(::apache::thrif
 
   xfer += oprot->writeStructBegin("MySocialGraphService_UnfollowWithUsername_result");
 
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
-    xfer += oprot->writeI64(this->success);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1332,20 +1221,7 @@ uint32_t MySocialGraphService_UnfollowWithUsername_presult::read(::apache::thrif
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1473,20 +1349,7 @@ uint32_t MySocialGraphService_InsertUser_result::read(::apache::thrift::protocol
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->success);
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1501,11 +1364,6 @@ uint32_t MySocialGraphService_InsertUser_result::write(::apache::thrift::protoco
 
   xfer += oprot->writeStructBegin("MySocialGraphService_InsertUser_result");
 
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
-    xfer += oprot->writeI64(this->success);
-    xfer += oprot->writeFieldEnd();
-  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -1535,20 +1393,7 @@ uint32_t MySocialGraphService_InsertUser_presult::read(::apache::thrift::protoco
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
+    xfer += iprot->skip(ftype);
     xfer += iprot->readFieldEnd();
   }
 
@@ -1557,8 +1402,66 @@ uint32_t MySocialGraphService_InsertUser_presult::read(::apache::thrift::protoco
   return xfer;
 }
 
-void MySocialGraphServiceClient::initResults(RandomGenerator* randGen)
+void MySocialGraphServiceClient::initArgs(RandomGenerator* randGen)
 {
+	this->getFollowers_args = new MySocialGraphService_GetFollowers_args(randGen);
+	this->getFollowees_args = new MySocialGraphService_GetFollowees_args(randGen);
+	this->follow_args = new MySocialGraphService_Follow_args(randGen);
+	this->unfollow_args = new MySocialGraphService_Unfollow_args(randGen);
+	this->followWithUsername_args = new MySocialGraphService_FollowWithUsername_args(randGen);
+	this->unfollowWithUsername_args = new MySocialGraphService_UnfollowWithUsername_args(randGen);
+	this->insertUser_args = new MySocialGraphService_InsertUser_args(randGen);
+}
+
+void MySocialGraphServiceClient::send_RandReq(RandomGenerator* randGen)
+{
+	FuncType::type msg_type = (FuncType::type) chances[randGen->getUInt32(chances_size)];
+
+	switch (msg_type)
+	{
+	case FuncType::GET_FOLLOWERS:
+		send_GetFollowers(getFollowers_args->req_id, getFollowers_args->user_id);
+		break;
+
+	case FuncType::GET_FOLLOWEES:
+		send_GetFollowees(getFollowees_args->req_id, getFollowees_args->user_id);
+		break;
+
+	case FuncType::FOLLOW:
+		send_Follow(follow_args->req_id, follow_args->user_id, follow_args->followee_id);
+		break;
+
+	case FuncType::UNFOLLOW:
+		send_Unfollow(unfollow_args->req_id, unfollow_args->user_id, unfollow_args->followee_id);
+		break;
+
+	case FuncType::FOLLOW_UNAME:
+		send_FollowWithUsername(followWithUsername_args->req_id, followWithUsername_args->user_usernmae, followWithUsername_args->followee_username);
+		break;
+
+	case FuncType::UNFOLLOW_UNAME:
+		send_UnfollowWithUsername(unfollowWithUsername_args->req_id, unfollowWithUsername_args->user_usernmae, unfollowWithUsername_args->followee_username);
+		break;
+
+	case FuncType::INSERT_USER:
+		send_InsertUser(insertUser_args->req_id, insertUser_args->user_id);
+		break;
+	
+	default:
+		std::cout << "This is an error, wrong message type in MySocialGraphServiceClient (" << msg_type << ")!" << std::endl;
+		exit(1);
+		break;
+	}
+}
+
+void MySocialGraphServiceClient::initResults(RandomGenerator* randGen)
+{	
+	// this->getFollowers_res = new MySocialGraphService_GetFollowers_result(randGen);
+	// this->getFollowees_res = new MySocialGraphService_GetFollowees_result(randGen);
+	this->follow_res = new MySocialGraphService_Follow_result(randGen);
+	this->unfollow_res = new MySocialGraphService_Unfollow_result(randGen);
+	this->followWithUsername_res = new MySocialGraphService_FollowWithUsername_result(randGen);
+	this->unfollowWithUsername_res = new MySocialGraphService_UnfollowWithUsername_result(randGen);
 	this->insertUser_res = new MySocialGraphService_InsertUser_result(randGen);
 }
 
@@ -1680,10 +1583,10 @@ void MySocialGraphServiceClient::recv_GetFollowees(std::vector<int64_t> & _retur
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFollowees failed: unknown result");
 }
 
-int64_t MySocialGraphServiceClient::Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
+void MySocialGraphServiceClient::Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
 {
   send_Follow(req_id, user_id, followee_id);
-  return recv_Follow();
+  recv_Follow();
 }
 
 void MySocialGraphServiceClient::send_Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
@@ -1702,7 +1605,7 @@ void MySocialGraphServiceClient::send_Follow(const int64_t req_id, const int64_t
   oprot_->getTransport()->flush();
 }
 
-int64_t MySocialGraphServiceClient::recv_Follow()
+void MySocialGraphServiceClient::recv_Follow()
 {
 
   int32_t rseqid = 0;
@@ -1727,23 +1630,18 @@ int64_t MySocialGraphServiceClient::recv_Follow()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  int64_t _return;
   MySocialGraphService_Follow_presult result;
-  result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.success) {
-    return _return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "Follow failed: unknown result");
+  return;
 }
 
-int64_t MySocialGraphServiceClient::Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
+void MySocialGraphServiceClient::Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
 {
   send_Unfollow(req_id, user_id, followee_id);
-  return recv_Unfollow();
+  recv_Unfollow();
 }
 
 void MySocialGraphServiceClient::send_Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
@@ -1762,7 +1660,7 @@ void MySocialGraphServiceClient::send_Unfollow(const int64_t req_id, const int64
   oprot_->getTransport()->flush();
 }
 
-int64_t MySocialGraphServiceClient::recv_Unfollow()
+void MySocialGraphServiceClient::recv_Unfollow()
 {
 
   int32_t rseqid = 0;
@@ -1787,23 +1685,18 @@ int64_t MySocialGraphServiceClient::recv_Unfollow()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  int64_t _return;
   MySocialGraphService_Unfollow_presult result;
-  result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.success) {
-    return _return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "Unfollow failed: unknown result");
+  return;
 }
 
-int64_t MySocialGraphServiceClient::FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
+void MySocialGraphServiceClient::FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
 {
   send_FollowWithUsername(req_id, user_usernmae, followee_username);
-  return recv_FollowWithUsername();
+  recv_FollowWithUsername();
 }
 
 void MySocialGraphServiceClient::send_FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
@@ -1822,7 +1715,7 @@ void MySocialGraphServiceClient::send_FollowWithUsername(const int64_t req_id, c
   oprot_->getTransport()->flush();
 }
 
-int64_t MySocialGraphServiceClient::recv_FollowWithUsername()
+void MySocialGraphServiceClient::recv_FollowWithUsername()
 {
 
   int32_t rseqid = 0;
@@ -1847,23 +1740,18 @@ int64_t MySocialGraphServiceClient::recv_FollowWithUsername()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  int64_t _return;
   MySocialGraphService_FollowWithUsername_presult result;
-  result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.success) {
-    return _return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "FollowWithUsername failed: unknown result");
+  return;
 }
 
-int64_t MySocialGraphServiceClient::UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
+void MySocialGraphServiceClient::UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
 {
   send_UnfollowWithUsername(req_id, user_usernmae, followee_username);
-  return recv_UnfollowWithUsername();
+  recv_UnfollowWithUsername();
 }
 
 void MySocialGraphServiceClient::send_UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
@@ -1882,7 +1770,7 @@ void MySocialGraphServiceClient::send_UnfollowWithUsername(const int64_t req_id,
   oprot_->getTransport()->flush();
 }
 
-int64_t MySocialGraphServiceClient::recv_UnfollowWithUsername()
+void MySocialGraphServiceClient::recv_UnfollowWithUsername()
 {
 
   int32_t rseqid = 0;
@@ -1907,17 +1795,12 @@ int64_t MySocialGraphServiceClient::recv_UnfollowWithUsername()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  int64_t _return;
   MySocialGraphService_UnfollowWithUsername_presult result;
-  result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.success) {
-    return _return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UnfollowWithUsername failed: unknown result");
+  return;
 }
 
 void MySocialGraphServiceClient::FakeInsertUser()
@@ -1929,10 +1812,10 @@ void MySocialGraphServiceClient::FakeInsertUser()
   iprot_->getTransport()->flush();
 }
 
-int64_t MySocialGraphServiceClient::InsertUser(const int64_t req_id, const int64_t user_id)
+void MySocialGraphServiceClient::InsertUser(const int64_t req_id, const int64_t user_id)
 {
   send_InsertUser(req_id, user_id);
-  return recv_InsertUser();
+  recv_InsertUser();
 }
 
 void MySocialGraphServiceClient::send_InsertUser(const int64_t req_id, const int64_t user_id)
@@ -1950,7 +1833,7 @@ void MySocialGraphServiceClient::send_InsertUser(const int64_t req_id, const int
   oprot_->getTransport()->flush();
 }
 
-int64_t MySocialGraphServiceClient::recv_InsertUser()
+void MySocialGraphServiceClient::recv_InsertUser()
 {
 
   int32_t rseqid = 0;
@@ -1975,17 +1858,12 @@ int64_t MySocialGraphServiceClient::recv_InsertUser()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  int64_t _return;
   MySocialGraphService_InsertUser_presult result;
-  result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.success) {
-    return _return;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "InsertUser failed: unknown result");
+  return;
 }
 
 bool MySocialGraphServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
@@ -2005,6 +1883,17 @@ bool MySocialGraphServiceProcessor::dispatchCall(::apache::thrift::protocol::TPr
   }
   (this->*(pfn->second))(seqid, iprot, oprot, callContext);
   return true;
+}
+
+uint64_t MySocialGraphServiceCerebrosProcessor::process_GetFollowers(MySocialGraphServiceClient* client) {
+	auto args = client->getFollowers_args;
+	MySocialGraphService_GetFollowers_result res;
+
+	iface_->GetFollowers(res.success, args->req_id, args->user_id);
+
+	uint64_t ret = (uint64_t) &res; // TODO This might cause an issue later and lead to a seg fault!
+
+	return ret;
 }
 
 void MySocialGraphServiceProcessor::process_GetFollowers(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
@@ -2061,6 +1950,17 @@ void MySocialGraphServiceProcessor::process_GetFollowers(int32_t seqid, ::apache
   }
 }
 
+uint64_t MySocialGraphServiceCerebrosProcessor::process_GetFollowees(MySocialGraphServiceClient* client) {
+	auto args = client->getFollowees_args;
+	MySocialGraphService_GetFollowees_result res;
+
+	iface_->GetFollowees(res.success, args->req_id, args->user_id);
+
+	uint64_t ret = (uint64_t) &res; // TODO This might cause an issue later and lead to a seg fault!
+
+	return ret;
+}
+
 void MySocialGraphServiceProcessor::process_GetFollowees(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -2115,6 +2015,15 @@ void MySocialGraphServiceProcessor::process_GetFollowees(int32_t seqid, ::apache
   }
 }
 
+uint64_t MySocialGraphServiceCerebrosProcessor::process_Follow(MySocialGraphServiceClient* client) {
+	auto args = client->follow_args;
+	auto res = client->follow_res;
+
+	iface_->Follow(args->req_id, args->user_id, args->followee_id);
+
+	return (uint64_t) res;
+}
+
 void MySocialGraphServiceProcessor::process_Follow(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -2138,8 +2047,7 @@ void MySocialGraphServiceProcessor::process_Follow(int32_t seqid, ::apache::thri
 
   MySocialGraphService_Follow_result result;
   try {
-    result.success = iface_->Follow(args.req_id, args.user_id, args.followee_id);
-    result.__isset.success = true;
+    iface_->Follow(args.req_id, args.user_id, args.followee_id);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MySocialGraphService.Follow");
@@ -2169,6 +2077,15 @@ void MySocialGraphServiceProcessor::process_Follow(int32_t seqid, ::apache::thri
   }
 }
 
+uint64_t MySocialGraphServiceCerebrosProcessor::process_Unfollow(MySocialGraphServiceClient* client) {
+	auto args = client->unfollow_args;
+	auto res = client->unfollow_res;
+
+	iface_->Unfollow(args->req_id, args->user_id, args->followee_id);
+
+	return (uint64_t) res;
+}
+
 void MySocialGraphServiceProcessor::process_Unfollow(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -2192,8 +2109,7 @@ void MySocialGraphServiceProcessor::process_Unfollow(int32_t seqid, ::apache::th
 
   MySocialGraphService_Unfollow_result result;
   try {
-    result.success = iface_->Unfollow(args.req_id, args.user_id, args.followee_id);
-    result.__isset.success = true;
+    iface_->Unfollow(args.req_id, args.user_id, args.followee_id);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MySocialGraphService.Unfollow");
@@ -2223,6 +2139,15 @@ void MySocialGraphServiceProcessor::process_Unfollow(int32_t seqid, ::apache::th
   }
 }
 
+uint64_t MySocialGraphServiceCerebrosProcessor::process_FollowWithUsername(MySocialGraphServiceClient* client) {
+	auto args = client->followWithUsername_args;
+	auto res = client->followWithUsername_res;
+
+	iface_->FollowWithUsername(args->req_id, args->user_usernmae, args->followee_username);
+
+	return (uint64_t) res;
+}
+
 void MySocialGraphServiceProcessor::process_FollowWithUsername(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -2246,8 +2171,7 @@ void MySocialGraphServiceProcessor::process_FollowWithUsername(int32_t seqid, ::
 
   MySocialGraphService_FollowWithUsername_result result;
   try {
-    result.success = iface_->FollowWithUsername(args.req_id, args.user_usernmae, args.followee_username);
-    result.__isset.success = true;
+    iface_->FollowWithUsername(args.req_id, args.user_usernmae, args.followee_username);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MySocialGraphService.FollowWithUsername");
@@ -2277,6 +2201,15 @@ void MySocialGraphServiceProcessor::process_FollowWithUsername(int32_t seqid, ::
   }
 }
 
+uint64_t MySocialGraphServiceCerebrosProcessor::process_UnfollowWithUsername(MySocialGraphServiceClient* client) {
+	auto args = client->unfollowWithUsername_args;
+	auto res = client->unfollowWithUsername_res;
+
+	iface_->UnfollowWithUsername(args->req_id, args->user_usernmae, args->followee_username);
+
+	return (uint64_t) res;
+}
+
 void MySocialGraphServiceProcessor::process_UnfollowWithUsername(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -2300,8 +2233,7 @@ void MySocialGraphServiceProcessor::process_UnfollowWithUsername(int32_t seqid, 
 
   MySocialGraphService_UnfollowWithUsername_result result;
   try {
-    result.success = iface_->UnfollowWithUsername(args.req_id, args.user_usernmae, args.followee_username);
-    result.__isset.success = true;
+    iface_->UnfollowWithUsername(args.req_id, args.user_usernmae, args.followee_username);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MySocialGraphService.UnfollowWithUsername");
@@ -2331,6 +2263,15 @@ void MySocialGraphServiceProcessor::process_UnfollowWithUsername(int32_t seqid, 
   }
 }
 
+uint64_t MySocialGraphServiceCerebrosProcessor::process_InsertUser(MySocialGraphServiceClient* client) {
+	auto args = client->insertUser_args;
+	auto res = client->insertUser_res;
+
+	iface_->InsertUser(args->req_id, args->user_id);
+
+	return (uint64_t) res;
+}
+
 void MySocialGraphServiceProcessor::process_InsertUser(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -2354,8 +2295,7 @@ void MySocialGraphServiceProcessor::process_InsertUser(int32_t seqid, ::apache::
 
   MySocialGraphService_InsertUser_result result;
   try {
-    result.success = iface_->InsertUser(args.req_id, args.user_id);
-    result.__isset.success = true;
+    iface_->InsertUser(args.req_id, args.user_id);
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
       this->eventHandler_->handlerError(ctx, "MySocialGraphService.InsertUser");
@@ -2562,10 +2502,10 @@ void MySocialGraphServiceConcurrentClient::recv_GetFollowees(std::vector<int64_t
   } // end while(true)
 }
 
-int64_t MySocialGraphServiceConcurrentClient::Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
+void MySocialGraphServiceConcurrentClient::Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
 {
   int32_t seqid = send_Follow(req_id, user_id, followee_id);
-  return recv_Follow(seqid);
+  recv_Follow(seqid);
 }
 
 int32_t MySocialGraphServiceConcurrentClient::send_Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
@@ -2588,7 +2528,7 @@ int32_t MySocialGraphServiceConcurrentClient::send_Follow(const int64_t req_id, 
   return cseqid;
 }
 
-int64_t MySocialGraphServiceConcurrentClient::recv_Follow(const int32_t seqid)
+void MySocialGraphServiceConcurrentClient::recv_Follow(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2626,19 +2566,13 @@ int64_t MySocialGraphServiceConcurrentClient::recv_Follow(const int32_t seqid)
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      int64_t _return;
       MySocialGraphService_Follow_presult result;
-      result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.success) {
-        sentry.commit();
-        return _return;
-      }
-      // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "Follow failed: unknown result");
+      sentry.commit();
+      return;
     }
     // seqid != rseqid
     this->sync_.updatePending(fname, mtype, rseqid);
@@ -2648,10 +2582,10 @@ int64_t MySocialGraphServiceConcurrentClient::recv_Follow(const int32_t seqid)
   } // end while(true)
 }
 
-int64_t MySocialGraphServiceConcurrentClient::Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
+void MySocialGraphServiceConcurrentClient::Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
 {
   int32_t seqid = send_Unfollow(req_id, user_id, followee_id);
-  return recv_Unfollow(seqid);
+  recv_Unfollow(seqid);
 }
 
 int32_t MySocialGraphServiceConcurrentClient::send_Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id)
@@ -2674,7 +2608,7 @@ int32_t MySocialGraphServiceConcurrentClient::send_Unfollow(const int64_t req_id
   return cseqid;
 }
 
-int64_t MySocialGraphServiceConcurrentClient::recv_Unfollow(const int32_t seqid)
+void MySocialGraphServiceConcurrentClient::recv_Unfollow(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2712,19 +2646,13 @@ int64_t MySocialGraphServiceConcurrentClient::recv_Unfollow(const int32_t seqid)
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      int64_t _return;
       MySocialGraphService_Unfollow_presult result;
-      result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.success) {
-        sentry.commit();
-        return _return;
-      }
-      // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "Unfollow failed: unknown result");
+      sentry.commit();
+      return;
     }
     // seqid != rseqid
     this->sync_.updatePending(fname, mtype, rseqid);
@@ -2734,10 +2662,10 @@ int64_t MySocialGraphServiceConcurrentClient::recv_Unfollow(const int32_t seqid)
   } // end while(true)
 }
 
-int64_t MySocialGraphServiceConcurrentClient::FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
+void MySocialGraphServiceConcurrentClient::FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
 {
   int32_t seqid = send_FollowWithUsername(req_id, user_usernmae, followee_username);
-  return recv_FollowWithUsername(seqid);
+  recv_FollowWithUsername(seqid);
 }
 
 int32_t MySocialGraphServiceConcurrentClient::send_FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
@@ -2760,7 +2688,7 @@ int32_t MySocialGraphServiceConcurrentClient::send_FollowWithUsername(const int6
   return cseqid;
 }
 
-int64_t MySocialGraphServiceConcurrentClient::recv_FollowWithUsername(const int32_t seqid)
+void MySocialGraphServiceConcurrentClient::recv_FollowWithUsername(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2798,19 +2726,13 @@ int64_t MySocialGraphServiceConcurrentClient::recv_FollowWithUsername(const int3
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      int64_t _return;
       MySocialGraphService_FollowWithUsername_presult result;
-      result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.success) {
-        sentry.commit();
-        return _return;
-      }
-      // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "FollowWithUsername failed: unknown result");
+      sentry.commit();
+      return;
     }
     // seqid != rseqid
     this->sync_.updatePending(fname, mtype, rseqid);
@@ -2820,10 +2742,10 @@ int64_t MySocialGraphServiceConcurrentClient::recv_FollowWithUsername(const int3
   } // end while(true)
 }
 
-int64_t MySocialGraphServiceConcurrentClient::UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
+void MySocialGraphServiceConcurrentClient::UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
 {
   int32_t seqid = send_UnfollowWithUsername(req_id, user_usernmae, followee_username);
-  return recv_UnfollowWithUsername(seqid);
+  recv_UnfollowWithUsername(seqid);
 }
 
 int32_t MySocialGraphServiceConcurrentClient::send_UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username)
@@ -2846,7 +2768,7 @@ int32_t MySocialGraphServiceConcurrentClient::send_UnfollowWithUsername(const in
   return cseqid;
 }
 
-int64_t MySocialGraphServiceConcurrentClient::recv_UnfollowWithUsername(const int32_t seqid)
+void MySocialGraphServiceConcurrentClient::recv_UnfollowWithUsername(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2884,19 +2806,13 @@ int64_t MySocialGraphServiceConcurrentClient::recv_UnfollowWithUsername(const in
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      int64_t _return;
       MySocialGraphService_UnfollowWithUsername_presult result;
-      result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.success) {
-        sentry.commit();
-        return _return;
-      }
-      // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UnfollowWithUsername failed: unknown result");
+      sentry.commit();
+      return;
     }
     // seqid != rseqid
     this->sync_.updatePending(fname, mtype, rseqid);
@@ -2906,10 +2822,10 @@ int64_t MySocialGraphServiceConcurrentClient::recv_UnfollowWithUsername(const in
   } // end while(true)
 }
 
-int64_t MySocialGraphServiceConcurrentClient::InsertUser(const int64_t req_id, const int64_t user_id)
+void MySocialGraphServiceConcurrentClient::InsertUser(const int64_t req_id, const int64_t user_id)
 {
   int32_t seqid = send_InsertUser(req_id, user_id);
-  return recv_InsertUser(seqid);
+  recv_InsertUser(seqid);
 }
 
 int32_t MySocialGraphServiceConcurrentClient::send_InsertUser(const int64_t req_id, const int64_t user_id)
@@ -2931,7 +2847,7 @@ int32_t MySocialGraphServiceConcurrentClient::send_InsertUser(const int64_t req_
   return cseqid;
 }
 
-int64_t MySocialGraphServiceConcurrentClient::recv_InsertUser(const int32_t seqid)
+void MySocialGraphServiceConcurrentClient::recv_InsertUser(const int32_t seqid)
 {
 
   int32_t rseqid = 0;
@@ -2969,19 +2885,13 @@ int64_t MySocialGraphServiceConcurrentClient::recv_InsertUser(const int32_t seqi
         using ::apache::thrift::protocol::TProtocolException;
         throw TProtocolException(TProtocolException::INVALID_DATA);
       }
-      int64_t _return;
       MySocialGraphService_InsertUser_presult result;
-      result.success = &_return;
       result.read(iprot_);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
 
-      if (result.__isset.success) {
-        sentry.commit();
-        return _return;
-      }
-      // in a bad state, don't commit
-      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "InsertUser failed: unknown result");
+      sentry.commit();
+      return;
     }
     // seqid != rseqid
     this->sync_.updatePending(fname, mtype, rseqid);

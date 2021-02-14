@@ -1695,6 +1695,16 @@ bool UserServiceClient::recv_UploadCreatorWithUsername()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "UploadCreatorWithUsername failed: unknown result");
 }
 
+void UserServiceClient::FakeGetUserId()
+{
+	iprot_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_REPLY, 0);
+  getUserId_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+
 int64_t UserServiceClient::GetUserId(const int64_t req_id, const std::string& username)
 {
   send_GetUserId(req_id, username);

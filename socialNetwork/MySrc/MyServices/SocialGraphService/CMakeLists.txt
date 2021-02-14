@@ -1,19 +1,22 @@
 
 add_executable(
-    MySocialGraphService
+    SocialGraphService
 
-    MySocialGraphService.cpp
-    ${THRIFT_GEN_CPP_DIR}/MySocialGraphService.cpp
+    SocialGraphService.cpp
 )
 
 target_include_directories(
-    MySocialGraphService PRIVATE
+    SocialGraphService PRIVATE ${COMMON_DIR}
 )
 
 target_link_libraries(
-    MySocialGraphService
+    SocialGraphService
     
-    mycommon
+    social_graph
+		user
+		fake_mongo
+		fake_redis
+		mycommon
     mysocialnet_types
     ${THRIFT_LIB}
     ${CMAKE_THREAD_LIBS_INIT}
@@ -22,4 +25,4 @@ target_link_libraries(
     Boost::log_setup
 )
 
-install(TARGETS MySocialGraphService DESTINATION ./)
+install(TARGETS SocialGraphService DESTINATION ./)

@@ -32,25 +32,25 @@ class MySocialGraphServiceIf {
   virtual ~MySocialGraphServiceIf() {}
   virtual void GetFollowers(std::vector<int64_t> & _return, const int64_t req_id, const int64_t user_id) = 0;
   virtual void GetFollowees(std::vector<int64_t> & _return, const int64_t req_id, const int64_t user_id) = 0;
-  virtual int64_t Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) = 0;
-  virtual int64_t Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) = 0;
-  virtual int64_t FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) = 0;
-  virtual int64_t UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) = 0;
-  virtual int64_t InsertUser(const int64_t req_id, const int64_t user_id) = 0;
+  virtual void Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) = 0;
+  virtual void Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) = 0;
+  virtual void FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) = 0;
+  virtual void UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) = 0;
+  virtual void InsertUser(const int64_t req_id, const int64_t user_id) = 0;
 
 	struct FuncType {
   enum type {
     GET_FOLLOWERS = 0,
-    GET_FOLOWEES = 1,
+    GET_FOLLOWEES = 1,
     FOLLOW = 2,
     UNFOLLOW = 3,
-		FOLLOW_WUNAME = 4,
-    UNFOLLOW_WUNAME = 5,
-		INSERT_USER = 6,
+    FOLLOW_UNAME = 4,
+    UNFOLLOW_UNAME = 5,
+    INSERT_USER = 6,
 
     SIZE = 7
-  	};
-	};
+  };
+};
 };
 
 class MySocialGraphServiceIfFactory {
@@ -86,25 +86,20 @@ class MySocialGraphServiceNull : virtual public MySocialGraphServiceIf {
   void GetFollowees(std::vector<int64_t> & /* _return */, const int64_t /* req_id */, const int64_t /* user_id */) {
     return;
   }
-  int64_t Follow(const int64_t /* req_id */, const int64_t /* user_id */, const int64_t /* followee_id */) {
-    int64_t _return = 0;
-    return _return;
+  void Follow(const int64_t /* req_id */, const int64_t /* user_id */, const int64_t /* followee_id */) {
+    return;
   }
-  int64_t Unfollow(const int64_t /* req_id */, const int64_t /* user_id */, const int64_t /* followee_id */) {
-    int64_t _return = 0;
-    return _return;
+  void Unfollow(const int64_t /* req_id */, const int64_t /* user_id */, const int64_t /* followee_id */) {
+    return;
   }
-  int64_t FollowWithUsername(const int64_t /* req_id */, const std::string& /* user_usernmae */, const std::string& /* followee_username */) {
-    int64_t _return = 0;
-    return _return;
+  void FollowWithUsername(const int64_t /* req_id */, const std::string& /* user_usernmae */, const std::string& /* followee_username */) {
+    return;
   }
-  int64_t UnfollowWithUsername(const int64_t /* req_id */, const std::string& /* user_usernmae */, const std::string& /* followee_username */) {
-    int64_t _return = 0;
-    return _return;
+  void UnfollowWithUsername(const int64_t /* req_id */, const std::string& /* user_usernmae */, const std::string& /* followee_username */) {
+    return;
   }
-  int64_t InsertUser(const int64_t /* req_id */, const int64_t /* user_id */) {
-    int64_t _return = 0;
-    return _return;
+  void InsertUser(const int64_t /* req_id */, const int64_t /* user_id */) {
+    return;
   }
 };
 
@@ -121,6 +116,11 @@ class MySocialGraphService_GetFollowers_args {
   MySocialGraphService_GetFollowers_args& operator=(const MySocialGraphService_GetFollowers_args&);
   MySocialGraphService_GetFollowers_args() : req_id(0), user_id(0) {
   }
+
+	MySocialGraphService_GetFollowers_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		user_id = randGen->getInt64(RAND_NUM_LIMIT);
+	}
 
   virtual ~MySocialGraphService_GetFollowers_args() throw();
   int64_t req_id;
@@ -232,6 +232,11 @@ class MySocialGraphService_GetFollowees_args {
   MySocialGraphService_GetFollowees_args& operator=(const MySocialGraphService_GetFollowees_args&);
   MySocialGraphService_GetFollowees_args() : req_id(0), user_id(0) {
   }
+
+	MySocialGraphService_GetFollowees_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		user_id = randGen->getInt64(RAND_NUM_LIMIT);
+	}
 
   virtual ~MySocialGraphService_GetFollowees_args() throw();
   int64_t req_id;
@@ -345,6 +350,12 @@ class MySocialGraphService_Follow_args {
   MySocialGraphService_Follow_args() : req_id(0), user_id(0), followee_id(0) {
   }
 
+	MySocialGraphService_Follow_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		user_id = randGen->getInt64(RAND_NUM_LIMIT);
+		followee_id = randGen->getInt64(RAND_NUM_LIMIT);
+	}
+
   virtual ~MySocialGraphService_Follow_args() throw();
   int64_t req_id;
   int64_t user_id;
@@ -393,30 +404,22 @@ class MySocialGraphService_Follow_pargs {
 
 };
 
-typedef struct _MySocialGraphService_Follow_result__isset {
-  _MySocialGraphService_Follow_result__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_Follow_result__isset;
 
 class MySocialGraphService_Follow_result {
  public:
 
   MySocialGraphService_Follow_result(const MySocialGraphService_Follow_result&);
   MySocialGraphService_Follow_result& operator=(const MySocialGraphService_Follow_result&);
-  MySocialGraphService_Follow_result() : success(0) {
+  MySocialGraphService_Follow_result() {
   }
 
+	MySocialGraphService_Follow_result(RandomGenerator *randGen) {
+	}
+
   virtual ~MySocialGraphService_Follow_result() throw();
-  int64_t success;
 
-  _MySocialGraphService_Follow_result__isset __isset;
-
-  void __set_success(const int64_t val);
-
-  bool operator == (const MySocialGraphService_Follow_result & rhs) const
+  bool operator == (const MySocialGraphService_Follow_result & /* rhs */) const
   {
-    if (!(success == rhs.success))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_Follow_result &rhs) const {
@@ -430,19 +433,12 @@ class MySocialGraphService_Follow_result {
 
 };
 
-typedef struct _MySocialGraphService_Follow_presult__isset {
-  _MySocialGraphService_Follow_presult__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_Follow_presult__isset;
 
 class MySocialGraphService_Follow_presult {
  public:
 
 
   virtual ~MySocialGraphService_Follow_presult() throw();
-  int64_t* success;
-
-  _MySocialGraphService_Follow_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -462,6 +458,12 @@ class MySocialGraphService_Unfollow_args {
   MySocialGraphService_Unfollow_args& operator=(const MySocialGraphService_Unfollow_args&);
   MySocialGraphService_Unfollow_args() : req_id(0), user_id(0), followee_id(0) {
   }
+
+	MySocialGraphService_Unfollow_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		user_id = randGen->getInt64(RAND_NUM_LIMIT);
+		followee_id = randGen->getInt64(RAND_NUM_LIMIT);
+	}
 
   virtual ~MySocialGraphService_Unfollow_args() throw();
   int64_t req_id;
@@ -511,30 +513,22 @@ class MySocialGraphService_Unfollow_pargs {
 
 };
 
-typedef struct _MySocialGraphService_Unfollow_result__isset {
-  _MySocialGraphService_Unfollow_result__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_Unfollow_result__isset;
 
 class MySocialGraphService_Unfollow_result {
  public:
 
   MySocialGraphService_Unfollow_result(const MySocialGraphService_Unfollow_result&);
   MySocialGraphService_Unfollow_result& operator=(const MySocialGraphService_Unfollow_result&);
-  MySocialGraphService_Unfollow_result() : success(0) {
+  MySocialGraphService_Unfollow_result() {
   }
 
+	MySocialGraphService_Unfollow_result(RandomGenerator *randGen) {
+	}
+
   virtual ~MySocialGraphService_Unfollow_result() throw();
-  int64_t success;
 
-  _MySocialGraphService_Unfollow_result__isset __isset;
-
-  void __set_success(const int64_t val);
-
-  bool operator == (const MySocialGraphService_Unfollow_result & rhs) const
+  bool operator == (const MySocialGraphService_Unfollow_result & /* rhs */) const
   {
-    if (!(success == rhs.success))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_Unfollow_result &rhs) const {
@@ -548,19 +542,12 @@ class MySocialGraphService_Unfollow_result {
 
 };
 
-typedef struct _MySocialGraphService_Unfollow_presult__isset {
-  _MySocialGraphService_Unfollow_presult__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_Unfollow_presult__isset;
 
 class MySocialGraphService_Unfollow_presult {
  public:
 
 
   virtual ~MySocialGraphService_Unfollow_presult() throw();
-  int64_t* success;
-
-  _MySocialGraphService_Unfollow_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -580,6 +567,12 @@ class MySocialGraphService_FollowWithUsername_args {
   MySocialGraphService_FollowWithUsername_args& operator=(const MySocialGraphService_FollowWithUsername_args&);
   MySocialGraphService_FollowWithUsername_args() : req_id(0), user_usernmae(), followee_username() {
   }
+
+	MySocialGraphService_FollowWithUsername_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		user_usernmae = randGen->getAlphaNumericString(12);
+		followee_username = randGen->getAlphaNumericString(12);
+	}
 
   virtual ~MySocialGraphService_FollowWithUsername_args() throw();
   int64_t req_id;
@@ -629,30 +622,22 @@ class MySocialGraphService_FollowWithUsername_pargs {
 
 };
 
-typedef struct _MySocialGraphService_FollowWithUsername_result__isset {
-  _MySocialGraphService_FollowWithUsername_result__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_FollowWithUsername_result__isset;
 
 class MySocialGraphService_FollowWithUsername_result {
  public:
 
   MySocialGraphService_FollowWithUsername_result(const MySocialGraphService_FollowWithUsername_result&);
   MySocialGraphService_FollowWithUsername_result& operator=(const MySocialGraphService_FollowWithUsername_result&);
-  MySocialGraphService_FollowWithUsername_result() : success(0) {
+  MySocialGraphService_FollowWithUsername_result() {
   }
 
+	MySocialGraphService_FollowWithUsername_result(RandomGenerator *randGen) {
+	}
+
   virtual ~MySocialGraphService_FollowWithUsername_result() throw();
-  int64_t success;
 
-  _MySocialGraphService_FollowWithUsername_result__isset __isset;
-
-  void __set_success(const int64_t val);
-
-  bool operator == (const MySocialGraphService_FollowWithUsername_result & rhs) const
+  bool operator == (const MySocialGraphService_FollowWithUsername_result & /* rhs */) const
   {
-    if (!(success == rhs.success))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_FollowWithUsername_result &rhs) const {
@@ -666,19 +651,12 @@ class MySocialGraphService_FollowWithUsername_result {
 
 };
 
-typedef struct _MySocialGraphService_FollowWithUsername_presult__isset {
-  _MySocialGraphService_FollowWithUsername_presult__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_FollowWithUsername_presult__isset;
 
 class MySocialGraphService_FollowWithUsername_presult {
  public:
 
 
   virtual ~MySocialGraphService_FollowWithUsername_presult() throw();
-  int64_t* success;
-
-  _MySocialGraphService_FollowWithUsername_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -698,6 +676,12 @@ class MySocialGraphService_UnfollowWithUsername_args {
   MySocialGraphService_UnfollowWithUsername_args& operator=(const MySocialGraphService_UnfollowWithUsername_args&);
   MySocialGraphService_UnfollowWithUsername_args() : req_id(0), user_usernmae(), followee_username() {
   }
+
+	MySocialGraphService_UnfollowWithUsername_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		user_usernmae = randGen->getAlphaNumericString(12);
+		followee_username = randGen->getAlphaNumericString(12);
+	}
 
   virtual ~MySocialGraphService_UnfollowWithUsername_args() throw();
   int64_t req_id;
@@ -747,30 +731,22 @@ class MySocialGraphService_UnfollowWithUsername_pargs {
 
 };
 
-typedef struct _MySocialGraphService_UnfollowWithUsername_result__isset {
-  _MySocialGraphService_UnfollowWithUsername_result__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_UnfollowWithUsername_result__isset;
 
 class MySocialGraphService_UnfollowWithUsername_result {
  public:
 
   MySocialGraphService_UnfollowWithUsername_result(const MySocialGraphService_UnfollowWithUsername_result&);
   MySocialGraphService_UnfollowWithUsername_result& operator=(const MySocialGraphService_UnfollowWithUsername_result&);
-  MySocialGraphService_UnfollowWithUsername_result() : success(0) {
+  MySocialGraphService_UnfollowWithUsername_result() {
   }
 
+	MySocialGraphService_UnfollowWithUsername_result(RandomGenerator *randGen) {
+	}
+
   virtual ~MySocialGraphService_UnfollowWithUsername_result() throw();
-  int64_t success;
 
-  _MySocialGraphService_UnfollowWithUsername_result__isset __isset;
-
-  void __set_success(const int64_t val);
-
-  bool operator == (const MySocialGraphService_UnfollowWithUsername_result & rhs) const
+  bool operator == (const MySocialGraphService_UnfollowWithUsername_result & /* rhs */) const
   {
-    if (!(success == rhs.success))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_UnfollowWithUsername_result &rhs) const {
@@ -784,19 +760,12 @@ class MySocialGraphService_UnfollowWithUsername_result {
 
 };
 
-typedef struct _MySocialGraphService_UnfollowWithUsername_presult__isset {
-  _MySocialGraphService_UnfollowWithUsername_presult__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_UnfollowWithUsername_presult__isset;
 
 class MySocialGraphService_UnfollowWithUsername_presult {
  public:
 
 
   virtual ~MySocialGraphService_UnfollowWithUsername_presult() throw();
-  int64_t* success;
-
-  _MySocialGraphService_UnfollowWithUsername_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -815,6 +784,11 @@ class MySocialGraphService_InsertUser_args {
   MySocialGraphService_InsertUser_args& operator=(const MySocialGraphService_InsertUser_args&);
   MySocialGraphService_InsertUser_args() : req_id(0), user_id(0) {
   }
+
+	MySocialGraphService_InsertUser_args(RandomGenerator* randGen){
+		req_id = randGen->getInt64(RAND_NUM_LIMIT);
+		user_id = randGen->getInt64(RAND_NUM_LIMIT);
+	}
 
   virtual ~MySocialGraphService_InsertUser_args() throw();
   int64_t req_id;
@@ -858,35 +832,22 @@ class MySocialGraphService_InsertUser_pargs {
 
 };
 
-typedef struct _MySocialGraphService_InsertUser_result__isset {
-  _MySocialGraphService_InsertUser_result__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_InsertUser_result__isset;
 
 class MySocialGraphService_InsertUser_result {
  public:
 
   MySocialGraphService_InsertUser_result(const MySocialGraphService_InsertUser_result&);
   MySocialGraphService_InsertUser_result& operator=(const MySocialGraphService_InsertUser_result&);
-  MySocialGraphService_InsertUser_result() : success(0) {
+  MySocialGraphService_InsertUser_result() {
   }
 
 	MySocialGraphService_InsertUser_result(RandomGenerator *randGen) {
-		success = randGen->getInt64(RAND_NUM_LIMIT);
-		__isset.success = true;
 	}
 
   virtual ~MySocialGraphService_InsertUser_result() throw();
-  int64_t success;
 
-  _MySocialGraphService_InsertUser_result__isset __isset;
-
-  void __set_success(const int64_t val);
-
-  bool operator == (const MySocialGraphService_InsertUser_result & rhs) const
+  bool operator == (const MySocialGraphService_InsertUser_result & /* rhs */) const
   {
-    if (!(success == rhs.success))
-      return false;
     return true;
   }
   bool operator != (const MySocialGraphService_InsertUser_result &rhs) const {
@@ -900,19 +861,12 @@ class MySocialGraphService_InsertUser_result {
 
 };
 
-typedef struct _MySocialGraphService_InsertUser_presult__isset {
-  _MySocialGraphService_InsertUser_presult__isset() : success(false) {}
-  bool success :1;
-} _MySocialGraphService_InsertUser_presult__isset;
 
 class MySocialGraphService_InsertUser_presult {
  public:
 
 
   virtual ~MySocialGraphService_InsertUser_presult() throw();
-  int64_t* success;
-
-  _MySocialGraphService_InsertUser_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -926,9 +880,12 @@ class MySocialGraphServiceClient : virtual public MySocialGraphServiceIf {
   MySocialGraphServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
     setProtocol(iprot,oprot);
   }
-	MySocialGraphServiceClient(){
-		
+	MySocialGraphServiceClient(RandomGenerator* randGen) {
+		initArgs(randGen);
+		initResults(randGen);
 	}
+	MySocialGraphServiceClient() {
+  }
  private:
   void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
   setProtocol(prot,prot);
@@ -939,6 +896,18 @@ class MySocialGraphServiceClient : virtual public MySocialGraphServiceIf {
     iprot_ = iprot.get();
     oprot_ = oprot.get();
   }
+
+	int chances[20] = {
+		FuncType::GET_FOLLOWERS, FuncType::GET_FOLLOWERS,
+		FuncType::GET_FOLLOWEES, FuncType::GET_FOLLOWEES,
+		FuncType::FOLLOW, FuncType::FOLLOW, FuncType::FOLLOW, FuncType::FOLLOW,
+		FuncType::UNFOLLOW, FuncType::UNFOLLOW, FuncType::UNFOLLOW, FuncType::UNFOLLOW,
+		FuncType::FOLLOW_UNAME, FuncType::FOLLOW_UNAME, FuncType::FOLLOW_UNAME,
+		FuncType::UNFOLLOW_UNAME, FuncType::UNFOLLOW_UNAME, FuncType::FOLLOW_UNAME,
+		FuncType::INSERT_USER, FuncType::INSERT_USER
+		};
+	int chances_size = 20;
+
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
     return piprot_;
@@ -952,23 +921,39 @@ class MySocialGraphServiceClient : virtual public MySocialGraphServiceIf {
   void GetFollowees(std::vector<int64_t> & _return, const int64_t req_id, const int64_t user_id);
   void send_GetFollowees(const int64_t req_id, const int64_t user_id);
   void recv_GetFollowees(std::vector<int64_t> & _return);
-  int64_t Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
+  void Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
   void send_Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
-  int64_t recv_Follow();
-  int64_t Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
+  void recv_Follow();
+  void Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
   void send_Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
-  int64_t recv_Unfollow();
-  int64_t FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
+  void recv_Unfollow();
+  void FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
   void send_FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
-  int64_t recv_FollowWithUsername();
-  int64_t UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
+  void recv_FollowWithUsername();
+  void UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
   void send_UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
-  int64_t recv_UnfollowWithUsername();
-  int64_t InsertUser(const int64_t req_id, const int64_t user_id);
+  void recv_UnfollowWithUsername();
+  void InsertUser(const int64_t req_id, const int64_t user_id);
   void send_InsertUser(const int64_t req_id, const int64_t user_id);
-  int64_t recv_InsertUser();
+  void recv_InsertUser();
+
+	MySocialGraphService_GetFollowers_args *getFollowers_args;
+	MySocialGraphService_GetFollowees_args *getFollowees_args;
+	MySocialGraphService_Follow_args *follow_args;
+	MySocialGraphService_Unfollow_args *unfollow_args;
+	MySocialGraphService_FollowWithUsername_args *followWithUsername_args;
+	MySocialGraphService_UnfollowWithUsername_args *unfollowWithUsername_args;
+	MySocialGraphService_InsertUser_args *insertUser_args;
+	void initArgs(RandomGenerator* randGen);
+	void send_RandReq(RandomGenerator* randGen);
 
 	void initResults(RandomGenerator* randGen);
+	// MySocialGraphService_GetFollowers_result *getFollowers_res;
+	// MySocialGraphService_GetFollowees_result *getFollowees_res;
+	MySocialGraphService_Follow_result *follow_res;
+	MySocialGraphService_Unfollow_result *unfollow_res;
+	MySocialGraphService_FollowWithUsername_result *followWithUsername_res;
+	MySocialGraphService_UnfollowWithUsername_result *unfollowWithUsername_res;
 	MySocialGraphService_InsertUser_result *insertUser_res;
 	void FakeInsertUser();
 
@@ -998,7 +983,7 @@ class MySocialGraphServiceClient : virtual public MySocialGraphServiceIf {
 										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
 
 	}
-  
+
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -1009,7 +994,6 @@ class MySocialGraphServiceClient : virtual public MySocialGraphServiceIf {
 class MySocialGraphServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  protected:
   ::apache::thrift::stdcxx::shared_ptr<MySocialGraphServiceIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
   typedef  void (MySocialGraphServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
@@ -1032,9 +1016,48 @@ class MySocialGraphServiceProcessor : public ::apache::thrift::TDispatchProcesso
     processMap_["UnfollowWithUsername"] = &MySocialGraphServiceProcessor::process_UnfollowWithUsername;
     processMap_["InsertUser"] = &MySocialGraphServiceProcessor::process_InsertUser;
   }
+	virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
 
   virtual ~MySocialGraphServiceProcessor() {}
 };
+
+class MySocialGraphServiceCerebrosProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<MySocialGraphServiceIf> iface_;
+ private:
+  typedef  uint64_t (MySocialGraphServiceCerebrosProcessor::*ProcessFunction)(MySocialGraphServiceClient*);
+	typedef ProcessFunction ProcessMap[MySocialGraphServiceIf::FuncType::SIZE];
+  ProcessMap processMap_;
+  uint64_t process_GetFollowers(MySocialGraphServiceClient* client);
+  uint64_t process_GetFollowees(MySocialGraphServiceClient* client);
+  uint64_t process_Follow(MySocialGraphServiceClient* client);
+  uint64_t process_Unfollow(MySocialGraphServiceClient* client);
+  uint64_t process_FollowWithUsername(MySocialGraphServiceClient* client);
+  uint64_t process_UnfollowWithUsername(MySocialGraphServiceClient* client);
+  uint64_t process_InsertUser(MySocialGraphServiceClient* client);
+ public:
+  MySocialGraphServiceCerebrosProcessor(::apache::thrift::stdcxx::shared_ptr<MySocialGraphServiceIf> iface) :
+    iface_(iface) {
+    processMap_[MySocialGraphServiceIf::FuncType::GET_FOLLOWERS] = &MySocialGraphServiceCerebrosProcessor::process_GetFollowers;
+    processMap_[MySocialGraphServiceIf::FuncType::GET_FOLLOWEES] = &MySocialGraphServiceCerebrosProcessor::process_GetFollowees;
+    processMap_[MySocialGraphServiceIf::FuncType::FOLLOW] = &MySocialGraphServiceCerebrosProcessor::process_Follow;
+    processMap_[MySocialGraphServiceIf::FuncType::UNFOLLOW] = &MySocialGraphServiceCerebrosProcessor::process_Unfollow;
+    processMap_[MySocialGraphServiceIf::FuncType::FOLLOW_UNAME] = &MySocialGraphServiceCerebrosProcessor::process_FollowWithUsername;
+    processMap_[MySocialGraphServiceIf::FuncType::UNFOLLOW_UNAME] = &MySocialGraphServiceCerebrosProcessor::process_UnfollowWithUsername;
+    processMap_[MySocialGraphServiceIf::FuncType::INSERT_USER] = &MySocialGraphServiceCerebrosProcessor::process_InsertUser;
+  }
+	uint64_t dispatchCall(int funcCode, MySocialGraphServiceClient* client) {
+		if (funcCode >= MySocialGraphServiceIf::FuncType::SIZE){
+			printf("Bad func code (%d) to dispatch in SocialGraphService!\n", funcCode);
+			exit(1);
+		}
+
+		return (this->*(processMap_[funcCode]))(client);
+	}
+
+  virtual ~MySocialGraphServiceCerebrosProcessor() {}
+};
+
 
 class MySocialGraphServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
@@ -1079,49 +1102,49 @@ class MySocialGraphServiceMultiface : virtual public MySocialGraphServiceIf {
     return;
   }
 
-  int64_t Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
+  void Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->Follow(req_id, user_id, followee_id);
     }
-    return ifaces_[i]->Follow(req_id, user_id, followee_id);
+    ifaces_[i]->Follow(req_id, user_id, followee_id);
   }
 
-  int64_t Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
+  void Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->Unfollow(req_id, user_id, followee_id);
     }
-    return ifaces_[i]->Unfollow(req_id, user_id, followee_id);
+    ifaces_[i]->Unfollow(req_id, user_id, followee_id);
   }
 
-  int64_t FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
+  void FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->FollowWithUsername(req_id, user_usernmae, followee_username);
     }
-    return ifaces_[i]->FollowWithUsername(req_id, user_usernmae, followee_username);
+    ifaces_[i]->FollowWithUsername(req_id, user_usernmae, followee_username);
   }
 
-  int64_t UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
+  void UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->UnfollowWithUsername(req_id, user_usernmae, followee_username);
     }
-    return ifaces_[i]->UnfollowWithUsername(req_id, user_usernmae, followee_username);
+    ifaces_[i]->UnfollowWithUsername(req_id, user_usernmae, followee_username);
   }
 
-  int64_t InsertUser(const int64_t req_id, const int64_t user_id) {
+  void InsertUser(const int64_t req_id, const int64_t user_id) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
       ifaces_[i]->InsertUser(req_id, user_id);
     }
-    return ifaces_[i]->InsertUser(req_id, user_id);
+    ifaces_[i]->InsertUser(req_id, user_id);
   }
 
 };
@@ -1160,21 +1183,21 @@ class MySocialGraphServiceConcurrentClient : virtual public MySocialGraphService
   void GetFollowees(std::vector<int64_t> & _return, const int64_t req_id, const int64_t user_id);
   int32_t send_GetFollowees(const int64_t req_id, const int64_t user_id);
   void recv_GetFollowees(std::vector<int64_t> & _return, const int32_t seqid);
-  int64_t Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
+  void Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
   int32_t send_Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
-  int64_t recv_Follow(const int32_t seqid);
-  int64_t Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
+  void recv_Follow(const int32_t seqid);
+  void Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
   int32_t send_Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id);
-  int64_t recv_Unfollow(const int32_t seqid);
-  int64_t FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
+  void recv_Unfollow(const int32_t seqid);
+  void FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
   int32_t send_FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
-  int64_t recv_FollowWithUsername(const int32_t seqid);
-  int64_t UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
+  void recv_FollowWithUsername(const int32_t seqid);
+  void UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
   int32_t send_UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username);
-  int64_t recv_UnfollowWithUsername(const int32_t seqid);
-  int64_t InsertUser(const int64_t req_id, const int64_t user_id);
+  void recv_UnfollowWithUsername(const int32_t seqid);
+  void InsertUser(const int64_t req_id, const int64_t user_id);
   int32_t send_InsertUser(const int64_t req_id, const int64_t user_id);
-  int64_t recv_InsertUser(const int32_t seqid);
+  void recv_InsertUser(const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

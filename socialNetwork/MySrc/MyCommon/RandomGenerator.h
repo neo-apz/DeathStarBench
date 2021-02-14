@@ -15,6 +15,7 @@ typedef unsigned char byte;
 #define SEED1   0xDEAD
 
 #define RAND_NUM_LIMIT 0xFFFFFFFFFFFFFF
+#define	MAX_VECTOR_COUNT	50
 
 class RandomGenerator {
 

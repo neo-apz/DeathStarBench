@@ -12,6 +12,10 @@
 #include "../../gen-cpp/FakeRedis.h"
 #include "../../gen-cpp/UserService.h"
 
+#include <logger.h>
+#include <NebulaClientPool.h>
+#include <MyThriftClient.h>
+
 namespace my_social_network {
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
@@ -59,11 +63,11 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 	try {
 		#ifdef CEREBROS
 		auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::GET_FLWRS);
-		redis_client->GetFLWRs(_return, "followers");
+		redis_client->GetFLWRs(_return, user_id, "followers");
 		#else
 		auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::GET_FLWRS);
 		auto redis_client = redis_client_wrapper->GetClient();
-		redis_client->GetFLWRs(_return, "followers");
+		redis_client->GetFLWRs(_return, user_id, "followers");
 		redis_client_wrapper->ResetBuffers(true, false);
 		#endif
 	} catch(const std::exception& e) {
@@ -84,11 +88,11 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 		try {
 			#ifdef CEREBROS
 			auto mongo_client = _mongo_pool->Get(FakeMongoIf::FuncType::GET_FLWRS);
-			mongo_client->GetFLWRs(_return, "followers");
+			mongo_client->GetFLWRs(_return, user_id);
 			#else
 			auto mongo_client_wrapper = _mongo_pool->Get(FakeMongoIf::FuncType::GET_FLWRS);
 			auto mongo_client = mongo_client_wrapper->GetClient();
-			mongo_client->GetFLWRs(_return, "followers");
+			mongo_client->GetFLWRs(_return, user_id);
 			mongo_client_wrapper->ResetBuffers(true, false);
 			#endif
 		} catch(const std::exception& e) {
@@ -109,11 +113,11 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 			try {
 				#ifdef CEREBROS
 				auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWRS);
-				redis_client->PutFLWRs("followers", _return);
+				redis_client->PutFLWRs(user_id, "followers", _return);
 				#else
 				auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWRS);
 				auto redis_client = redis_client_wrapper->GetClient();
-				redis_client->PutFLWRs("followers", _return);
+				redis_client->PutFLWRs(user_id, "followers", _return);
 				redis_client_wrapper->ResetBuffers(true, false);
 				#endif
 			} catch(const std::exception& e) {
@@ -139,11 +143,11 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 	try {
 		#ifdef CEREBROS
 		auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::GET_FLWEES);
-		redis_client->GetFLWEEs(_return, "followees");
+		redis_client->GetFLWEEs(_return, user_id, "followees");
 		#else
 		auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::GET_FLWEES);
 		auto redis_client = redis_client_wrapper->GetClient();
-		redis_client->GetFLWEEs(_return, "followees");
+		redis_client->GetFLWEEs(_return, user_id, "followees");
 		redis_client_wrapper->ResetBuffers(true, false);
 		#endif
 	} catch(const std::exception& e) {
@@ -164,11 +168,11 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 		try {
 			#ifdef CEREBROS
 			auto mongo_client = _mongo_pool->Get(FakeMongoIf::FuncType::GET_FLWEES);
-			mongo_client->GetFLWEEs(_return, "followees");
+			mongo_client->GetFLWEEs(_return, user_id);
 			#else
 			auto mongo_client_wrapper = _mongo_pool->Get(FakeMongoIf::FuncType::GET_FLWEES);
 			auto mongo_client = mongo_client_wrapper->GetClient();
-			mongo_client->GetFLWEEs(_return, "followees");
+			mongo_client->GetFLWEEs(_return, user_id);
 			mongo_client_wrapper->ResetBuffers(true, false);
 			#endif
 		} catch(const std::exception& e) {
@@ -189,11 +193,11 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 			try {
 				#ifdef CEREBROS
 				auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWEES);
-				redis_client->PutFLWEEs("followees", _return);
+				redis_client->PutFLWEEs(user_id, "followees", _return);
 				#else
 				auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWEES);
 				auto redis_client = redis_client_wrapper->GetClient();
-				redis_client->PutFLWEEs("followees", _return);
+				redis_client->PutFLWEEs(user_id, "followees", _return);
 				redis_client_wrapper->ResetBuffers(true, false);
 				#endif
 			} catch(const std::exception& e) {
@@ -273,11 +277,11 @@ void SocialGraphHandler::Follow(
 	try {
 		#ifdef CEREBROS
 		auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWR);
-		redis_client->PutFLWR("followers", user_id, followee_id, timestamp);
+		redis_client->PutFLWR(user_id, "followers", followee_id, timestamp);
 		#else
 		auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWR);
 		auto redis_client = redis_client_wrapper->GetClient();
-		redis_client->PutFLWR("followers", user_id, followee_id, timestamp);
+		redis_client->PutFLWR(user_id, "followers", followee_id, timestamp);
 		redis_client_wrapper->ResetBuffers(true, false);
 		#endif
 	} catch(const std::exception& e) {
@@ -298,11 +302,11 @@ void SocialGraphHandler::Follow(
 	try {
 		#ifdef CEREBROS
 		auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWEE);
-		redis_client->PutFLWEE("followees", followee_id, user_id, timestamp);
+		redis_client->PutFLWEE(followee_id, "followees", user_id, timestamp);
 		#else
 		auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWEE);
 		auto redis_client = redis_client_wrapper->GetClient();
-		redis_client->PutFLWEE("followees", followee_id, user_id, timestamp);
+		redis_client->PutFLWEE(followee_id, "followees", user_id, timestamp);
 		redis_client_wrapper->ResetBuffers(true, false);
 		#endif
 	} catch(const std::exception& e) {
@@ -378,11 +382,11 @@ void SocialGraphHandler::Unfollow(
 	try {
 		#ifdef CEREBROS
 		auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::RMV_FLWR);
-		redis_client->RemoveFLWR("followers", user_id, followee_id);
+		redis_client->RemoveFLWR(user_id, "followers", followee_id);
 		#else
 		auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::RMV_FLWR);
 		auto redis_client = redis_client_wrapper->GetClient();
-		redis_client->RemoveFLWR("followers", user_id, followee_id);
+		redis_client->RemoveFLWR(user_id, "followers", followee_id);
 		redis_client_wrapper->ResetBuffers(true, false);
 		#endif
 	} catch(const std::exception& e) {
@@ -403,11 +407,11 @@ void SocialGraphHandler::Unfollow(
 	try {
 		#ifdef CEREBROS
 		auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::RMV_FLWEE);
-		redis_client->RemoveFLWEE("followees", followee_id, user_id);
+		redis_client->RemoveFLWEE(followee_id, "followees", user_id);
 		#else
 		auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::RMV_FLWEE);
 		auto redis_client = redis_client_wrapper->GetClient();
-		redis_client->RemoveFLWEE("followees", followee_id, user_id);
+		redis_client->RemoveFLWEE(followee_id, "followees", user_id);
 		redis_client_wrapper->ResetBuffers(true, false);
 		#endif
 	} catch(const std::exception& e) {
@@ -549,12 +553,12 @@ void SocialGraphHandler::InsertUser(int64_t req_id, int64_t user_id) {
 	// Connect to FakeMongo 
 	try {
 		#ifdef CEREBROS
-		auto mongo_client = _mongo_pool->Get(FakeMongoIf::FuncType::INSERT_USER);
-		mongo_client->InsertUser(user_id);
+		auto mongo_client = _mongo_pool->Get(FakeMongoIf::FuncType::INSERT_USERID);
+		mongo_client->InsertUserId(user_id);
 		#else
-		auto mongo_client_wrapper = _mongo_pool->Get(FakeMongoIf::FuncType::INSERT_USER);
+		auto mongo_client_wrapper = _mongo_pool->Get(FakeMongoIf::FuncType::INSERT_USERID);
 		auto mongo_client = mongo_client_wrapper->GetClient();
-		mongo_client->InsertUser(user_id);
+		mongo_client->InsertUserId(user_id);
 		mongo_client_wrapper->ResetBuffers(true, false);
 		#endif
 	} catch(const std::exception& e) {

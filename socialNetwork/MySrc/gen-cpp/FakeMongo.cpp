@@ -725,12 +725,1333 @@ uint32_t FakeMongo_GetUser_presult::read(::apache::thrift::protocol::TProtocol* 
   return xfer;
 }
 
+FakeMongo_GetFLWRs_args::~FakeMongo_GetFLWRs_args() throw() {
+}
+
+
+uint32_t FakeMongo_GetFLWRs_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->user_id);
+          this->__isset.user_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_GetFLWRs_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_GetFLWRs_args");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->user_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_GetFLWRs_pargs::~FakeMongo_GetFLWRs_pargs() throw() {
+}
+
+
+uint32_t FakeMongo_GetFLWRs_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_GetFLWRs_pargs");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->user_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_GetFLWRs_result::~FakeMongo_GetFLWRs_result() throw() {
+}
+
+
+uint32_t FakeMongo_GetFLWRs_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size183;
+            ::apache::thrift::protocol::TType _etype186;
+            xfer += iprot->readListBegin(_etype186, _size183);
+            this->success.resize(_size183);
+            uint32_t _i187;
+            for (_i187 = 0; _i187 < _size183; ++_i187)
+            {
+              xfer += iprot->readI64(this->success[_i187]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_GetFLWRs_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeMongo_GetFLWRs_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->success.size()));
+      std::vector<int64_t> ::const_iterator _iter188;
+      for (_iter188 = this->success.begin(); _iter188 != this->success.end(); ++_iter188)
+      {
+        xfer += oprot->writeI64((*_iter188));
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_GetFLWRs_presult::~FakeMongo_GetFLWRs_presult() throw() {
+}
+
+
+uint32_t FakeMongo_GetFLWRs_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size189;
+            ::apache::thrift::protocol::TType _etype192;
+            xfer += iprot->readListBegin(_etype192, _size189);
+            (*(this->success)).resize(_size189);
+            uint32_t _i193;
+            for (_i193 = 0; _i193 < _size189; ++_i193)
+            {
+              xfer += iprot->readI64((*(this->success))[_i193]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeMongo_GetFLWEEs_args::~FakeMongo_GetFLWEEs_args() throw() {
+}
+
+
+uint32_t FakeMongo_GetFLWEEs_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->user_id);
+          this->__isset.user_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_GetFLWEEs_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_GetFLWEEs_args");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->user_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_GetFLWEEs_pargs::~FakeMongo_GetFLWEEs_pargs() throw() {
+}
+
+
+uint32_t FakeMongo_GetFLWEEs_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_GetFLWEEs_pargs");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->user_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_GetFLWEEs_result::~FakeMongo_GetFLWEEs_result() throw() {
+}
+
+
+uint32_t FakeMongo_GetFLWEEs_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size194;
+            ::apache::thrift::protocol::TType _etype197;
+            xfer += iprot->readListBegin(_etype197, _size194);
+            this->success.resize(_size194);
+            uint32_t _i198;
+            for (_i198 = 0; _i198 < _size194; ++_i198)
+            {
+              xfer += iprot->readI64(this->success[_i198]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_GetFLWEEs_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeMongo_GetFLWEEs_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->success.size()));
+      std::vector<int64_t> ::const_iterator _iter199;
+      for (_iter199 = this->success.begin(); _iter199 != this->success.end(); ++_iter199)
+      {
+        xfer += oprot->writeI64((*_iter199));
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_GetFLWEEs_presult::~FakeMongo_GetFLWEEs_presult() throw() {
+}
+
+
+uint32_t FakeMongo_GetFLWEEs_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size200;
+            ::apache::thrift::protocol::TType _etype203;
+            xfer += iprot->readListBegin(_etype203, _size200);
+            (*(this->success)).resize(_size200);
+            uint32_t _i204;
+            for (_i204 = 0; _i204 < _size200; ++_i204)
+            {
+              xfer += iprot->readI64((*(this->success))[_i204]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeMongo_AddFollower_args::~FakeMongo_AddFollower_args() throw() {
+}
+
+
+uint32_t FakeMongo_AddFollower_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->user_id);
+          this->__isset.user_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->followee_id);
+          this->__isset.followee_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->timestamp);
+          this->__isset.timestamp = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_AddFollower_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_AddFollower_args");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->user_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("followee_id", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64(this->followee_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64(this->timestamp);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_AddFollower_pargs::~FakeMongo_AddFollower_pargs() throw() {
+}
+
+
+uint32_t FakeMongo_AddFollower_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_AddFollower_pargs");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->user_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("followee_id", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64((*(this->followee_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64((*(this->timestamp)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_AddFollower_result::~FakeMongo_AddFollower_result() throw() {
+}
+
+
+uint32_t FakeMongo_AddFollower_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_AddFollower_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeMongo_AddFollower_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_AddFollower_presult::~FakeMongo_AddFollower_presult() throw() {
+}
+
+
+uint32_t FakeMongo_AddFollower_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeMongo_AddFollowee_args::~FakeMongo_AddFollowee_args() throw() {
+}
+
+
+uint32_t FakeMongo_AddFollowee_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->followee_id);
+          this->__isset.followee_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->user_id);
+          this->__isset.user_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->timestamp);
+          this->__isset.timestamp = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_AddFollowee_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_AddFollowee_args");
+
+  xfer += oprot->writeFieldBegin("followee_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->followee_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64(this->user_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64(this->timestamp);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_AddFollowee_pargs::~FakeMongo_AddFollowee_pargs() throw() {
+}
+
+
+uint32_t FakeMongo_AddFollowee_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_AddFollowee_pargs");
+
+  xfer += oprot->writeFieldBegin("followee_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->followee_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64((*(this->user_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64((*(this->timestamp)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_AddFollowee_result::~FakeMongo_AddFollowee_result() throw() {
+}
+
+
+uint32_t FakeMongo_AddFollowee_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_AddFollowee_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeMongo_AddFollowee_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_AddFollowee_presult::~FakeMongo_AddFollowee_presult() throw() {
+}
+
+
+uint32_t FakeMongo_AddFollowee_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeMongo_RemoveFollower_args::~FakeMongo_RemoveFollower_args() throw() {
+}
+
+
+uint32_t FakeMongo_RemoveFollower_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->user_id);
+          this->__isset.user_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->followee_id);
+          this->__isset.followee_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_RemoveFollower_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_RemoveFollower_args");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->user_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("followee_id", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64(this->followee_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_RemoveFollower_pargs::~FakeMongo_RemoveFollower_pargs() throw() {
+}
+
+
+uint32_t FakeMongo_RemoveFollower_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_RemoveFollower_pargs");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->user_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("followee_id", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64((*(this->followee_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_RemoveFollower_result::~FakeMongo_RemoveFollower_result() throw() {
+}
+
+
+uint32_t FakeMongo_RemoveFollower_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_RemoveFollower_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeMongo_RemoveFollower_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_RemoveFollower_presult::~FakeMongo_RemoveFollower_presult() throw() {
+}
+
+
+uint32_t FakeMongo_RemoveFollower_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeMongo_RemoveFollowee_args::~FakeMongo_RemoveFollowee_args() throw() {
+}
+
+
+uint32_t FakeMongo_RemoveFollowee_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->followee_id);
+          this->__isset.followee_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->user_id);
+          this->__isset.user_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_RemoveFollowee_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_RemoveFollowee_args");
+
+  xfer += oprot->writeFieldBegin("followee_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->followee_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64(this->user_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_RemoveFollowee_pargs::~FakeMongo_RemoveFollowee_pargs() throw() {
+}
+
+
+uint32_t FakeMongo_RemoveFollowee_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_RemoveFollowee_pargs");
+
+  xfer += oprot->writeFieldBegin("followee_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->followee_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64((*(this->user_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_RemoveFollowee_result::~FakeMongo_RemoveFollowee_result() throw() {
+}
+
+
+uint32_t FakeMongo_RemoveFollowee_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_RemoveFollowee_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeMongo_RemoveFollowee_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_RemoveFollowee_presult::~FakeMongo_RemoveFollowee_presult() throw() {
+}
+
+
+uint32_t FakeMongo_RemoveFollowee_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeMongo_InsertUserId_args::~FakeMongo_InsertUserId_args() throw() {
+}
+
+
+uint32_t FakeMongo_InsertUserId_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->user_id);
+          this->__isset.user_id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_InsertUserId_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_InsertUserId_args");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->user_id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_InsertUserId_pargs::~FakeMongo_InsertUserId_pargs() throw() {
+}
+
+
+uint32_t FakeMongo_InsertUserId_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeMongo_InsertUserId_pargs");
+
+  xfer += oprot->writeFieldBegin("user_id", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->user_id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_InsertUserId_result::~FakeMongo_InsertUserId_result() throw() {
+}
+
+
+uint32_t FakeMongo_InsertUserId_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeMongo_InsertUserId_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeMongo_InsertUserId_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeMongo_InsertUserId_presult::~FakeMongo_InsertUserId_presult() throw() {
+}
+
+
+uint32_t FakeMongo_InsertUserId_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
 void FakeMongoClient::initResults(RandomGenerator* randGen)
 {
 	this->userExists_res = new FakeMongo_UserExists_result(randGen);
 	this->insertUser_res = new FakeMongo_InsertUser_result(randGen);
 	this->creatorExists_res = new FakeMongo_CreatorExists_result(randGen);
 	this->getUser_res = new FakeMongo_GetUser_result(randGen);
+
+	this->getFLWRs_res = new FakeMongo_GetFLWRs_result(randGen);
+	this->getFLWEEs_res = new FakeMongo_GetFLWEEs_result(randGen);
+	this->addFollower_res = new FakeMongo_AddFollower_result(randGen);
+	this->addFollowee_res = new FakeMongo_AddFollowee_result(randGen);
+	this->removeFollower_res = new FakeMongo_RemoveFollower_result(randGen);
+	this->removeFollowee_res = new FakeMongo_RemoveFollowee_result(randGen);
+	this->insertUserId_res = new FakeMongo_InsertUserId_result(randGen);
 }
 
 void FakeMongoClient::FakeUserExists()
@@ -996,6 +2317,456 @@ void FakeMongoClient::recv_GetUser(User& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetUser failed: unknown result");
 }
 
+void FakeMongoClient::FakeGetFLWRs()
+{
+	iprot_->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_REPLY, 0);
+  getFLWRs_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t user_id)
+{
+  send_GetFLWRs(user_id);
+  recv_GetFLWRs(_return);
+}
+
+void FakeMongoClient::send_GetFLWRs(const int64_t user_id)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_GetFLWRs_pargs args;
+  args.user_id = &user_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::recv_GetFLWRs(std::vector<int64_t> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("GetFLWRs") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeMongo_GetFLWRs_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFLWRs failed: unknown result");
+}
+
+void FakeMongoClient::FakeGetFLWEEs()
+{
+	iprot_->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_REPLY, 0);
+  getFLWEEs_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t user_id)
+{
+  send_GetFLWEEs(user_id);
+  recv_GetFLWEEs(_return);
+}
+
+void FakeMongoClient::send_GetFLWEEs(const int64_t user_id)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_GetFLWEEs_pargs args;
+  args.user_id = &user_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::recv_GetFLWEEs(std::vector<int64_t> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("GetFLWEEs") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeMongo_GetFLWEEs_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFLWEEs failed: unknown result");
+}
+
+void FakeMongoClient::FakeAddFollower()
+{
+	iprot_->writeMessageBegin("AddFollower", ::apache::thrift::protocol::T_REPLY, 0);
+  addFollower_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp)
+{
+  send_AddFollower(user_id, followee_id, timestamp);
+  recv_AddFollower();
+}
+
+void FakeMongoClient::send_AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("AddFollower", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_AddFollower_pargs args;
+  args.user_id = &user_id;
+  args.followee_id = &followee_id;
+  args.timestamp = &timestamp;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::recv_AddFollower()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("AddFollower") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeMongo_AddFollower_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeMongoClient::FakeAddFollowee()
+{
+	iprot_->writeMessageBegin("AddFollowee", ::apache::thrift::protocol::T_REPLY, 0);
+  addFollowee_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp)
+{
+  send_AddFollowee(followee_id, user_id, timestamp);
+  recv_AddFollowee();
+}
+
+void FakeMongoClient::send_AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("AddFollowee", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_AddFollowee_pargs args;
+  args.followee_id = &followee_id;
+  args.user_id = &user_id;
+  args.timestamp = &timestamp;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::recv_AddFollowee()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("AddFollowee") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeMongo_AddFollowee_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeMongoClient::FakeRemoveFollower()
+{
+	iprot_->writeMessageBegin("RemoveFollower", ::apache::thrift::protocol::T_REPLY, 0);
+  removeFollower_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::RemoveFollower(const int64_t user_id, const int64_t followee_id)
+{
+  send_RemoveFollower(user_id, followee_id);
+  recv_RemoveFollower();
+}
+
+void FakeMongoClient::send_RemoveFollower(const int64_t user_id, const int64_t followee_id)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("RemoveFollower", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_RemoveFollower_pargs args;
+  args.user_id = &user_id;
+  args.followee_id = &followee_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::recv_RemoveFollower()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("RemoveFollower") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeMongo_RemoveFollower_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeMongoClient::FakeRemoveFollowee()
+{
+	iprot_->writeMessageBegin("RemoveFollowee", ::apache::thrift::protocol::T_REPLY, 0);
+  removeFollowee_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::RemoveFollowee(const int64_t followee_id, const int64_t user_id)
+{
+  send_RemoveFollowee(followee_id, user_id);
+  recv_RemoveFollowee();
+}
+
+void FakeMongoClient::send_RemoveFollowee(const int64_t followee_id, const int64_t user_id)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("RemoveFollowee", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_RemoveFollowee_pargs args;
+  args.followee_id = &followee_id;
+  args.user_id = &user_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::recv_RemoveFollowee()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("RemoveFollowee") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeMongo_RemoveFollowee_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeMongoClient::FakeInsertUserId()
+{
+	iprot_->writeMessageBegin("InsertUserId", ::apache::thrift::protocol::T_REPLY, 0);
+  insertUserId_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::InsertUserId(const int64_t user_id)
+{
+  send_InsertUserId(user_id);
+  recv_InsertUserId();
+}
+
+void FakeMongoClient::send_InsertUserId(const int64_t user_id)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("InsertUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_InsertUserId_pargs args;
+  args.user_id = &user_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeMongoClient::recv_InsertUserId()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("InsertUserId") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeMongo_InsertUserId_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
 bool FakeMongoProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
   ProcessMap::iterator pfn;
   pfn = processMap_.find(fname);
@@ -1227,6 +2998,379 @@ void FakeMongoProcessor::process_GetUser(int32_t seqid, ::apache::thrift::protoc
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "FakeMongo.GetUser", bytes);
+  }
+}
+
+void FakeMongoProcessor::process_GetFLWRs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeMongo.GetFLWRs", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeMongo.GetFLWRs");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeMongo.GetFLWRs");
+  }
+
+  FakeMongo_GetFLWRs_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeMongo.GetFLWRs", bytes);
+  }
+
+  FakeMongo_GetFLWRs_result result;
+  try {
+    iface_->GetFLWRs(result.success, args.user_id);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeMongo.GetFLWRs");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeMongo.GetFLWRs");
+  }
+
+  oprot->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeMongo.GetFLWRs", bytes);
+  }
+}
+
+void FakeMongoProcessor::process_GetFLWEEs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeMongo.GetFLWEEs", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeMongo.GetFLWEEs");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeMongo.GetFLWEEs");
+  }
+
+  FakeMongo_GetFLWEEs_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeMongo.GetFLWEEs", bytes);
+  }
+
+  FakeMongo_GetFLWEEs_result result;
+  try {
+    iface_->GetFLWEEs(result.success, args.user_id);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeMongo.GetFLWEEs");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeMongo.GetFLWEEs");
+  }
+
+  oprot->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeMongo.GetFLWEEs", bytes);
+  }
+}
+
+void FakeMongoProcessor::process_AddFollower(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeMongo.AddFollower", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeMongo.AddFollower");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeMongo.AddFollower");
+  }
+
+  FakeMongo_AddFollower_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeMongo.AddFollower", bytes);
+  }
+
+  FakeMongo_AddFollower_result result;
+  try {
+    iface_->AddFollower(args.user_id, args.followee_id, args.timestamp);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeMongo.AddFollower");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("AddFollower", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeMongo.AddFollower");
+  }
+
+  oprot->writeMessageBegin("AddFollower", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeMongo.AddFollower", bytes);
+  }
+}
+
+void FakeMongoProcessor::process_AddFollowee(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeMongo.AddFollowee", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeMongo.AddFollowee");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeMongo.AddFollowee");
+  }
+
+  FakeMongo_AddFollowee_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeMongo.AddFollowee", bytes);
+  }
+
+  FakeMongo_AddFollowee_result result;
+  try {
+    iface_->AddFollowee(args.followee_id, args.user_id, args.timestamp);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeMongo.AddFollowee");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("AddFollowee", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeMongo.AddFollowee");
+  }
+
+  oprot->writeMessageBegin("AddFollowee", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeMongo.AddFollowee", bytes);
+  }
+}
+
+void FakeMongoProcessor::process_RemoveFollower(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeMongo.RemoveFollower", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeMongo.RemoveFollower");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeMongo.RemoveFollower");
+  }
+
+  FakeMongo_RemoveFollower_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeMongo.RemoveFollower", bytes);
+  }
+
+  FakeMongo_RemoveFollower_result result;
+  try {
+    iface_->RemoveFollower(args.user_id, args.followee_id);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeMongo.RemoveFollower");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("RemoveFollower", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeMongo.RemoveFollower");
+  }
+
+  oprot->writeMessageBegin("RemoveFollower", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeMongo.RemoveFollower", bytes);
+  }
+}
+
+void FakeMongoProcessor::process_RemoveFollowee(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeMongo.RemoveFollowee", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeMongo.RemoveFollowee");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeMongo.RemoveFollowee");
+  }
+
+  FakeMongo_RemoveFollowee_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeMongo.RemoveFollowee", bytes);
+  }
+
+  FakeMongo_RemoveFollowee_result result;
+  try {
+    iface_->RemoveFollowee(args.followee_id, args.user_id);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeMongo.RemoveFollowee");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("RemoveFollowee", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeMongo.RemoveFollowee");
+  }
+
+  oprot->writeMessageBegin("RemoveFollowee", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeMongo.RemoveFollowee", bytes);
+  }
+}
+
+void FakeMongoProcessor::process_InsertUserId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeMongo.InsertUserId", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeMongo.InsertUserId");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeMongo.InsertUserId");
+  }
+
+  FakeMongo_InsertUserId_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeMongo.InsertUserId", bytes);
+  }
+
+  FakeMongo_InsertUserId_result result;
+  try {
+    iface_->InsertUserId(args.user_id);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeMongo.InsertUserId");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("InsertUserId", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeMongo.InsertUserId");
+  }
+
+  oprot->writeMessageBegin("InsertUserId", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeMongo.InsertUserId", bytes);
   }
 }
 
@@ -1558,6 +3702,570 @@ void FakeMongoConcurrentClient::recv_GetUser(User& _return, const int32_t seqid)
       }
       // in a bad state, don't commit
       throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetUser failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeMongoConcurrentClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t user_id)
+{
+  int32_t seqid = send_GetFLWRs(user_id);
+  recv_GetFLWRs(_return, seqid);
+}
+
+int32_t FakeMongoConcurrentClient::send_GetFLWRs(const int64_t user_id)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_GetFLWRs_pargs args;
+  args.user_id = &user_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeMongoConcurrentClient::recv_GetFLWRs(std::vector<int64_t> & _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("GetFLWRs") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeMongo_GetFLWRs_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFLWRs failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeMongoConcurrentClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t user_id)
+{
+  int32_t seqid = send_GetFLWEEs(user_id);
+  recv_GetFLWEEs(_return, seqid);
+}
+
+int32_t FakeMongoConcurrentClient::send_GetFLWEEs(const int64_t user_id)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_GetFLWEEs_pargs args;
+  args.user_id = &user_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeMongoConcurrentClient::recv_GetFLWEEs(std::vector<int64_t> & _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("GetFLWEEs") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeMongo_GetFLWEEs_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFLWEEs failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeMongoConcurrentClient::AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp)
+{
+  int32_t seqid = send_AddFollower(user_id, followee_id, timestamp);
+  recv_AddFollower(seqid);
+}
+
+int32_t FakeMongoConcurrentClient::send_AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("AddFollower", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_AddFollower_pargs args;
+  args.user_id = &user_id;
+  args.followee_id = &followee_id;
+  args.timestamp = &timestamp;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeMongoConcurrentClient::recv_AddFollower(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("AddFollower") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeMongo_AddFollower_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeMongoConcurrentClient::AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp)
+{
+  int32_t seqid = send_AddFollowee(followee_id, user_id, timestamp);
+  recv_AddFollowee(seqid);
+}
+
+int32_t FakeMongoConcurrentClient::send_AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("AddFollowee", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_AddFollowee_pargs args;
+  args.followee_id = &followee_id;
+  args.user_id = &user_id;
+  args.timestamp = &timestamp;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeMongoConcurrentClient::recv_AddFollowee(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("AddFollowee") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeMongo_AddFollowee_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeMongoConcurrentClient::RemoveFollower(const int64_t user_id, const int64_t followee_id)
+{
+  int32_t seqid = send_RemoveFollower(user_id, followee_id);
+  recv_RemoveFollower(seqid);
+}
+
+int32_t FakeMongoConcurrentClient::send_RemoveFollower(const int64_t user_id, const int64_t followee_id)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("RemoveFollower", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_RemoveFollower_pargs args;
+  args.user_id = &user_id;
+  args.followee_id = &followee_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeMongoConcurrentClient::recv_RemoveFollower(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("RemoveFollower") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeMongo_RemoveFollower_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeMongoConcurrentClient::RemoveFollowee(const int64_t followee_id, const int64_t user_id)
+{
+  int32_t seqid = send_RemoveFollowee(followee_id, user_id);
+  recv_RemoveFollowee(seqid);
+}
+
+int32_t FakeMongoConcurrentClient::send_RemoveFollowee(const int64_t followee_id, const int64_t user_id)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("RemoveFollowee", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_RemoveFollowee_pargs args;
+  args.followee_id = &followee_id;
+  args.user_id = &user_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeMongoConcurrentClient::recv_RemoveFollowee(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("RemoveFollowee") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeMongo_RemoveFollowee_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeMongoConcurrentClient::InsertUserId(const int64_t user_id)
+{
+  int32_t seqid = send_InsertUserId(user_id);
+  recv_InsertUserId(seqid);
+}
+
+int32_t FakeMongoConcurrentClient::send_InsertUserId(const int64_t user_id)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("InsertUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeMongo_InsertUserId_pargs args;
+  args.user_id = &user_id;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeMongoConcurrentClient::recv_InsertUserId(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("InsertUserId") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeMongo_InsertUserId_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
     }
     // seqid != rseqid
     this->sync_.updatePending(fname, mtype, rseqid);

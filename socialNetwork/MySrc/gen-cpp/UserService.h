@@ -963,6 +963,33 @@ class UserServiceClient : virtual public UserServiceIf {
 	UserService_UploadCreatorWithUserId_result* uploadCreatorWithUserId_res;
 	UserService_UploadCreatorWithUsername_result* uploadCreatorWithUsername_res;
 	UserService_GetUserId_result* getUserId_res;
+	void FakeGetUserId();
+
+	static void FakeRespGen(UserServiceClient *client, uint64_t fid) {
+		switch (fid)
+		{
+		case FuncType::GET_UID:
+			client->FakeGetUserId();
+			break;
+
+		default:
+			std::cout << "[UserServiceClient] This is an error, wrong message type (" << fid << ")!" << std::endl;
+			exit(1);
+			break;
+		}	
+	}
+
+	static void InitializeFuncMapUser(FunctionClientMap<UserServiceClient> *f2cmap,
+																		 RandomGenerator *randGen,
+																		 int num_template_clients,
+																		 int num_msg_per_client,
+																		 int base_buffer_size) {
+
+		fake_resp_gen_func<UserServiceClient> resp_gen_func = UserServiceClient::FakeRespGen;
+		
+		f2cmap->InitMap(resp_gen_func, FuncType::GET_UID,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+	}
 
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;

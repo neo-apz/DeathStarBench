@@ -171,6 +171,54 @@ service FakeRedis {
       2: string field,
       3: i64 value
   )
+
+	list<i64> GetFLWRs(
+		1: i64 key,
+		2: string field,
+	)
+
+	void PutFLWRs(
+		1: i64 key,
+		2: string field,
+		3: list<i64> value
+	)
+
+	list<i64> GetFLWEEs(
+		1: i64 key,
+		2: string field,
+	)
+
+	void PutFLWEEs(
+		1: i64 key,
+		2: string field,
+		3: list<i64> value
+	)
+
+	void PutFLWR(
+		1: i64 key,
+		2: string field,
+		3: i64 value,
+		4: i64 timestamp
+	)
+
+	void PutFLWEE(
+		1: i64 key,
+		2: string field,
+		3: i64 value,
+		4: i64 timestamp
+	)
+
+	void RemoveFLWR(
+		1: i64 key,
+		2: string field,
+		3: i64 value
+	)
+
+	void RemoveFLWEE(
+		1: i64 key,
+		2: string field,
+		3: i64 value
+	)
 }
 
 service FakeRabbitmq {
@@ -266,7 +314,41 @@ service FakeMongo {
 
 	User GetUser (
 		1: string username
-  ) 
+  )
+
+	list<i64> GetFLWRs(
+		1: i64 user_id,
+	)
+
+	list<i64> GetFLWEEs(
+		1: i64 user_id,
+	)
+
+	void AddFollower(
+		1: i64 user_id,
+		2: i64 followee_id,
+		3: i64 timestamp
+	)
+
+	void AddFollowee(
+		1: i64 followee_id,
+		2: i64 user_id,
+		3: i64 timestamp
+	)
+
+	void RemoveFollower(
+		1: i64 user_id,
+		2: i64 followee_id
+	)
+
+	void RemoveFollowee(
+		1: i64 followee_id,
+		2: i64 user_id
+	)
+
+	void InsertUserId(
+		1: i64 user_id
+	)
 }
 
 service UserService {
@@ -331,31 +413,31 @@ service MySocialGraphService{
       2: i64 user_id
   ) 
 
-  i64 Follow(
+  void Follow(
       1: i64 req_id,
       2: i64 user_id,
       3: i64 followee_id
   ) 
 
-  i64 Unfollow(
+  void Unfollow(
       1: i64 req_id,
       2: i64 user_id,
       3: i64 followee_id
    ) 
 
-  i64 FollowWithUsername(
+  void FollowWithUsername(
       1: i64 req_id,
       2: string user_usernmae,
       3: string followee_username
   ) 
 
-  i64 UnfollowWithUsername(
+  void UnfollowWithUsername(
       1: i64 req_id,
       2: string user_usernmae,
       3: string followee_username
   ) 
 
-  i64 InsertUser(
+  void InsertUser(
      1: i64 req_id,
      2: i64 user_id
   ) 

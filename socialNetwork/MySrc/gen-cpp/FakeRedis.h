@@ -47,6 +47,14 @@ class FakeRedisIf {
   virtual void HGetUrls(std::vector<Url> & _return, const int64_t req_id, const std::string& field) = 0;
   virtual void HGetUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::string& field) = 0;
   virtual int64_t HIncrBy(const int64_t key, const std::string& field, const int64_t value) = 0;
+  virtual void GetFLWRs(std::vector<int64_t> & _return, const int64_t key, const std::string& field) = 0;
+  virtual void PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value) = 0;
+  virtual void GetFLWEEs(std::vector<int64_t> & _return, const int64_t key, const std::string& field) = 0;
+  virtual void PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value) = 0;
+  virtual void PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp) = 0;
+  virtual void PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp) = 0;
+  virtual void RemoveFLWR(const int64_t key, const std::string& field, const int64_t value) = 0;
+  virtual void RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value) = 0;
 
 	struct FuncType {
   enum type {
@@ -68,7 +76,17 @@ class FakeRedisIf {
 
 		H_INC = 14,
 
-    SIZE = 15
+		GET_FLWRS = 15,
+		GET_FLWEES = 16,
+		PUT_FLWRS = 17,
+		PUT_FLWEES = 18,
+		
+		PUT_FLWR = 19,
+		PUT_FLWEE = 20,
+		RMV_FLWR = 21,
+		RMV_FLWEE = 22,
+
+    SIZE = 23
   	};
 	};
 };
@@ -147,6 +165,30 @@ class FakeRedisNull : virtual public FakeRedisIf {
   int64_t HIncrBy(const int64_t /* key */, const std::string& /* field */, const int64_t /* value */) {
     int64_t _return = 0;
     return _return;
+  }
+  void GetFLWRs(std::vector<int64_t> & /* _return */, const int64_t /* key */, const std::string& /* field */) {
+    return;
+  }
+  void PutFLWRs(const int64_t /* key */, const std::string& /* field */, const std::vector<int64_t> & /* value */) {
+    return;
+  }
+  void GetFLWEEs(std::vector<int64_t> & /* _return */, const int64_t /* key */, const std::string& /* field */) {
+    return;
+  }
+  void PutFLWEEs(const int64_t /* key */, const std::string& /* field */, const std::vector<int64_t> & /* value */) {
+    return;
+  }
+  void PutFLWR(const int64_t /* key */, const std::string& /* field */, const int64_t /* value */, const int64_t /* timestamp */) {
+    return;
+  }
+  void PutFLWEE(const int64_t /* key */, const std::string& /* field */, const int64_t /* value */, const int64_t /* timestamp */) {
+    return;
+  }
+  void RemoveFLWR(const int64_t /* key */, const std::string& /* field */, const int64_t /* value */) {
+    return;
+  }
+  void RemoveFLWEE(const int64_t /* key */, const std::string& /* field */, const int64_t /* value */) {
+    return;
   }
 };
 
@@ -1818,6 +1860,878 @@ class FakeRedis_HIncrBy_presult {
 
 };
 
+typedef struct _FakeRedis_GetFLWRs_args__isset {
+  _FakeRedis_GetFLWRs_args__isset() : key(false), field(false) {}
+  bool key :1;
+  bool field :1;
+} _FakeRedis_GetFLWRs_args__isset;
+
+class FakeRedis_GetFLWRs_args {
+ public:
+
+  FakeRedis_GetFLWRs_args(const FakeRedis_GetFLWRs_args&);
+  FakeRedis_GetFLWRs_args& operator=(const FakeRedis_GetFLWRs_args&);
+  FakeRedis_GetFLWRs_args() : key(0), field() {
+  }
+
+  virtual ~FakeRedis_GetFLWRs_args() throw();
+  int64_t key;
+  std::string field;
+
+  _FakeRedis_GetFLWRs_args__isset __isset;
+
+  void __set_key(const int64_t val);
+
+  void __set_field(const std::string& val);
+
+  bool operator == (const FakeRedis_GetFLWRs_args & rhs) const
+  {
+    if (!(key == rhs.key))
+      return false;
+    if (!(field == rhs.field))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_GetFLWRs_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_GetFLWRs_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_GetFLWRs_pargs {
+ public:
+
+
+  virtual ~FakeRedis_GetFLWRs_pargs() throw();
+  const int64_t* key;
+  const std::string* field;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _FakeRedis_GetFLWRs_result__isset {
+  _FakeRedis_GetFLWRs_result__isset() : success(false) {}
+  bool success :1;
+} _FakeRedis_GetFLWRs_result__isset;
+
+class FakeRedis_GetFLWRs_result {
+ public:
+
+  FakeRedis_GetFLWRs_result(const FakeRedis_GetFLWRs_result&);
+  FakeRedis_GetFLWRs_result& operator=(const FakeRedis_GetFLWRs_result&);
+  FakeRedis_GetFLWRs_result() {
+  }
+
+	FakeRedis_GetFLWRs_result(RandomGenerator* randGen) {
+		uint32_t iters = MAX_VECTOR_COUNT;
+		for(int i=0; i < iters; i++){
+			success.emplace_back(randGen->getInt64(RAND_NUM_LIMIT));
+		}
+
+		__isset.success = true;
+  }
+
+  virtual ~FakeRedis_GetFLWRs_result() throw();
+  std::vector<int64_t>  success;
+
+  _FakeRedis_GetFLWRs_result__isset __isset;
+
+  void __set_success(const std::vector<int64_t> & val);
+
+  bool operator == (const FakeRedis_GetFLWRs_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_GetFLWRs_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_GetFLWRs_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _FakeRedis_GetFLWRs_presult__isset {
+  _FakeRedis_GetFLWRs_presult__isset() : success(false) {}
+  bool success :1;
+} _FakeRedis_GetFLWRs_presult__isset;
+
+class FakeRedis_GetFLWRs_presult {
+ public:
+
+
+  virtual ~FakeRedis_GetFLWRs_presult() throw();
+  std::vector<int64_t> * success;
+
+  _FakeRedis_GetFLWRs_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeRedis_PutFLWRs_args__isset {
+  _FakeRedis_PutFLWRs_args__isset() : key(false), field(false), value(false) {}
+  bool key :1;
+  bool field :1;
+  bool value :1;
+} _FakeRedis_PutFLWRs_args__isset;
+
+class FakeRedis_PutFLWRs_args {
+ public:
+
+  FakeRedis_PutFLWRs_args(const FakeRedis_PutFLWRs_args&);
+  FakeRedis_PutFLWRs_args& operator=(const FakeRedis_PutFLWRs_args&);
+  FakeRedis_PutFLWRs_args() : key(0), field() {
+  }
+
+  virtual ~FakeRedis_PutFLWRs_args() throw();
+  int64_t key;
+  std::string field;
+  std::vector<int64_t>  value;
+
+  _FakeRedis_PutFLWRs_args__isset __isset;
+
+  void __set_key(const int64_t val);
+
+  void __set_field(const std::string& val);
+
+  void __set_value(const std::vector<int64_t> & val);
+
+  bool operator == (const FakeRedis_PutFLWRs_args & rhs) const
+  {
+    if (!(key == rhs.key))
+      return false;
+    if (!(field == rhs.field))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_PutFLWRs_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_PutFLWRs_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWRs_pargs {
+ public:
+
+
+  virtual ~FakeRedis_PutFLWRs_pargs() throw();
+  const int64_t* key;
+  const std::string* field;
+  const std::vector<int64_t> * value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWRs_result {
+ public:
+
+  FakeRedis_PutFLWRs_result(const FakeRedis_PutFLWRs_result&);
+  FakeRedis_PutFLWRs_result& operator=(const FakeRedis_PutFLWRs_result&);
+  FakeRedis_PutFLWRs_result() {
+  }
+
+	FakeRedis_PutFLWRs_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeRedis_PutFLWRs_result() throw();
+
+  bool operator == (const FakeRedis_PutFLWRs_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeRedis_PutFLWRs_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_PutFLWRs_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWRs_presult {
+ public:
+
+
+  virtual ~FakeRedis_PutFLWRs_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeRedis_GetFLWEEs_args__isset {
+  _FakeRedis_GetFLWEEs_args__isset() : key(false), field(false) {}
+  bool key :1;
+  bool field :1;
+} _FakeRedis_GetFLWEEs_args__isset;
+
+class FakeRedis_GetFLWEEs_args {
+ public:
+
+  FakeRedis_GetFLWEEs_args(const FakeRedis_GetFLWEEs_args&);
+  FakeRedis_GetFLWEEs_args& operator=(const FakeRedis_GetFLWEEs_args&);
+  FakeRedis_GetFLWEEs_args() : key(0), field() {
+  }
+
+  virtual ~FakeRedis_GetFLWEEs_args() throw();
+  int64_t key;
+  std::string field;
+
+  _FakeRedis_GetFLWEEs_args__isset __isset;
+
+  void __set_key(const int64_t val);
+
+  void __set_field(const std::string& val);
+
+  bool operator == (const FakeRedis_GetFLWEEs_args & rhs) const
+  {
+    if (!(key == rhs.key))
+      return false;
+    if (!(field == rhs.field))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_GetFLWEEs_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_GetFLWEEs_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_GetFLWEEs_pargs {
+ public:
+
+
+  virtual ~FakeRedis_GetFLWEEs_pargs() throw();
+  const int64_t* key;
+  const std::string* field;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _FakeRedis_GetFLWEEs_result__isset {
+  _FakeRedis_GetFLWEEs_result__isset() : success(false) {}
+  bool success :1;
+} _FakeRedis_GetFLWEEs_result__isset;
+
+class FakeRedis_GetFLWEEs_result {
+ public:
+
+  FakeRedis_GetFLWEEs_result(const FakeRedis_GetFLWEEs_result&);
+  FakeRedis_GetFLWEEs_result& operator=(const FakeRedis_GetFLWEEs_result&);
+  FakeRedis_GetFLWEEs_result() {
+  }
+
+	FakeRedis_GetFLWEEs_result(RandomGenerator* randGen) {
+		uint32_t iters = MAX_VECTOR_COUNT;
+		for(int i=0; i < iters; i++){
+			success.emplace_back(randGen->getInt64(RAND_NUM_LIMIT));
+		}
+
+		__isset.success = true;
+  }
+
+  virtual ~FakeRedis_GetFLWEEs_result() throw();
+  std::vector<int64_t>  success;
+
+  _FakeRedis_GetFLWEEs_result__isset __isset;
+
+  void __set_success(const std::vector<int64_t> & val);
+
+  bool operator == (const FakeRedis_GetFLWEEs_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_GetFLWEEs_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_GetFLWEEs_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _FakeRedis_GetFLWEEs_presult__isset {
+  _FakeRedis_GetFLWEEs_presult__isset() : success(false) {}
+  bool success :1;
+} _FakeRedis_GetFLWEEs_presult__isset;
+
+class FakeRedis_GetFLWEEs_presult {
+ public:
+
+
+  virtual ~FakeRedis_GetFLWEEs_presult() throw();
+  std::vector<int64_t> * success;
+
+  _FakeRedis_GetFLWEEs_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeRedis_PutFLWEEs_args__isset {
+  _FakeRedis_PutFLWEEs_args__isset() : key(false), field(false), value(false) {}
+  bool key :1;
+  bool field :1;
+  bool value :1;
+} _FakeRedis_PutFLWEEs_args__isset;
+
+class FakeRedis_PutFLWEEs_args {
+ public:
+
+  FakeRedis_PutFLWEEs_args(const FakeRedis_PutFLWEEs_args&);
+  FakeRedis_PutFLWEEs_args& operator=(const FakeRedis_PutFLWEEs_args&);
+  FakeRedis_PutFLWEEs_args() : key(0), field() {
+  }
+
+  virtual ~FakeRedis_PutFLWEEs_args() throw();
+  int64_t key;
+  std::string field;
+  std::vector<int64_t>  value;
+
+  _FakeRedis_PutFLWEEs_args__isset __isset;
+
+  void __set_key(const int64_t val);
+
+  void __set_field(const std::string& val);
+
+  void __set_value(const std::vector<int64_t> & val);
+
+  bool operator == (const FakeRedis_PutFLWEEs_args & rhs) const
+  {
+    if (!(key == rhs.key))
+      return false;
+    if (!(field == rhs.field))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_PutFLWEEs_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_PutFLWEEs_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWEEs_pargs {
+ public:
+
+
+  virtual ~FakeRedis_PutFLWEEs_pargs() throw();
+  const int64_t* key;
+  const std::string* field;
+  const std::vector<int64_t> * value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWEEs_result {
+ public:
+
+  FakeRedis_PutFLWEEs_result(const FakeRedis_PutFLWEEs_result&);
+  FakeRedis_PutFLWEEs_result& operator=(const FakeRedis_PutFLWEEs_result&);
+  FakeRedis_PutFLWEEs_result() {
+  }
+
+	FakeRedis_PutFLWEEs_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeRedis_PutFLWEEs_result() throw();
+
+  bool operator == (const FakeRedis_PutFLWEEs_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeRedis_PutFLWEEs_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_PutFLWEEs_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWEEs_presult {
+ public:
+
+
+  virtual ~FakeRedis_PutFLWEEs_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeRedis_PutFLWR_args__isset {
+  _FakeRedis_PutFLWR_args__isset() : key(false), field(false), value(false), timestamp(false) {}
+  bool key :1;
+  bool field :1;
+  bool value :1;
+  bool timestamp :1;
+} _FakeRedis_PutFLWR_args__isset;
+
+class FakeRedis_PutFLWR_args {
+ public:
+
+  FakeRedis_PutFLWR_args(const FakeRedis_PutFLWR_args&);
+  FakeRedis_PutFLWR_args& operator=(const FakeRedis_PutFLWR_args&);
+  FakeRedis_PutFLWR_args() : key(0), field(), value(0), timestamp(0) {
+  }
+
+  virtual ~FakeRedis_PutFLWR_args() throw();
+  int64_t key;
+  std::string field;
+  int64_t value;
+  int64_t timestamp;
+
+  _FakeRedis_PutFLWR_args__isset __isset;
+
+  void __set_key(const int64_t val);
+
+  void __set_field(const std::string& val);
+
+  void __set_value(const int64_t val);
+
+  void __set_timestamp(const int64_t val);
+
+  bool operator == (const FakeRedis_PutFLWR_args & rhs) const
+  {
+    if (!(key == rhs.key))
+      return false;
+    if (!(field == rhs.field))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    if (!(timestamp == rhs.timestamp))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_PutFLWR_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_PutFLWR_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWR_pargs {
+ public:
+
+
+  virtual ~FakeRedis_PutFLWR_pargs() throw();
+  const int64_t* key;
+  const std::string* field;
+  const int64_t* value;
+  const int64_t* timestamp;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWR_result {
+ public:
+
+  FakeRedis_PutFLWR_result(const FakeRedis_PutFLWR_result&);
+  FakeRedis_PutFLWR_result& operator=(const FakeRedis_PutFLWR_result&);
+  FakeRedis_PutFLWR_result() {
+  }
+
+	FakeRedis_PutFLWR_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeRedis_PutFLWR_result() throw();
+
+  bool operator == (const FakeRedis_PutFLWR_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeRedis_PutFLWR_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_PutFLWR_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWR_presult {
+ public:
+
+
+  virtual ~FakeRedis_PutFLWR_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeRedis_PutFLWEE_args__isset {
+  _FakeRedis_PutFLWEE_args__isset() : key(false), field(false), value(false), timestamp(false) {}
+  bool key :1;
+  bool field :1;
+  bool value :1;
+  bool timestamp :1;
+} _FakeRedis_PutFLWEE_args__isset;
+
+class FakeRedis_PutFLWEE_args {
+ public:
+
+  FakeRedis_PutFLWEE_args(const FakeRedis_PutFLWEE_args&);
+  FakeRedis_PutFLWEE_args& operator=(const FakeRedis_PutFLWEE_args&);
+  FakeRedis_PutFLWEE_args() : key(0), field(), value(0), timestamp(0) {
+  }
+
+  virtual ~FakeRedis_PutFLWEE_args() throw();
+  int64_t key;
+  std::string field;
+  int64_t value;
+  int64_t timestamp;
+
+  _FakeRedis_PutFLWEE_args__isset __isset;
+
+  void __set_key(const int64_t val);
+
+  void __set_field(const std::string& val);
+
+  void __set_value(const int64_t val);
+
+  void __set_timestamp(const int64_t val);
+
+  bool operator == (const FakeRedis_PutFLWEE_args & rhs) const
+  {
+    if (!(key == rhs.key))
+      return false;
+    if (!(field == rhs.field))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    if (!(timestamp == rhs.timestamp))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_PutFLWEE_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_PutFLWEE_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWEE_pargs {
+ public:
+
+
+  virtual ~FakeRedis_PutFLWEE_pargs() throw();
+  const int64_t* key;
+  const std::string* field;
+  const int64_t* value;
+  const int64_t* timestamp;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWEE_result {
+ public:
+
+  FakeRedis_PutFLWEE_result(const FakeRedis_PutFLWEE_result&);
+  FakeRedis_PutFLWEE_result& operator=(const FakeRedis_PutFLWEE_result&);
+  FakeRedis_PutFLWEE_result() {
+  }
+
+	FakeRedis_PutFLWEE_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeRedis_PutFLWEE_result() throw();
+
+  bool operator == (const FakeRedis_PutFLWEE_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeRedis_PutFLWEE_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_PutFLWEE_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_PutFLWEE_presult {
+ public:
+
+
+  virtual ~FakeRedis_PutFLWEE_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeRedis_RemoveFLWR_args__isset {
+  _FakeRedis_RemoveFLWR_args__isset() : key(false), field(false), value(false) {}
+  bool key :1;
+  bool field :1;
+  bool value :1;
+} _FakeRedis_RemoveFLWR_args__isset;
+
+class FakeRedis_RemoveFLWR_args {
+ public:
+
+  FakeRedis_RemoveFLWR_args(const FakeRedis_RemoveFLWR_args&);
+  FakeRedis_RemoveFLWR_args& operator=(const FakeRedis_RemoveFLWR_args&);
+  FakeRedis_RemoveFLWR_args() : key(0), field(), value(0) {
+  }
+
+  virtual ~FakeRedis_RemoveFLWR_args() throw();
+  int64_t key;
+  std::string field;
+  int64_t value;
+
+  _FakeRedis_RemoveFLWR_args__isset __isset;
+
+  void __set_key(const int64_t val);
+
+  void __set_field(const std::string& val);
+
+  void __set_value(const int64_t val);
+
+  bool operator == (const FakeRedis_RemoveFLWR_args & rhs) const
+  {
+    if (!(key == rhs.key))
+      return false;
+    if (!(field == rhs.field))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_RemoveFLWR_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_RemoveFLWR_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_RemoveFLWR_pargs {
+ public:
+
+
+  virtual ~FakeRedis_RemoveFLWR_pargs() throw();
+  const int64_t* key;
+  const std::string* field;
+  const int64_t* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_RemoveFLWR_result {
+ public:
+
+  FakeRedis_RemoveFLWR_result(const FakeRedis_RemoveFLWR_result&);
+  FakeRedis_RemoveFLWR_result& operator=(const FakeRedis_RemoveFLWR_result&);
+  FakeRedis_RemoveFLWR_result() {
+  }
+
+	FakeRedis_RemoveFLWR_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeRedis_RemoveFLWR_result() throw();
+
+  bool operator == (const FakeRedis_RemoveFLWR_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeRedis_RemoveFLWR_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_RemoveFLWR_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_RemoveFLWR_presult {
+ public:
+
+
+  virtual ~FakeRedis_RemoveFLWR_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _FakeRedis_RemoveFLWEE_args__isset {
+  _FakeRedis_RemoveFLWEE_args__isset() : key(false), field(false), value(false) {}
+  bool key :1;
+  bool field :1;
+  bool value :1;
+} _FakeRedis_RemoveFLWEE_args__isset;
+
+class FakeRedis_RemoveFLWEE_args {
+ public:
+
+  FakeRedis_RemoveFLWEE_args(const FakeRedis_RemoveFLWEE_args&);
+  FakeRedis_RemoveFLWEE_args& operator=(const FakeRedis_RemoveFLWEE_args&);
+  FakeRedis_RemoveFLWEE_args() : key(0), field(), value(0) {
+  }
+
+  virtual ~FakeRedis_RemoveFLWEE_args() throw();
+  int64_t key;
+  std::string field;
+  int64_t value;
+
+  _FakeRedis_RemoveFLWEE_args__isset __isset;
+
+  void __set_key(const int64_t val);
+
+  void __set_field(const std::string& val);
+
+  void __set_value(const int64_t val);
+
+  bool operator == (const FakeRedis_RemoveFLWEE_args & rhs) const
+  {
+    if (!(key == rhs.key))
+      return false;
+    if (!(field == rhs.field))
+      return false;
+    if (!(value == rhs.value))
+      return false;
+    return true;
+  }
+  bool operator != (const FakeRedis_RemoveFLWEE_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_RemoveFLWEE_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_RemoveFLWEE_pargs {
+ public:
+
+
+  virtual ~FakeRedis_RemoveFLWEE_pargs() throw();
+  const int64_t* key;
+  const std::string* field;
+  const int64_t* value;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_RemoveFLWEE_result {
+ public:
+
+  FakeRedis_RemoveFLWEE_result(const FakeRedis_RemoveFLWEE_result&);
+  FakeRedis_RemoveFLWEE_result& operator=(const FakeRedis_RemoveFLWEE_result&);
+  FakeRedis_RemoveFLWEE_result() {
+  }
+
+	FakeRedis_RemoveFLWEE_result(RandomGenerator* randGen) {
+  }
+
+  virtual ~FakeRedis_RemoveFLWEE_result() throw();
+
+  bool operator == (const FakeRedis_RemoveFLWEE_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const FakeRedis_RemoveFLWEE_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FakeRedis_RemoveFLWEE_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class FakeRedis_RemoveFLWEE_presult {
+ public:
+
+
+  virtual ~FakeRedis_RemoveFLWEE_presult() throw();
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class FakeRedisClient : virtual public FakeRedisIf {
  public:
   FakeRedisClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -1890,7 +2804,31 @@ class FakeRedisClient : virtual public FakeRedisIf {
   int64_t HIncrBy(const int64_t key, const std::string& field, const int64_t value);
   void send_HIncrBy(const int64_t key, const std::string& field, const int64_t value);
   int64_t recv_HIncrBy();
- 
+  void GetFLWRs(std::vector<int64_t> & _return, const int64_t key, const std::string& field);
+  void send_GetFLWRs(const int64_t key, const std::string& field);
+  void recv_GetFLWRs(std::vector<int64_t> & _return);
+  void PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value);
+  void send_PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value);
+  void recv_PutFLWRs();
+  void GetFLWEEs(std::vector<int64_t> & _return, const int64_t key, const std::string& field);
+  void send_GetFLWEEs(const int64_t key, const std::string& field);
+  void recv_GetFLWEEs(std::vector<int64_t> & _return);
+  void PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value);
+  void send_PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value);
+  void recv_PutFLWEEs();
+  void PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp);
+  void send_PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp);
+  void recv_PutFLWR();
+  void PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp);
+  void send_PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp);
+  void recv_PutFLWEE();
+  void RemoveFLWR(const int64_t key, const std::string& field, const int64_t value);
+  void send_RemoveFLWR(const int64_t key, const std::string& field, const int64_t value);
+  void recv_RemoveFLWR();
+  void RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value);
+  void send_RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value);
+  void recv_RemoveFLWEE();
+
 	void initResults(RandomGenerator* randGen);
 
 	FakeRedis_HSetCreator_result *hSetCreator_res;
@@ -1910,6 +2848,15 @@ class FakeRedisClient : virtual public FakeRedisIf {
 	FakeRedis_HGetUserMentions_result *hGetUserMentions_res;
 
 	FakeRedis_HIncrBy_result *hIncBy_res;
+
+	FakeRedis_GetFLWRs_result *getFLWRs_res;
+  FakeRedis_GetFLWEEs_result *getFLWEEs_res;
+	FakeRedis_PutFLWRs_result *putFLWRs_res;
+  FakeRedis_PutFLWEEs_result *putFLWEEs_res;
+  FakeRedis_PutFLWR_result *putFLWR_res;
+  FakeRedis_PutFLWEE_result *putFLWEE_res;
+  FakeRedis_RemoveFLWR_result *removeFLWR_res;
+  FakeRedis_RemoveFLWEE_result *removeFLWEE_res;
 	
 	void FakeHSetCreator();
 	void FakeHSetText();
@@ -1928,6 +2875,15 @@ class FakeRedisClient : virtual public FakeRedisIf {
   void FakeHGetUserMentions();
 
 	void FakeHIncrBy();
+	
+	void FakeGetFLWRs();
+  void FakeGetFLWEEs();
+	void FakePutFLWRs();
+  void FakePutFLWEEs();
+  void FakePutFLWR();
+  void FakePutFLWEE();
+  void FakeRemoveFLWR();
+  void FakeRemoveFLWEE();
 
 	static void FakeRespGen(FakeRedisClient *client, uint64_t fid) {
 		switch (fid)
@@ -1992,6 +2948,38 @@ class FakeRedisClient : virtual public FakeRedisIf {
 			client->FakeHIncrBy();
 			break;
 
+		case FuncType::GET_FLWRS:
+			client->FakeGetFLWRs();
+			break;
+
+		case FuncType::GET_FLWEES:
+			client->FakeGetFLWEEs();
+			break;
+
+		case FuncType::PUT_FLWRS:
+			client->FakePutFLWRs();
+			break;
+
+		case FuncType::PUT_FLWEES:
+			client->FakePutFLWEEs();
+			break;
+
+		case FuncType::PUT_FLWR:
+			client->FakePutFLWR();
+			break;
+
+		case FuncType::PUT_FLWEE:
+			client->FakePutFLWEE();
+			break;
+
+		case FuncType::RMV_FLWR:
+			client->FakeRemoveFLWR();
+			break;
+
+		case FuncType::RMV_FLWEE:
+			client->FakeRemoveFLWEE();
+			break;	
+
 		default:
 			std::cout << "This is an error, wrong message type (" << fid << ")!" << std::endl;
 			exit(1);
@@ -2051,8 +3039,34 @@ class FakeRedisClient : virtual public FakeRedisIf {
 
 		f2cmap->InitMap(redis_resp_gen_func, FuncType::H_INC,
 										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::GET_FLWRS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::GET_FLWEES,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::PUT_FLWRS,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);										
+
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::PUT_FLWEES,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::PUT_FLWR,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::PUT_FLWEE,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::RMV_FLWR,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
+		f2cmap->InitMap(redis_resp_gen_func, FuncType::RMV_FLWEE,
+										randGen, num_template_clients, num_msg_per_client, base_buffer_size);
+
 }
- 
+
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -2083,6 +3097,14 @@ class FakeRedisProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_HGetUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_HGetUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_HIncrBy(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_GetFLWRs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_PutFLWRs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_GetFLWEEs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_PutFLWEEs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_PutFLWR(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_PutFLWEE(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_RemoveFLWR(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_RemoveFLWEE(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   FakeRedisProcessor(::apache::thrift::stdcxx::shared_ptr<FakeRedisIf> iface) :
     iface_(iface) {
@@ -2101,6 +3123,14 @@ class FakeRedisProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["HGetUrls"] = &FakeRedisProcessor::process_HGetUrls;
     processMap_["HGetUserMentions"] = &FakeRedisProcessor::process_HGetUserMentions;
     processMap_["HIncrBy"] = &FakeRedisProcessor::process_HIncrBy;
+    processMap_["GetFLWRs"] = &FakeRedisProcessor::process_GetFLWRs;
+    processMap_["PutFLWRs"] = &FakeRedisProcessor::process_PutFLWRs;
+    processMap_["GetFLWEEs"] = &FakeRedisProcessor::process_GetFLWEEs;
+    processMap_["PutFLWEEs"] = &FakeRedisProcessor::process_PutFLWEEs;
+    processMap_["PutFLWR"] = &FakeRedisProcessor::process_PutFLWR;
+    processMap_["PutFLWEE"] = &FakeRedisProcessor::process_PutFLWEE;
+    processMap_["RemoveFLWR"] = &FakeRedisProcessor::process_RemoveFLWR;
+    processMap_["RemoveFLWEE"] = &FakeRedisProcessor::process_RemoveFLWEE;
   }
 
   virtual ~FakeRedisProcessor() {}
@@ -2269,6 +3299,80 @@ class FakeRedisMultiface : virtual public FakeRedisIf {
     return ifaces_[i]->HIncrBy(key, field, value);
   }
 
+  void GetFLWRs(std::vector<int64_t> & _return, const int64_t key, const std::string& field) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->GetFLWRs(_return, key, field);
+    }
+    ifaces_[i]->GetFLWRs(_return, key, field);
+    return;
+  }
+
+  void PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->PutFLWRs(key, field, value);
+    }
+    ifaces_[i]->PutFLWRs(key, field, value);
+  }
+
+  void GetFLWEEs(std::vector<int64_t> & _return, const int64_t key, const std::string& field) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->GetFLWEEs(_return, key, field);
+    }
+    ifaces_[i]->GetFLWEEs(_return, key, field);
+    return;
+  }
+
+  void PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->PutFLWEEs(key, field, value);
+    }
+    ifaces_[i]->PutFLWEEs(key, field, value);
+  }
+
+  void PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->PutFLWR(key, field, value, timestamp);
+    }
+    ifaces_[i]->PutFLWR(key, field, value, timestamp);
+  }
+
+  void PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->PutFLWEE(key, field, value, timestamp);
+    }
+    ifaces_[i]->PutFLWEE(key, field, value, timestamp);
+  }
+
+  void RemoveFLWR(const int64_t key, const std::string& field, const int64_t value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->RemoveFLWR(key, field, value);
+    }
+    ifaces_[i]->RemoveFLWR(key, field, value);
+  }
+
+  void RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->RemoveFLWEE(key, field, value);
+    }
+    ifaces_[i]->RemoveFLWEE(key, field, value);
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -2344,6 +3448,30 @@ class FakeRedisConcurrentClient : virtual public FakeRedisIf {
   int64_t HIncrBy(const int64_t key, const std::string& field, const int64_t value);
   int32_t send_HIncrBy(const int64_t key, const std::string& field, const int64_t value);
   int64_t recv_HIncrBy(const int32_t seqid);
+  void GetFLWRs(std::vector<int64_t> & _return, const int64_t key, const std::string& field);
+  int32_t send_GetFLWRs(const int64_t key, const std::string& field);
+  void recv_GetFLWRs(std::vector<int64_t> & _return, const int32_t seqid);
+  void PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value);
+  int32_t send_PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value);
+  void recv_PutFLWRs(const int32_t seqid);
+  void GetFLWEEs(std::vector<int64_t> & _return, const int64_t key, const std::string& field);
+  int32_t send_GetFLWEEs(const int64_t key, const std::string& field);
+  void recv_GetFLWEEs(std::vector<int64_t> & _return, const int32_t seqid);
+  void PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value);
+  int32_t send_PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value);
+  void recv_PutFLWEEs(const int32_t seqid);
+  void PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp);
+  int32_t send_PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp);
+  void recv_PutFLWR(const int32_t seqid);
+  void PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp);
+  int32_t send_PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp);
+  void recv_PutFLWEE(const int32_t seqid);
+  void RemoveFLWR(const int64_t key, const std::string& field, const int64_t value);
+  int32_t send_RemoveFLWR(const int64_t key, const std::string& field, const int64_t value);
+  void recv_RemoveFLWR(const int32_t seqid);
+  void RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value);
+  int32_t send_RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value);
+  void recv_RemoveFLWEE(const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

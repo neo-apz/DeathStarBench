@@ -3150,6 +3150,1692 @@ uint32_t FakeRedis_HIncrBy_presult::read(::apache::thrift::protocol::TProtocol* 
   return xfer;
 }
 
+
+FakeRedis_GetFLWRs_args::~FakeRedis_GetFLWRs_args() throw() {
+}
+
+
+uint32_t FakeRedis_GetFLWRs_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field);
+          this->__isset.field = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_GetFLWRs_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_GetFLWRs_args");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->key);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->field);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_GetFLWRs_pargs::~FakeRedis_GetFLWRs_pargs() throw() {
+}
+
+
+uint32_t FakeRedis_GetFLWRs_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_GetFLWRs_pargs");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->field)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_GetFLWRs_result::~FakeRedis_GetFLWRs_result() throw() {
+}
+
+
+uint32_t FakeRedis_GetFLWRs_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size111;
+            ::apache::thrift::protocol::TType _etype114;
+            xfer += iprot->readListBegin(_etype114, _size111);
+            this->success.resize(_size111);
+            uint32_t _i115;
+            for (_i115 = 0; _i115 < _size111; ++_i115)
+            {
+              xfer += iprot->readI64(this->success[_i115]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_GetFLWRs_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeRedis_GetFLWRs_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->success.size()));
+      std::vector<int64_t> ::const_iterator _iter116;
+      for (_iter116 = this->success.begin(); _iter116 != this->success.end(); ++_iter116)
+      {
+        xfer += oprot->writeI64((*_iter116));
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_GetFLWRs_presult::~FakeRedis_GetFLWRs_presult() throw() {
+}
+
+
+uint32_t FakeRedis_GetFLWRs_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size117;
+            ::apache::thrift::protocol::TType _etype120;
+            xfer += iprot->readListBegin(_etype120, _size117);
+            (*(this->success)).resize(_size117);
+            uint32_t _i121;
+            for (_i121 = 0; _i121 < _size117; ++_i121)
+            {
+              xfer += iprot->readI64((*(this->success))[_i121]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeRedis_PutFLWRs_args::~FakeRedis_PutFLWRs_args() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWRs_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field);
+          this->__isset.field = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->value.clear();
+            uint32_t _size122;
+            ::apache::thrift::protocol::TType _etype125;
+            xfer += iprot->readListBegin(_etype125, _size122);
+            this->value.resize(_size122);
+            uint32_t _i126;
+            for (_i126 = 0; _i126 < _size122; ++_i126)
+            {
+              xfer += iprot->readI64(this->value[_i126]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.value = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_PutFLWRs_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWRs_args");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->key);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->field);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_LIST, 3);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->value.size()));
+    std::vector<int64_t> ::const_iterator _iter127;
+    for (_iter127 = this->value.begin(); _iter127 != this->value.end(); ++_iter127)
+    {
+      xfer += oprot->writeI64((*_iter127));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWRs_pargs::~FakeRedis_PutFLWRs_pargs() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWRs_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWRs_pargs");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->field)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_LIST, 3);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>((*(this->value)).size()));
+    std::vector<int64_t> ::const_iterator _iter128;
+    for (_iter128 = (*(this->value)).begin(); _iter128 != (*(this->value)).end(); ++_iter128)
+    {
+      xfer += oprot->writeI64((*_iter128));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWRs_result::~FakeRedis_PutFLWRs_result() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWRs_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_PutFLWRs_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWRs_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWRs_presult::~FakeRedis_PutFLWRs_presult() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWRs_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeRedis_GetFLWEEs_args::~FakeRedis_GetFLWEEs_args() throw() {
+}
+
+
+uint32_t FakeRedis_GetFLWEEs_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field);
+          this->__isset.field = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_GetFLWEEs_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_GetFLWEEs_args");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->key);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->field);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_GetFLWEEs_pargs::~FakeRedis_GetFLWEEs_pargs() throw() {
+}
+
+
+uint32_t FakeRedis_GetFLWEEs_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_GetFLWEEs_pargs");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->field)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_GetFLWEEs_result::~FakeRedis_GetFLWEEs_result() throw() {
+}
+
+
+uint32_t FakeRedis_GetFLWEEs_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size129;
+            ::apache::thrift::protocol::TType _etype132;
+            xfer += iprot->readListBegin(_etype132, _size129);
+            this->success.resize(_size129);
+            uint32_t _i133;
+            for (_i133 = 0; _i133 < _size129; ++_i133)
+            {
+              xfer += iprot->readI64(this->success[_i133]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_GetFLWEEs_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeRedis_GetFLWEEs_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->success.size()));
+      std::vector<int64_t> ::const_iterator _iter134;
+      for (_iter134 = this->success.begin(); _iter134 != this->success.end(); ++_iter134)
+      {
+        xfer += oprot->writeI64((*_iter134));
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_GetFLWEEs_presult::~FakeRedis_GetFLWEEs_presult() throw() {
+}
+
+
+uint32_t FakeRedis_GetFLWEEs_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size135;
+            ::apache::thrift::protocol::TType _etype138;
+            xfer += iprot->readListBegin(_etype138, _size135);
+            (*(this->success)).resize(_size135);
+            uint32_t _i139;
+            for (_i139 = 0; _i139 < _size135; ++_i139)
+            {
+              xfer += iprot->readI64((*(this->success))[_i139]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeRedis_PutFLWEEs_args::~FakeRedis_PutFLWEEs_args() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWEEs_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field);
+          this->__isset.field = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->value.clear();
+            uint32_t _size140;
+            ::apache::thrift::protocol::TType _etype143;
+            xfer += iprot->readListBegin(_etype143, _size140);
+            this->value.resize(_size140);
+            uint32_t _i144;
+            for (_i144 = 0; _i144 < _size140; ++_i144)
+            {
+              xfer += iprot->readI64(this->value[_i144]);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.value = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_PutFLWEEs_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWEEs_args");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->key);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->field);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_LIST, 3);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>(this->value.size()));
+    std::vector<int64_t> ::const_iterator _iter145;
+    for (_iter145 = this->value.begin(); _iter145 != this->value.end(); ++_iter145)
+    {
+      xfer += oprot->writeI64((*_iter145));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWEEs_pargs::~FakeRedis_PutFLWEEs_pargs() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWEEs_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWEEs_pargs");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->field)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_LIST, 3);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_I64, static_cast<uint32_t>((*(this->value)).size()));
+    std::vector<int64_t> ::const_iterator _iter146;
+    for (_iter146 = (*(this->value)).begin(); _iter146 != (*(this->value)).end(); ++_iter146)
+    {
+      xfer += oprot->writeI64((*_iter146));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWEEs_result::~FakeRedis_PutFLWEEs_result() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWEEs_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_PutFLWEEs_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWEEs_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWEEs_presult::~FakeRedis_PutFLWEEs_presult() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWEEs_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeRedis_PutFLWR_args::~FakeRedis_PutFLWR_args() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWR_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field);
+          this->__isset.field = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->value);
+          this->__isset.value = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->timestamp);
+          this->__isset.timestamp = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_PutFLWR_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWR_args");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->key);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->field);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64(this->value);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeI64(this->timestamp);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWR_pargs::~FakeRedis_PutFLWR_pargs() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWR_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWR_pargs");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->field)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64((*(this->value)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeI64((*(this->timestamp)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWR_result::~FakeRedis_PutFLWR_result() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWR_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_PutFLWR_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWR_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWR_presult::~FakeRedis_PutFLWR_presult() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWR_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeRedis_PutFLWEE_args::~FakeRedis_PutFLWEE_args() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWEE_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field);
+          this->__isset.field = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->value);
+          this->__isset.value = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->timestamp);
+          this->__isset.timestamp = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_PutFLWEE_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWEE_args");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->key);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->field);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64(this->value);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeI64(this->timestamp);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWEE_pargs::~FakeRedis_PutFLWEE_pargs() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWEE_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWEE_pargs");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->field)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64((*(this->value)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeI64((*(this->timestamp)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWEE_result::~FakeRedis_PutFLWEE_result() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWEE_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_PutFLWEE_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeRedis_PutFLWEE_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_PutFLWEE_presult::~FakeRedis_PutFLWEE_presult() throw() {
+}
+
+
+uint32_t FakeRedis_PutFLWEE_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeRedis_RemoveFLWR_args::~FakeRedis_RemoveFLWR_args() throw() {
+}
+
+
+uint32_t FakeRedis_RemoveFLWR_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field);
+          this->__isset.field = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->value);
+          this->__isset.value = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_RemoveFLWR_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_RemoveFLWR_args");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->key);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->field);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64(this->value);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_RemoveFLWR_pargs::~FakeRedis_RemoveFLWR_pargs() throw() {
+}
+
+
+uint32_t FakeRedis_RemoveFLWR_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_RemoveFLWR_pargs");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->field)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64((*(this->value)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_RemoveFLWR_result::~FakeRedis_RemoveFLWR_result() throw() {
+}
+
+
+uint32_t FakeRedis_RemoveFLWR_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_RemoveFLWR_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeRedis_RemoveFLWR_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_RemoveFLWR_presult::~FakeRedis_RemoveFLWR_presult() throw() {
+}
+
+
+uint32_t FakeRedis_RemoveFLWR_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
+FakeRedis_RemoveFLWEE_args::~FakeRedis_RemoveFLWEE_args() throw() {
+}
+
+
+uint32_t FakeRedis_RemoveFLWEE_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field);
+          this->__isset.field = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->value);
+          this->__isset.value = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_RemoveFLWEE_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_RemoveFLWEE_args");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->key);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->field);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64(this->value);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_RemoveFLWEE_pargs::~FakeRedis_RemoveFLWEE_pargs() throw() {
+}
+
+
+uint32_t FakeRedis_RemoveFLWEE_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("FakeRedis_RemoveFLWEE_pargs");
+
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("field", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString((*(this->field)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_I64, 3);
+  xfer += oprot->writeI64((*(this->value)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_RemoveFLWEE_result::~FakeRedis_RemoveFLWEE_result() throw() {
+}
+
+
+uint32_t FakeRedis_RemoveFLWEE_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FakeRedis_RemoveFLWEE_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("FakeRedis_RemoveFLWEE_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+FakeRedis_RemoveFLWEE_presult::~FakeRedis_RemoveFLWEE_presult() throw() {
+}
+
+
+uint32_t FakeRedis_RemoveFLWEE_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
 void FakeRedisClient::initResults(RandomGenerator* randGen)
 {
 	this->hSetCreator_res = new FakeRedis_HSetCreator_result(randGen);
@@ -3169,6 +4855,15 @@ void FakeRedisClient::initResults(RandomGenerator* randGen)
 	this->hGetUserMentions_res = new FakeRedis_HGetUserMentions_result(randGen);
 
 	this->hIncBy_res = new FakeRedis_HIncrBy_result(randGen);
+
+	this->getFLWRs_res = new FakeRedis_GetFLWRs_result(randGen);
+	this->getFLWEEs_res = new FakeRedis_GetFLWEEs_result(randGen);
+	this->putFLWRs_res = new FakeRedis_PutFLWRs_result(randGen);
+	this->putFLWEEs_res = new FakeRedis_PutFLWEEs_result(randGen);
+	this->putFLWR_res = new FakeRedis_PutFLWR_result(randGen);
+	this->putFLWEE_res = new FakeRedis_PutFLWEE_result(randGen);
+	this->removeFLWR_res = new FakeRedis_RemoveFLWR_result(randGen);
+	this->removeFLWEE_res = new FakeRedis_RemoveFLWEE_result(randGen);
 }
 
 void FakeRedisClient::FakeHSetCreator()
@@ -4449,6 +6144,528 @@ int64_t FakeRedisClient::recv_HIncrBy()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HIncrBy failed: unknown result");
 }
 
+void FakeRedisClient::FakeGetFLWRs()
+{
+	iprot_->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_REPLY, 0);
+  getFLWRs_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t key, const std::string& field)
+{
+  send_GetFLWRs(key, field);
+  recv_GetFLWRs(_return);
+}
+
+void FakeRedisClient::send_GetFLWRs(const int64_t key, const std::string& field)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_GetFLWRs_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::recv_GetFLWRs(std::vector<int64_t> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("GetFLWRs") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeRedis_GetFLWRs_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFLWRs failed: unknown result");
+}
+
+void FakeRedisClient::FakePutFLWRs()
+{
+	iprot_->writeMessageBegin("PutFLWRs", ::apache::thrift::protocol::T_REPLY, 0);
+  putFLWRs_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
+{
+  send_PutFLWRs(key, field, value);
+  recv_PutFLWRs();
+}
+
+void FakeRedisClient::send_PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("PutFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_PutFLWRs_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::recv_PutFLWRs()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("PutFLWRs") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeRedis_PutFLWRs_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeRedisClient::FakeGetFLWEEs()
+{
+	iprot_->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_REPLY, 0);
+  getFLWEEs_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t key, const std::string& field)
+{
+  send_GetFLWEEs(key, field);
+  recv_GetFLWEEs(_return);
+}
+
+void FakeRedisClient::send_GetFLWEEs(const int64_t key, const std::string& field)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_GetFLWEEs_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::recv_GetFLWEEs(std::vector<int64_t> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("GetFLWEEs") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeRedis_GetFLWEEs_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFLWEEs failed: unknown result");
+}
+
+void FakeRedisClient::FakePutFLWEEs()
+{
+	iprot_->writeMessageBegin("PutFLWEEs", ::apache::thrift::protocol::T_REPLY, 0);
+  putFLWEEs_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
+{
+  send_PutFLWEEs(key, field, value);
+  recv_PutFLWEEs();
+}
+
+void FakeRedisClient::send_PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("PutFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_PutFLWEEs_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::recv_PutFLWEEs()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("PutFLWEEs") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeRedis_PutFLWEEs_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeRedisClient::FakePutFLWR()
+{
+	iprot_->writeMessageBegin("PutFLWR", ::apache::thrift::protocol::T_REPLY, 0);
+  putFLWR_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
+{
+  send_PutFLWR(key, field, value, timestamp);
+  recv_PutFLWR();
+}
+
+void FakeRedisClient::send_PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("PutFLWR", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_PutFLWR_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.timestamp = &timestamp;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::recv_PutFLWR()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("PutFLWR") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeRedis_PutFLWR_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeRedisClient::FakePutFLWEE()
+{
+	iprot_->writeMessageBegin("PutFLWEE", ::apache::thrift::protocol::T_REPLY, 0);
+  putFLWEE_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
+{
+  send_PutFLWEE(key, field, value, timestamp);
+  recv_PutFLWEE();
+}
+
+void FakeRedisClient::send_PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("PutFLWEE", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_PutFLWEE_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.timestamp = &timestamp;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::recv_PutFLWEE()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("PutFLWEE") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeRedis_PutFLWEE_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeRedisClient::FakeRemoveFLWR()
+{
+	iprot_->writeMessageBegin("RemoveFLWR", ::apache::thrift::protocol::T_REPLY, 0);
+  removeFLWR_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::RemoveFLWR(const int64_t key, const std::string& field, const int64_t value)
+{
+  send_RemoveFLWR(key, field, value);
+  recv_RemoveFLWR();
+}
+
+void FakeRedisClient::send_RemoveFLWR(const int64_t key, const std::string& field, const int64_t value)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("RemoveFLWR", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_RemoveFLWR_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::recv_RemoveFLWR()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("RemoveFLWR") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeRedis_RemoveFLWR_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
+void FakeRedisClient::FakeRemoveFLWEE()
+{
+	iprot_->writeMessageBegin("RemoveFLWEE", ::apache::thrift::protocol::T_REPLY, 0);
+  removeFLWEE_res->write(iprot_);
+  iprot_->writeMessageEnd();
+  iprot_->getTransport()->writeEnd();
+  iprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value)
+{
+  send_RemoveFLWEE(key, field, value);
+  recv_RemoveFLWEE();
+}
+
+void FakeRedisClient::send_RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("RemoveFLWEE", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_RemoveFLWEE_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void FakeRedisClient::recv_RemoveFLWEE()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("RemoveFLWEE") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  FakeRedis_RemoveFLWEE_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
 bool FakeRedisProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
   ProcessMap::iterator pfn;
   pfn = processMap_.find(fname);
@@ -5268,6 +7485,432 @@ void FakeRedisProcessor::process_HIncrBy(int32_t seqid, ::apache::thrift::protoc
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "FakeRedis.HIncrBy", bytes);
+  }
+}
+
+void FakeRedisProcessor::process_GetFLWRs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeRedis.GetFLWRs", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeRedis.GetFLWRs");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeRedis.GetFLWRs");
+  }
+
+  FakeRedis_GetFLWRs_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeRedis.GetFLWRs", bytes);
+  }
+
+  FakeRedis_GetFLWRs_result result;
+  try {
+    iface_->GetFLWRs(result.success, args.key, args.field);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeRedis.GetFLWRs");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeRedis.GetFLWRs");
+  }
+
+  oprot->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeRedis.GetFLWRs", bytes);
+  }
+}
+
+void FakeRedisProcessor::process_PutFLWRs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeRedis.PutFLWRs", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeRedis.PutFLWRs");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeRedis.PutFLWRs");
+  }
+
+  FakeRedis_PutFLWRs_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeRedis.PutFLWRs", bytes);
+  }
+
+  FakeRedis_PutFLWRs_result result;
+  try {
+    iface_->PutFLWRs(args.key, args.field, args.value);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeRedis.PutFLWRs");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("PutFLWRs", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeRedis.PutFLWRs");
+  }
+
+  oprot->writeMessageBegin("PutFLWRs", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeRedis.PutFLWRs", bytes);
+  }
+}
+
+void FakeRedisProcessor::process_GetFLWEEs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeRedis.GetFLWEEs", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeRedis.GetFLWEEs");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeRedis.GetFLWEEs");
+  }
+
+  FakeRedis_GetFLWEEs_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeRedis.GetFLWEEs", bytes);
+  }
+
+  FakeRedis_GetFLWEEs_result result;
+  try {
+    iface_->GetFLWEEs(result.success, args.key, args.field);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeRedis.GetFLWEEs");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeRedis.GetFLWEEs");
+  }
+
+  oprot->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeRedis.GetFLWEEs", bytes);
+  }
+}
+
+void FakeRedisProcessor::process_PutFLWEEs(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeRedis.PutFLWEEs", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeRedis.PutFLWEEs");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeRedis.PutFLWEEs");
+  }
+
+  FakeRedis_PutFLWEEs_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeRedis.PutFLWEEs", bytes);
+  }
+
+  FakeRedis_PutFLWEEs_result result;
+  try {
+    iface_->PutFLWEEs(args.key, args.field, args.value);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeRedis.PutFLWEEs");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("PutFLWEEs", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeRedis.PutFLWEEs");
+  }
+
+  oprot->writeMessageBegin("PutFLWEEs", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeRedis.PutFLWEEs", bytes);
+  }
+}
+
+void FakeRedisProcessor::process_PutFLWR(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeRedis.PutFLWR", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeRedis.PutFLWR");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeRedis.PutFLWR");
+  }
+
+  FakeRedis_PutFLWR_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeRedis.PutFLWR", bytes);
+  }
+
+  FakeRedis_PutFLWR_result result;
+  try {
+    iface_->PutFLWR(args.key, args.field, args.value, args.timestamp);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeRedis.PutFLWR");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("PutFLWR", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeRedis.PutFLWR");
+  }
+
+  oprot->writeMessageBegin("PutFLWR", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeRedis.PutFLWR", bytes);
+  }
+}
+
+void FakeRedisProcessor::process_PutFLWEE(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeRedis.PutFLWEE", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeRedis.PutFLWEE");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeRedis.PutFLWEE");
+  }
+
+  FakeRedis_PutFLWEE_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeRedis.PutFLWEE", bytes);
+  }
+
+  FakeRedis_PutFLWEE_result result;
+  try {
+    iface_->PutFLWEE(args.key, args.field, args.value, args.timestamp);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeRedis.PutFLWEE");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("PutFLWEE", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeRedis.PutFLWEE");
+  }
+
+  oprot->writeMessageBegin("PutFLWEE", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeRedis.PutFLWEE", bytes);
+  }
+}
+
+void FakeRedisProcessor::process_RemoveFLWR(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeRedis.RemoveFLWR", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeRedis.RemoveFLWR");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeRedis.RemoveFLWR");
+  }
+
+  FakeRedis_RemoveFLWR_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeRedis.RemoveFLWR", bytes);
+  }
+
+  FakeRedis_RemoveFLWR_result result;
+  try {
+    iface_->RemoveFLWR(args.key, args.field, args.value);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeRedis.RemoveFLWR");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("RemoveFLWR", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeRedis.RemoveFLWR");
+  }
+
+  oprot->writeMessageBegin("RemoveFLWR", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeRedis.RemoveFLWR", bytes);
+  }
+}
+
+void FakeRedisProcessor::process_RemoveFLWEE(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("FakeRedis.RemoveFLWEE", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "FakeRedis.RemoveFLWEE");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "FakeRedis.RemoveFLWEE");
+  }
+
+  FakeRedis_RemoveFLWEE_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "FakeRedis.RemoveFLWEE", bytes);
+  }
+
+  FakeRedis_RemoveFLWEE_result result;
+  try {
+    iface_->RemoveFLWEE(args.key, args.field, args.value);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "FakeRedis.RemoveFLWEE");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("RemoveFLWEE", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "FakeRedis.RemoveFLWEE");
+  }
+
+  oprot->writeMessageBegin("RemoveFLWEE", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "FakeRedis.RemoveFLWEE", bytes);
   }
 }
 
@@ -6510,6 +9153,658 @@ int64_t FakeRedisConcurrentClient::recv_HIncrBy(const int32_t seqid)
       }
       // in a bad state, don't commit
       throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "HIncrBy failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeRedisConcurrentClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t key, const std::string& field)
+{
+  int32_t seqid = send_GetFLWRs(key, field);
+  recv_GetFLWRs(_return, seqid);
+}
+
+int32_t FakeRedisConcurrentClient::send_GetFLWRs(const int64_t key, const std::string& field)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_GetFLWRs_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeRedisConcurrentClient::recv_GetFLWRs(std::vector<int64_t> & _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("GetFLWRs") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeRedis_GetFLWRs_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFLWRs failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeRedisConcurrentClient::PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
+{
+  int32_t seqid = send_PutFLWRs(key, field, value);
+  recv_PutFLWRs(seqid);
+}
+
+int32_t FakeRedisConcurrentClient::send_PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("PutFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_PutFLWRs_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeRedisConcurrentClient::recv_PutFLWRs(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("PutFLWRs") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeRedis_PutFLWRs_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeRedisConcurrentClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t key, const std::string& field)
+{
+  int32_t seqid = send_GetFLWEEs(key, field);
+  recv_GetFLWEEs(_return, seqid);
+}
+
+int32_t FakeRedisConcurrentClient::send_GetFLWEEs(const int64_t key, const std::string& field)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_GetFLWEEs_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeRedisConcurrentClient::recv_GetFLWEEs(std::vector<int64_t> & _return, const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("GetFLWEEs") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeRedis_GetFLWEEs_presult result;
+      result.success = &_return;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      if (result.__isset.success) {
+        // _return pointer has now been filled
+        sentry.commit();
+        return;
+      }
+      // in a bad state, don't commit
+      throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetFLWEEs failed: unknown result");
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeRedisConcurrentClient::PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
+{
+  int32_t seqid = send_PutFLWEEs(key, field, value);
+  recv_PutFLWEEs(seqid);
+}
+
+int32_t FakeRedisConcurrentClient::send_PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("PutFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_PutFLWEEs_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeRedisConcurrentClient::recv_PutFLWEEs(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("PutFLWEEs") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeRedis_PutFLWEEs_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeRedisConcurrentClient::PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
+{
+  int32_t seqid = send_PutFLWR(key, field, value, timestamp);
+  recv_PutFLWR(seqid);
+}
+
+int32_t FakeRedisConcurrentClient::send_PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("PutFLWR", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_PutFLWR_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.timestamp = &timestamp;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeRedisConcurrentClient::recv_PutFLWR(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("PutFLWR") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeRedis_PutFLWR_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeRedisConcurrentClient::PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
+{
+  int32_t seqid = send_PutFLWEE(key, field, value, timestamp);
+  recv_PutFLWEE(seqid);
+}
+
+int32_t FakeRedisConcurrentClient::send_PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("PutFLWEE", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_PutFLWEE_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.timestamp = &timestamp;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeRedisConcurrentClient::recv_PutFLWEE(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("PutFLWEE") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeRedis_PutFLWEE_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeRedisConcurrentClient::RemoveFLWR(const int64_t key, const std::string& field, const int64_t value)
+{
+  int32_t seqid = send_RemoveFLWR(key, field, value);
+  recv_RemoveFLWR(seqid);
+}
+
+int32_t FakeRedisConcurrentClient::send_RemoveFLWR(const int64_t key, const std::string& field, const int64_t value)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("RemoveFLWR", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_RemoveFLWR_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeRedisConcurrentClient::recv_RemoveFLWR(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("RemoveFLWR") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeRedis_RemoveFLWR_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_.updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_.waitForWork(seqid);
+  } // end while(true)
+}
+
+void FakeRedisConcurrentClient::RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value)
+{
+  int32_t seqid = send_RemoveFLWEE(key, field, value);
+  recv_RemoveFLWEE(seqid);
+}
+
+int32_t FakeRedisConcurrentClient::send_RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value)
+{
+  int32_t cseqid = this->sync_.generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("RemoveFLWEE", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  FakeRedis_RemoveFLWEE_pargs args;
+  args.key = &key;
+  args.field = &field;
+  args.value = &value;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void FakeRedisConcurrentClient::recv_RemoveFLWEE(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(&this->sync_, seqid);
+
+  while(true) {
+    if(!this->sync_.getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("RemoveFLWEE") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      FakeRedis_RemoveFLWEE_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
     }
     // seqid != rseqid
     this->sync_.updatePending(fname, mtype, rseqid);

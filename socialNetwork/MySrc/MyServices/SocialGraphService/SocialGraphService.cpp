@@ -44,19 +44,6 @@ int main(int argc, char *argv[]) {
   return ret;
 }
 
-// struct MsgType {
-//   enum type {
-//     GET_FOLLOWERS = 0,
-//     GET_FOLLOWEES = 1,
-//     FOLLOW = 2,
-//     UNFOLLOW = 3,
-//     FOLLOW_UNAME = 4,
-//     UNFOLLOW_UNAME = 5,
-//     IN_USER = 6,
-
-//     SIZE = 7
-//   };
-// };
 
 // int chances[] = {0, 0, 0, 0,
 //                  1, 1, 1, 1,
