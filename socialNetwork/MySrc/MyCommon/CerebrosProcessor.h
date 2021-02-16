@@ -89,6 +89,7 @@ void CerebrosProcessor<TProcessor, TClient>::process(uint64_t count){
 
 		GETREQ_END();
 		IN_PROCESS_BEGIN();
+		DISPATCH_BEGIN();
 	#endif
 	
 	_internalProcess();

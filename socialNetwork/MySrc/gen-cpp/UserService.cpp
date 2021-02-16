@@ -1787,7 +1787,16 @@ uint64_t UserServiceCerebrosProcessor::process_RegisterUser(UserServiceClient* c
 	auto args = client->registerUser_args;
 	auto res = client->registerUser_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	res->success = iface_->RegisterUser(args->req_id, args->first_name, args->last_name, args->username, args->password);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -1850,7 +1859,16 @@ uint64_t UserServiceCerebrosProcessor::process_RegisterUserWithId(UserServiceCli
 	auto args = client->registerUserWithId_args;
 	auto res = client->registerUserWithId_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	res->success = iface_->RegisterUserWithId(args->req_id, args->first_name, args->last_name, args->username, args->password, args->user_id);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -1913,7 +1931,16 @@ uint64_t UserServiceCerebrosProcessor::process_Login(UserServiceClient* client) 
 	auto args = client->login_args;
 	auto res = client->login_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->Login(res->success, args->req_id, args->username, args->password);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -1976,7 +2003,16 @@ uint64_t UserServiceCerebrosProcessor::process_UploadCreatorWithUserId(UserServi
 	auto args = client->uploadCreatorWithUserId_args;
 	auto res = client->uploadCreatorWithUserId_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->UploadCreatorWithUserId(args->req_id, args->user_id, args->username);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -2038,7 +2074,16 @@ uint64_t UserServiceCerebrosProcessor::process_UploadCreatorWithUsername(UserSer
 	auto args = client->uploadCreatorWithUsername_args;
 	auto res = client->uploadCreatorWithUsername_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	res->success = iface_->UploadCreatorWithUsername(args->req_id, args->username);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -2101,7 +2146,16 @@ uint64_t UserServiceCerebrosProcessor::process_GetUserId(UserServiceClient* clie
 	auto args = client->getUserId_args;
 	auto res = client->getUserId_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	res->success = iface_->GetUserId(args->req_id, args->username);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }

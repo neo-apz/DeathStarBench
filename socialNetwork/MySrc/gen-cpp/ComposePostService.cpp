@@ -1800,7 +1800,16 @@ uint64_t ComposePostServiceCerebrosProcessor::process_UploadText(ComposePostServ
 	auto args = client->uploadText_args;
 	auto res = client->uploadText_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+
 	res->success = iface_->UploadText(args->req_id, args->text);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -1863,7 +1872,16 @@ uint64_t ComposePostServiceCerebrosProcessor::process_UploadMedia(ComposePostSer
 	auto args = client->uploadMedia_args;
 	auto res = client->uploadMedia_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+
 	res->success = iface_->UploadMedia(args->req_id, args->media);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -1926,7 +1944,16 @@ uint64_t ComposePostServiceCerebrosProcessor::process_UploadUniqueId(ComposePost
 	auto args = client->uploadUniqueId_args;
 	auto res = client->uploadUniqueId_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+
 	res->success = iface_->UploadUniqueId(args->req_id, args->post_id, args->post_type);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -1989,7 +2016,16 @@ uint64_t ComposePostServiceCerebrosProcessor::process_UploadCreator(ComposePostS
 	auto args = client->uploadCreator_args;
 	auto res = client->uploadCreator_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+
 	res->success = iface_->UploadCreator(args->req_id, args->creator);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -2052,7 +2088,16 @@ uint64_t ComposePostServiceCerebrosProcessor::process_UploadUrls(ComposePostServ
 	auto args = client->uploadUrls_args;
 	auto res = client->uploadUrls_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+
 	res->success = iface_->UploadUrls(args->req_id, args->urls);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -2115,7 +2160,16 @@ uint64_t ComposePostServiceCerebrosProcessor::process_UploadUserMentions(Compose
 	auto args = client->uploadUserMentions_args;
 	auto res = client->uploadUserMentions_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+
 	res->success = iface_->UploadUserMentions(args->req_id, args->user_mentions);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }

@@ -364,7 +364,16 @@ uint64_t UniqueIdServiceCerebrosProcessor::process_UploadUniqueId(UniqueIdServic
 	auto args = client->uploadUniqueId_args;
 	auto res = client->uploadUniqueId_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	res->success = iface_->UploadUniqueId(args->req_id, args->post_type);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }

@@ -1889,9 +1889,18 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_GetFollowers(MySocialGra
 	auto args = client->getFollowers_args;
 	MySocialGraphService_GetFollowers_result res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->GetFollowers(res.success, args->req_id, args->user_id);
 
 	uint64_t ret = (uint64_t) &res; // TODO This might cause an issue later and lead to a seg fault!
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return ret;
 }
@@ -1954,9 +1963,18 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_GetFollowees(MySocialGra
 	auto args = client->getFollowees_args;
 	MySocialGraphService_GetFollowees_result res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->GetFollowees(res.success, args->req_id, args->user_id);
 
 	uint64_t ret = (uint64_t) &res; // TODO This might cause an issue later and lead to a seg fault!
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return ret;
 }
@@ -2019,7 +2037,16 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_Follow(MySocialGraphServ
 	auto args = client->follow_args;
 	auto res = client->follow_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->Follow(args->req_id, args->user_id, args->followee_id);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -2081,7 +2108,16 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_Unfollow(MySocialGraphSe
 	auto args = client->unfollow_args;
 	auto res = client->unfollow_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->Unfollow(args->req_id, args->user_id, args->followee_id);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -2143,7 +2179,16 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_FollowWithUsername(MySoc
 	auto args = client->followWithUsername_args;
 	auto res = client->followWithUsername_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->FollowWithUsername(args->req_id, args->user_usernmae, args->followee_username);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -2205,7 +2250,16 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_UnfollowWithUsername(MyS
 	auto args = client->unfollowWithUsername_args;
 	auto res = client->unfollowWithUsername_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->UnfollowWithUsername(args->req_id, args->user_usernmae, args->followee_username);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
@@ -2267,7 +2321,16 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_InsertUser(MySocialGraph
 	auto args = client->insertUser_args;
 	auto res = client->insertUser_res;
 
+	#ifdef __aarch64__
+		DISPATCH_END();
+		SERVICE_BEGIN();
+	#endif
+	
 	iface_->InsertUser(args->req_id, args->user_id);
+
+	#ifdef __aarch64__
+		SERVICE_END();
+	#endif
 
 	return (uint64_t) res;
 }
