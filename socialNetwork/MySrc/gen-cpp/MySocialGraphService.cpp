@@ -1896,7 +1896,8 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_GetFollowers(MySocialGra
 	
 	iface_->GetFollowers(res.success, args->req_id, args->user_id);
 
-	uint64_t ret = (uint64_t) &res; // TODO This might cause an issue later and lead to a seg fault!
+	// TODO This is wrong, and in fact the result should be returned!
+	uint64_t ret = (uint64_t) &args; 
 
 	#ifdef __aarch64__
 		SERVICE_END();
@@ -1970,7 +1971,8 @@ uint64_t MySocialGraphServiceCerebrosProcessor::process_GetFollowees(MySocialGra
 	
 	iface_->GetFollowees(res.success, args->req_id, args->user_id);
 
-	uint64_t ret = (uint64_t) &res; // TODO This might cause an issue later and lead to a seg fault!
+	// TODO This is wrong, and in fact the result should be returned!
+	uint64_t ret = (uint64_t) &args; 
 
 	#ifdef __aarch64__
 		SERVICE_END();
