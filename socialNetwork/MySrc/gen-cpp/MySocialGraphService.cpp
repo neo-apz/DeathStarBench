@@ -1820,8 +1820,16 @@ void MySocialGraphServiceClient::InsertUser(const int64_t req_id, const int64_t 
 
 void MySocialGraphServiceClient::send_InsertUser(const int64_t req_id, const int64_t user_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   MySocialGraphService_InsertUser_pargs args;
   args.req_id = &req_id;
@@ -1835,6 +1843,9 @@ void MySocialGraphServiceClient::send_InsertUser(const int64_t req_id, const int
 
 void MySocialGraphServiceClient::recv_InsertUser()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -1858,7 +1869,11 @@ void MySocialGraphServiceClient::recv_InsertUser()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
-  MySocialGraphService_InsertUser_presult result;
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
+	MySocialGraphService_InsertUser_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();

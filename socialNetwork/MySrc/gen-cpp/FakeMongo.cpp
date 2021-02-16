@@ -2071,8 +2071,16 @@ bool FakeMongoClient::UserExists(const std::string& username)
 
 void FakeMongoClient::send_UserExists(const std::string& username)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UserExists", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_UserExists_pargs args;
   args.username = &username;
@@ -2085,6 +2093,9 @@ void FakeMongoClient::send_UserExists(const std::string& username)
 
 bool FakeMongoClient::recv_UserExists()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2108,6 +2119,10 @@ bool FakeMongoClient::recv_UserExists()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   bool _return;
   FakeMongo_UserExists_presult result;
   result.success = &_return;
@@ -2138,8 +2153,16 @@ void FakeMongoClient::InsertUser(const User& user)
 
 void FakeMongoClient::send_InsertUser(const User& user)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_InsertUser_pargs args;
   args.user = &user;
@@ -2152,6 +2175,9 @@ void FakeMongoClient::send_InsertUser(const User& user)
 
 void FakeMongoClient::recv_InsertUser()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2175,6 +2201,10 @@ void FakeMongoClient::recv_InsertUser()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_InsertUser_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2200,8 +2230,16 @@ int64_t FakeMongoClient::CreatorExists(const std::string& username)
 
 void FakeMongoClient::send_CreatorExists(const std::string& username)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("CreatorExists", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_CreatorExists_pargs args;
   args.username = &username;
@@ -2214,6 +2252,9 @@ void FakeMongoClient::send_CreatorExists(const std::string& username)
 
 int64_t FakeMongoClient::recv_CreatorExists()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2237,6 +2278,10 @@ int64_t FakeMongoClient::recv_CreatorExists()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   int64_t _return;
   FakeMongo_CreatorExists_presult result;
   result.success = &_return;
@@ -2267,8 +2312,16 @@ void FakeMongoClient::GetUser(User& _return, const std::string& username)
 
 void FakeMongoClient::send_GetUser(const std::string& username)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetUser", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_GetUser_pargs args;
   args.username = &username;
@@ -2281,6 +2334,9 @@ void FakeMongoClient::send_GetUser(const std::string& username)
 
 void FakeMongoClient::recv_GetUser(User& _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2304,6 +2360,10 @@ void FakeMongoClient::recv_GetUser(User& _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_GetUser_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -2334,8 +2394,16 @@ void FakeMongoClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t use
 
 void FakeMongoClient::send_GetFLWRs(const int64_t user_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_GetFLWRs_pargs args;
   args.user_id = &user_id;
@@ -2348,6 +2416,9 @@ void FakeMongoClient::send_GetFLWRs(const int64_t user_id)
 
 void FakeMongoClient::recv_GetFLWRs(std::vector<int64_t> & _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2371,6 +2442,10 @@ void FakeMongoClient::recv_GetFLWRs(std::vector<int64_t> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_GetFLWRs_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -2401,8 +2476,16 @@ void FakeMongoClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t us
 
 void FakeMongoClient::send_GetFLWEEs(const int64_t user_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_GetFLWEEs_pargs args;
   args.user_id = &user_id;
@@ -2415,6 +2498,9 @@ void FakeMongoClient::send_GetFLWEEs(const int64_t user_id)
 
 void FakeMongoClient::recv_GetFLWEEs(std::vector<int64_t> & _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2438,6 +2524,10 @@ void FakeMongoClient::recv_GetFLWEEs(std::vector<int64_t> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_GetFLWEEs_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -2468,8 +2558,16 @@ void FakeMongoClient::AddFollower(const int64_t user_id, const int64_t followee_
 
 void FakeMongoClient::send_AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("AddFollower", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_AddFollower_pargs args;
   args.user_id = &user_id;
@@ -2484,6 +2582,9 @@ void FakeMongoClient::send_AddFollower(const int64_t user_id, const int64_t foll
 
 void FakeMongoClient::recv_AddFollower()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2507,6 +2608,10 @@ void FakeMongoClient::recv_AddFollower()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_AddFollower_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2532,8 +2637,16 @@ void FakeMongoClient::AddFollowee(const int64_t followee_id, const int64_t user_
 
 void FakeMongoClient::send_AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("AddFollowee", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_AddFollowee_pargs args;
   args.followee_id = &followee_id;
@@ -2548,6 +2661,9 @@ void FakeMongoClient::send_AddFollowee(const int64_t followee_id, const int64_t 
 
 void FakeMongoClient::recv_AddFollowee()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2571,6 +2687,10 @@ void FakeMongoClient::recv_AddFollowee()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_AddFollowee_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2596,8 +2716,16 @@ void FakeMongoClient::RemoveFollower(const int64_t user_id, const int64_t follow
 
 void FakeMongoClient::send_RemoveFollower(const int64_t user_id, const int64_t followee_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RemoveFollower", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_RemoveFollower_pargs args;
   args.user_id = &user_id;
@@ -2611,6 +2739,9 @@ void FakeMongoClient::send_RemoveFollower(const int64_t user_id, const int64_t f
 
 void FakeMongoClient::recv_RemoveFollower()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2634,6 +2765,10 @@ void FakeMongoClient::recv_RemoveFollower()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_RemoveFollower_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2659,8 +2794,16 @@ void FakeMongoClient::RemoveFollowee(const int64_t followee_id, const int64_t us
 
 void FakeMongoClient::send_RemoveFollowee(const int64_t followee_id, const int64_t user_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RemoveFollowee", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_RemoveFollowee_pargs args;
   args.followee_id = &followee_id;
@@ -2674,6 +2817,9 @@ void FakeMongoClient::send_RemoveFollowee(const int64_t followee_id, const int64
 
 void FakeMongoClient::recv_RemoveFollowee()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2697,6 +2843,10 @@ void FakeMongoClient::recv_RemoveFollowee()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_RemoveFollowee_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -2722,8 +2872,16 @@ void FakeMongoClient::InsertUserId(const int64_t user_id)
 
 void FakeMongoClient::send_InsertUserId(const int64_t user_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("InsertUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMongo_InsertUserId_pargs args;
   args.user_id = &user_id;
@@ -2736,6 +2894,9 @@ void FakeMongoClient::send_InsertUserId(const int64_t user_id)
 
 void FakeMongoClient::recv_InsertUserId()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -2759,6 +2920,10 @@ void FakeMongoClient::recv_InsertUserId()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMongo_InsertUserId_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();

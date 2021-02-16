@@ -1713,8 +1713,16 @@ int64_t UserServiceClient::GetUserId(const int64_t req_id, const std::string& us
 
 void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& username)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+	
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   UserService_GetUserId_pargs args;
   args.req_id = &req_id;
@@ -1728,6 +1736,9 @@ void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& 
 
 int64_t UserServiceClient::recv_GetUserId()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -1751,6 +1762,10 @@ int64_t UserServiceClient::recv_GetUserId()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   int64_t _return;
   UserService_GetUserId_presult result;
   result.success = &_return;

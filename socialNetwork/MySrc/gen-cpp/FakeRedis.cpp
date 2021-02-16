@@ -6161,8 +6161,16 @@ void FakeRedisClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t key
 
 void FakeRedisClient::send_GetFLWRs(const int64_t key, const std::string& field)
 {
-  int32_t cseqid = 0;
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+	
+	int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_GetFLWRs_pargs args;
   args.key = &key;
@@ -6176,6 +6184,9 @@ void FakeRedisClient::send_GetFLWRs(const int64_t key, const std::string& field)
 
 void FakeRedisClient::recv_GetFLWRs(std::vector<int64_t> & _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -6199,6 +6210,10 @@ void FakeRedisClient::recv_GetFLWRs(std::vector<int64_t> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
   FakeRedis_GetFLWRs_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -6229,8 +6244,16 @@ void FakeRedisClient::PutFLWRs(const int64_t key, const std::string& field, cons
 
 void FakeRedisClient::send_PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("PutFLWRs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_PutFLWRs_pargs args;
   args.key = &key;
@@ -6245,6 +6268,9 @@ void FakeRedisClient::send_PutFLWRs(const int64_t key, const std::string& field,
 
 void FakeRedisClient::recv_PutFLWRs()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -6268,6 +6294,10 @@ void FakeRedisClient::recv_PutFLWRs()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
   FakeRedis_PutFLWRs_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -6293,8 +6323,16 @@ void FakeRedisClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t ke
 
 void FakeRedisClient::send_GetFLWEEs(const int64_t key, const std::string& field)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_GetFLWEEs_pargs args;
   args.key = &key;
@@ -6308,6 +6346,9 @@ void FakeRedisClient::send_GetFLWEEs(const int64_t key, const std::string& field
 
 void FakeRedisClient::recv_GetFLWEEs(std::vector<int64_t> & _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -6331,6 +6372,10 @@ void FakeRedisClient::recv_GetFLWEEs(std::vector<int64_t> & _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
   FakeRedis_GetFLWEEs_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -6361,8 +6406,16 @@ void FakeRedisClient::PutFLWEEs(const int64_t key, const std::string& field, con
 
 void FakeRedisClient::send_PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("PutFLWEEs", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_PutFLWEEs_pargs args;
   args.key = &key;
@@ -6377,6 +6430,9 @@ void FakeRedisClient::send_PutFLWEEs(const int64_t key, const std::string& field
 
 void FakeRedisClient::recv_PutFLWEEs()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -6400,6 +6456,10 @@ void FakeRedisClient::recv_PutFLWEEs()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
   FakeRedis_PutFLWEEs_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -6425,8 +6485,16 @@ void FakeRedisClient::PutFLWR(const int64_t key, const std::string& field, const
 
 void FakeRedisClient::send_PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("PutFLWR", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_PutFLWR_pargs args;
   args.key = &key;
@@ -6442,6 +6510,9 @@ void FakeRedisClient::send_PutFLWR(const int64_t key, const std::string& field, 
 
 void FakeRedisClient::recv_PutFLWR()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -6465,6 +6536,10 @@ void FakeRedisClient::recv_PutFLWR()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
   FakeRedis_PutFLWR_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -6490,8 +6565,16 @@ void FakeRedisClient::PutFLWEE(const int64_t key, const std::string& field, cons
 
 void FakeRedisClient::send_PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("PutFLWEE", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_PutFLWEE_pargs args;
   args.key = &key;
@@ -6507,6 +6590,9 @@ void FakeRedisClient::send_PutFLWEE(const int64_t key, const std::string& field,
 
 void FakeRedisClient::recv_PutFLWEE()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -6530,6 +6616,10 @@ void FakeRedisClient::recv_PutFLWEE()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
   FakeRedis_PutFLWEE_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -6555,8 +6645,16 @@ void FakeRedisClient::RemoveFLWR(const int64_t key, const std::string& field, co
 
 void FakeRedisClient::send_RemoveFLWR(const int64_t key, const std::string& field, const int64_t value)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RemoveFLWR", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_RemoveFLWR_pargs args;
   args.key = &key;
@@ -6571,6 +6669,9 @@ void FakeRedisClient::send_RemoveFLWR(const int64_t key, const std::string& fiel
 
 void FakeRedisClient::recv_RemoveFLWR()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -6594,6 +6695,10 @@ void FakeRedisClient::recv_RemoveFLWR()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
   FakeRedis_RemoveFLWR_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -6619,8 +6724,16 @@ void FakeRedisClient::RemoveFLWEE(const int64_t key, const std::string& field, c
 
 void FakeRedisClient::send_RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RemoveFLWEE", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
 
   FakeRedis_RemoveFLWEE_pargs args;
   args.key = &key;
@@ -6635,6 +6748,9 @@ void FakeRedisClient::send_RemoveFLWEE(const int64_t key, const std::string& fie
 
 void FakeRedisClient::recv_RemoveFLWEE()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -6658,6 +6774,10 @@ void FakeRedisClient::recv_RemoveFLWEE()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+  
   FakeRedis_RemoveFLWEE_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();

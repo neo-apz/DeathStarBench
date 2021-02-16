@@ -1608,8 +1608,16 @@ int64_t ComposePostServiceClient::UploadCreator(const int64_t req_id, const Crea
 
 void ComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UploadCreator", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   ComposePostService_UploadCreator_pargs args;
   args.req_id = &req_id;
@@ -1623,6 +1631,9 @@ void ComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Cr
 
 int64_t ComposePostServiceClient::recv_UploadCreator()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -1646,6 +1657,10 @@ int64_t ComposePostServiceClient::recv_UploadCreator()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   int64_t _return;
   ComposePostService_UploadCreator_presult result;
   result.success = &_return;

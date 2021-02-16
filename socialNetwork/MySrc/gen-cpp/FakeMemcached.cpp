@@ -939,8 +939,16 @@ int64_t FakeMemcachedClient::UserCached(const std::string& username)
 
 void FakeMemcachedClient::send_UserCached(const std::string& username)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UserCached", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMemcached_UserCached_pargs args;
   args.username = &username;
@@ -953,6 +961,9 @@ void FakeMemcachedClient::send_UserCached(const std::string& username)
 
 int64_t FakeMemcachedClient::recv_UserCached()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -976,6 +987,10 @@ int64_t FakeMemcachedClient::recv_UserCached()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+	
   int64_t _return;
   FakeMemcached_UserCached_presult result;
   result.success = &_return;
@@ -1006,8 +1021,16 @@ int64_t FakeMemcachedClient::GetUserId(const std::string& username)
 
 void FakeMemcachedClient::send_GetUserId(const std::string& username)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMemcached_GetUserId_pargs args;
   args.username = &username;
@@ -1020,6 +1043,9 @@ void FakeMemcachedClient::send_GetUserId(const std::string& username)
 
 int64_t FakeMemcachedClient::recv_GetUserId()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -1043,6 +1069,10 @@ int64_t FakeMemcachedClient::recv_GetUserId()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   int64_t _return;
   FakeMemcached_GetUserId_presult result;
   result.success = &_return;
@@ -1073,8 +1103,16 @@ void FakeMemcachedClient::InsertUserId(const std::string& username, const int64_
 
 void FakeMemcachedClient::send_InsertUserId(const std::string& username, const int64_t user_id)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("InsertUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMemcached_InsertUserId_pargs args;
   args.username = &username;
@@ -1088,6 +1126,9 @@ void FakeMemcachedClient::send_InsertUserId(const std::string& username, const i
 
 void FakeMemcachedClient::recv_InsertUserId()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -1111,6 +1152,10 @@ void FakeMemcachedClient::recv_InsertUserId()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMemcached_InsertUserId_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -1136,8 +1181,16 @@ void FakeMemcachedClient::LoginCached(User& _return, const std::string& username
 
 void FakeMemcachedClient::send_LoginCached(const std::string& username)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("LoginCached", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMemcached_LoginCached_pargs args;
   args.username = &username;
@@ -1150,6 +1203,9 @@ void FakeMemcachedClient::send_LoginCached(const std::string& username)
 
 void FakeMemcachedClient::recv_LoginCached(User& _return)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -1173,6 +1229,10 @@ void FakeMemcachedClient::recv_LoginCached(User& _return)
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMemcached_LoginCached_presult result;
   result.success = &_return;
   result.read(iprot_);
@@ -1203,8 +1263,16 @@ void FakeMemcachedClient::InsertUser(const std::string& username, const User& us
 
 void FakeMemcachedClient::send_InsertUser(const std::string& username, const User& user)
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
+
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_CALL, cseqid);
+
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif	
 
   FakeMemcached_InsertUser_pargs args;
   args.username = &username;
@@ -1218,6 +1286,9 @@ void FakeMemcachedClient::send_InsertUser(const std::string& username, const Use
 
 void FakeMemcachedClient::recv_InsertUser()
 {
+	#ifdef __aarch64__
+	NESTED_HEADER_BEGIN();
+	#endif
 
   int32_t rseqid = 0;
   std::string fname;
@@ -1241,6 +1312,10 @@ void FakeMemcachedClient::recv_InsertUser()
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
   }
+	#ifdef __aarch64__
+	NESTED_HEADER_END();
+	#endif
+
   FakeMemcached_InsertUser_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
