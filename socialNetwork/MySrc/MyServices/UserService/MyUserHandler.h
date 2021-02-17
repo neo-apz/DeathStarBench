@@ -180,7 +180,7 @@ bool UserHandler::RegisterUserWithId(
 	#endif
 
 	if (found) {
-		LOG(warning) << "User " << username << " already existed.";
+		// LOG(warning) << "User " << username << " already existed.";
 		return false;
 	}
 
@@ -220,7 +220,7 @@ bool UserHandler::RegisterUserWithId(
 		NESTED_END();
 	#endif		
 
-	LOG(debug) << "User: " << username << " registered";
+	// LOG(debug) << "User: " << username << " registered";
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
@@ -318,7 +318,7 @@ bool UserHandler::RegisterUser(
 	#endif
 
 	if (found) {
-		LOG(warning) << "User " << username << " already existed.";
+		// LOG(warning) << "User " << username << " already existed.";
 		return false;
 	}
 
@@ -358,7 +358,7 @@ bool UserHandler::RegisterUser(
 		NESTED_END();
 	#endif		
 
-	LOG(debug) << "User: " << username << " registered";
+	// LOG(debug) << "User: " << username << " registered";
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
@@ -422,10 +422,10 @@ bool UserHandler::UploadCreatorWithUsername(
 
 	if (user_id != -1){ // Cached!
 		cached = true;
-		LOG(debug) << "Found user_id of username :" << username  << " in Memcached";
+		// LOG(debug) << "Found user_id of username :" << username  << " in Memcached";
 	}
 	else { // If not cached in memcached
-		LOG(debug) << "user_id not cached in Memcached";
+		// LOG(debug) << "user_id not cached in Memcached";
 
 		#ifdef __aarch64__
 			NESTED_BEGIN();
@@ -453,11 +453,11 @@ bool UserHandler::UploadCreatorWithUsername(
 		#endif		
 
 		if (user_id == -1) {
-			LOG(warning) << "User: " << username << " doesn't exist in MongoDB";
+			// LOG(warning) << "User: " << username << " doesn't exist in MongoDB";
 			return false;
 		}
 
-		LOG(debug) << "User: " << username << " found in MongoDB";
+		// LOG(debug) << "User: " << username << " found in MongoDB";
 	}
 
 	Creator creator;
@@ -590,7 +590,7 @@ void UserHandler::Login(
 
 	if (user.user_id != -1) { // Login is cached
 		cached = true;
-		LOG(debug) << "Found username: "<< username <<" in Memcached";
+		// LOG(debug) << "Found username: "<< username <<" in Memcached";
 	}
 
 	else {  // TODO: If not cached in memcached
@@ -675,10 +675,10 @@ int64_t UserHandler::GetUserId(
 
 	if (user_id != -1){ // Cached!
 		cached = true;
-		LOG(debug) << "Found user_id of username :" << username  << " in Memcached";
+		// LOG(debug) << "Found user_id of username :" << username  << " in Memcached";
 	}
 	else { // If not cached in memcached
-		LOG(debug) << "user_id not cached in Memcached";
+		// LOG(debug) << "user_id not cached in Memcached";
 
 		#ifdef __aarch64__
 			NESTED_BEGIN();
@@ -708,11 +708,11 @@ int64_t UserHandler::GetUserId(
 		user_id = user.user_id;
 
 		if (user_id == -1) {
-			LOG(warning) << "User: " << username << " doesn't exist in MongoDB";
+			// LOG(warning) << "User: " << username << " doesn't exist in MongoDB";
 			return user_id;
 		}
 
-		LOG(debug) << "User: " << username << " found in MongoDB";
+		// LOG(debug) << "User: " << username << " found in MongoDB";
 	}
 
 	if (!cached) {
