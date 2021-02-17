@@ -1821,6 +1821,7 @@ void MySocialGraphServiceClient::InsertUser(const int64_t req_id, const int64_t 
 void MySocialGraphServiceClient::send_InsertUser(const int64_t req_id, const int64_t user_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 

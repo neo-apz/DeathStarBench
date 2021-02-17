@@ -1525,6 +1525,7 @@ int64_t ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int
 void ComposePostServiceClient::send_UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -1609,6 +1610,7 @@ int64_t ComposePostServiceClient::UploadCreator(const int64_t req_id, const Crea
 void ComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 

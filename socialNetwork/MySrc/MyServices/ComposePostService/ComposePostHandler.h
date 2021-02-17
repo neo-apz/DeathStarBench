@@ -89,6 +89,7 @@ int64_t ComposePostHandler::UploadCreator(
 	
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -107,6 +108,14 @@ int64_t ComposePostHandler::UploadCreator(
 		exit(EXIT_FAILURE);
 	}
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 	// Connect to FakeRedis
 	try {
 		#ifdef CEREBROS
@@ -143,6 +152,7 @@ int64_t ComposePostHandler::UploadText(
 	
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -161,6 +171,14 @@ int64_t ComposePostHandler::UploadText(
 		exit(EXIT_FAILURE);
 	}
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 	// Connect to FakeRedis
 	try {
 		#ifdef CEREBROS
@@ -197,6 +215,7 @@ int64_t ComposePostHandler::UploadMedia(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -215,6 +234,14 @@ int64_t ComposePostHandler::UploadMedia(
 		exit(EXIT_FAILURE);
 	}
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 	// Connect to FakeRedis
 	try {
 		#ifdef CEREBROS
@@ -252,6 +279,7 @@ int64_t ComposePostHandler::UploadUniqueId(
 	
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -270,6 +298,14 @@ int64_t ComposePostHandler::UploadUniqueId(
 		exit(EXIT_FAILURE);
 	}
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 	// Connect to FakeRedis
 	try {
 		#ifdef CEREBROS
@@ -287,6 +323,14 @@ int64_t ComposePostHandler::UploadUniqueId(
 		exit(EXIT_FAILURE);
 	}
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 	// Connect to FakeRedis
 	try {
 		#ifdef CEREBROS
@@ -319,11 +363,11 @@ int64_t ComposePostHandler::UploadUrls(
     int64_t req_id,
     const std::vector<Url> &urls) {
 
-
 	int64_t num_components;
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -342,6 +386,14 @@ int64_t ComposePostHandler::UploadUrls(
 		exit(EXIT_FAILURE);
 	}
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 	// Connect to FakeRedis
 	try {
 		#ifdef CEREBROS
@@ -378,6 +430,7 @@ int64_t ComposePostHandler::UploadUserMentions(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -396,6 +449,14 @@ int64_t ComposePostHandler::UploadUserMentions(
 		exit(EXIT_FAILURE);
 	}
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 	// Connect to FakeRedis
 	try {
 		#ifdef CEREBROS
@@ -438,6 +499,7 @@ void ComposePostHandler::_ComposeAndUpload(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -445,20 +507,74 @@ void ComposePostHandler::_ComposeAndUpload(
 		auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::HG_TEXT);
 		redis_client->HGetText(text, req_id, "text");
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
+
 		redis_client = _redis_pool->Get(FakeRedisIf::FuncType::HG_CREATOR);
 		redis_client->HGetCreator(creator, req_id, "creator");
+
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 
 		redis_client = _redis_pool->Get(FakeRedisIf::FuncType::HG_MEDIA);
 		redis_client->HGetMedia(media, req_id, "media");
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
+
 		redis_client = _redis_pool->Get(FakeRedisIf::FuncType::HG_POST_ID);
 		post_id = redis_client->HGetPostId(req_id, "post_id");
+
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 
 		redis_client = _redis_pool->Get(FakeRedisIf::FuncType::HG_URLS);
 		redis_client->HGetUrls(urls, req_id, "urls");
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
+
 		redis_client = _redis_pool->Get(FakeRedisIf::FuncType::HG_USER_MENTIONS);
 		redis_client->HGetUserMentions(user_mentions, req_id, "user_mentions");
+
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 
 		redis_client = _redis_pool->Get(FakeRedisIf::FuncType::HG_POST_TYPE);
 		post_type = redis_client->HGetPostType(req_id, "post_type");
@@ -470,30 +586,84 @@ void ComposePostHandler::_ComposeAndUpload(
 		redis_client->HGetText(text, req_id, "text");
 		redis_client_wrapper->ResetBuffers(true, false);
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
+
 		redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::HG_CREATOR);
 		redis_client = redis_client_wrapper->GetClient();
 		redis_client->HGetCreator(creator, req_id, "creator");
 		redis_client_wrapper->ResetBuffers(true, false);
+
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 
 		redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::HG_MEDIA);
 		redis_client = redis_client_wrapper->GetClient();
 		redis_client->HGetMedia(media, req_id, "media");
 		redis_client_wrapper->ResetBuffers(true, false);
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
+
 		redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::HG_POST_ID);
 		redis_client = redis_client_wrapper->GetClient();
 		post_id = redis_client->HGetPostId(req_id, "post_id");
 		redis_client_wrapper->ResetBuffers(true, false);
+
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 
 		redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::HG_URLS);
 		redis_client = redis_client_wrapper->GetClient();
 		redis_client->HGetUrls(urls, req_id, "urls");
 		redis_client_wrapper->ResetBuffers(true, false);
 
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
+
 		redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::HG_USER_MENTIONS);
 		redis_client = redis_client_wrapper->GetClient();
 		redis_client->HGetUserMentions(user_mentions, req_id, "user_mentions");
 		redis_client_wrapper->ResetBuffers(true, false);
+
+	#ifdef __aarch64__
+		NESTED_END();
+	#endif
+
+	#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
+	#endif
 
 		redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::HG_POST_TYPE);
 		redis_client = redis_client_wrapper->GetClient();
@@ -543,6 +713,7 @@ void ComposePostHandler::_UploadPostHelper(
   
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
   // Connect to PostStorageService
 	try {
@@ -573,6 +744,7 @@ void ComposePostHandler::_UploadUserTimelineHelper(
   
   #ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to UserTimeLineService
 	try {
@@ -604,6 +776,7 @@ void ComposePostHandler::_UploadHomeTimelineHelper(
   
   #ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRabbitMQ
 	try {

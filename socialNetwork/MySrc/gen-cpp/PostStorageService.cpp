@@ -673,6 +673,7 @@ void PostStorageServiceClient::StorePost(const int64_t req_id, const Post& post)
 void PostStorageServiceClient::send_StorePost(const int64_t req_id, const Post& post)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 

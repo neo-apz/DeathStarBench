@@ -112,6 +112,7 @@ int64_t UniqueIdHandler::UploadUniqueId(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Upload to compose post service
 	try {

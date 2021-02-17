@@ -2072,6 +2072,7 @@ bool FakeMongoClient::UserExists(const std::string& username)
 void FakeMongoClient::send_UserExists(const std::string& username)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2154,6 +2155,7 @@ void FakeMongoClient::InsertUser(const User& user)
 void FakeMongoClient::send_InsertUser(const User& user)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2231,6 +2233,7 @@ int64_t FakeMongoClient::CreatorExists(const std::string& username)
 void FakeMongoClient::send_CreatorExists(const std::string& username)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2313,6 +2316,7 @@ void FakeMongoClient::GetUser(User& _return, const std::string& username)
 void FakeMongoClient::send_GetUser(const std::string& username)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2395,6 +2399,7 @@ void FakeMongoClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t use
 void FakeMongoClient::send_GetFLWRs(const int64_t user_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2477,6 +2482,7 @@ void FakeMongoClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t us
 void FakeMongoClient::send_GetFLWEEs(const int64_t user_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2559,6 +2565,7 @@ void FakeMongoClient::AddFollower(const int64_t user_id, const int64_t followee_
 void FakeMongoClient::send_AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2638,6 +2645,7 @@ void FakeMongoClient::AddFollowee(const int64_t followee_id, const int64_t user_
 void FakeMongoClient::send_AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2717,6 +2725,7 @@ void FakeMongoClient::RemoveFollower(const int64_t user_id, const int64_t follow
 void FakeMongoClient::send_RemoveFollower(const int64_t user_id, const int64_t followee_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2795,6 +2804,7 @@ void FakeMongoClient::RemoveFollowee(const int64_t followee_id, const int64_t us
 void FakeMongoClient::send_RemoveFollowee(const int64_t followee_id, const int64_t user_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -2873,6 +2883,7 @@ void FakeMongoClient::InsertUserId(const int64_t user_id)
 void FakeMongoClient::send_InsertUserId(const int64_t user_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 

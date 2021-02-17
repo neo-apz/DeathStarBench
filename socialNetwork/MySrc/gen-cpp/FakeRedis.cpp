@@ -4888,6 +4888,7 @@ void FakeRedisClient::HSetCreator(const int64_t req_id, const std::string& field
 void FakeRedisClient::send_HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -4971,6 +4972,7 @@ void FakeRedisClient::HSetText(const int64_t req_id, const std::string& field, c
 void FakeRedisClient::send_HSetText(const int64_t req_id, const std::string& field, const std::string& text)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5054,6 +5056,7 @@ void FakeRedisClient::HSetMedia(const int64_t req_id, const std::string& field, 
 void FakeRedisClient::send_HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5137,6 +5140,7 @@ void FakeRedisClient::HSetPostId(const int64_t req_id, const std::string& field,
 void FakeRedisClient::send_HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5220,6 +5224,7 @@ void FakeRedisClient::HSetPostType(const int64_t req_id, const std::string& fiel
 void FakeRedisClient::send_HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5303,6 +5308,7 @@ void FakeRedisClient::HSetUrls(const int64_t req_id, const std::string& field, c
 void FakeRedisClient::send_HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5386,6 +5392,7 @@ void FakeRedisClient::HSetUserMentions(const int64_t req_id, const std::string& 
 void FakeRedisClient::send_HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5469,6 +5476,7 @@ void FakeRedisClient::HGetCreator(Creator& _return, const int64_t req_id, const 
 void FakeRedisClient::send_HGetCreator(const int64_t req_id, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5556,6 +5564,7 @@ void FakeRedisClient::HGetText(std::string& _return, const int64_t req_id, const
 void FakeRedisClient::send_HGetText(const int64_t req_id, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5643,6 +5652,7 @@ void FakeRedisClient::HGetMedia(std::vector<Media> & _return, const int64_t req_
 void FakeRedisClient::send_HGetMedia(const int64_t req_id, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5730,6 +5740,7 @@ int64_t FakeRedisClient::HGetPostId(const int64_t req_id, const std::string& fie
 void FakeRedisClient::send_HGetPostId(const int64_t req_id, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5817,6 +5828,7 @@ PostType::type FakeRedisClient::HGetPostType(const int64_t req_id, const std::st
 void FakeRedisClient::send_HGetPostType(const int64_t req_id, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5904,6 +5916,7 @@ void FakeRedisClient::HGetUrls(std::vector<Url> & _return, const int64_t req_id,
 void FakeRedisClient::send_HGetUrls(const int64_t req_id, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -5991,6 +6004,7 @@ void FakeRedisClient::HGetUserMentions(std::vector<UserMention> & _return, const
 void FakeRedisClient::send_HGetUserMentions(const int64_t req_id, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -6078,6 +6092,7 @@ int64_t FakeRedisClient::HIncrBy(const int64_t key, const std::string& field, co
 void FakeRedisClient::send_HIncrBy(const int64_t key, const std::string& field, const int64_t value)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -6162,6 +6177,7 @@ void FakeRedisClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t key
 void FakeRedisClient::send_GetFLWRs(const int64_t key, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 	
@@ -6245,6 +6261,7 @@ void FakeRedisClient::PutFLWRs(const int64_t key, const std::string& field, cons
 void FakeRedisClient::send_PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -6324,6 +6341,7 @@ void FakeRedisClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t ke
 void FakeRedisClient::send_GetFLWEEs(const int64_t key, const std::string& field)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -6407,6 +6425,7 @@ void FakeRedisClient::PutFLWEEs(const int64_t key, const std::string& field, con
 void FakeRedisClient::send_PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -6486,6 +6505,7 @@ void FakeRedisClient::PutFLWR(const int64_t key, const std::string& field, const
 void FakeRedisClient::send_PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -6566,6 +6586,7 @@ void FakeRedisClient::PutFLWEE(const int64_t key, const std::string& field, cons
 void FakeRedisClient::send_PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -6646,6 +6667,7 @@ void FakeRedisClient::RemoveFLWR(const int64_t key, const std::string& field, co
 void FakeRedisClient::send_RemoveFLWR(const int64_t key, const std::string& field, const int64_t value)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -6725,6 +6747,7 @@ void FakeRedisClient::RemoveFLWEE(const int64_t key, const std::string& field, c
 void FakeRedisClient::send_RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 

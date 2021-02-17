@@ -940,6 +940,7 @@ int64_t FakeMemcachedClient::UserCached(const std::string& username)
 void FakeMemcachedClient::send_UserCached(const std::string& username)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -1022,6 +1023,7 @@ int64_t FakeMemcachedClient::GetUserId(const std::string& username)
 void FakeMemcachedClient::send_GetUserId(const std::string& username)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -1104,6 +1106,7 @@ void FakeMemcachedClient::InsertUserId(const std::string& username, const int64_
 void FakeMemcachedClient::send_InsertUserId(const std::string& username, const int64_t user_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -1182,6 +1185,7 @@ void FakeMemcachedClient::LoginCached(User& _return, const std::string& username
 void FakeMemcachedClient::send_LoginCached(const std::string& username)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
@@ -1264,6 +1268,7 @@ void FakeMemcachedClient::InsertUser(const std::string& username, const User& us
 void FakeMemcachedClient::send_InsertUser(const std::string& username, const User& user)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 

@@ -1714,6 +1714,7 @@ int64_t UserServiceClient::GetUserId(const int64_t req_id, const std::string& us
 void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& username)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 	

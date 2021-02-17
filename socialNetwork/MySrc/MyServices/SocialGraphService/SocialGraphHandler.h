@@ -58,6 +58,7 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -83,6 +84,7 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 	if (_return.size() == 0) { // Was not found in Redis!
 		#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 		#endif
 		// Connect to FakeMongo 
 		try {
@@ -108,6 +110,7 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 		if (_return.size() == 0){
 			#ifdef __aarch64__
 			NESTED_BEGIN();
+			NESTED_DISPATCH_BEGIN();
 			#endif
 			// Connect to FakeRedis
 			try {
@@ -138,6 +141,7 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -163,6 +167,7 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 	if (_return.size() == 0) { // Was not found in Redis!
 		#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 		#endif
 		// Connect to FakeMongo 
 		try {
@@ -188,6 +193,7 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 		if (_return.size() == 0){
 			#ifdef __aarch64__
 			NESTED_BEGIN();
+			NESTED_DISPATCH_BEGIN();
 			#endif
 			// Connect to FakeRedis
 			try {
@@ -223,6 +229,7 @@ void SocialGraphHandler::Follow(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo 
 	try {
@@ -248,6 +255,7 @@ void SocialGraphHandler::Follow(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo 
 	try {
@@ -272,6 +280,7 @@ void SocialGraphHandler::Follow(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -297,6 +306,7 @@ void SocialGraphHandler::Follow(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -328,6 +338,7 @@ void SocialGraphHandler::Unfollow(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo 
 	try {
@@ -353,6 +364,7 @@ void SocialGraphHandler::Unfollow(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo 
 	try {
@@ -377,6 +389,7 @@ void SocialGraphHandler::Unfollow(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -402,6 +415,7 @@ void SocialGraphHandler::Unfollow(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeRedis
 	try {
@@ -436,6 +450,7 @@ void SocialGraphHandler::FollowWithUsername(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to User to get the user ID.
 	try {
@@ -460,6 +475,7 @@ void SocialGraphHandler::FollowWithUsername(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to User to get the user ID.
 	try {
@@ -496,6 +512,7 @@ void SocialGraphHandler::UnfollowWithUsername(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to User to get the user ID.
 	try {
@@ -520,6 +537,7 @@ void SocialGraphHandler::UnfollowWithUsername(
 
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to User to get the user ID.
 	try {
@@ -549,6 +567,7 @@ void SocialGraphHandler::UnfollowWithUsername(
 void SocialGraphHandler::InsertUser(int64_t req_id, int64_t user_id) {
 	#ifdef __aarch64__
 	NESTED_BEGIN();
+	NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo 
 	try {

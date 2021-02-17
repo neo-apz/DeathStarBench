@@ -156,6 +156,7 @@ bool UserHandler::RegisterUserWithId(
 	
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo to check if user already exists.
 	try {
@@ -196,6 +197,7 @@ bool UserHandler::RegisterUserWithId(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo to insert user.
 	try {
@@ -222,6 +224,7 @@ bool UserHandler::RegisterUserWithId(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to SocialGraph to insert user.
 	try {
@@ -291,6 +294,7 @@ bool UserHandler::RegisterUser(
 	
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo to check if user already exists.
 	try {
@@ -331,6 +335,7 @@ bool UserHandler::RegisterUser(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMongo to insert user.
 	try {
@@ -357,6 +362,7 @@ bool UserHandler::RegisterUser(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to SocialGraph to insert user.
 	try {
@@ -391,6 +397,7 @@ bool UserHandler::UploadCreatorWithUsername(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMemcached to check if user is cached.
 	try {
@@ -422,6 +429,7 @@ bool UserHandler::UploadCreatorWithUsername(
 
 		#ifdef __aarch64__
 			NESTED_BEGIN();
+			NESTED_DISPATCH_BEGIN();
 		#endif
 		// Connect to FakeMongo to check if user exists.
 		try {
@@ -458,6 +466,7 @@ bool UserHandler::UploadCreatorWithUsername(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Upload to compose post service
 	try {
@@ -482,7 +491,8 @@ bool UserHandler::UploadCreatorWithUsername(
 	if (!cached) {
 		#ifdef __aarch64__
 		NESTED_BEGIN();
-		#endif
+		NESTED_DISPATCH_BEGIN();
+	#endif
 		// Connect to FakeMemcached to insert user_id.
 		try {
 			#ifdef CEREBROS
@@ -519,6 +529,7 @@ void UserHandler::UploadCreatorWithUserId(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Upload to compose post service
 	try {
@@ -552,6 +563,7 @@ void UserHandler::Login(
 	
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMemcached to check if login is cached.
 	try {
@@ -601,7 +613,8 @@ void UserHandler::Login(
 	if (!cached) {
 		#ifdef __aarch64__
 		NESTED_BEGIN();
-		#endif
+		NESTED_DISPATCH_BEGIN();
+	#endif
 		// Connect to FakeMemcached to insert login info
 		try {
 			#ifdef CEREBROS
@@ -635,6 +648,7 @@ int64_t UserHandler::GetUserId(
 
 	#ifdef __aarch64__
 		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 	#endif
 	// Connect to FakeMemcached to check if user is cached.
 	try {
@@ -668,6 +682,7 @@ int64_t UserHandler::GetUserId(
 
 		#ifdef __aarch64__
 			NESTED_BEGIN();
+			NESTED_DISPATCH_BEGIN();
 		#endif
 		// Connect to FakeMongo to check if user exists.
 		try {
@@ -701,9 +716,10 @@ int64_t UserHandler::GetUserId(
 	}
 
 	if (!cached) {
-		#ifdef __aarch64__
+	#ifdef __aarch64__
 		NESTED_BEGIN();
-		#endif
+		NESTED_DISPATCH_BEGIN();
+	#endif
 		// Connect to FakeMemcached to insert user_id.
 		try {
 			#ifdef CEREBROS

@@ -39,6 +39,9 @@
 #define MAGIC_NHEADER_BEGIN        			2101
 #define MAGIC_NHEADER_END	       		  	2100
 
+#define MAGIC_NDISPATCH_BEGIN        		2301
+#define MAGIC_NDISPATCH_END	       		  2300
+
 #define MAGIC_NTRANSPORT_BEGIN        	2201
 #define MAGIC_NTRANSPORT_END	       		2200
 
@@ -171,6 +174,13 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
 #define NESTED_END() do { \
                         call_magic_2_64(42, MAGIC_NESTED_END, 0); \
                     } while (0)
+
+#define NESTED_DISPATCH_BEGIN() do { \
+                        call_magic_2_64(42, MAGIC_NDISPATCH_BEGIN, 0); \
+                    } while (0)										   
+#define NESTED_DISPATCH_END() do { \
+                        call_magic_2_64(42, MAGIC_NDISPATCH_END, 0); \
+                    } while (0)																				
 
 #define NESTED_HEADER_BEGIN() do { \
                         call_magic_2_64(42, MAGIC_NHEADER_BEGIN, 0); \

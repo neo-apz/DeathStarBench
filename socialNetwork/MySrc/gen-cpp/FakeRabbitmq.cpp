@@ -283,6 +283,7 @@ void FakeRabbitmqClient::UploadHomeTimeline(const int64_t req_id, const int64_t 
 void FakeRabbitmqClient::send_UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id)
 {
 	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
 	NESTED_HEADER_BEGIN();
 	#endif
 
