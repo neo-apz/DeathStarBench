@@ -10,6 +10,8 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 
+#include <jwt/jwt.hpp>
+
 #include <chrono>
 #include <mutex>
 
@@ -35,6 +37,7 @@ using std::chrono::milliseconds;
 using std::chrono::seconds;
 using std::chrono::duration_cast;
 using std::chrono::system_clock;
+using namespace jwt::params;
 
 static int64_t current_timestamp = -1;
 static int counter = 0;
@@ -594,20 +597,30 @@ void UserHandler::Login(
 	}
 
 	else {  // TODO: If not cached in memcached
-		bool auth = picosha2::hash256_hex_string(password + user.salt) == user.password_hashed;
 
-		if (auth) {
-			// TODO: generate the right str
-			std::string login_json_str = "This is a test json string. It should be long."
-                               "This is a test json string. It should be long."
-                               "This is a test json string. It should be long."
-                               "This is a test json string. It should be long.";
-			_return = login_json_str;		
-		}
-		else {
-			_return = "ERROR";
-			return;
-		}
+	}
+
+	bool auth = picosha2::hash256_hex_string(password + user.salt) == user.password_hashed;
+
+	if (auth) {
+		auto user_id_str = std::to_string(user.user_id);
+      auto timestamp_str = std::to_string(duration_cast<seconds>(
+          system_clock::now().time_since_epoch()).count());
+      jwt::jwt_object obj{
+          algorithm("HS256"),
+          secret(_secret),
+          payload({
+              {"user_id", user_id_str},
+              {"username", user.username},
+              {"timestamp", timestamp_str},
+              {"ttl", "3600"}
+          })
+      };
+      _return = obj.signature();
+	}
+	else {
+		_return = "ERROR: Incorrect username or password";
+		return;
 	}
 
 	if (!cached) {

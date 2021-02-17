@@ -24,6 +24,8 @@ target_link_libraries(
 	${Boost_LIBRARIES}
 	Boost::log
 	Boost::log_setup
+	OpenSSL::SSL
+	nlohmann_json::nlohmann_json
 )
 
 install(TARGETS UserService DESTINATION ./)

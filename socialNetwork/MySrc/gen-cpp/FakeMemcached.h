@@ -156,7 +156,7 @@ class FakeMemcached_UserCached_result {
 	FakeMemcached_UserCached_result(RandomGenerator *randGen) {
 		uint64_t dice = randGen->getInt64(100);
 
-		if (dice < 90){ // Cached!
+		if (dice < 95){ // Cached!
 			success = randGen->getInt64(RAND_NUM_LIMIT);
 		}
 		else { // Not Cached!
@@ -273,7 +273,7 @@ class FakeMemcached_GetUserId_result {
 	FakeMemcached_GetUserId_result(RandomGenerator *randGen) {
 		uint64_t dice = randGen->getInt64(100);
 
-		if (dice < 90){ // Cached!
+		if (dice < 95){ // Cached!
 			success = randGen->getInt64(RAND_NUM_LIMIT);
 		}
 		else { // Not Cached!
@@ -484,14 +484,16 @@ class FakeMemcached_LoginCached_result {
   }
 
 	FakeMemcached_LoginCached_result(RandomGenerator *randGen) {
-		uint64_t dice = randGen->getInt64(100);
+		// uint64_t dice = randGen->getInt64(100);
 
-		if (dice < 90){ // Cached!
-			success = User(randGen);
-		}
-		else { // Not Cached!
-			success.user_id = -1;
-		}
+		// if (dice < 90){ // Cached!
+		// 	success = User(randGen);
+		// }
+		// else { // Not Cached!
+		// 	success.user_id = -1;
+		// }
+
+		success = User(randGen); // TODO: For now it is assumed the user is always cached!
 
 		__isset.success = true;
 	}
