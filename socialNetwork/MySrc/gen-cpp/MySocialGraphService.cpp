@@ -1814,8 +1814,15 @@ void MySocialGraphServiceClient::FakeInsertUser()
 
 void MySocialGraphServiceClient::InsertUser(const int64_t req_id, const int64_t user_id)
 {
-  send_InsertUser(req_id, user_id);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_InsertUser(req_id, user_id);
   recv_InsertUser();
+	#endif
 }
 
 void MySocialGraphServiceClient::send_InsertUser(const int64_t req_id, const int64_t user_id)

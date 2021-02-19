@@ -1515,6 +1515,9 @@ void ComposePostServiceClient::FakeUploadUniqueId()
 int64_t ComposePostServiceClient::UploadUniqueId(const int64_t req_id, const int64_t post_id, const PostType::type post_type)
 {
 	#ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	return this->uploadUniqueId_res->success;	
 	#else
 	send_UploadUniqueId(req_id, post_id, post_type);

@@ -273,6 +273,9 @@ void FakeRabbitmqClient::FakeUploadHomeTimeline()
 void FakeRabbitmqClient::UploadHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_UploadHomeTimeline(req_id, post_id, user_id, timestamp, user_mentions_id);

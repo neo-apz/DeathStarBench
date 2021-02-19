@@ -496,6 +496,9 @@ void UserTimelineServiceClient::FakeWriteUserTimeline()
 void UserTimelineServiceClient::WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_WriteUserTimeline(req_id, post_id, user_id, timestamp);

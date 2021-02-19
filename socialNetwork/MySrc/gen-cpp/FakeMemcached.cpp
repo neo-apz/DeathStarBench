@@ -933,8 +933,16 @@ void FakeMemcachedClient::FakeUserCached()
 
 int64_t FakeMemcachedClient::UserCached(const std::string& username)
 {
-  send_UserCached(username);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	return this->userCached_res->success;	
+
+	#else
+	send_UserCached(username);
   return recv_UserCached();
+	#endif
 }
 
 void FakeMemcachedClient::send_UserCached(const std::string& username)
@@ -1016,8 +1024,16 @@ void FakeMemcachedClient::FakeGetUserId()
 
 int64_t FakeMemcachedClient::GetUserId(const std::string& username)
 {
-  send_GetUserId(username);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	return this->getUserId_res->success;	
+
+	#else
+	send_GetUserId(username);
   return recv_GetUserId();
+	#endif
 }
 
 void FakeMemcachedClient::send_GetUserId(const std::string& username)
@@ -1099,8 +1115,15 @@ void FakeMemcachedClient::FakeInsertUserId()
 
 void FakeMemcachedClient::InsertUserId(const std::string& username, const int64_t user_id)
 {
-  send_InsertUserId(username, user_id);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_InsertUserId(username, user_id);
   recv_InsertUserId();
+	#endif
 }
 
 void FakeMemcachedClient::send_InsertUserId(const std::string& username, const int64_t user_id)
@@ -1178,8 +1201,16 @@ void FakeMemcachedClient::FakeLoginCached()
 
 void FakeMemcachedClient::LoginCached(User& _return, const std::string& username)
 {
-  send_LoginCached(username);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	_return = this->loginCached_res->success;	
+
+	#else
+	send_LoginCached(username);
   recv_LoginCached(_return);
+	#endif
 }
 
 void FakeMemcachedClient::send_LoginCached(const std::string& username)
@@ -1261,8 +1292,15 @@ void FakeMemcachedClient::FakeInsertUser()
 
 void FakeMemcachedClient::InsertUser(const std::string& username, const User& user)
 {
-  send_InsertUser(username, user);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_InsertUser(username, user);
   recv_InsertUser();
+	#endif
 }
 
 void FakeMemcachedClient::send_InsertUser(const std::string& username, const User& user)

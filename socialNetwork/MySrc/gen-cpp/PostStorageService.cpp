@@ -663,6 +663,9 @@ void PostStorageServiceClient::FakeStorePost()
 void PostStorageServiceClient::StorePost(const int64_t req_id, const Post& post)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_StorePost(req_id, post);

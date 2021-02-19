@@ -1707,8 +1707,15 @@ void UserServiceClient::FakeGetUserId()
 
 int64_t UserServiceClient::GetUserId(const int64_t req_id, const std::string& username)
 {
-  send_GetUserId(req_id, username);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	return this->getUserId_res->success;
+	else
+	send_GetUserId(req_id, username);
   return recv_GetUserId();
+	#endif
 }
 
 void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& username)

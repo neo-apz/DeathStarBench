@@ -2065,8 +2065,15 @@ void FakeMongoClient::FakeUserExists()
 
 bool FakeMongoClient::UserExists(const std::string& username)
 {
-  send_UserExists(username);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	return this->userExists_res->success;
+	#else
+	send_UserExists(username);
   return recv_UserExists();
+	#endif
 }
 
 void FakeMongoClient::send_UserExists(const std::string& username)
@@ -2148,8 +2155,15 @@ void FakeMongoClient::FakeInsertUser()
 
 void FakeMongoClient::InsertUser(const User& user)
 {
-  send_InsertUser(user);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_InsertUser(user);
   recv_InsertUser();
+	#endif
 }
 
 void FakeMongoClient::send_InsertUser(const User& user)
@@ -2226,8 +2240,15 @@ void FakeMongoClient::FakeCreatorExists()
 
 int64_t FakeMongoClient::CreatorExists(const std::string& username)
 {
-  send_CreatorExists(username);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	return this->creatorExists_res->success;	
+	#else
+	send_CreatorExists(username);
   return recv_CreatorExists();
+	#endif
 }
 
 void FakeMongoClient::send_CreatorExists(const std::string& username)
@@ -2309,8 +2330,15 @@ void FakeMongoClient::FakeGetUser()
 
 void FakeMongoClient::GetUser(User& _return, const std::string& username)
 {
-  send_GetUser(username);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	_return = this->getUser_res->success;	
+	#else
+	send_GetUser(username);
   recv_GetUser(_return);
+	#endif
 }
 
 void FakeMongoClient::send_GetUser(const std::string& username)
@@ -2392,8 +2420,16 @@ void FakeMongoClient::FakeGetFLWRs()
 
 void FakeMongoClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t user_id)
 {
-  send_GetFLWRs(user_id);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	_return = this->getFLWRs_res->success;	
+
+	#else
+	send_GetFLWRs(user_id);
   recv_GetFLWRs(_return);
+	#endif
 }
 
 void FakeMongoClient::send_GetFLWRs(const int64_t user_id)
@@ -2475,8 +2511,16 @@ void FakeMongoClient::FakeGetFLWEEs()
 
 void FakeMongoClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t user_id)
 {
-  send_GetFLWEEs(user_id);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	_return = this->getFLWEEs_res->success;	
+
+	#else
+	send_GetFLWEEs(user_id);
   recv_GetFLWEEs(_return);
+	#endif
 }
 
 void FakeMongoClient::send_GetFLWEEs(const int64_t user_id)
@@ -2558,8 +2602,15 @@ void FakeMongoClient::FakeAddFollower()
 
 void FakeMongoClient::AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp)
 {
-  send_AddFollower(user_id, followee_id, timestamp);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_AddFollower(user_id, followee_id, timestamp);
   recv_AddFollower();
+	#endif
 }
 
 void FakeMongoClient::send_AddFollower(const int64_t user_id, const int64_t followee_id, const int64_t timestamp)
@@ -2638,8 +2689,15 @@ void FakeMongoClient::FakeAddFollowee()
 
 void FakeMongoClient::AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp)
 {
-  send_AddFollowee(followee_id, user_id, timestamp);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_AddFollowee(followee_id, user_id, timestamp);
   recv_AddFollowee();
+	#endif
 }
 
 void FakeMongoClient::send_AddFollowee(const int64_t followee_id, const int64_t user_id, const int64_t timestamp)
@@ -2718,8 +2776,15 @@ void FakeMongoClient::FakeRemoveFollower()
 
 void FakeMongoClient::RemoveFollower(const int64_t user_id, const int64_t followee_id)
 {
-  send_RemoveFollower(user_id, followee_id);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_RemoveFollower(user_id, followee_id);
   recv_RemoveFollower();
+	#endif
 }
 
 void FakeMongoClient::send_RemoveFollower(const int64_t user_id, const int64_t followee_id)
@@ -2797,8 +2862,15 @@ void FakeMongoClient::FakeRemoveFollowee()
 
 void FakeMongoClient::RemoveFollowee(const int64_t followee_id, const int64_t user_id)
 {
-  send_RemoveFollowee(followee_id, user_id);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_RemoveFollowee(followee_id, user_id);
   recv_RemoveFollowee();
+	#endif
 }
 
 void FakeMongoClient::send_RemoveFollowee(const int64_t followee_id, const int64_t user_id)
@@ -2876,8 +2948,15 @@ void FakeMongoClient::FakeInsertUserId()
 
 void FakeMongoClient::InsertUserId(const int64_t user_id)
 {
-  send_InsertUserId(user_id);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+
+	#else
+	send_InsertUserId(user_id);
   recv_InsertUserId();
+	#endif
 }
 
 void FakeMongoClient::send_InsertUserId(const int64_t user_id)

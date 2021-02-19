@@ -4878,6 +4878,9 @@ void FakeRedisClient::FakeHSetCreator()
 void FakeRedisClient::HSetCreator(const int64_t req_id, const std::string& field, const Creator& creator)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
 	
 	#else
 	send_HSetCreator(req_id, field, creator);
@@ -4962,6 +4965,9 @@ void FakeRedisClient::FakeHSetText()
 void FakeRedisClient::HSetText(const int64_t req_id, const std::string& field, const std::string& text)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_HSetText(req_id, field, text);
@@ -5046,6 +5052,9 @@ void FakeRedisClient::FakeHSetMedia()
 void FakeRedisClient::HSetMedia(const int64_t req_id, const std::string& field, const std::vector<Media> & media)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_HSetMedia(req_id, field, media);
@@ -5130,6 +5139,9 @@ void FakeRedisClient::FakeHSetPostId()
 void FakeRedisClient::HSetPostId(const int64_t req_id, const std::string& field, const int64_t post_id)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_HSetPostId(req_id, field, post_id);
@@ -5214,6 +5226,9 @@ void FakeRedisClient::FakeHSetPostType()
 void FakeRedisClient::HSetPostType(const int64_t req_id, const std::string& field, const PostType::type post_type)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_HSetPostType(req_id, field, post_type);
@@ -5298,6 +5313,9 @@ void FakeRedisClient::FakeHSetUrls()
 void FakeRedisClient::HSetUrls(const int64_t req_id, const std::string& field, const std::vector<Url> & urls)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_HSetUrls(req_id, field, urls);
@@ -5382,6 +5400,9 @@ void FakeRedisClient::FakeHSetUserMentions()
 void FakeRedisClient::HSetUserMentions(const int64_t req_id, const std::string& field, const std::vector<UserMention> & user_mentions)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	
 	#else
 	send_HSetUserMentions(req_id, field, user_mentions);
@@ -5466,6 +5487,9 @@ void FakeRedisClient::FakeHGetCreator()
 void FakeRedisClient::HGetCreator(Creator& _return, const int64_t req_id, const std::string& field)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	_return = hGetCreator_res->success;
 	#else
 	send_HGetCreator(req_id, field);
@@ -5554,6 +5578,9 @@ void FakeRedisClient::FakeHGetText()
 void FakeRedisClient::HGetText(std::string& _return, const int64_t req_id, const std::string& field)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	_return = hGetText_res->success;
 	#else
 	send_HGetText(req_id, field);
@@ -5642,6 +5669,9 @@ void FakeRedisClient::FakeHGetMedia()
 void FakeRedisClient::HGetMedia(std::vector<Media> & _return, const int64_t req_id, const std::string& field)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	_return = hGetMedia_res->success;
 	#else
 	send_HGetMedia(req_id, field);
@@ -5730,6 +5760,9 @@ void FakeRedisClient::FakeHGetPostId()
 int64_t FakeRedisClient::HGetPostId(const int64_t req_id, const std::string& field)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	return hGetPostId_res->success;
 	#else
 	send_HGetPostId(req_id, field);
@@ -5818,6 +5851,9 @@ void FakeRedisClient::FakeHGetPostType()
 PostType::type FakeRedisClient::HGetPostType(const int64_t req_id, const std::string& field)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	return hGetPostType_res->success;
 	#else
 	send_HGetPostType(req_id, field);
@@ -5906,6 +5942,9 @@ void FakeRedisClient::FakeHGetUrls()
 void FakeRedisClient::HGetUrls(std::vector<Url> & _return, const int64_t req_id, const std::string& field)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	_return = hGetUrls_res->success;
 	#else
 	send_HGetUrls(req_id, field);
@@ -5994,6 +6033,9 @@ void FakeRedisClient::FakeHGetUserMentions()
 void FakeRedisClient::HGetUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::string& field)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	_return = hGetUserMentions_res->success;
 	#else
 	send_HGetUserMentions(req_id, field);
@@ -6082,6 +6124,9 @@ void FakeRedisClient::FakeHIncrBy()
 int64_t FakeRedisClient::HIncrBy(const int64_t key, const std::string& field, const int64_t value)
 {
   #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif	
 	return hIncBy_res->success;
 	#else
 	send_HIncrBy(key, field, value);
