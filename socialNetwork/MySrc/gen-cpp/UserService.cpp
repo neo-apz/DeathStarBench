@@ -1712,7 +1712,7 @@ int64_t UserServiceClient::GetUserId(const int64_t req_id, const std::string& us
 	NESTED_DISPATCH_END();
 	#endif
 	return this->getUserId_res->success;
-	else
+	#else
 	send_GetUserId(req_id, username);
   return recv_GetUserId();
 	#endif
