@@ -45,6 +45,8 @@
 #define MAGIC_NTRANSPORT_BEGIN        	2201
 #define MAGIC_NTRANSPORT_END	       		2200
 
+#define MAGIC_EXCEPTION									0x1ABCDEF0
+
 // static inline __attribute__ ((always_inline))
 //     uint64_t  call_magic_2_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2){
 // #ifdef __aarch64__
@@ -88,6 +90,10 @@ uint64_t call_magic_4_64(uint64_t cmd_id, uint64_t arg1, uint64_t arg2, uint64_t
     return 0;
 #endif
 }
+
+#define NOTIFY_EXCEPTION(EXIT_CODE)  do { \
+                        call_magic_2_64(42, MAGIC_EXCEPTION, EXIT_CODE); \
+                    } while (0)     
 
 #define BREAKPOINT() do { \
                         call_magic_2_64(MAGIC_BREAKPOINT, 0, 0); \

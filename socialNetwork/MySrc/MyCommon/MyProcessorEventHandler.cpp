@@ -2,6 +2,9 @@
 
 #include <fstream>
 #include <iostream>
+#include <sys/syscall.h>
+#include <unistd.h>
+#include <stdint.h>
 
 using namespace std;
 
@@ -55,6 +58,14 @@ void MyProcessorEventHandler::postWrite(void* ctx, const char* fn_name, uint32_t
     #ifdef SW
     this->writeSW_.stop();
     #endif
+}
+
+void MyProcessorEventHandler::handlerError(void* ctx, const char* fn_name) {
+	#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+	#endif
+
+	syscall(SYS_exit_group, 0);
 }
 
 void MyProcessorEventHandler::printResults() {

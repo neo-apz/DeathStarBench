@@ -5,7 +5,9 @@
 #include <string>
 #include <vector>
 #include <chrono>
-
+#include <sys/syscall.h>
+#include <unistd.h>
+#include <stdint.h>
 
 #include "../../gen-cpp/ComposePostService.h"
 
@@ -105,7 +107,11 @@ int64_t ComposePostHandler::UploadCreator(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -130,7 +136,11 @@ int64_t ComposePostHandler::UploadCreator(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to retrieve message from Redis:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -168,7 +178,11 @@ int64_t ComposePostHandler::UploadText(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -193,7 +207,11 @@ int64_t ComposePostHandler::UploadText(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to retrieve message from Redis:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -231,7 +249,11 @@ int64_t ComposePostHandler::UploadMedia(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -256,7 +278,11 @@ int64_t ComposePostHandler::UploadMedia(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to retrieve message from Redis:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -295,7 +321,11 @@ int64_t ComposePostHandler::UploadUniqueId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -320,7 +350,11 @@ int64_t ComposePostHandler::UploadUniqueId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -345,7 +379,11 @@ int64_t ComposePostHandler::UploadUniqueId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to retrieve message from Redis:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -383,7 +421,11 @@ int64_t ComposePostHandler::UploadUrls(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -408,7 +450,11 @@ int64_t ComposePostHandler::UploadUrls(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to retrieve message from Redis:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -446,7 +492,11 @@ int64_t ComposePostHandler::UploadUserMentions(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -471,7 +521,11 @@ int64_t ComposePostHandler::UploadUserMentions(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to retrieve message from Redis:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -673,7 +727,11 @@ void ComposePostHandler::_ComposeAndUpload(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to retrieve message from Redis:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 	
 	#ifdef __aarch64__
@@ -729,7 +787,11 @@ void ComposePostHandler::_UploadPostHelper(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to connect to post-storage-service:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 	#ifdef __aarch64__
 		NESTED_END();
@@ -760,7 +822,11 @@ void ComposePostHandler::_UploadUserTimelineHelper(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to connect to user-timeline-service:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 	#ifdef __aarch64__
 		NESTED_END();
@@ -792,7 +858,11 @@ void ComposePostHandler::_UploadHomeTimelineHelper(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to connect to home-timeline-rabbitmq:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 	#ifdef __aarch64__
 		NESTED_END();

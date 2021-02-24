@@ -16,6 +16,7 @@ public:
     void postRead(void* ctx, const char* fn_name, uint32_t bytes) override;
     void preWrite(void* ctx, const char* fn_name) override;
     void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override;
+		void handlerError(void* ctx, const char* fn_name) override;
 
     MyProcessorEventHandler () {}
 

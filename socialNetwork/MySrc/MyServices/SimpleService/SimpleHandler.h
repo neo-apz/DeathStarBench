@@ -11,6 +11,9 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+#include <stdint.h>
 
 
 #include "../../gen-cpp/UniqueIdService.h"
@@ -98,7 +101,11 @@ int64_t UniqueIdHandler::UploadUniqueId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to upload unique-id to compose-post-service:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 	#ifdef __aarch64__
 		NESTED_END();

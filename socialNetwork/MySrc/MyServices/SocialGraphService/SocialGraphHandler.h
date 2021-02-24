@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <sys/syscall.h>
+#include <unistd.h>
+#include <stdint.h>
 
 #include "../../gen-cpp/MySocialGraphService.h"
 
@@ -74,7 +77,11 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -100,7 +107,11 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 		} catch(const std::exception& e) {
 			LOG(error) << "Cannot connect to Mongo server:\n"
 								<< e.what() << '\n' ;
-			exit(EXIT_FAILURE);
+			#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 		}
 
 		#ifdef __aarch64__
@@ -126,7 +137,11 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 			} catch(const std::exception& e) {
 				LOG(error) << "Cannot connect to Redis server:\n"
 									<< e.what() << '\n' ;
-				exit(EXIT_FAILURE);
+				#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 			}
 
 			#ifdef __aarch64__
@@ -157,7 +172,11 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -183,7 +202,11 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 		} catch(const std::exception& e) {
 			LOG(error) << "Cannot connect to Mongo server:\n"
 								<< e.what() << '\n' ;
-			exit(EXIT_FAILURE);
+			#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 		}
 
 		#ifdef __aarch64__
@@ -209,7 +232,11 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 			} catch(const std::exception& e) {
 				LOG(error) << "Cannot connect to Redis server:\n"
 									<< e.what() << '\n' ;
-				exit(EXIT_FAILURE);
+				#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 			}
 
 			#ifdef __aarch64__
@@ -245,7 +272,11 @@ void SocialGraphHandler::Follow(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -271,7 +302,11 @@ void SocialGraphHandler::Follow(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -296,7 +331,11 @@ void SocialGraphHandler::Follow(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -322,7 +361,11 @@ void SocialGraphHandler::Follow(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -354,7 +397,11 @@ void SocialGraphHandler::Unfollow(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -380,7 +427,11 @@ void SocialGraphHandler::Unfollow(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -405,7 +456,11 @@ void SocialGraphHandler::Unfollow(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -431,7 +486,11 @@ void SocialGraphHandler::Unfollow(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Redis server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -466,7 +525,11 @@ void SocialGraphHandler::FollowWithUsername(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to User server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -491,7 +554,11 @@ void SocialGraphHandler::FollowWithUsername(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to User server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -528,7 +595,11 @@ void SocialGraphHandler::UnfollowWithUsername(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to User server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -553,7 +624,11 @@ void SocialGraphHandler::UnfollowWithUsername(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to User server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -583,7 +658,11 @@ void SocialGraphHandler::InsertUser(int64_t req_id, int64_t user_id) {
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__

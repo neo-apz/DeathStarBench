@@ -9,6 +9,9 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+#include <stdint.h>
 
 #include <jwt/jwt.hpp>
 
@@ -45,7 +48,11 @@ static int counter = 0;
 static int GetCounter(int64_t timestamp) {
   if (current_timestamp > timestamp) {
     LOG(fatal) << "Timestamps are not incremental.";
-    exit(EXIT_FAILURE);
+    #ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
   }
   if (current_timestamp == timestamp) {
     return counter++;
@@ -175,7 +182,11 @@ bool UserHandler::RegisterUserWithId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -216,7 +227,11 @@ bool UserHandler::RegisterUserWithId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -243,7 +258,11 @@ bool UserHandler::RegisterUserWithId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to SocialGraph server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -313,7 +332,11 @@ bool UserHandler::RegisterUser(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -354,7 +377,11 @@ bool UserHandler::RegisterUser(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Mongo server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -381,7 +408,11 @@ bool UserHandler::RegisterUser(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to SocialGraph server:\n"
 							<< e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -416,7 +447,11 @@ bool UserHandler::UploadCreatorWithUsername(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Memcached server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -448,7 +483,11 @@ bool UserHandler::UploadCreatorWithUsername(
 		} catch(const std::exception& e) {
 			LOG(error) << "Cannot connect to Mongo server:\n"
 								<< e.what() << '\n' ;
-			exit(EXIT_FAILURE);
+			#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 		}
 
 		#ifdef __aarch64__
@@ -485,7 +524,11 @@ bool UserHandler::UploadCreatorWithUsername(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to upload creator to compose-post-service:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 	#ifdef __aarch64__
 		NESTED_END();
@@ -510,7 +553,11 @@ bool UserHandler::UploadCreatorWithUsername(
 		} catch(const std::exception& e) {
 			LOG(error) << "Cannot connect to Memcached server:\n"
 								<< e.what() << '\n' ;
-			exit(EXIT_FAILURE);
+			#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 		}
 
 		#ifdef __aarch64__
@@ -548,7 +595,11 @@ void UserHandler::UploadCreatorWithUserId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to upload creator to compose-post-service:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 	#ifdef __aarch64__
 		NESTED_END();
@@ -582,7 +633,11 @@ void UserHandler::Login(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Memcached server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -642,7 +697,11 @@ void UserHandler::Login(
 		} catch(const std::exception& e) {
 			LOG(error) << "Cannot connect to Memcached server:\n"
 								<< e.what() << '\n' ;
-			exit(EXIT_FAILURE);
+			#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 		}
 
 		#ifdef __aarch64__
@@ -677,7 +736,11 @@ int64_t UserHandler::GetUserId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Cannot connect to Memcached server:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 
 	#ifdef __aarch64__
@@ -711,7 +774,11 @@ int64_t UserHandler::GetUserId(
 		} catch(const std::exception& e) {
 			LOG(error) << "Cannot connect to Mongo server:\n"
 								<< e.what() << '\n' ;
-			exit(EXIT_FAILURE);
+			#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 		}
 
 		#ifdef __aarch64__
@@ -747,7 +814,11 @@ int64_t UserHandler::GetUserId(
 		} catch(const std::exception& e) {
 			LOG(error) << "Cannot connect to Memcached server:\n"
 								<< e.what() << '\n' ;
-			exit(EXIT_FAILURE);
+			#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 		}
 
 		#ifdef __aarch64__

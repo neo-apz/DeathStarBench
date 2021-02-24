@@ -4,6 +4,14 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <signal.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+#include <stdint.h>
+
+#ifdef __aarch64__
+	#include "MagicBreakPoint.h"
+#endif
 
 #include "logger.h"
 #include "RandomGenerator.h"
@@ -116,7 +124,24 @@ void GenAndProcessReqs(rpcNUMAContext* ctx,
   //   LOG(warning) << "Process Phase finished!";
 }
 
+void signal_handler(int sig) {
+	#ifdef __aarch64__
+		NOTIFY_EXCEPTION(sig);
+	#endif
+
+	syscall(SYS_exit_group, 0);
+}
+
 rpcNUMAContext* MainInit(int argc, char *argv[]) {
+
+	signal(SIGTERM, signal_handler);
+	signal(SIGSEGV, signal_handler);
+	signal(SIGINT, signal_handler);
+	signal(SIGILL, signal_handler);
+	signal(SIGABRT, signal_handler);
+	signal(SIGFPE, signal_handler);
+	signal(SIGHUP, signal_handler);
+
 	init_logger();
 
   if (argc != 4) {

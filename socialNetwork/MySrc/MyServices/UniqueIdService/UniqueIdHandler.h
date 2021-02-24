@@ -11,7 +11,9 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
-
+#include <sys/syscall.h>
+#include <unistd.h>
+#include <stdint.h>
 
 #include "../../gen-cpp/UniqueIdService.h"
 #include "../../gen-cpp/my_social_network_types.h"
@@ -37,7 +39,11 @@ static int counter = 0;
 static int GetCounter(int64_t timestamp) {
   if (current_timestamp > timestamp) {
     LOG(fatal) << "Timestamps are not incremental.";
-    exit(EXIT_FAILURE);
+    #ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
   }
   if (current_timestamp == timestamp) {
     return counter++;
@@ -128,7 +134,11 @@ int64_t UniqueIdHandler::UploadUniqueId(
 	} catch(const std::exception& e) {
 		LOG(error) << "Failed to upload unique-id to compose-post-service:\n"
 							 << e.what() << '\n' ;
-		exit(EXIT_FAILURE);
+		#ifdef __aarch64__
+		NOTIFY_EXCEPTION(0);
+		#endif
+
+		syscall(SYS_exit_group, 0);
 	}
 	#ifdef __aarch64__
 		NESTED_END();
