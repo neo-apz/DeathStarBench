@@ -1606,8 +1606,15 @@ void ComposePostServiceClient::FakeUploadCreator()
 
 int64_t ComposePostServiceClient::UploadCreator(const int64_t req_id, const Creator& creator)
 {
-  send_UploadCreator(req_id, creator);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	return uploadCreator_res->success;
+	#else
+	send_UploadCreator(req_id, creator);
   return recv_UploadCreator();
+	#endif
 }
 
 void ComposePostServiceClient::send_UploadCreator(const int64_t req_id, const Creator& creator)
