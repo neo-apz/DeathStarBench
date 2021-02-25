@@ -6215,8 +6215,15 @@ void FakeRedisClient::FakeGetFLWRs()
 
 void FakeRedisClient::GetFLWRs(std::vector<int64_t> & _return, const int64_t key, const std::string& field)
 {
-  send_GetFLWRs(key, field);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	_return = getFLWRs_res->success;
+	#else
+	send_GetFLWRs(key, field);
   recv_GetFLWRs(_return);
+	#endif
 }
 
 void FakeRedisClient::send_GetFLWRs(const int64_t key, const std::string& field)
@@ -6299,8 +6306,15 @@ void FakeRedisClient::FakePutFLWRs()
 
 void FakeRedisClient::PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
 {
-  send_PutFLWRs(key, field, value);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	
+	#else
+	send_PutFLWRs(key, field, value);
   recv_PutFLWRs();
+	#endif
 }
 
 void FakeRedisClient::send_PutFLWRs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
@@ -6379,8 +6393,15 @@ void FakeRedisClient::FakeGetFLWEEs()
 
 void FakeRedisClient::GetFLWEEs(std::vector<int64_t> & _return, const int64_t key, const std::string& field)
 {
-  send_GetFLWEEs(key, field);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	_return = getFLWEEs_res->success;
+	#else
+	send_GetFLWEEs(key, field);
   recv_GetFLWEEs(_return);
+	#endif
 }
 
 void FakeRedisClient::send_GetFLWEEs(const int64_t key, const std::string& field)
@@ -6463,8 +6484,15 @@ void FakeRedisClient::FakePutFLWEEs()
 
 void FakeRedisClient::PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
 {
-  send_PutFLWEEs(key, field, value);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	
+	#else
+	send_PutFLWEEs(key, field, value);
   recv_PutFLWEEs();
+	#endif
 }
 
 void FakeRedisClient::send_PutFLWEEs(const int64_t key, const std::string& field, const std::vector<int64_t> & value)
@@ -6543,8 +6571,15 @@ void FakeRedisClient::FakePutFLWR()
 
 void FakeRedisClient::PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
 {
-  send_PutFLWR(key, field, value, timestamp);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	
+	#else
+	send_PutFLWR(key, field, value, timestamp);
   recv_PutFLWR();
+	#endif
 }
 
 void FakeRedisClient::send_PutFLWR(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
@@ -6624,8 +6659,15 @@ void FakeRedisClient::FakePutFLWEE()
 
 void FakeRedisClient::PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
 {
-  send_PutFLWEE(key, field, value, timestamp);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	
+	#else
+	send_PutFLWEE(key, field, value, timestamp);
   recv_PutFLWEE();
+	#endif
 }
 
 void FakeRedisClient::send_PutFLWEE(const int64_t key, const std::string& field, const int64_t value, const int64_t timestamp)
@@ -6705,8 +6747,15 @@ void FakeRedisClient::FakeRemoveFLWR()
 
 void FakeRedisClient::RemoveFLWR(const int64_t key, const std::string& field, const int64_t value)
 {
-  send_RemoveFLWR(key, field, value);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	
+	#else
+	send_RemoveFLWR(key, field, value);
   recv_RemoveFLWR();
+	#endif
 }
 
 void FakeRedisClient::send_RemoveFLWR(const int64_t key, const std::string& field, const int64_t value)
@@ -6785,8 +6834,15 @@ void FakeRedisClient::FakeRemoveFLWEE()
 
 void FakeRedisClient::RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value)
 {
-  send_RemoveFLWEE(key, field, value);
+  #ifdef CEREBROS	
+	#ifdef __aarch64__
+	NESTED_DISPATCH_END();
+	#endif
+	
+	#else
+	send_RemoveFLWEE(key, field, value);
   recv_RemoveFLWEE();
+	#endif
 }
 
 void FakeRedisClient::send_RemoveFLWEE(const int64_t key, const std::string& field, const int64_t value)
