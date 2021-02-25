@@ -19,7 +19,9 @@ using fake_resp_gen_func = void (*)(TThriftClient*, uint64_t); // type for conci
 template<class TThriftClient>
 class FunctionClientMap {
  public:
-  FunctionClientMap() {};
+  FunctionClientMap(int randNodeIdInitValue) { 
+		nextRandNodeId = randNodeIdInitValue;
+	};
 
 	#ifdef CEREBROS
 	void RegisterFunction(int fid, TThriftClient **clients);
@@ -36,6 +38,9 @@ class FunctionClientMap {
 				uint64_t num_template_clients,
 				uint64_t num_msg_per_client,
 				uint64_t base_buffer_size);
+
+ 
+ unsigned int nextRandNodeId;
 
  private:
  	#ifdef CEREBROS

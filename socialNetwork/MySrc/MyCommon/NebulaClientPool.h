@@ -39,6 +39,7 @@ class NebulaClientPool {
 	size_t _buff_size;
   mutex _mtx;
 	rpcNUMAContext* _ctx;
+	unsigned int _nextNodeId[64];
 };
 
 template<class TThriftClient>
@@ -57,7 +58,7 @@ template<class TThriftClient>
 FunctionClientMap<TThriftClient>* NebulaClientPool<TThriftClient>::AddToPool(soNUMAQP_T* qp) {
 	thread::id tid = this_thread::get_id();
 
-	auto clientMap = new FunctionClientMap<TThriftClient>();
+	auto clientMap = new FunctionClientMap<TThriftClient>(qp->qp_id);
 
 	pair<FunctionClientMap<TThriftClient> *, soNUMAQP_T*> clientPair = {clientMap, qp};
 
@@ -90,8 +91,11 @@ MyThriftClient<TThriftClient>* NebulaClientPool<TThriftClient>::Get(int fid) {
 		RPCOutReq req;
 		req.ctx_id = _ctx->getCtxId();
 		req.from = _ctx->getNodeId();
-		req.to = 100; // TODO check this later
+		req.to = clientMap->nextRandNodeId;
 		req.param_ptr = (uint64_t) &cid;
+
+		clientMap->nextRandNodeId++;
+		if (clientMap->nextRandNodeId >= 1024) clientMap->nextRandNodeId = 0;
 
 		RPCInReq resp;
 
