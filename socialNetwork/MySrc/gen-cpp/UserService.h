@@ -892,6 +892,7 @@ class UserServiceClient : virtual public UserServiceIf {
 
 	UserServiceClient(RandomGenerator* randGen) {
 		initArgs(randGen);
+		initResults(randGen);
 	}
 
 	UserServiceClient() {
