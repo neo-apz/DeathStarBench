@@ -1338,9 +1338,10 @@ void ComposePostServiceClient::initArgs(RandomGenerator* randGen)
 	this->uploadUserMentions_args = new ComposePostService_UploadUserMentions_args(randGen);
 }
 
-void ComposePostServiceClient::send_RandReq(RandomGenerator* randGen)
+void ComposePostServiceClient::send_RandReq(RandomGenerator* randGen, int index)
 {
-	FuncType::type msg_type = (FuncType::type) randGen->getInt64(0, FuncType::SIZE-1);
+	// FuncType::type msg_type = (FuncType::type) randGen->getInt64(0, FuncType::SIZE-1);
+	FuncType::type msg_type = (FuncType::type) (index % (FuncType::SIZE));
 
 	switch (msg_type)
 	{

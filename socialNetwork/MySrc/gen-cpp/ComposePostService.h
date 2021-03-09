@@ -906,7 +906,7 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
 	ComposePostService_UploadUrls_args *uploadUrls_args;
 	ComposePostService_UploadUserMentions_args *uploadUserMentions_args;
 	void initArgs(RandomGenerator* randGen);
-	void send_RandReq(RandomGenerator* randGen);
+	void send_RandReq(RandomGenerator* randGen, int index);
 
 	void initResults(RandomGenerator* randGen);
 	ComposePostService_UploadText_result *uploadText_res;

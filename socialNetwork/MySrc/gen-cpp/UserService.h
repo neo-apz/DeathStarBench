@@ -955,7 +955,7 @@ class UserServiceClient : virtual public UserServiceIf {
 	UserService_UploadCreatorWithUsername_args *uploadCreatorWithUsername_args;
 	UserService_GetUserId_args *getUserId_args;
 	void initArgs(RandomGenerator* randGen);
-	void send_RandReq(RandomGenerator* randGen);
+	void send_RandReq(RandomGenerator* randGen, int index);
 
 	void initResults(RandomGenerator* randGen);
 	UserService_RegisterUser_result* registerUser_res;

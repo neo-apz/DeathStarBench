@@ -1349,9 +1349,10 @@ void UserServiceClient::initArgs(RandomGenerator* randGen)
 	this->getUserId_args = new UserService_GetUserId_args(randGen);
 }
 
-void UserServiceClient::send_RandReq(RandomGenerator* randGen)
+void UserServiceClient::send_RandReq(RandomGenerator* randGen, int index)
 {
-	FuncType::type msg_type = (FuncType::type) chances[randGen->getUInt32(chances_size)];
+	// FuncType::type msg_type = (FuncType::type) chances[randGen->getUInt32(chances_size)];
+	FuncType::type msg_type = (FuncType::type) chances[index % chances_size];
 
 	switch (msg_type)
 	{

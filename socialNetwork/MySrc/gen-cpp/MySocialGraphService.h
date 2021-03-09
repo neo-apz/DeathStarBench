@@ -945,7 +945,7 @@ class MySocialGraphServiceClient : virtual public MySocialGraphServiceIf {
 	MySocialGraphService_UnfollowWithUsername_args *unfollowWithUsername_args;
 	MySocialGraphService_InsertUser_args *insertUser_args;
 	void initArgs(RandomGenerator* randGen);
-	void send_RandReq(RandomGenerator* randGen);
+	void send_RandReq(RandomGenerator* randGen, int index);
 
 	void initResults(RandomGenerator* randGen);
 	// MySocialGraphService_GetFollowers_result *getFollowers_res;

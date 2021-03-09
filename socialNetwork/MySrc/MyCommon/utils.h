@@ -56,9 +56,9 @@ void GenRequests(MyThriftClient<TThriftClient> **clients, RandomGenerator *randG
 		clients[i] = new MyThriftClient<TThriftClient>(buffer_size);
 
 		auto client = clients[i]->GetClient();
-		for (int i = 0; i < NUM_MSGS_PER_CLIENT; i++) {
+		for (int j = 0; j < NUM_MSGS_PER_CLIENT; j++) {
 			client->initArgs(randGen);
-			client->send_RandReq(randGen);
+			client->send_RandReq(randGen, i);
 		}
 	}
 

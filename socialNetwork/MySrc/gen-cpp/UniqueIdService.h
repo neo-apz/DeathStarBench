@@ -225,7 +225,7 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
 
 	UniqueIdService_UploadUniqueId_args *uploadUniqueId_args;
 	void initArgs(RandomGenerator* randGen);
-	void send_RandReq(RandomGenerator* randGen);
+	void send_RandReq(RandomGenerator* randGen, int index);
 
 	void initResults(RandomGenerator* randGen);
 	UniqueIdService_UploadUniqueId_result *uploadUniqueId_res;

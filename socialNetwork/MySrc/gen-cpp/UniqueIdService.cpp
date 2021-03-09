@@ -218,7 +218,7 @@ void UniqueIdServiceClient::initArgs(RandomGenerator* randGen)
 	this->uploadUniqueId_args = new UniqueIdService_UploadUniqueId_args(randGen);
 }
 
-void UniqueIdServiceClient::send_RandReq(RandomGenerator* randGen)
+void UniqueIdServiceClient::send_RandReq(RandomGenerator* randGen, int index)
 {
 	send_UploadUniqueId(uploadUniqueId_args->req_id, uploadUniqueId_args->post_type);
 }

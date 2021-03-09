@@ -1413,9 +1413,10 @@ void MySocialGraphServiceClient::initArgs(RandomGenerator* randGen)
 	this->insertUser_args = new MySocialGraphService_InsertUser_args(randGen);
 }
 
-void MySocialGraphServiceClient::send_RandReq(RandomGenerator* randGen)
+void MySocialGraphServiceClient::send_RandReq(RandomGenerator* randGen, int index)
 {
-	FuncType::type msg_type = (FuncType::type) chances[randGen->getUInt32(chances_size)];
+	// FuncType::type msg_type = (FuncType::type) chances[randGen->getUInt32(chances_size)];
+	FuncType::type msg_type = (FuncType::type) chances[index % chances_size];
 
 	switch (msg_type)
 	{
