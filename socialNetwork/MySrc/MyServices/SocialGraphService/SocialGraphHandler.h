@@ -118,36 +118,35 @@ void SocialGraphHandler::GetFollowers(std::vector<int64_t> & _return,
 			NESTED_END();
 		#endif
 
-		if (_return.size() == 0){
-			#ifdef __aarch64__
-			NESTED_BEGIN();
-			NESTED_DISPATCH_BEGIN();
-			#endif
-			// Connect to FakeRedis
-			try {
-				#ifdef CEREBROS
-				auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWRS);
-				redis_client->PutFLWRs(user_id, "followers", _return);
-				#else
-				auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWRS);
-				auto redis_client = redis_client_wrapper->GetClient();
-				redis_client->PutFLWRs(user_id, "followers", _return);
-				redis_client_wrapper->ResetBuffers(true, false);
-				#endif
-			} catch(const std::exception& e) {
-				LOG(error) << "Cannot connect to Redis server:\n"
-									<< e.what() << '\n' ;
-				#ifdef __aarch64__
-		NOTIFY_EXCEPTION(0);
+		// Insert fetched data into Redis.
+		#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 		#endif
-
-		syscall(SYS_exit_group, 0);
-			}
-
-			#ifdef __aarch64__
-				NESTED_END();
+		// Connect to FakeRedis
+		try {
+			#ifdef CEREBROS
+			auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWRS);
+			redis_client->PutFLWRs(user_id, "followers", _return);
+			#else
+			auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWRS);
+			auto redis_client = redis_client_wrapper->GetClient();
+			redis_client->PutFLWRs(user_id, "followers", _return);
+			redis_client_wrapper->ResetBuffers(true, false);
 			#endif
+		} catch(const std::exception& e) {
+			LOG(error) << "Cannot connect to Redis server:\n"
+								<< e.what() << '\n' ;
+			#ifdef __aarch64__
+			NOTIFY_EXCEPTION(0);
+			#endif
+
+			syscall(SYS_exit_group, 0);
 		}
+
+		#ifdef __aarch64__
+			NESTED_END();
+		#endif
 	}
 }
 
@@ -213,36 +212,35 @@ void SocialGraphHandler::GetFollowees(std::vector<int64_t> & _return,
 			NESTED_END();
 		#endif
 
-		if (_return.size() == 0){
-			#ifdef __aarch64__
-			NESTED_BEGIN();
-			NESTED_DISPATCH_BEGIN();
-			#endif
-			// Connect to FakeRedis
-			try {
-				#ifdef CEREBROS
-				auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWEES);
-				redis_client->PutFLWEEs(user_id, "followees", _return);
-				#else
-				auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWEES);
-				auto redis_client = redis_client_wrapper->GetClient();
-				redis_client->PutFLWEEs(user_id, "followees", _return);
-				redis_client_wrapper->ResetBuffers(true, false);
-				#endif
-			} catch(const std::exception& e) {
-				LOG(error) << "Cannot connect to Redis server:\n"
-									<< e.what() << '\n' ;
-				#ifdef __aarch64__
-		NOTIFY_EXCEPTION(0);
+		// Insert fetched data into Redis
+		#ifdef __aarch64__
+		NESTED_BEGIN();
+		NESTED_DISPATCH_BEGIN();
 		#endif
-
-		syscall(SYS_exit_group, 0);
-			}
-
-			#ifdef __aarch64__
-				NESTED_END();
+		// Connect to FakeRedis
+		try {
+			#ifdef CEREBROS
+			auto redis_client = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWEES);
+			redis_client->PutFLWEEs(user_id, "followees", _return);
+			#else
+			auto redis_client_wrapper = _redis_pool->Get(FakeRedisIf::FuncType::PUT_FLWEES);
+			auto redis_client = redis_client_wrapper->GetClient();
+			redis_client->PutFLWEEs(user_id, "followees", _return);
+			redis_client_wrapper->ResetBuffers(true, false);
 			#endif
+		} catch(const std::exception& e) {
+			LOG(error) << "Cannot connect to Redis server:\n"
+								<< e.what() << '\n' ;
+			#ifdef __aarch64__
+			NOTIFY_EXCEPTION(0);
+			#endif
+
+			syscall(SYS_exit_group, 0);
 		}
+
+		#ifdef __aarch64__
+			NESTED_END();
+		#endif
 	}
 }
 
